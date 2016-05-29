@@ -9,4 +9,6 @@ electron-packager dist/ \
   --arch x64 \
   --asar \
   --prune \
-  --out release
+  --out release \
+  --app-version $(node -p -e "require('./package.json').version") \
+  --icon electron/logo.icns
