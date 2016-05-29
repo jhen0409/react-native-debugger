@@ -1,0 +1,10 @@
+sudo: false
+language: node_js
+node_js:
+  - "6"
+cache:
+  directories:
+install:
+  - npm install
+script:
+  - npm run lint

@@ -1,0 +1,64 @@
+{
+  "name": "react-native-debugger",
+  "version": "0.0.0",
+  "productName": "React Native Debugger",
+  "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
+  "main": "electron/main.js",
+  "scripts": {
+    "pack": "./scripts/package.sh",
+    "start": "electron dist/",
+    "build:devtools": "webpack --config webpack/devtools.backend.babel.js",
+    "build:app": "webpack --config webpack/prod.babel.js",
+    "build": "npm run build:app",
+    "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/dev.babel.js --hot --inline --colors",
+    "dev:electron": "electron .",
+    "lint": "eslint app/ electron/ webpack/",
+    "postinstall": "./scripts/postinstall.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhen0409/react-native-debugger.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "debugger",
+    "react-devtools",
+    "redux-devtools",
+    "desktop"
+  ],
+  "author": "Jhen <developer@jhen.me>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015-node6": "^0.2.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "electron-debug": "^1.0.0",
+    "electron-packager": "^7.0.2",
+    "electron-prebuilt": "^1.2.0",
+    "eslint": "^2.11.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-jsx-a11y": "^1.2.2",
+    "eslint-plugin-react": "^5.1.1",
+    "raw-loader": "^0.5.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "worker-loader": "^0.7.0"
+  },
+  "dependencies": {
+    "jsan": "^3.1.2",
+    "react": "^0.14.8",
+    "react-addons-create-fragment": "^0.14.8",
+    "react-dom": "^0.14.8",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-devtools-instrument": "^1.0.1",
+    "remotedev-app": "^0.3.8",
+    "ws": "^1.1.0"
+  }
+}
