@@ -5,6 +5,7 @@
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
   "scripts": {
+    "release": "./scripts/release.sh",
     "pack": "./scripts/package.sh",
     "start": "electron dist/",
     "build:devtools": "webpack --config webpack/devtools.backend.babel.js",
@@ -30,6 +31,7 @@
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "devDependencies": {
+    "appdmg": "^0.4.5",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
