@@ -31,7 +31,6 @@
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "devDependencies": {
-    "appdmg": "^0.4.5",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
