@@ -10,7 +10,7 @@
     "start": "electron dist/",
     "build:devtools": "webpack --config webpack/devtools.backend.babel.js",
     "build:app": "webpack --config webpack/prod.babel.js",
-    "build": "npm run build:app",
+    "build": "cp electron/main.js dist/main.js && npm run build:app",
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/dev.babel.js --hot --inline --colors",
     "dev:electron": "electron .",
     "lint": "eslint app/ electron/ webpack/",

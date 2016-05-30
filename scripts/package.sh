@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cp electron/main.js dist/main.js
 rm -rf dist/js release/
 npm run build
 cd dist && npm i && cd ..
