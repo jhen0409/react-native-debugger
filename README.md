@@ -8,7 +8,7 @@
 
 ## Usage
 
-__*OSX*__ Visit to [Release](https://github.com/jhen0409/react-native-debugger/releases) to download.
+The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page, currently only for OS X.
 
 Make sure all `http://localhost:8081/debugger-ui` pages is closed, open the app to wait state, and reload JS with your simulator/device.
 
