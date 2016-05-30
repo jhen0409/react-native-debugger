@@ -105,7 +105,10 @@ export default class Debugger extends Component {
         setStatusToTitle('waiting', INITIAL_MESSAGE);
       } else {
         // Otherwise, pass through to the worker.
-        this.props.debugger.worker.postMessage(object);
+        const { worker } = this.props.debugger;
+        if (worker) {
+          worker.postMessage(object);
+        }
       }
     };
 
