@@ -24,34 +24,34 @@ app.on('ready', () => {
       label: 'React Native Debugger',
       submenu: [{
         label: 'About React Native Debugger',
-        selector: 'orderFrontStandardAboutPanel:'
+        selector: 'orderFrontStandardAboutPanel:',
       }, {
-        type: 'separator'
+        type: 'separator',
       }, {
         label: 'Services',
-        submenu: []
+        submenu: [],
       }, {
-        type: 'separator'
+        type: 'separator',
       }, {
         label: 'Hide ElectronReact',
         accelerator: 'Command+H',
-        selector: 'hide:'
+        selector: 'hide:',
       }, {
         label: 'Hide Others',
         accelerator: 'Command+Shift+H',
-        selector: 'hideOtherApplications:'
+        selector: 'hideOtherApplications:',
       }, {
         label: 'Show All',
-        selector: 'unhideAllApplications:'
+        selector: 'unhideAllApplications:',
       }, {
-        type: 'separator'
+        type: 'separator',
       }, {
         label: 'Quit',
         accelerator: 'Command+Q',
         click() {
           app.quit();
-        }
-      }]
+        },
+      }],
     }, {
       label: 'View',
       submenu: [{
@@ -59,49 +59,49 @@ app.on('ready', () => {
         accelerator: 'Command+R',
         click() {
           mainWindow.webContents.reload();
-        }
+        },
       }, {
         label: 'Toggle Full Screen',
         accelerator: 'Ctrl+Command+F',
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
-        }
+        },
       }, {
         label: 'Toggle Developer Tools',
         accelerator: 'Alt+Command+I',
         click() {
           mainWindow.toggleDevTools();
-        }
-      }]
+        },
+      }],
     }, {
       label: 'Window',
       submenu: [{
         label: 'Minimize',
         accelerator: 'Command+M',
-        selector: 'performMiniaturize:'
+        selector: 'performMiniaturize:',
       }, {
         label: 'Close',
         accelerator: 'Command+W',
-        selector: 'performClose:'
+        selector: 'performClose:',
       }, {
-        type: 'separator'
+        type: 'separator',
       }, {
         label: 'Bring All to Front',
-        selector: 'arrangeInFront:'
-      }]
+        selector: 'arrangeInFront:',
+      }],
     }, {
       label: 'Help',
       submenu: [{
         label: 'Documentation',
         click() {
           shell.openExternal('https://github.com/jhen0409/react-native-debugger#usage');
-        }
+        },
       }, {
         label: 'Issues',
         click() {
           shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues');
-        }
-      }]
+        },
+      }],
     }];
 
     menu = Menu.buildFromTemplate(template);
