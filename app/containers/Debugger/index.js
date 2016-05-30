@@ -112,6 +112,7 @@ export default class Debugger extends Component {
       }
     };
 
+    ws.onerror = () => {};
     ws.onclose = e => {
       shutdownJSRuntime();
       setStatusToTitle(
