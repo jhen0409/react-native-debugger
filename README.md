@@ -10,6 +10,12 @@
 
 The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page, currently only for OS X.
 
+You can use [Homebrew Cask](http://caskroom.io) to install:
+
+```bash
+$ brew update && brew cask install react-native-debugger
+```
+
 Make sure all `http://localhost:8081/debugger-ui` pages is closed, open the app to wait state, and reload JS with your simulator/device.
 
 ## Debugger
@@ -21,6 +27,8 @@ This is reference to [react-native](https://github.com/facebook/react-native/blo
 This is reference to [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a websocket server (port: 8097) to waiting react-native connection.
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Devtools/setupDevtools.js#L17).
+
+__*NOTE*__ Currently only for iOS, see [this](https://github.com/facebook/react-native/blob/master/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L216).
 
 ## Redux DevTools
 
