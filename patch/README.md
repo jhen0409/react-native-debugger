@@ -16,11 +16,20 @@ $ npm i --save-dev react-native-debugger-patch
 
 ## Usage
 
-```bash
-$ rndebugger-patch
+Add command to your project's package.json:
 
-# If you want to revert injection
-$ rndebugger-patch --revert
+```
+"scripts": {
+  "postinstall": "rndebugger-patch"
+}
+```
+
+It will be run after `npm install`. (You can run `npm run postinstall` first)
+
+If you want to revert injection, just run:
+
+```bash
+$ $(npm bin)/rndebugger-patch --revert
 ```
 
 You can also use following command instead of this patch:
