@@ -23,6 +23,7 @@ const getNewKey = () => 'p' + Math.random().toString().substr(2, 10);
 
 const styles = {
   waiting: {
+    '-webkit-user-select': 'none',
     textAlign: 'center',
     padding: '30px',
     color: '#aaa',

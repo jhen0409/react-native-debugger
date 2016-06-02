@@ -28,6 +28,8 @@ const styles = {
   wrapReactPanel: {
     display: 'flex',
     position: 'fixed',
+    flexDirection: 'column',
+    justifyContent: 'center',
     width: '100%',
     height: '40%',
     left: 0,
@@ -56,7 +58,7 @@ const styles = {
     padding: '4px',
     borderRadius: '4px',
     letterSpacing: '3px',
-  }
+  },
 };
 
 @connect(
