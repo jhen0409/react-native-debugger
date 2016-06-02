@@ -111,6 +111,18 @@ app.on('ready', () => {
         click() {
           mainWindow.toggleDevTools();
         },
+      }, {
+        label: 'Toggle React DevTools',
+        accelerator: 'Alt+Command+J',
+        click() {
+          mainWindow.webContents.send('toggle-devtools', 'react');
+        },
+      }, {
+        label: 'Toggle Redux DevTools',
+        accelerator: 'Alt+Command+K',
+        click() {
+          mainWindow.webContents.send('toggle-devtools', 'redux');
+        },
       }],
     }, {
       label: 'Window',
