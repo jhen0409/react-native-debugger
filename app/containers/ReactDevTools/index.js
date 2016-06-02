@@ -24,8 +24,6 @@ const getNewKey = () => 'p' + Math.random().toString().substr(2, 10);
 const styles = {
   waiting: {
     textAlign: 'center',
-    fontFamily: 'sans-serif',
-    flex: 1,
     padding: '30px',
     color: '#aaa',
   },
@@ -78,7 +76,7 @@ export default class ReactDevTools extends Component {
       }
       const data = JSON.parse(evt.data);
       if (data.$close || data.$error) {
-        this.onDisconnected();
+        if (this.onDisconnected) this.onDisconnected();
         socket.onmessage = msg => {
           if (msg.data === 'attach:agent') {
             this.initialize(socket);
@@ -121,12 +119,12 @@ export default class ReactDevTools extends Component {
       connected = true;
       socket.onerror = err => {
         connected = false;
-        this.onDisconnected();
+        if (this.onDisconnected) this.onDisconnected();
         console.log('[React DevTools] Error with websocket connection', err);
       };
       socket.onclose = () => {
         connected = false;
-        this.onDisconnected();
+        if (this.onDisconnected) this.onDisconnected();
       };
       this.initialize(socket);
     });
@@ -140,7 +138,7 @@ export default class ReactDevTools extends Component {
     return {
       close() {
         connected = false;
-        this.onDisconnected();
+        if (this.onDisconnected) this.onDisconnected();
         clearTimeout(this.restartTimeout);
         server.close();
       },
