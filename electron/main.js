@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu, shell } = require('electron');
 const url = require('url');
-// const qs = require('querystring');
+const qs = require('querystring');
 
 let menu;
 let template;
@@ -12,10 +12,19 @@ app.on('window-all-closed', () => {
 
 app.on('open-url', (e, path) => {
   const route = url.parse(path);
-  if (route !== 'set-debugger-loc') return;
 
-  // const { host, port } = qs.parse(path);
-  // TODO: set debugger hot, port in renderer process
+  if (route.host !== 'set-debugger-loc') return;
+
+  const { host, port } = qs.parse(route.query);
+  const payload = JSON.stringify({
+    host: host || 'localhost',
+    port: Number(port) || 8081,
+  });
+  if (mainWindow) {
+    mainWindow.webContents.send('set-debugger-loc', payload);
+  } else {
+    process.env.DEBUGGER_SETTING = payload;
+  }
 });
 
 app.on('ready', () => {

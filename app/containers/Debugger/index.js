@@ -15,6 +15,7 @@ import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as debuggerAtions from '../../actions/debugger';
+import { ipcRenderer } from 'electron';
 
 const INITIAL_MESSAGE = 'Waiting, press ⌘R in simulator to reload and connect.';
 
@@ -39,14 +40,33 @@ export default class Debugger extends Component {
   };
 
   componentDidMount() {
-    this.socket = this.connectToDebuggerProxy();
+    this.setDebuggerLoc(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
+
+    ipcRenderer.on('set-debugger-loc', (e, payload) => {
+      this.setDebuggerLoc(JSON.parse(payload));
+    });
   }
 
   componentWillUnmount() {
     this.socket.close();
   }
 
-  connectToDebuggerProxy = (host = 'localhost', port = 8081) => {
+  setDebuggerLoc({ host, port }) {
+    if (this.host === host && this.port === Number(port)) return;
+
+    this.host = host;
+    this.port = port;
+    if (this.socket) {
+      this.socket.close();
+    } else {
+      this.socket = this.connectToDebuggerProxy();
+    }
+  }
+
+  connectToDebuggerProxy = () => {
+    const host = this.host || 'localhost';
+    const port = this.port || 8081;
+
     const ws = WebSocket.connect(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
     const onmessage = message => {
@@ -123,7 +143,9 @@ export default class Debugger extends Component {
         setStatusToTitle(e.reason);
         console.warn(e.reason);
       }
-      setTimeout(this.connectToDebuggerProxy, 500);
+      setTimeout(() => {
+        this.socket = this.connectToDebuggerProxy();
+      }, 500);
     };
     return ws;
   }
