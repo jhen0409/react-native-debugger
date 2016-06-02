@@ -13,21 +13,13 @@
     "build": "cp electron/main.js dist/main.js && npm run build:app",
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/dev.babel.js --hot --inline --colors",
     "dev:electron": "electron .",
-    "lint": "eslint app/ electron/ webpack/",
+    "lint": "eslint app/ electron/ webpack/ patch/lib",
     "postinstall": "./scripts/postinstall.sh"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jhen0409/react-native-debugger.git"
   },
-  "keywords": [
-    "react",
-    "react-native",
-    "debugger",
-    "react-devtools",
-    "redux-devtools",
-    "desktop"
-  ],
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "devDependencies": {

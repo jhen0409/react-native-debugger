@@ -1,0 +1,27 @@
+{
+  "name": "react-native-debugger-patch",
+  "version": "0.2.0",
+  "description": "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
+  "bin": {
+    "rndebugger-patch": "bin/rndebugger-patch.js"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhen0409/react-native-debugger.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "debugger",
+    "react-devtools",
+    "redux-devtools",
+    "electron"
+  ],
+  "author": "Jhen <developer@jhen.me>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "minimist": "^1.2.0"
+  }
+}
