@@ -14,7 +14,7 @@ import ws from 'ws';
 import installGlobalHook from 'react-devtools/backend/installGlobalHook';
 installGlobalHook(window);
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Panel from 'react-devtools/frontend/Panel';
 
 import backendScript from 'raw!react-devtools/shells/electron/build/backend.js';
@@ -39,6 +39,10 @@ const styles = {
   dispatch => ({ dispatch }),
 )
 export default class ReactDevTools extends Component {
+  static propTypes = {
+    debugger: PropTypes.object,
+  };
+
   state = {
     connected: false,
     message: 'Waiting for a connection from React Native',
