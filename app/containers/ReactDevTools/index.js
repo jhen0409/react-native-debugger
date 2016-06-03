@@ -19,6 +19,8 @@ import Panel from 'react-devtools/frontend/Panel';
 
 import backendScript from 'raw!react-devtools/shells/electron/build/backend.js';
 
+import { connect } from 'react-redux';
+
 const getNewKey = () => 'p' + Math.random().toString().substr(2, 10);
 
 const styles = {
@@ -30,6 +32,12 @@ const styles = {
   },
 };
 
+@connect(
+  state => ({
+    debugger: state.debugger,
+  }),
+  dispatch => ({ dispatch }),
+)
 export default class ReactDevTools extends Component {
   state = {
     connected: false,
@@ -39,7 +47,18 @@ export default class ReactDevTools extends Component {
   };
 
   componentDidMount() {
-    this.server = this.startServer();
+    if (this.props.debugger.worker) {
+      this.server = this.startServer();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.debugger.worker && this.props.debugger.worker !== nextProps.debugger.worker) {
+      if (this.server) this.server.close();
+      this.server = this.startServer();
+    } else if (!nextProps.debugger.worker) {
+      if (this.server) this.server.close();
+    }
   }
 
   componentWillUnmount() {
@@ -77,7 +96,7 @@ export default class ReactDevTools extends Component {
       }
       const data = JSON.parse(evt.data);
       if (data.$close || data.$error) {
-        if (this.onDisconnected) this.onDisconnected();
+        this.onDisconnected();
         socket.onmessage = msg => {
           if (msg.data === 'attach:agent') {
             this.initialize(socket);
@@ -120,12 +139,12 @@ export default class ReactDevTools extends Component {
       connected = true;
       socket.onerror = err => {
         connected = false;
-        if (this.onDisconnected) this.onDisconnected();
+        this.onDisconnected();
         console.log('[React DevTools] Error with websocket connection', err);
       };
       socket.onclose = () => {
         connected = false;
-        if (this.onDisconnected) this.onDisconnected();
+        this.onDisconnected();
       };
       this.initialize(socket);
     });
@@ -137,9 +156,9 @@ export default class ReactDevTools extends Component {
     });
 
     return {
-      close() {
+      close: () => {
         connected = false;
-        if (this.onDisconnected) this.onDisconnected();
+        this.onDisconnected();
         clearTimeout(this.restartTimeout);
         server.close();
       },
