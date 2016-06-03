@@ -18,6 +18,8 @@ $ brew update && brew cask install react-native-debugger
 
 Make sure all `http://localhost:8081/debugger-ui` pages is closed, open the app to wait state, and reload JS with your simulator/device.
 
+Also, you can use [react-native-debugger-patch](https://github.com/jhen0409/react-native-debugger/blob/master/patch), it will replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager.
+
 ## Debugger
 
 This is reference to [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
