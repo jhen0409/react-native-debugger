@@ -7,6 +7,6 @@ const argv = require('minimist')(process.argv.slice(2), {
   },
 });
 
-require('../lib/main')(argv, (pass) => {
-  if (!pass) process.exit(1);
+require('../lib/main')(argv, (pass, dontError) => {
+  if (!pass && !dontError) process.exit(1);
 });
