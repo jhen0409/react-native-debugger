@@ -6,7 +6,9 @@ const path = require('path');
 const name = 'react-native-debugger-patch';
 const startFlag = `/* ${name} start */`;
 const endFlag = `/* ${name} end */`;
-const funcFlag = 'function launchChromeDevTools(port) {';
+const keyFunc = 'launchChromeDevTools';
+const funcFlag = `function ${keyFunc}(port) {`;
+const replaceFuncFlag = `function ${keyFunc}(port, skipRNDebugger) {`;
 
 exports.dir = 'local-cli/server/middleware';
 exports.file = 'getDevToolsMiddleware.js';
@@ -19,8 +21,8 @@ exports.inject = modulePath => {
   const code = [
     startFlag,
     'var _rndebuggerIsOpening = false;',
-    funcFlag,
-    '  if (process.platform === "darwin") {',
+    replaceFuncFlag,
+    '  if (process.platform === "darwin" && !skipRNDebugger) {',
     '    if (_rndebuggerIsOpening) return;',
     '    _rndebuggerIsOpening = true;',
     '    opn("rndebugger://set-debugger-loc?host=localhost&port=" + port, { wait: false }, err => {',
@@ -30,6 +32,7 @@ exports.inject = modulePath => {
     '          "(Please visit https://github.com/jhen0409/react-native-debugger#usage)\\n" +',
     '          "Or it\'s never started. (Not registered URI Scheme)\\n"',
     '        );',
+    `        ${keyFunc}(port, true);`,
     '      }',
     '      _rndebuggerIsOpening = false;',
     '    });',
