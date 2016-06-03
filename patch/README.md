@@ -4,6 +4,10 @@
 
 __*NOTE*__ This patch is only work with `react-native-debugger@^0.2.0`.
 
+## Screenshot
+
+![demo](https://cloud.githubusercontent.com/assets/3001525/15777379/59a9c654-29c1-11e6-8656-247b8450bc47.gif)
+
 ## Installation
 
 First, install [React Native Debugger](https://github.com/jhen0409/react-native-debugger#usage).
