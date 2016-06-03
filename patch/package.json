@@ -5,7 +5,10 @@
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
   },
-  "scripts": {},
+  "files": [
+    "bin",
+    "lib"
+  ],
   "homepage": "https://github.com/jhen0409/react-native-debugger",
   "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/patch",
   "keywords": [
