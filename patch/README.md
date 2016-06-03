@@ -1,4 +1,4 @@
-# react-native-debugger-patch
+# react-native-debugger-open
 
 > Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager
 
@@ -11,7 +11,7 @@ First, install [React Native Debugger](https://github.com/jhen0409/react-native-
 In your React Native project:
 
 ```bash
-$ npm i --save-dev react-native-debugger-patch
+$ npm i --save-dev react-native-debugger-open
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ Add command to your project's package.json:
 
 ```
 "scripts": {
-  "postinstall": "rndebugger-patch"
+  "postinstall": "rndebugger-open"
 }
 ```
 
@@ -29,7 +29,7 @@ It will be run after `npm install`. (You can run `npm run postinstall` first)
 If you want to revert injection, just run:
 
 ```bash
-$ $(npm bin)/rndebugger-patch --revert
+$ $(npm bin)/rndebugger-open --revert
 ```
 
 You can also use following command instead of this patch:
