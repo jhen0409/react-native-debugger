@@ -57,7 +57,7 @@ app.on('ready', () => {
       }, {
         type: 'separator',
       }, {
-        label: 'Hide ElectronReact',
+        label: 'Hide',
         accelerator: 'Command+H',
         selector: 'hide:',
       }, {
