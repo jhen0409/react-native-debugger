@@ -12,7 +12,7 @@ const replaceFuncFlag = `function ${keyFunc}(port, skipRNDebugger) {`;
 
 exports.dir = 'local-cli/server/middleware';
 exports.file = 'getDevToolsMiddleware.js';
-exports.fullPath = path.join(exports.dir, exports.file);
+exports.path = path.join(exports.dir, exports.file);
 
 exports.inject = modulePath => {
   const filePath = path.join(modulePath, exports.fullPath);
