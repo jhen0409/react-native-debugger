@@ -1,10 +1,25 @@
 const { app, BrowserWindow, Menu, shell } = require('electron');
+const contextMenu = require('electron-context-menu');
 const url = require('url');
 const qs = require('querystring');
 
 let menu;
 let template;
 let mainWindow = null;
+
+contextMenu({
+  prepend: () => [{
+    label: 'Toggle React DevTools',
+    click() {
+      mainWindow.webContents.send('toggle-devtools', 'react');
+    },
+  }, {
+    label: 'Toggle Redux DevTools',
+    click() {
+      mainWindow.webContents.send('toggle-devtools', 'redux');
+    },
+  }],
+});
 
 app.on('window-all-closed', () => {
   app.quit();
