@@ -45,7 +45,7 @@ const styles = {
     justifyContent: 'center',
     color: '#ccc',
     fontSize: '25px',
-    '-webkit-user-select': 'none',
+    WebkitUserSelect: 'none',
   },
   text: {
     textAlign: 'center',
