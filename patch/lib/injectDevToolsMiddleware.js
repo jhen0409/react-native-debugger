@@ -15,7 +15,7 @@ exports.file = 'getDevToolsMiddleware.js';
 exports.path = path.join(exports.dir, exports.file);
 
 exports.inject = modulePath => {
-  const filePath = path.join(modulePath, exports.fullPath);
+  const filePath = path.join(modulePath, exports.path);
   if (!fs.existsSync(filePath)) return false;
 
   const code = [
@@ -56,7 +56,7 @@ exports.inject = modulePath => {
 };
 
 exports.revert = modulePath => {
-  const filePath = path.join(modulePath, exports.fullPath);
+  const filePath = path.join(modulePath, exports.path);
   if (!fs.existsSync(filePath)) return false;
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
