@@ -117,6 +117,9 @@ export default class Debugger extends Component {
       // Special message that asks for a new JS runtime
       if (object.method === 'prepareJSRuntime') {
         shutdownJSRuntime();
+        if (process.env.NODE_ENV !== 'development') {
+          console.clear();
+        }
         createJSRuntime();
         ws.send(JSON.stringify({ replyID: object.id }));
         setStatusToTitle('connected', 'Debugger session #' + object.id + ' active.');
