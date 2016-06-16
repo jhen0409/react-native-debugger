@@ -20,7 +20,7 @@ import { ipcRenderer } from 'electron';
 const INITIAL_MESSAGE = 'Waiting, press ⌘R in simulator to reload and connect.';
 
 function setStatusToTitle(status, message) {
-  document.title = 'React Native Debugger - ' + message;
+  document.title = `React Native Debugger - ${message}`;
 }
 
 @connect(
@@ -122,7 +122,7 @@ export default class Debugger extends Component {
         }
         createJSRuntime();
         ws.send(JSON.stringify({ replyID: object.id }));
-        setStatusToTitle('connected', 'Debugger session #' + object.id + ' active.');
+        setStatusToTitle('connected', `Debugger session #${object.id} active.`);
       } else if (object.method === '$disconnected') {
         shutdownJSRuntime();
         setStatusToTitle('waiting', INITIAL_MESSAGE);

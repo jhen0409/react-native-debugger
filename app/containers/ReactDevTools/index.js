@@ -21,7 +21,7 @@ import backendScript from 'raw!react-devtools/shells/electron/build/backend.js';
 
 import { connect } from 'react-redux';
 
-const getNewKey = () => 'p' + Math.random().toString().substr(2, 10);
+const getNewKey = () => `react-panel${Math.random().toString().substr(2, 10)}`;
 
 const styles = {
   waiting: {
@@ -91,7 +91,7 @@ export default class ReactDevTools extends Component {
   };
 
   initialize = socket => {
-    socket.send('eval:' + backendScript);
+    socket.send(`eval:${backendScript}`);
     const listeners = [];
 
     socket.onmessage = evt => {
