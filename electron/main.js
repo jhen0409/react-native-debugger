@@ -3,9 +3,15 @@ const contextMenu = require('electron-context-menu');
 const url = require('url');
 const qs = require('querystring');
 
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+
 let menu;
 let template;
 let mainWindow = null;
+
+if (process.env.NODE_ENV === 'development') {
+  require('electron-debug')(); // eslint-disable-line global-require
+}
 
 contextMenu({
   prepend: () => [{

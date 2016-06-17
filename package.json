@@ -12,7 +12,7 @@
     "build:app": "webpack --config webpack/prod.babel.js",
     "build": "cp electron/main.js dist/main.js && npm run build:app",
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/dev.babel.js --hot --inline --colors",
-    "dev:electron": "electron .",
+    "dev:electron": "NODE_ENV=development electron .",
     "lint": "eslint app/ electron/ webpack/ patch/lib",
     "postinstall": "./scripts/postinstall.sh"
   },
@@ -30,6 +30,7 @@
     "babel-preset-es2015-node6": "^0.2.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "devtron": "^1.2.0",
     "electron-debug": "^1.0.0",
     "electron-packager": "^7.0.2",
     "electron-prebuilt": "^1.2.0",
