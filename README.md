@@ -6,9 +6,9 @@
 
 ![React Native Debugger](https://cloud.githubusercontent.com/assets/3001525/15636231/9e47d322-262a-11e6-8326-9a05fc73adec.png)
 
-## Usage
+## Installation
 
-The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page, currently only for OS X.
+The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page, currently only for macOS.
 
 You can use [Homebrew Cask](http://caskroom.io) to install:
 
@@ -16,9 +16,16 @@ You can use [Homebrew Cask](http://caskroom.io) to install:
 $ brew update && brew cask install react-native-debugger
 ```
 
+## Usage
+
 Make sure all `http://localhost:8081/debugger-ui` pages is closed, open the app to wait state, and reload JS with your simulator/device.
 
 Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react-native-debugger/blob/master/patch), it will replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager.
+
+#### Platform support
+
+* [React Native](https://github.com/facebook/react-native) >= 0.21.0
+* [React Native Desktop](https://github.com/ptmt/react-native-desktop) >= 0.8.7
 
 ## Debugger
 
@@ -30,7 +37,7 @@ This is reference to [react-devtools/shells/electron](https://github.com/faceboo
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Devtools/setupDevtools.js#L17).
 
-__*NOTE*__ Currently only for iOS, see [this](https://github.com/facebook/react-native/blob/master/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L216).
+__*NOTE*__ Currently only for RN for iOS (see [this](https://github.com/facebook/react-native/blob/master/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L218)) / RND for macOS.
 
 ## Redux DevTools
 
@@ -76,7 +83,7 @@ $ npm run dev:electron
 $ npm run build
 $ npm start
 
-# Pack (Currently will pack OSX version only)
+# Pack (Currently will pack macOS version only)
 $ npm run pack
 ```
 

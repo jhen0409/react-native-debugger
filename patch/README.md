@@ -28,18 +28,20 @@ Add command to your project's package.json:
 }
 ```
 
-It will be run after `npm install`. (You can run `npm run postinstall` first)
+It will be run after `npm install`. (You can run `npm run postinstall` first)  
+The `./node_modules/react-native/local-cli/server/middleware/getDevToolsMiddleware.js` code will be replaced.
 
-If you want to revert injection, just run:
+#### Options (--option)
 
-```bash
-$ $(npm bin)/rndebugger-open --revert
-```
+Name                  | Description
+-------------         | -------------
+`desktop`             | Use [react-native-desktop](https://github.com/ptmt/react-native-desktop) module name instead of react-native. Default is `false`
+`revert`              | Revert rndebugger-open injection. Default is `false`
 
 You can also use following command instead of this patch:
 
 ```bash
-# OS X
+# macOS
 $ open "rndebugger://set-debugger-loc?host=localhost&port=8082"
 ```
 
