@@ -29,7 +29,7 @@ exports.inject = modulePath => {
     '      if (err) {',
     '        console.log(',
     '          "\\nCannot open React Native Debugger, maybe not install?\\n" +',
-    '          "(Please visit https://github.com/jhen0409/react-native-debugger#usage)\\n" +',
+    '          "(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n" +',
     '          "Or it\'s never started. (Not registered URI Scheme)\\n"',
     '        );',
     `        ${keyFunc}(port, true);`,

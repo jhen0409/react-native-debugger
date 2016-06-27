@@ -49,7 +49,7 @@ module.exports = (argv, cb) => {
           false,
           'Cannot find `rndebugger` URI Scheme, ' +
           'maybe not install React Native Debugger? ' +
-          '(Please visit https://github.com/jhen0409/react-native-debugger#usage) ' +
+          '(Please visit https://github.com/jhen0409/react-native-debugger#installation) ' +
           'Or it\'s never started. (Not registered URI Scheme)'
         );
         return cb(false, true);

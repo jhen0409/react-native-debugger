@@ -10,7 +10,7 @@ __*NOTE*__ This patch is only work with `react-native-debugger@^0.2.0`.
 
 ## Installation
 
-First, install [React Native Debugger](https://github.com/jhen0409/react-native-debugger#usage).
+First, install [React Native Debugger](https://github.com/jhen0409/react-native-debugger#installation).
 
 In your React Native project:
 
