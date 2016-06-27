@@ -37,6 +37,10 @@ This is reference to [react-devtools/shells/electron](https://github.com/faceboo
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Devtools/setupDevtools.js#L17).
 
+#### Get $r or global variables of react-native runtime in the console
+
+You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `*.worker.js` in `Threads`.
+
 __*NOTE*__ Currently only for RN for iOS (see [this](https://github.com/facebook/react-native/blob/master/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L218)) / RND for macOS.
 
 ## Redux DevTools
