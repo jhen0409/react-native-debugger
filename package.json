@@ -47,13 +47,13 @@
   "dependencies": {
     "electron-context-menu": "^0.1.2",
     "jsan": "^3.1.2",
-    "react": "^0.14.8",
-    "react-addons-create-fragment": "^0.14.8",
-    "react-dom": "^0.14.8",
+    "react": "^15.1.0",
+    "react-addons-create-fragment": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools-instrument": "^1.0.1",
-    "remotedev-app": "^0.3.8",
+    "remotedev-app": "^0.4.2",
     "ws": "^1.1.0"
   }
 }
