@@ -39,7 +39,7 @@ If you're debugging with a real device, you need to edit [node_modules/react-nat
 
 #### Get $r or global variables of react-native runtime in the console
 
-You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `*.worker.js` in `Threads`.
+You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `debugger.worker.js` in `Threads`.
 
 __*NOTE*__ Currently only for RN for iOS (see [this](https://github.com/facebook/react-native/blob/master/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L218)) / RND for macOS.
 

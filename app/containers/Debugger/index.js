@@ -10,7 +10,7 @@
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debugger.html
 
 import WebSocket from 'ws';
-import Worker from 'worker!./debuggerWorker'; // eslint-disable-line
+import Worker from 'worker?name=debugger.worker.js!./debuggerWorker'; // eslint-disable-line
 import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

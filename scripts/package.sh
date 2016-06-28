@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -rf dist/js release/
+rm -rf release/
 npm run build
 cd dist && npm i && cd ..
 electron-packager dist/ \
