@@ -20,8 +20,4 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
-  externals: [
-    ...baseConfig.externals,
-    'sc-ws',
-  ],
 };
