@@ -53,7 +53,7 @@ app.on('ready', () => {
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
-  mainWindow.openDevTools();
+  mainWindow.openDevTools({ mode: 'right' });
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
