@@ -52,6 +52,7 @@ module.exports = (argv, cb) => {
           '(Please visit https://github.com/jhen0409/react-native-debugger#installation) ' +
           'Or it\'s never started. (Not registered URI Scheme)'
         );
+        inject();
         return cb(false, true);
       }
       inject();
