@@ -45,7 +45,7 @@
     "worker-loader": "^0.7.0"
   },
   "dependencies": {
-    "electron-context-menu": "^0.1.2",
+    "electron-context-menu": "^0.2.1",
     "jsan": "^3.1.2",
     "react": "^0.14.8",
     "react-addons-create-fragment": "^0.14.8",
