@@ -2,6 +2,7 @@ import { app } from 'electron';
 import net from 'net';
 import url from 'url';
 import qs from 'querystring';
+import * as portfile from './port';
 
 const handleURL = (win, path) => {
   const route = url.parse(path);
@@ -25,7 +26,7 @@ const listenOpenURL = getWindow =>
     handleURL(getWindow(), path);
   });
 
-const createHandleURLServer = (port = 8997, getWindow) =>
+const createHandleURLServer = (getWindow) =>
   net.createServer(socket => {
     let data;
     socket.setEncoding('utf-8');
@@ -38,15 +39,20 @@ const createHandleURLServer = (port = 8997, getWindow) =>
         }
       } catch (e) {} // eslint-disable-line
     });
-  }).listen(port, 'localhost');
+  }).listen(0, 'localhost').on('listening', function () {
+    const { port } = this.address();
+    portfile.write(port);
+    portfile.watchExists(() => portfile.write(port));
+    process.on('exit', () => portfile.unlink());
 
-export default (getWindow, port) => {
-  if (process.platform === 'darwin') {
-    // Handle set-debugger-loc for macOS
-    // It's can be automatically open the app
-    listenOpenURL(getWindow);
-  } else {
-    // Handle set-debugger-loc for Linux/Windows
-    createHandleURLServer(getWindow, port);
-  }
+    console.log(`Starting listen set-debugger-loc request on port ${port}`);
+    console.log('Will save port to `$HOME/.rndebugger_port` file');
+  });
+
+export default getWindow => {
+  // Handle set-debugger-loc for macOS
+  // It's can be automatically open the app
+  listenOpenURL(getWindow);
+  // Handle set-debugger-loc for macOS/Linux/Windows
+  createHandleURLServer(getWindow);
 };

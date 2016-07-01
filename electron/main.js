@@ -1,5 +1,5 @@
 import { app, BrowserWindow, Menu } from 'electron';
-import startListeningHandleURL from './handleURL';
+import { startListeningHandleURL } from './url-handle';
 import { createContextMenu, createMenuTemplate } from './menu';
 
 let mainWindow = null;

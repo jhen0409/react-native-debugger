@@ -1,3 +1,4 @@
+/* eslint global-require: 0 */
 exports.createContextMenu = require('./contextMenu').default;
 
 if (process.platform === 'darwin') {
