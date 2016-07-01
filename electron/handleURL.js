@@ -1,7 +1,7 @@
-const { app } = require('electron');
-const net = require('net');
-const url = require('url');
-const qs = require('querystring');
+import { app } from 'electron';
+import net from 'net';
+import url from 'url';
+import qs from 'querystring';
 
 const handleURL = (win, path) => {
   const route = url.parse(path);
@@ -40,7 +40,7 @@ const createHandleURLServer = (port = 8997, getWindow) =>
     });
   }).listen(port, 'localhost');
 
-module.exports = (getWindow, port) => {
+export default (getWindow, port) => {
   if (process.platform === 'darwin') {
     // Handle set-debugger-loc for macOS
     // It's can be automatically open the app

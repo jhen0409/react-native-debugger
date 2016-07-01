@@ -1,12 +1,6 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'production';
-
-if (process.env.NODE_ENV === 'development') {
-  require('electron-debug')();
-}
-
-const { app, BrowserWindow, Menu } = require('electron');
-const startListeningHandleURL = require('./handleURL');
-const { createContextMenu, createMenuTemplate } = require('./menu');
+import { app, BrowserWindow, Menu } from 'electron';
+import startListeningHandleURL from './handleURL';
+import { createContextMenu, createMenuTemplate } from './menu';
 
 let mainWindow = null;
 const getMainWindow = () => mainWindow;

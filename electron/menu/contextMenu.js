@@ -1,6 +1,6 @@
-const contextMenu = require('electron-context-menu');
+import contextMenu from 'electron-context-menu';
 
-module.exports = getWindow =>
+export default getWindow =>
   contextMenu({
     prepend: () => [{
       label: 'Toggle React DevTools',

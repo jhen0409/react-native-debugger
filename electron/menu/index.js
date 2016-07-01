@@ -1,7 +1,7 @@
-exports.createContextMenu = require('./contextMenu');
+exports.createContextMenu = require('./contextMenu').default;
 
 if (process.platform === 'darwin') {
-  exports.createMenuTemplate = require('./darwin');
+  exports.createMenuTemplate = require('./darwin').default;
 } else {
-  exports.createMenuTemplate = require('./linux+win');
+  exports.createMenuTemplate = require('./linux+win').default;
 }

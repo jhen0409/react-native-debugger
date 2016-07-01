@@ -1,6 +1,6 @@
-const { app, shell } = require('electron');
+import { app, shell } from 'electron';
 
-module.exports = getWindow =>
+export default getWindow =>
   [{
     label: 'React Native Debugger',
     submenu: [{

@@ -1,6 +1,6 @@
-const { shell } = require('electron');
+import { shell } from 'electron';
 
-module.exports = getWindow =>
+export default getWindow =>
   [{
     label: 'RND',
     submenu: [{
