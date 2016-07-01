@@ -42,7 +42,7 @@ const createHandleURLServer = getWindow =>
   }).listen(0, 'localhost').on('listening', function () {
     const { port } = this.address();
     portfile.write(port);
-    portfile.watchExists(() => portfile.write(port));
+    portfile.watchExists(port);
     process.on('exit', () => portfile.unlink());
 
     console.log(`Starting listen set-debugger-loc request on port ${port}`);
