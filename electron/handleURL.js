@@ -18,23 +18,23 @@ const handleURL = (win, path) => {
   } else {
     process.env.DEBUGGER_SETTING = payload;
   }
-}
+};
 
 const listenOpenURL = getWindow =>
   app.on('open-url', (e, path) => {
-    exports.handleURL(getWindow(), path);
+    handleURL(getWindow(), path);
   });
 
 const createHandleURLServer = (port = 8997, getWindow) =>
   net.createServer(socket => {
     let data;
     socket.setEncoding('utf-8');
-    socket.on('data', chunk => { data += chunk });
+    socket.on('data', chunk => { data += chunk; });
     socket.on('end', () => {
       try {
         const obj = JSON.parse(data);
         if (typeof obj.path === 'string') {
-          exports.handleURL(getWindow(), obj.path);
+          handleURL(getWindow(), obj.path);
         }
       } catch (e) {} // eslint-disable-line
     });
@@ -49,4 +49,4 @@ module.exports = (getWindow, port) => {
     // Handle set-debugger-loc for Linux/Windows
     createHandleURLServer(getWindow, port);
   }
-}
+};
