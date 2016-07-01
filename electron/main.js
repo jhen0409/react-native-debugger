@@ -1,13 +1,13 @@
 const { app, BrowserWindow, Menu, shell } = require('electron');
 const contextMenu = require('electron-context-menu');
-const url = require('url');
-const qs = require('querystring');
+const startListeningHandleURL = require('./handleURL');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 let menu;
 let template;
 let mainWindow = null;
+const getMainWindow = () => mainWindow;
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
@@ -27,25 +27,10 @@ contextMenu({
   }],
 });
 
+startListeningHandleURL(getMainWindow);
+
 app.on('window-all-closed', () => {
   app.quit();
-});
-
-app.on('open-url', (e, path) => {
-  const route = url.parse(path);
-
-  if (route.host !== 'set-debugger-loc') return;
-
-  const { host, port } = qs.parse(route.query);
-  const payload = JSON.stringify({
-    host: host || 'localhost',
-    port: Number(port) || 8081,
-  });
-  if (mainWindow) {
-    mainWindow.webContents.send('set-debugger-loc', payload);
-  } else {
-    process.env.DEBUGGER_SETTING = payload;
-  }
 });
 
 app.on('ready', () => {
