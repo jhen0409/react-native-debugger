@@ -2,6 +2,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const template = fs.readFileSync(
+  path.join(__dirname, 'injectDevToolsMiddleware.tmpl.js'),
+  'utf-8'
+);
+const es6Template = require('es6-template');
 
 const name = 'react-native-debugger-patch';
 const startFlag = `/* ${name} start */`;
@@ -18,28 +23,12 @@ exports.inject = modulePath => {
   const filePath = path.join(modulePath, exports.path);
   if (!fs.existsSync(filePath)) return false;
 
-  const code = [
+  const code = es6Template(template, {
     startFlag,
-    'var _rndebuggerIsOpening = false;',
     replaceFuncFlag,
-    '  if (process.platform === "darwin" && !skipRNDebugger) {',
-    '    if (_rndebuggerIsOpening) return;',
-    '    _rndebuggerIsOpening = true;',
-    '    opn("rndebugger://set-debugger-loc?host=localhost&port=" + port, { wait: false }, err => {',
-    '      if (err) {',
-    '        console.log(',
-    '          "\\nCannot open React Native Debugger, maybe not install?\\n" +',
-    '          "(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n" +',
-    '          "Or it\'s never started. (Not registered URI Scheme)\\n"',
-    '        );',
-    `        ${keyFunc}(port, true);`,
-    '      }',
-    '      _rndebuggerIsOpening = false;',
-    '    });',
-    '    return;',
-    '  }',
+    keyFunc,
     endFlag,
-  ].join('\n');
+  });
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
   let start = middlewareCode.indexOf(startFlag);  // already injected ?
