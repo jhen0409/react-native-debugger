@@ -26,7 +26,7 @@ const listenOpenURL = getWindow =>
     handleURL(getWindow(), path);
   });
 
-const createHandleURLServer = (getWindow) =>
+const createHandleURLServer = getWindow =>
   net.createServer(socket => {
     let data;
     socket.setEncoding('utf-8');

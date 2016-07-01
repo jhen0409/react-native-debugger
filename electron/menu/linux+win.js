@@ -1,6 +1,6 @@
 import { shell } from 'electron';
 
-export default getWindow =>
+export default win =>
   [{
     label: 'RND',
     submenu: [{
@@ -10,7 +10,7 @@ export default getWindow =>
       label: 'Close',
       accelerator: 'Ctrl+W',
       click() {
-        getWindow().close();
+        win.close();
       },
     }],
   }, {
@@ -53,31 +53,31 @@ export default getWindow =>
       label: 'Reload',
       accelerator: 'Ctrl+R',
       click() {
-        getWindow().webContents.reload();
+        win.webContents.reload();
       },
     }, {
       label: 'Toggle Full Screen',
       accelerator: 'F11',
       click() {
-        getWindow().setFullScreen(!getWindow().isFullScreen());
+        win.setFullScreen(!win.isFullScreen());
       },
     }, {
       label: 'Toggle Developer Tools',
       accelerator: 'Alt+Ctrl+I',
       click() {
-        getWindow().toggleDevTools();
+        win.toggleDevTools();
       },
     }, {
       label: 'Toggle React DevTools',
       accelerator: 'Alt+Ctrl+J',
       click() {
-        getWindow().webContents.send('toggle-devtools', 'react');
+        win.webContents.send('toggle-devtools', 'react');
       },
     }, {
       label: 'Toggle Redux DevTools',
       accelerator: 'Alt+Ctrl+K',
       click() {
-        getWindow().webContents.send('toggle-devtools', 'redux');
+        win.webContents.send('toggle-devtools', 'redux');
       },
     }],
   }, {

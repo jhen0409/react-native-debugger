@@ -1,6 +1,6 @@
 import { app, shell } from 'electron';
 
-export default getWindow =>
+export default win =>
   [{
     label: 'React Native Debugger',
     submenu: [{
@@ -73,31 +73,31 @@ export default getWindow =>
       label: 'Reload',
       accelerator: 'Command+R',
       click() {
-        getWindow().webContents.reload();
+        win.webContents.reload();
       },
     }, {
       label: 'Toggle Full Screen',
       accelerator: 'Ctrl+Command+F',
       click() {
-        getWindow().setFullScreen(!getWindow().isFullScreen());
+        win.setFullScreen(!win.isFullScreen());
       },
     }, {
       label: 'Toggle Developer Tools',
       accelerator: 'Alt+Command+I',
       click() {
-        getWindow().toggleDevTools();
+        win.toggleDevTools();
       },
     }, {
       label: 'Toggle React DevTools',
       accelerator: 'Alt+Command+J',
       click() {
-        getWindow().webContents.send('toggle-devtools', 'react');
+        win.webContents.send('toggle-devtools', 'react');
       },
     }, {
       label: 'Toggle Redux DevTools',
       accelerator: 'Alt+Command+K',
       click() {
-        getWindow().webContents.send('toggle-devtools', 'redux');
+        win.webContents.send('toggle-devtools', 'redux');
       },
     }],
   }, {

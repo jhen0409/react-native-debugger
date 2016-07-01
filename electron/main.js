@@ -3,18 +3,13 @@ import { startListeningHandleURL } from './url-handle';
 import { createContextMenu, createMenuTemplate } from './menu';
 
 let mainWindow = null;
-const getMainWindow = () => mainWindow;
 
-createContextMenu(getMainWindow);
-startListeningHandleURL(getMainWindow);
+startListeningHandleURL(() => mainWindow);
 
-const menuTemplate = createMenuTemplate(getMainWindow);
-
-app.on('window-all-closed', () => {
-  app.quit();
-});
-
+app.on('window-all-closed', () => app.quit());
 app.on('ready', () => {
+  createContextMenu(mainWindow);
+
   mainWindow = new BrowserWindow({ width: 1024, height: 750, show: false });
   mainWindow.loadURL(`file://${__dirname}/app.html`);
   mainWindow.openDevTools();
@@ -27,7 +22,7 @@ app.on('ready', () => {
     mainWindow = null;
   });
 
-  Menu.setApplicationMenu(
-    Menu.buildFromTemplate(menuTemplate)
-  );
+  const menuTemplate = createMenuTemplate(mainWindow);
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
 });

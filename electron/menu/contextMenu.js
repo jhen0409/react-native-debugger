@@ -1,16 +1,16 @@
 import contextMenu from 'electron-context-menu';
 
-export default getWindow =>
+export default win =>
   contextMenu({
     prepend: () => [{
       label: 'Toggle React DevTools',
       click() {
-        getWindow().webContents.send('toggle-devtools', 'react');
+        win.webContents.send('toggle-devtools', 'react');
       },
     }, {
       label: 'Toggle Redux DevTools',
       click() {
-        getWindow().webContents.send('toggle-devtools', 'redux');
+        win.webContents.send('toggle-devtools', 'redux');
       },
     }],
   });
