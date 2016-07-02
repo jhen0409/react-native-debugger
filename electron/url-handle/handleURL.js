@@ -28,16 +28,19 @@ const listenOpenURL = getWindow =>
 
 const createHandleURLServer = getWindow =>
   net.createServer(socket => {
-    let data;
     socket.setEncoding('utf-8');
-    socket.on('data', chunk => { data += chunk; });
-    socket.on('end', () => {
+    socket.on('data', data => {
       try {
         const obj = JSON.parse(data);
         if (typeof obj.path === 'string') {
           handleURL(getWindow(), obj.path);
         }
-      } catch (e) {} // eslint-disable-line
+        socket.write('success');
+      } catch (e) {
+        socket.write('fail');
+      } finally {
+        socket.end();
+      }
     });
   }).listen(0, 'localhost').on('listening', function () {
     const { port } = this.address();

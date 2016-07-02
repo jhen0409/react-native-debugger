@@ -10,16 +10,33 @@ ${replaceFuncFlag}
       __port = require('fs').readFileSync(__port_file, 'utf-8');
     } catch (e) {
       log && console.log(
-        '\nCannot find React Native Debugger port file $HOME/.rndebugger_port\n' +
+        '\n[RNDebugger] Cannot find port file $HOME/.rndebugger_port\n' +
         'Maybe you\'re not open React Native Debugger?\n' +
         '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n'
       );
       return cb(false);
     }
     var __c = require('net').createConnection({ port: __port }, () => {
+      let pass = false;
+      let callbacked = false;
+      __c.setEncoding('utf-8');
       __c.write(JSON.stringify({ path: __rnd_path }));
-      __c.end();
-      cb(true);
+      __c.on('data', data => {
+        pass = data === 'success';
+        __c.end();
+      });
+      __c.on('end', () => {
+        log && console.log(
+          '\n[RNDebugger] Try to set server port failed.\n'
+        );
+        cb(pass);
+      });
+      setTimeout(() => {
+        log && console.log(
+          '\n[RNDebugger] Cannot connect to port ' + __port + '.\n'
+        );
+        __c.end();
+      }, 1000);
     });
   }
   if (process.platform === 'darwin' && !skipRNDebugger) {
@@ -27,14 +44,16 @@ ${replaceFuncFlag}
     __rndebuggerIsOpening = true;
     opn(__rnd_path, { wait: false }, err => {
       if (err) {
-        console.log(
-          '\nCannot open React Native Debugger, maybe not install?\n' +
-          '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
-          'Or it\'s never started. (Not registered URI Scheme)\n'
-        );
-        __connectToRND(false, pass =>
+        __connectToRND(false, pass => {
+          if (!pass) {
+            console.log(
+              '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
+              '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
+              'Or it\'s never started. (Not registered URI Scheme)\n'
+            );
+          }
           !pass && ${keyFunc}(port, true)
-        );
+        });
       }
       __rndebuggerIsOpening = false;
     });
