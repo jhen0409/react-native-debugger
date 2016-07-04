@@ -3,6 +3,7 @@ import baseConfig from './base.babel';
 
 export default {
   ...baseConfig,
+  entry: './app/index',
   output: {
     ...baseConfig.output,
     publicPath: 'js/',
@@ -14,4 +15,5 @@ export default {
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
     }),
   ],
+  target: 'electron-renderer',
 };

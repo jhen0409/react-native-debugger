@@ -2,7 +2,10 @@
 
 > Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager
 
-__*NOTE*__ This patch is only work with `react-native-debugger@^0.2.0`.
+__[macOS]__ If you opened the app before (registered URI scheme), you can use this patch open the app automatically.  
+__[Linux / Windows]__ Currently it cannot open the app automatically, it just send `set-debugger-loc` request, so you need open the app yourself.
+
+__*NOTE*__ This patch is only work with React Native Debugger ^0.2.0. __Linux / Windows__ version work with ^0.3.0.
 
 ## Screenshot
 

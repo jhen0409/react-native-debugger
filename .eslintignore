@@ -1,0 +1,4 @@
+*.tmpl.js
+dist/
+release/
+node_modules/

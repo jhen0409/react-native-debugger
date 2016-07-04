@@ -6,9 +6,9 @@ const port = 3000;
 
 export default {
   ...baseConfig,
+  entry: './app/index',
   devtool: 'eval-cheap-module-source-map',
   devServer: { host, port },
-  entry: './app/index',
   output: {
     ...baseConfig.output,
     publicPath: `http://localhost:${port}/js/`,
@@ -20,4 +20,5 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
+  target: 'electron-renderer',
 };
