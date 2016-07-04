@@ -5,8 +5,11 @@
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
   "scripts": {
-    "release": "./scripts/release.sh",
-    "pack": "./scripts/package.sh",
+    "prepack": "./scripts/prepackage.sh",
+    "pack-macos": "./scripts/package-macos.sh",
+    "pack-linux": "./scripts/package-linux.sh",
+    "pack-windows": "./scripts/package-windows.sh",
+    "pack": "npm run pack-macos && npm run pack-linux && npm run pack-windows",
     "start": "electron dist/",
     "build:devtools": "webpack --config webpack/devtools.backend.babel.js --progress --profile --colors",
     "build:main": "webpack --config webpack/main.prod.babel.js --progress --profile --colors",
