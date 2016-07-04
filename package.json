@@ -18,8 +18,8 @@
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
     "dev:electron": "NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
-    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require co-mocha ./test/e2e/app.spec.js",
-    "fetch-rdt": "./scripts/fetch-react-devtools.sh", 
+    "test": "mocha --compilers js:babel-core/register --require co-mocha ./test/e2e/app.spec.js",
+    "fetch-rdt": "./scripts/fetch-react-devtools.sh",
     "postinstall": "webpack test/e2e/fixture/app.js test/e2e/fixture/app.bundle.js"
   },
   "repository": {
