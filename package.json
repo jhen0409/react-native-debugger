@@ -18,6 +18,7 @@
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
     "dev:electron": "NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
+    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require co-mocha ./test/e2e/app.spec.js",
     "postinstall": "./scripts/postinstall.sh"
   },
   "repository": {
@@ -34,6 +35,7 @@
     "babel-preset-es2015-node6": "^0.2.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "co-mocha": "^1.1.2",
     "devtron": "^1.2.0",
     "electron-debug": "^1.0.0",
     "electron-packager": "^7.0.2",
@@ -43,7 +45,10 @@
     "eslint-plugin-import": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^1.2.2",
     "eslint-plugin-react": "^5.1.1",
+    "expect": "^1.20.2",
+    "mocha": "^2.5.3",
     "raw-loader": "^0.5.1",
+    "spectron": "^3.2.4",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "worker-loader": "^0.7.0"
