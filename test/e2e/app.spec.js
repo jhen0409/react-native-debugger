@@ -1,6 +1,10 @@
+import fs from 'fs';
+import path from 'path';
+import net from 'net';
+import { Server as WebSocketServer } from 'ws';
+import expect from 'expect';
 import electronPath from 'electron-prebuilt';
 import { Application } from 'spectron';
-import expect from 'expect';
 import { delay } from '../utils/e2e.js';
 
 describe('Application launch', function spec() {
@@ -35,29 +39,71 @@ describe('Application launch', function spec() {
     await client.windowByIndex(1);
   });
 
-  describe('should render all DevTools successful', () => {
-    it('should contain Inspector monitor\'s component on Redux DevTools', async () => {
-      const { client } = this.app;
+  it('should contain Inspector monitor\'s component on Redux DevTools', async () => {
+    const { client } = this.app;
 
-      const val = await client.element('//div[contains(@class, "inspector--jss-")]')
-        .getText();
-      expect(val).toExist();
+    const val = await client.element('//div[contains(@class, "inspector--jss-")]')
+      .getText();
+    expect(val).toExist();
+  });
+
+  it('should contain an empty actions list on Redux DevTools', async () => {
+    const { client } = this.app;
+
+    const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+      .getText();
+    expect(val).toBe('');
+  });
+
+  it('should show waiting message on React DevTools', async () => {
+    const { client } = this.app;
+    const exist = await client.isExisting(
+      '//h2[text()="Waiting for a connection from React Native"]'
+    );
+    expect(exist).toBe(true);
+  });
+
+  const getURLFromConnection = server =>
+    new Promise(resolve => {
+      server.on('connection', socket => {
+        resolve(socket.upgradeReq.url);
+        server.close();
+      });
     });
 
-    it('should contain an empty actions list on Redux DevTools', async () => {
-      const { client } = this.app;
+  it('should connect to fake RN server', async () => {
+    const server = new WebSocketServer({ port: 8081 });
 
-      const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
-        .getText();
-      expect(val).toBe('');
-    });
+    const url = await getURLFromConnection(server);
+    expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
+  });
 
-    it('should show waiting message on React DevTools', async () => {
-      const { client } = this.app;
-      const exist = await client.isExisting(
-        '//h2[text()="Waiting for a connection from React Native"]'
-      );
-      expect(exist).toBe(true);
+  it('should connect to fake RN server (port 8087) with send set-debugger-loc after', async () => {
+    const port = 8087;
+    const server = new WebSocketServer({ port });
+
+    const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${port}`;
+
+    const homeEnv = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
+    const portFile = path.join(process.env[homeEnv], '.rndebugger_port');
+    const rndPort = fs.readFileSync(portFile, 'utf-8');
+
+    const sendSuccess = await new Promise(resolve => {
+      const socket = net.createConnection({ port: rndPort }, () => {
+        let pass;
+        socket.setEncoding('utf-8');
+        socket.write(JSON.stringify({ path: rndPath }));
+        socket.on('data', data => {
+          pass = data === 'success';
+          socket.end();
+        });
+        socket.on('end', () => resolve(pass));
+        setTimeout(() => socket.end(), 1000);
+      });
     });
+    expect(sendSuccess).toBe(true);
+
+    const url = await getURLFromConnection(server);
+    expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
   });
 });
