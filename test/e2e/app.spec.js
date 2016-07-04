@@ -14,6 +14,9 @@ describe('Application launch', function spec() {
     this.app = new Application({
       path: electronPath,
       args: ['dist'],
+      env: {
+        REACT_ONLY_FOR_LOCAL: 1,
+      },
     });
     return this.app.start();
   });
@@ -63,6 +66,7 @@ describe('Application launch', function spec() {
     expect(exist).toBe(true);
   });
 
+  const customRNServerPort = 8087;
   const getURLFromConnection = server =>
     new Promise(resolve => {
       server.on('connection', socket => {
@@ -79,11 +83,9 @@ describe('Application launch', function spec() {
   });
 
   it('should connect to fake RN server (port 8087) with send set-debugger-loc after', async () => {
-    const port = 8087;
-    const server = new WebSocketServer({ port });
+    const server = new WebSocketServer({ port: customRNServerPort });
 
-    const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${port}`;
-
+    const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${customRNServerPort}`;
     const homeEnv = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
     const portFile = path.join(process.env[homeEnv], '.rndebugger_port');
     const rndPort = fs.readFileSync(portFile, 'utf-8');
@@ -105,5 +107,40 @@ describe('Application launch', function spec() {
 
     const url = await getURLFromConnection(server);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
+  });
+
+  it('should have @@INIT action on Redux DevTools with import fake script after', async () => {
+    const server = new WebSocketServer({ port: customRNServerPort });
+
+    await new Promise(resolve => {
+      server.on('connection', socket => {
+        socket.on('message', message => {
+          const data = JSON.parse(message);
+          switch (data.replyID) {
+            case 'createJSRuntime':
+              socket.send(JSON.stringify({
+                id: 'sendFakeScript',
+                method: 'executeApplicationScript',
+                inject: [],
+                url: '../../test/e2e/fixture/app.bundle.js',
+              }));
+              break;
+            case 'sendFakeScript':
+              return resolve();
+            default:
+              console.error(`Unexperted id ${data.replyID}`);
+          }
+        });
+        socket.send(JSON.stringify({
+          id: 'createJSRuntime',
+          method: 'prepareJSRuntime',
+        }));
+      });
+    });
+
+    const { client } = this.app;
+    const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+      .getText();
+    expect(val).toMatch(/@@INIT/);
   });
 });

@@ -5,3 +5,4 @@ dist/**
 !dist/package.json
 !dist/app.html
 release/
+*.bundle.js

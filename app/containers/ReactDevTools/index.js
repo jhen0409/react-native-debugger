@@ -132,7 +132,11 @@ export default class ReactDevTools extends Component {
    * When the Electron app is running in "server mode"
    */
   startServer = (port = 8097) => {
-    const server = new ws.Server({ port });
+    const options = { port };
+    if (process.env.REACT_ONLY_FOR_LOCAL) {
+      options.host = 'localhost';
+    }
+    const server = new ws.Server(options);
     let connected = false;
     server.on('connection', socket => {
       if (connected) {
