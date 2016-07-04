@@ -19,6 +19,8 @@ export default {
     }],
   },
   externals: [
-    'ws',
+    // just avoid warning.
+    // this is not really used from ws. (it used fallback)
+    'bufferutil', 'utf-8-validate',
   ],
 };

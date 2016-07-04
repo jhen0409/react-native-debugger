@@ -11,7 +11,6 @@
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "dependencies": {
-    "source-map-support": "^0.4.1",
-    "ws": "^1.1.0"
+    "source-map-support": "^0.4.1"
   }
 }
