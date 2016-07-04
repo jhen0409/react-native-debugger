@@ -78,6 +78,7 @@ These two option is same with [remote-redux-devtools#parameters](https://github.
 # Just clone it
 $ git clone https://github.com/jhen0409/react-native-debugger
 $ cd react-native-debugger && npm install
+$ npm run fetch-rdt # Fetch react-devtools source
 
 # Run on development
 $ npm run dev:webpack

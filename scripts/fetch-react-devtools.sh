@@ -6,6 +6,3 @@ cd ../..
 rm -rf node_modules/react-devtools/.*
 
 npm run build:devtools
-
-# Test fixture
-webpack test/e2e/fixture/app.js test/e2e/fixture/app.bundle.js

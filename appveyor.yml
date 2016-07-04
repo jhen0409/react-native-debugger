@@ -12,10 +12,13 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - npm install -g npm
   - npm install
+  - rm -rf node_modules\react-devtools
+  - git clone https://github.com/jhen0409/react-devtools.git node_modules\react-devtools
 
 test_script:
   - node --version
   - npm --version
+  - npm run build:devtools
   - npm run lint
   - npm run build
   - npm test
