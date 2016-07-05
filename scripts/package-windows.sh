@@ -10,7 +10,6 @@ electron-packager dist/ \
   --prune \
   --out release \
   --app-version $npm_package_version \
-  --app-copyright "This software is included following project: https://github.com/facebook/react-devtools, https://github.com/zalmoxisus/remotedev-app" \
   --icon electron/logo.ico
 
 cd release/React\ Native\ Debugger-win32-ia32

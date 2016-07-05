@@ -1,7 +1,9 @@
+import { resolve } from 'path';
 import { app, BrowserWindow, Menu } from 'electron';
 import { startListeningHandleURL } from './url-handle';
 import { createContextMenu, createMenuTemplate } from './menu';
 
+const iconPath = resolve(__dirname, 'logo.png');
 let mainWindow = null;
 
 startListeningHandleURL(() => mainWindow);
@@ -11,7 +13,7 @@ app.on('ready', () => {
   createContextMenu(mainWindow);
 
   mainWindow = new BrowserWindow({ width: 1024, height: 750, show: false });
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(`file://${resolve(__dirname)}/app.html`);
   mainWindow.openDevTools();
 
   mainWindow.webContents.on('did-finish-load', () => {
@@ -22,7 +24,7 @@ app.on('ready', () => {
     mainWindow = null;
   });
 
-  const menuTemplate = createMenuTemplate(mainWindow);
+  const menuTemplate = createMenuTemplate(mainWindow, iconPath);
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 });

@@ -10,7 +10,7 @@
     "pack-linux": "npm run prepack && ./scripts/package-linux.sh",
     "pack-windows": "npm run prepack && ./scripts/package-windows.sh",
     "pack": "./scripts/package-macos.sh && ./scripts/package-linux.sh && ./scripts/package-windows.sh",
-    "start": "electron dist/",
+    "start": "cd dist && electron ./",
     "build:devtools": "webpack --config webpack/devtools.backend.babel.js --progress --profile --colors",
     "build:main": "webpack --config webpack/main.prod.babel.js --progress --profile --colors",
     "build:renderer": "webpack --config webpack/renderer.prod.babel.js --progress --profile --colors",

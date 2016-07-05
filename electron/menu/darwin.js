@@ -1,11 +1,14 @@
 import { app, shell } from 'electron';
+import { showAboutDialog } from '.';
 
-export default win =>
+export default (win, iconPath) =>
   [{
     label: 'React Native Debugger',
     submenu: [{
-      label: 'About React Native Debugger',
-      selector: 'orderFrontStandardAboutPanel:',
+      label: 'About',
+      click() {
+        showAboutDialog(iconPath);
+      },
     }, {
       type: 'separator',
     }, {

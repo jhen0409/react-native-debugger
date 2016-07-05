@@ -9,9 +9,7 @@ electron-packager dist/ \
   --asar \
   --prune \
   --out release \
-  --app-version $npm_package_version \
-  --app-copyright "This software is included following project: https://github.com/facebook/react-devtools, https://github.com/zalmoxisus/remotedev-app" \
-  --icon electron/logo.png
+  --app-version $npm_package_version
 
 cd release/React\ Native\ Debugger-linux-x64
 zip -ryq9 ../rn-debugger-linux-x64.zip *

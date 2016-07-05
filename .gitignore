@@ -4,5 +4,6 @@ npm-debug.log
 dist/**
 !dist/package.json
 !dist/app.html
+!dist/logo.png
 release/
 *.bundle.js
