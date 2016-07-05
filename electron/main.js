@@ -10,9 +10,9 @@ startListeningHandleURL(() => mainWindow);
 
 app.on('window-all-closed', () => app.quit());
 app.on('ready', () => {
+  mainWindow = new BrowserWindow({ width: 1024, height: 750, show: false });
   createContextMenu(mainWindow);
 
-  mainWindow = new BrowserWindow({ width: 1024, height: 750, show: false });
   mainWindow.loadURL(`file://${resolve(__dirname)}/app.html`);
   mainWindow.openDevTools();
 
