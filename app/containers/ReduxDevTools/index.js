@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { stringify } from 'jsan';
 
+import { getFromStorage, saveToStorage } from 'remotedev-app/lib/utils/localStorage';
+import enhance from 'remotedev-app/lib/hoc';
 import styles from 'remotedev-app/lib/styles';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
@@ -14,8 +16,7 @@ import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
 import createDevStore from 'remotedev-app/lib/store/createDevStore';
 import updateState from 'remotedev-app/lib/store/updateState';
 
-styles.monitors.width = '100%'; // NOTE: just change MonitorSelector style. lol
-
+@enhance
 @connect(
   state => ({
     debugger: state.debugger,
@@ -33,7 +34,7 @@ export default class ReduxDevTools extends Component {
   };
 
   state = {
-    monitor: localStorage.getItem('monitor') || 'InspectorMonitor',
+    monitor: getFromStorage('select-monitor') || 'InspectorMonitor',
     dispatcherIsOpen: false,
     sliderIsOpen: false,
     store: createDevStore((type, action, id, bareState) => {
@@ -83,9 +84,8 @@ export default class ReduxDevTools extends Component {
     }
   };
 
-  handleSelectMonitor = e => {
-    this.setState({ monitor: e.target.value });
-    localStorage.setItem('monitor', e.target.value);
+  handleSelectMonitor = (event, index, value) => {
+    this.setState({ monitor: saveToStorage('select-monitor', value) });
   };
 
   toggleDispatcher = () => {
