@@ -57,10 +57,12 @@ export default class ReactDevTools extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.debugger.worker && this.props.debugger.worker !== nextProps.debugger.worker) {
+    const { prevWorker } = this.props.debugger;
+    const { worker } = nextProps.debugger;
+    if (worker && prevWorker !== worker) {
       if (this.server) this.server.close();
       this.server = this.startServer();
-    } else if (!nextProps.debugger.worker) {
+    } else if (!worker) {
       if (this.server) this.server.close();
     }
   }

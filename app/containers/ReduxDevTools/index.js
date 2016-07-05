@@ -64,8 +64,12 @@ export default class ReduxDevTools extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.debugger.worker && this.props.debugger.worker !== nextProps.debugger.worker) {
-      nextProps.debugger.worker.addEventListener('message', this.workerOnMessage);
+    const { prevWorker } = this.props.debugger;
+    const { worker } = nextProps.debugger;
+    if (worker && prevWorker !== worker) {
+      worker.addEventListener('message', this.workerOnMessage);
+    } else if (!worker) {
+      this.state.store.clear();
     }
   }
 
