@@ -1,8 +1,8 @@
-import path from 'path';
+import { join } from 'path';
 
 export default {
   output: {
-    path: path.join(__dirname, '../dist/js'),
+    path: join(__dirname, '../dist/js'),
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
@@ -15,7 +15,11 @@ export default {
     loaders: [{
       test: /\.js$/,
       loader: 'babel',
-      include: [/app/, /electron/, /node_modules\/react-devtools/],
+      include: [
+        join(__dirname, '../app'),
+        join(__dirname, '../electron'),
+        join(__dirname, '../node_modules/react-devtools'),
+      ],
     }],
   },
   externals: [

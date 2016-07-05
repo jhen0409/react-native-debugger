@@ -1,0 +1,25 @@
+build: off
+
+os: unstable
+
+environment:
+  nodejs_version: '6'
+
+cache:
+  - node_modules -> package.json
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm install -g npm
+  - npm install
+  - rm -rf node_modules\react-devtools
+  - git clone https://github.com/jhen0409/react-devtools.git node_modules\react-devtools
+  - rm node_modules\react-devtools\.babelrc
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build:devtools
+  - npm run lint
+  - npm run build
+  - npm test
