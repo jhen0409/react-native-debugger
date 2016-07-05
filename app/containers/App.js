@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
 
 import Debugger from './Debugger';
@@ -14,12 +15,6 @@ const styles = {
     width: '100%',
     heigth: '100%',
   },
-  wrapReduxPanel: {
-    position: 'fixed',
-    display: 'flex',
-    width: '100%',
-    height: '60%',
-  },
   reduxPanel: {
     display: 'flex',
     width: '100%',
@@ -31,7 +26,6 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
-    height: '40%',
     left: 0,
     bottom: 0,
     backgroundColor: 'white',
@@ -71,6 +65,7 @@ export default class App extends Component {
   state = {
     react: true,
     redux: true,
+    size: 0.6,
   };
 
   componentDidMount() {
@@ -83,25 +78,43 @@ export default class App extends Component {
     ipcRenderer.removeAllListeners('toggle-devtools');
   }
 
+  onReudxDockResize = size => {
+    if (!this.state.redux || !this.state.react) return;
+    if (size < 0.2) return this.setState({ size: 0.2 });
+    if (size > 0.8) return this.setState({ size: 0.8 });
+    this.setState({ size });
+  };
+
   renderReduxDevTools() {
-    const wrapStyle = {
-      ...styles.wrapReduxPanel,
-      ...(this.state.react ? {} : { height: '100%' }),
-      ...(this.state.redux ? {} : { display: 'none' }),
-    };
+    let size = this.state.size;
+    if (!this.state.redux) {
+      size = 0;
+    } else if (!this.state.react) {
+      size = 1;
+    }
     return (
-      <div style={wrapStyle}>
+      <Dock
+        isVisible
+        zIndex={500}
+        position="top"
+        size={size}
+        dimMode="none"
+        onSizeChange={this.onReudxDockResize}
+      >
         <ReduxDevTools style={styles.reduxPanel} />
-      </div>
+      </Dock>
     );
   }
 
   renderReactDevTools() {
-    const wrapStyle = {
-      ...styles.wrapReactPanel,
-      ...(this.state.redux ? {} : { height: '100%' }),
-      ...(this.state.react ? {} : { display: 'none' }),
-    };
+    const wrapStyle = Object.assign({}, styles.wrapReactPanel);
+    if (!this.state.react) {
+      wrapStyle.display = 'none';
+    } else {
+      wrapStyle.height = this.state.redux ?
+        `${(1 - this.state.size) * 100}%` :
+        '100%';
+    }
     return (
       <div style={wrapStyle}>
         <ReactDevTools />
