@@ -58,14 +58,14 @@
     "electron-context-menu": "^0.2.1",
     "jsan": "^3.1.2",
     "node-watch": "^0.3.5",
-    "react": "^0.14.8",
-    "react-addons-create-fragment": "^0.14.8",
+    "react": "^15.2.0",
+    "react-addons-create-fragment": "^15.2.0",
     "react-dock": "^0.2.3",
-    "react-dom": "^0.14.8",
+    "react-dom": "^15.2.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools-instrument": "^1.0.1",
-    "remotedev-app": "^0.3.8",
+    "remotedev-app": "^0.5.0-alpha-2",
     "ws": "^1.1.0"
   }
 }
