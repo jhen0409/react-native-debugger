@@ -21,7 +21,7 @@ module.exports = (argv, cb) => {
   // Revert injection
   if (argv.revert) {
     const passMiddleware = injectDevToolsMiddleware.revert(modulePath);
-    const msg = 'Revert injection of React Native Debugger from React Native packager';
+    const msg = 'Revert injection of React Native Debugger from React Native server';
     log(
       passMiddleware,
       msg + (!passMiddleware ? `, the file '${injectDevToolsMiddleware.path}' not found.` : '.')

@@ -11,7 +11,7 @@ ${replaceFuncFlag}
     } catch (e) {
       log && console.log(
         '\n[RNDebugger] Cannot find port file $HOME/.rndebugger_port\n' +
-        'Maybe you\'re not open React Native Debugger?\n' +
+        'Maybe you\'re not open React Native Debugger@^0.3?\n' +
         '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n'
       );
       return cb(false);
@@ -27,7 +27,7 @@ ${replaceFuncFlag}
       });
       __c.on('end', () => {
         log && console.log(
-          '\n[RNDebugger] Try to set server port failed.\n'
+          '\n[RNDebugger] Try to set port of React Native server failed.\n'
         );
         cb(pass);
       });
