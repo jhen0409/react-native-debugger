@@ -27,6 +27,12 @@ describe('Application launch', function spec() {
     }
   });
 
+  it(`should be v${process.env.npm_package_version}`, async () => {
+    const { electron } = this.app;
+    const version = await electron.remote.app.getVersion();
+    expect(version).toBe(process.env.npm_package_version);
+  });
+
   it('should show an initial window', async () => {
     const { client, browserWindow } = this.app;
 
