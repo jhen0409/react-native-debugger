@@ -9,6 +9,9 @@ cache:
   - node_modules -> package.json
 
 install:
+  - ps: Start-FileDownload 'http://www.ocamlpro.com/pub/ocpwin/flow-builds/archives/flow-0.19.1-windows-20151211.zip'
+  - 7z x flow-0.19.1-windows-20151211.zip
+  - set PATH=%cd%\flow-0.19.1-windows-20151211;%PATH%
   - ps: Install-Product node $env:nodejs_version
   - npm install -g npm
   - npm install
