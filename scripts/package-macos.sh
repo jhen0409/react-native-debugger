@@ -14,6 +14,5 @@ electron-packager dist/ \
   --app-version $npm_package_version \
   --icon electron/logo.icns
 
-rm release/rn-debugger-darwin-x64.dmg
-npm i -g appdmg
-appdmg appdmg.json release/rn-debugger-darwin-x64.dmg
+cd release/React\ Native\ Debugger-darwin-x64
+zip -ryq9 ../rn-debugger-darwin-x64.zip React\ Native\ Debugger.app
