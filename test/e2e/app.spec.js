@@ -31,7 +31,7 @@ describe('Application launch', function spec() {
     const { client, browserWindow } = this.app;
 
     await client.waitUntilWindowLoaded();
-    await delay(500);
+    await delay(2000);
     const title = await browserWindow.getTitle();
     expect(title).toBe(
       'React Native Debugger - Disconnected from proxy. ' +
