@@ -41,7 +41,7 @@ If you're debugging with a real device, you need to edit [node_modules/react-nat
 
 You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `debugger.worker.js` in `Threads`.
 
-__*NOTE*__ Currently only for RN for iOS (see [this](https://github.com/facebook/react-native/blob/master/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L218)) / RND for macOS.
+__*NOTE*__ Currently only for RN for iOS / RND for macOS.
 
 ## Redux DevTools
 
@@ -88,8 +88,15 @@ $ npm run dev:electron
 $ npm run build
 $ npm start
 
-# Pack (Currently will pack macOS version only)
-$ npm run pack
+# Run test
+$ npm run lint
+$ npm test
+
+# Pack
+$ npm run pack-macos
+$ npm run pack-linux
+$ npm run pack-windows
+$ npm run pack # all
 ```
 
 ## Credits
