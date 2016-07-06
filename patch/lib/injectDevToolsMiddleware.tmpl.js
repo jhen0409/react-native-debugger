@@ -39,9 +39,9 @@ ${replaceFuncFlag}
       }, 1000);
     });
   }
+  if (__rndebuggerIsOpening) return;
+  __rndebuggerIsOpening = true;
   if (process.platform === 'darwin' && !skipRNDebugger) {
-    if (__rndebuggerIsOpening) return;
-    __rndebuggerIsOpening = true;
     opn(__rnd_path, { wait: false }, err => {
       if (err) {
         __connectToRND(false, pass => {
@@ -61,9 +61,11 @@ ${replaceFuncFlag}
     });
     return;
   } else if (!skipRNDebugger) {
-    __connectToRND(true, pass =>
-      !pass && ${keyFunc}(port, true)
-    );
+    __connectToRND(true, pass => {
+      __rndebuggerIsOpening = false;
+      !pass && ${keyFunc}(port, true);
+    });
     return;
   }
+  __rndebuggerIsOpening = false;
 ${endFlag}
