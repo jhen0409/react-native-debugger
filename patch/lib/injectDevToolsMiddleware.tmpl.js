@@ -52,10 +52,12 @@ ${replaceFuncFlag}
               'Or it\'s never started. (Not registered URI Scheme)\n'
             );
           }
-          !pass && ${keyFunc}(port, true)
+          __rndebuggerIsOpening = false;
+          !pass && ${keyFunc}(port, true);
         });
+      } else {
+        __rndebuggerIsOpening = false;
       }
-      __rndebuggerIsOpening = false;
     });
     return;
   } else if (!skipRNDebugger) {
