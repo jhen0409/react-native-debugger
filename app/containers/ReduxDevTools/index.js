@@ -12,6 +12,7 @@ import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherBut
 import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
 import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
 import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
+import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 
 import createDevStore from 'remotedev-app/lib/store/createDevStore';
 import updateState from 'remotedev-app/lib/store/updateState';
@@ -55,6 +56,16 @@ export default class ReduxDevTools extends Component {
   getChildContext = () => ({
     store: null,
   });
+
+  componentWillMount() {
+    this.testComponent = (
+      <TestGenerator
+        useCodemirror
+        testTemplates={getFromStorage('test-templates')}
+        selectedTemplate={getFromStorage('test-templates-sel')}
+      />
+    );
+  }
 
   componentDidMount() {
     const { worker } = this.props.debugger;
@@ -115,6 +126,7 @@ export default class ReduxDevTools extends Component {
           key={`${monitor}Monitor`}
           monitor={monitor}
           store={store}
+          testComponent={this.testComponent}
         />
         {
           this.state.sliderIsOpen &&

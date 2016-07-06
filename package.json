@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "test": "mocha --compilers js:babel-core/register --require co-mocha ./test/e2e/app.spec.js",
     "fetch-rdt": "./scripts/fetch-react-devtools.sh",
-    "postinstall": "webpack test/e2e/fixture/app.js test/e2e/fixture/app.bundle.js"
+    "postinstall": "node scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
