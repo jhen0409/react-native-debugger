@@ -1,4 +1,4 @@
-# React Native Debugger [![Build Status](https://travis-ci.org/jhen0409/react-native-debugger.svg?branch=master)](https://travis-ci.org/jhen0409/react-native-debugger)
+# React Native Debugger [![Build Status](https://travis-ci.org/jhen0409/react-native-debugger.svg?branch=master)](https://travis-ci.org/jhen0409/react-native-debugger) [![Build status Windows](https://ci.appveyor.com/api/projects/status/botj7b3pj4hth6tn?svg=true)](https://ci.appveyor.com/project/jhen0409/react-native-debugger)
 
 > The standalone app for React Native Debugger, with React DevTools / Redux DevTools
 
@@ -8,9 +8,9 @@
 
 ## Installation
 
-The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page, currently only for macOS.
+The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page.
 
-You can use [Homebrew Cask](http://caskroom.io) to install:
+For __macOS__, you can use [Homebrew Cask](http://caskroom.io) to install:
 
 ```bash
 $ brew update && brew cask install react-native-debugger
@@ -41,7 +41,7 @@ If you're debugging with a real device, you need to edit [node_modules/react-nat
 
 You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `debugger.worker.js` in `Threads`.
 
-__*NOTE*__ Currently only for RN for iOS / RND for macOS.
+__*NOTE*__ Currently only for RN for iOS / RND for macOS. (Android is coming on react-native v0.30, you can reference to [this example](https://github.com/jhen0409/react-native-boilerplate/blob/master/index.android.js) for old versions)
 
 ## Redux DevTools
 
