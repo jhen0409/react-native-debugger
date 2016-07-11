@@ -121,6 +121,13 @@ export default class ReactDevTools extends Component {
           listeners.push(fn);
         },
         send(data) {
+          if (
+            data.events &&
+            data.events.length &&
+            data.events[0].evt === 'hideHighlight'
+          ) {
+            return;
+          }
           socket.send(JSON.stringify(data));
         },
         disconnect() {
