@@ -97,7 +97,7 @@ function start() {
 
   // Because the worker message not have notify the remote JS runtime
   // we need to regularly update JS runtime
-  setInterval(function(){}, 100); // eslint-disable-line
+  setInterval(function(){}, 222); // eslint-disable-line
 }
 
 function monitorReducer(state = {}, action) {
