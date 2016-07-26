@@ -33,7 +33,7 @@ This is reference to [react-native](https://github.com/facebook/react-native/blo
 
 ## React DevTools
 
-This is reference to [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a websocket server (port: 8097) to waiting react-native connection.
+This is reference to [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a websocket server (port: `8097`) to waiting react-native connection.
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Devtools/setupDevtools.js#L17).
 
@@ -41,7 +41,17 @@ If you're debugging with a real device, you need to edit [node_modules/react-nat
 
 You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `debugger.worker.js` in `Threads`.
 
-__*NOTE*__ Currently only for RN for iOS / RND for macOS. (Android is coming on react-native v0.30, you can reference to [this example](https://github.com/jhen0409/react-native-boilerplate/blob/master/index.android.js) for old versions)
+#### Note for Android
+
+DevTools is working directly on React Native ^0.30, for old versions, you need to add the following code:
+
+```js
+if (__DEV__) {
+  require('react-native/Libraries/Devtools/setupDevtools')();
+}
+```
+
+And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.31 is not need `adb reverse`)
 
 ## Redux DevTools
 
