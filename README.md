@@ -69,7 +69,11 @@ export default initialState => {
     applyMiddleware(thunk),
     global.reduxNativeDevTools ? global.reduxNativeDevTools(/*options*/) : nope => nope,
   );
-  return createStore(reducer, initialState, enhancer);
+  const store = createStore(reducer, initialState, enhancer);
+  if (global.reduxNativeDevTools) {
+    global.reduxNativeDevTools.updateStore(store);
+  }
+  return store;
 }
 ```
 

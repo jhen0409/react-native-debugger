@@ -142,7 +142,7 @@ function handleChange(state, liftedState, maxAge) {
   }
 }
 
-export default (options = {}) => {
+const reduxNatieDevToools = (options = {}) => {
   init(options);
   const maxAge = options.maxAge || 30;
   return next => (reducer, initialState) => {
@@ -157,3 +157,9 @@ export default (options = {}) => {
     return store;
   };
 };
+
+reduxNatieDevToools.updateStore = newStore => {
+  store = newStore;
+};
+
+export default reduxNatieDevToools;
