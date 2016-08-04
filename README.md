@@ -69,7 +69,11 @@ export default initialState => {
     applyMiddleware(thunk),
     global.reduxNativeDevTools ? global.reduxNativeDevTools(/*options*/) : nope => nope,
   );
-  return createStore(reducer, initialState, enhancer);
+  const store = createStore(reducer, initialState, enhancer);
+  if (global.reduxNativeDevTools) {
+    global.reduxNativeDevTools.updateStore(store);
+  }
+  return store;
 }
 ```
 
@@ -79,8 +83,9 @@ Name                  | Description
 -------------         | -------------
 `filters`             | *Map of arrays* named `whitelist` or `blacklist` to filter action types.
 `maxAge`              | *Number* of maximum allowed actions to be stored on the history tree, the oldest actions are removed once maxAge is reached. Default is `30`.
+`actionCreators`      | *Array* or *Object* of action creators to dispatch remotely. See the [example](https://github.com/zalmoxisus/remote-redux-devtools/commit/b54652930dfd4e057991df8471c343957fd7bff7).
 
-These two option is same with [remote-redux-devtools#parameters](https://github.com/zalmoxisus/remote-redux-devtools#parameters).
+These options are same with [remote-redux-devtools#parameters](https://github.com/zalmoxisus/remote-redux-devtools#parameters).
 
 ## Development
 

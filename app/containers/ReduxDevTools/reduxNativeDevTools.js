@@ -2,6 +2,7 @@
 
 import { stringify, parse } from 'jsan';
 import instrument from 'redux-devtools-instrument';
+import { evalAction, getActionsArray } from 'remotedev-utils';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
@@ -16,10 +17,14 @@ let lastAction;
 let filters;
 let isExcess;
 let started;
+let actionCreators;
 
 function init(options) {
   if (options.filters) {
     filters = options.filters;
+  }
+  if (options.actionCreators) {
+    actionCreators = () => getActionsArray(options.actionCreators);
   }
 }
 
@@ -51,19 +56,34 @@ function filterStagedActions(state) {
   };
 }
 
+function getLiftedState() {
+  return filterStagedActions(store.liftedStore.getState());
+}
+
 function relay(type, state, action, nextActionId) {
   if (filters && isFiltered(action)) return;
   const message = {
     type,
     id: 'redux-native-devtools',
   };
-  if (state) message.payload = stringify(state);
-  if (action) {
+  if (state) message.payload = type === 'ERROR' ? state : stringify(state);
+  if (type === 'ACTION') {
     message.action = stringify(action);
     message.isExcess = isExcess;
+    message.nextActionId = nextActionId;
+  } else if (action) {
+    message.action = stringify(action);
   }
-  if (nextActionId) message.nextActionId = stringify(nextActionId);
   postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
+}
+
+function dispatchRemotely(action) {
+  try {
+    const result = evalAction(action, actionCreators);
+    store.dispatch(result);
+  } catch (e) {
+    relay('ERROR', e.message);
+  }
 }
 
 function handleMessages(message) {
@@ -73,11 +93,11 @@ function handleMessages(message) {
       nextLiftedState: parse(message.state),
     });
   }
-  if (message.type === 'UPDATE' || message.type === 'IMPORT' || message.type === 'START') {
-    relay('STATE', filterStagedActions(store.liftedStore.getState()));
+  if (message.type === 'UPDATE' || message.type === 'IMPORT') {
+    relay('STATE', getLiftedState());
   }
   if (message.type === 'ACTION') {
-    store.dispatch(message.action);
+    dispatchRemotely(message.action);
   } else if (message.type === 'DISPATCH') {
     store.liftedStore.dispatch(message.action);
   }
@@ -93,11 +113,12 @@ function start() {
       handleMessages(content);
     }
   });
-  relay('STATE', store.liftedStore.getState());
+  if (typeof actionCreators === 'function') actionCreators = actionCreators();
+  relay('STATE', getLiftedState(), actionCreators);
 
   // Because the worker message not have notify the remote JS runtime
   // we need to regularly update JS runtime
-  setInterval(function(){}, 222); // eslint-disable-line
+  global.__RND_INTERVAL__ = setInterval(function(){}, 222); // eslint-disable-line
 }
 
 function monitorReducer(state = {}, action) {
@@ -121,7 +142,7 @@ function handleChange(state, liftedState, maxAge) {
   }
 }
 
-export default (options = {}) => {
+const reduxNatieDevToools = (options = {}) => {
   init(options);
   const maxAge = options.maxAge || 30;
   return next => (reducer, initialState) => {
@@ -136,3 +157,9 @@ export default (options = {}) => {
     return store;
   };
 };
+
+reduxNatieDevToools.updateStore = newStore => {
+  store = newStore;
+};
+
+export default reduxNatieDevToools;
