@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import { stringify } from 'jsan';
-
 import { getFromStorage, saveToStorage } from 'remotedev-app/lib/utils/localStorage';
 import enhance from 'remotedev-app/lib/hoc';
 import styles from 'remotedev-app/lib/styles';
 import DevTools from 'remotedev-app/lib/containers/DevTools';
+import Dispatcher from 'remotedev-app/lib/containers/monitors/Dispatcher';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
 import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
@@ -14,8 +13,7 @@ import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
 import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
 import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 
-import createDevStore from 'remotedev-app/lib/store/createDevStore';
-import updateState from 'remotedev-app/lib/store/updateState';
+import { createRemoteStore, setWorker, importState, exportState } from './createRemoteStore';
 
 @enhance
 @connect(
@@ -34,23 +32,16 @@ export default class ReduxDevTools extends Component {
     store: PropTypes.object,
   };
 
-  state = {
-    monitor: getFromStorage('select-monitor') || 'InspectorMonitor',
-    dispatcherIsOpen: false,
-    sliderIsOpen: false,
-    store: createDevStore((type, action, id, bareState) => {
-      let state = bareState;
-      if (type !== 'IMPORT') state = stringify(state);
-
-      const { worker } = this.props.debugger;
-      if (worker) {
-        worker.postMessage({
-          method: 'emitReduxMessage',
-          content: { type, action, state },
-        });
-      }
-    }),
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      monitor: getFromStorage('select-monitor') || 'InspectorMonitor',
+      dispatcherIsOpen: false,
+      sliderIsOpen: false,
+      store: createRemoteStore(this.handleError),
+      error: null,
+    };
+  }
 
   // Avoid createDevTools get store of this app
   getChildContext = () => ({
@@ -58,45 +49,42 @@ export default class ReduxDevTools extends Component {
   });
 
   componentWillMount() {
-    this.testComponent = (
+    this.testComponent = props => (
       <TestGenerator
         useCodemirror
         testTemplates={getFromStorage('test-templates')}
         selectedTemplate={getFromStorage('test-templates-sel')}
+        {...props}
       />
     );
   }
 
   componentDidMount() {
     const { worker } = this.props.debugger;
-    if (worker) {
-      worker.addEventListener('message', this.workerOnMessage);
-    }
+    setWorker(worker);
   }
 
   componentWillReceiveProps(nextProps) {
     const { prevWorker } = this.props.debugger;
     const { worker } = nextProps.debugger;
     if (worker && prevWorker !== worker) {
-      worker.addEventListener('message', this.workerOnMessage);
+      setWorker(worker);
     } else if (!worker) {
       this.state.store.clear();
+      setWorker(null);
     }
   }
 
   componentWillUnmount() {
-    const { worker } = this.props.debugger;
-    if (worker) {
-      worker.removeEventListener('message', this.workerOnMessage);
-    }
+    setWorker(null);
   }
 
-  workerOnMessage = message => {
-    const { data } = message;
-    if (data && data.__IS_REDUX_NATIVE_MESSAGE__) {
-      const { content: msg } = data;
-      updateState(this.state.store, msg);
-    }
+  handleError = error => {
+    this.setState({ error });
+  };
+
+  clearError = () => {
+    this.setState({ error: null });
   };
 
   handleSelectMonitor = (event, index, value) => {
@@ -112,8 +100,7 @@ export default class ReduxDevTools extends Component {
   };
 
   render() {
-    const { store } = this.state;
-    const { monitor } = this.state;
+    const { store, error, monitor } = this.state;
     return (
       <div style={{ ...styles.container, ...this.props.style }}>
         <div style={styles.buttonBar}>
@@ -140,10 +127,10 @@ export default class ReduxDevTools extends Component {
         }
         {
           this.state.dispatcherIsOpen &&
-            <DevTools
-              monitor="DispatchMonitor"
+            <Dispatcher
               store={store}
-              dispatchFn={store.dispatch}
+              error={error}
+              clearError={this.clearError}
               key={'Dispatch'}
             />
         }
@@ -156,8 +143,8 @@ export default class ReduxDevTools extends Component {
             isOpen={this.state.sliderIsOpen}
             onClick={this.toggleSlider}
           />
-          <ImportButton importState={store.liftedStore.importState} />
-          <ExportButton exportState={store.liftedStore.getState} />
+          <ImportButton importState={importState} />
+          <ExportButton exportState={exportState} />
         </div>
       </div>
     );
