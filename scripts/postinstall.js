@@ -16,11 +16,3 @@ try {
     fs.readFileSync(from)
   );
 });
-
-const webpack = require('webpack');
-webpack({
-  entry: './test/e2e/fixture/app',
-  output: {
-    filename: './test/e2e/fixture/app.bundle.js',
-  },
-}).run(() => {});

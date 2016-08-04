@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import net from 'net';
+import webpack from 'webpack';
 import { Server as WebSocketServer } from 'ws';
 import expect from 'expect';
 import electronPath from 'electron-prebuilt';
@@ -10,7 +11,15 @@ import { delay } from '../utils/e2e.js';
 describe('Application launch', function spec() {
   this.timeout(10000);
 
-  before(() => {
+  before(async () => {
+    await new Promise(resolve =>
+      webpack({
+        entry: './test/e2e/fixture/app',
+        output: {
+          filename: './test/e2e/fixture/app.bundle.js',
+        },
+      }).run(resolve)
+    );
     this.app = new Application({
       path: electronPath,
       args: ['dist'],
