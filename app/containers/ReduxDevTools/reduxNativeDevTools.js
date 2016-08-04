@@ -72,7 +72,7 @@ function relay(type, state, action, nextActionId) {
     message.isExcess = isExcess;
     message.nextActionId = nextActionId;
   } else if (action) {
-    message.action = action;
+    message.action = stringify(action);
   }
   postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
 }
