@@ -66,6 +66,7 @@
     "redux": "^3.5.2",
     "redux-devtools-instrument": "^1.0.1",
     "remotedev-app": "^0.6.0",
+    "remotedev-utils": "0.0.3",
     "ws": "^1.1.0"
   }
 }
