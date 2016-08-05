@@ -11,6 +11,7 @@ electron-packager dist/ \
   --out release \
   --protocol-name "React Native Debugger" \
   --protocol "rndebugger" \
+  --version $(npm info electron version)
   --app-version $npm_package_version \
   --icon electron/logo.icns
 
