@@ -4,7 +4,7 @@ import net from 'net';
 import webpack from 'webpack';
 import { Server as WebSocketServer } from 'ws';
 import expect from 'expect';
-import electronPath from 'electron-prebuilt';
+import electronPath from 'electron';
 import { Application } from 'spectron';
 import { delay } from '../utils/e2e.js';
 
