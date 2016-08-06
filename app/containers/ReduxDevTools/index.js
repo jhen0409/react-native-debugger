@@ -41,23 +41,22 @@ export default class ReduxDevTools extends Component {
       store: createRemoteStore(this.handleError),
       error: null,
     };
+    this.testComponent = p => (
+      <TestGenerator
+        name="default"
+        store={this.state.store}
+        useCodemirror
+        testTemplates={getFromStorage('test-templates')}
+        selectedTemplate={getFromStorage('test-templates-sel')}
+        {...p}
+      />
+    );
   }
 
   // Avoid createDevTools get store of this app
   getChildContext = () => ({
     store: null,
   });
-
-  componentWillMount() {
-    this.testComponent = props => (
-      <TestGenerator
-        useCodemirror
-        testTemplates={getFromStorage('test-templates')}
-        selectedTemplate={getFromStorage('test-templates-sel')}
-        {...props}
-      />
-    );
-  }
 
   componentDidMount() {
     const { worker } = this.props.debugger;
