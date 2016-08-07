@@ -17,6 +17,7 @@ npm --version
 npm install
 rm -rf node_modules/react-devtools
 npm run fetch-rdt
+cd patch && npm install && cd ..
 npm run lint
 npm run build
 npm test

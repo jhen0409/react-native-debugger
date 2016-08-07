@@ -18,6 +18,7 @@ install:
   - npm install
   - git clone https://github.com/jhen0409/react-devtools.git node_modules\react-devtools
   - rm node_modules\react-devtools\.babelrc
+  - cd patch && npm install && cd ..
 
 test_script:
   - node --version
