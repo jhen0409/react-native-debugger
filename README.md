@@ -1,4 +1,6 @@
-# React Native Debugger [![Build Status](https://travis-ci.org/jhen0409/react-native-debugger.svg?branch=master)](https://travis-ci.org/jhen0409/react-native-debugger) [![Build status Windows](https://ci.appveyor.com/api/projects/status/botj7b3pj4hth6tn?svg=true)](https://ci.appveyor.com/project/jhen0409/react-native-debugger) [![Dependency Status](https://david-dm.org/jhen0409/react-native-debugger.svg)](https://david-dm.org/jhen0409/react-native-debugger) [![devDependency Status](https://david-dm.org/jhen0409/react-native-debugger/dev-status.svg)](https://david-dm.org/jhen0409/react-native-debugger?type=dev)
+# React Native Debugger
+
+[![Build Status](https://travis-ci.org/jhen0409/react-native-debugger.svg?branch=master)](https://travis-ci.org/jhen0409/react-native-debugger) [![Build status Windows](https://ci.appveyor.com/api/projects/status/botj7b3pj4hth6tn?svg=true)](https://ci.appveyor.com/project/jhen0409/react-native-debugger) [![Dependency Status](https://david-dm.org/jhen0409/react-native-debugger.svg)](https://david-dm.org/jhen0409/react-native-debugger) [![devDependency Status](https://david-dm.org/jhen0409/react-native-debugger/dev-status.svg)](https://david-dm.org/jhen0409/react-native-debugger?type=dev)
 
 > The standalone app for React Native Debugger, with React DevTools / Redux DevTools
 
@@ -18,7 +20,7 @@ $ brew update && brew cask install react-native-debugger
 
 ## Usage
 
-Make sure all `http://localhost:8081/debugger-ui` pages is closed, open the app to wait state, and reload JS with your simulator/device.
+You must make sure all `http://localhost:8081/debugger-ui` pages are closed, then open the app to wait state, and reload JS with your simulator / device.
 
 Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react-native-debugger/blob/master/patch), it will replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager.
 
@@ -29,11 +31,11 @@ Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react
 
 ## Debugger
 
-This is reference to [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
+The Debugger part is reference from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
 
 ## React DevTools
 
-This is reference to [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a websocket server (port: `8097`) to waiting react-native connection.
+The React Developer Tools part from [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a WebSocket server (port: `8097`) to waiting React Native connection.
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Devtools/setupDevtools.js#L17).
 
@@ -43,7 +45,7 @@ You need to switch worker thread for console, open `Sources` tab on Chrome DevTo
 
 #### Note for Android
 
-DevTools is working directly on React Native ^0.30, for old versions, you need to add the following code:
+The React DevTools are working directly on React Native ^0.30, for old versions, you need to add the following code:
 
 ```js
 if (__DEV__) {
@@ -55,7 +57,7 @@ And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.3
 
 ## Redux DevTools
 
-We used [remotedev-app](https://github.com/zalmoxisus/remotedev-app) as a Redux DevTools UI, and not need `remotedev-server`. That was great because it included multiple monitors and there are many powerful features.
+We used [remotedev-app](https://github.com/zalmoxisus/remotedev-app) as a Redux DevTools UI, but it not need `remotedev-server`. That was great because it included multiple monitors and there are many powerful features.
 
 The debugger will inject `reduxNativeDevTools` enhancer to global, you can add it to store:
 
@@ -70,6 +72,8 @@ export default initialState => {
     global.reduxNativeDevTools ? global.reduxNativeDevTools(/*options*/) : nope => nope,
   );
   const store = createStore(reducer, initialState, enhancer);
+  // If you have other enhancers & middlewares
+  // update the store after creating / changing to allow devTools to use them
   if (global.reduxNativeDevTools) {
     global.reduxNativeDevTools.updateStore(store);
   }
