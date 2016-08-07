@@ -1,14 +1,12 @@
+import { ipcRenderer } from 'electron';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
-
 import Debugger from './Debugger';
 import ReduxDevTools from './ReduxDevTools';
 import ReactDevTools from './ReactDevTools';
-
-import { ipcRenderer } from 'electron';
 
 const styles = {
   container: {

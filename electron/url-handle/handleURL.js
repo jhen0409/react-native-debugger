@@ -42,7 +42,7 @@ const createHandleURLServer = getWindow =>
         socket.end();
       }
     });
-  }).listen(0, 'localhost').on('listening', function () {
+  }).listen(0, 'localhost').on('listening', function server() {
     const { port } = this.address();
     portfile.write(port);
     portfile.watchExists(port);

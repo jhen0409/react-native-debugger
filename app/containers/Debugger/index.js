@@ -10,12 +10,12 @@
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debugger.html
 
 import WebSocket from 'ws';
-import Worker from 'worker?name=debugger.worker.js!./debuggerWorker'; // eslint-disable-line
+import { ipcRenderer } from 'electron';
 import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Worker from 'worker?name=debugger.worker.js!./debuggerWorker'; // eslint-disable-line
 import * as debuggerAtions from '../../actions/debugger';
-import { ipcRenderer } from 'electron';
 
 const INITIAL_MESSAGE = 'Waiting, press ⌘R in simulator to reload and connect.';
 
@@ -80,7 +80,7 @@ export default class Debugger extends Component {
       // This worker will run the application javascript code,
       // making sure that it's run in an environment without a global
       // document, to make it consistent with the JSC executor environment.
-      const worker = new Worker;
+      const worker = new Worker();
       worker.addEventListener('message', onmessage);
 
       this.props.actions.debugger.setDebuggerWorker(worker);

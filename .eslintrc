@@ -5,13 +5,17 @@
     "browser": true,
     "node": true
   },
+  "settings": {
+    "import/core-modules": ["electron"]
+  },
   "rules": {
     "react/prefer-stateless-function": 0,
     "consistent-return": 0,
     "strict": 0,
     "no-console": 0,
     "no-param-reassign": ["error", { "props": false }],
-    "import/no-unresolved": [2, { "ignore": ["electron"] }],
-    "no-underscore-dangle": ["error", { "allow": ["__IS_REDUX_NATIVE_MESSAGE__"] }]
+    "no-underscore-dangle": ["error", { "allow": ["__IS_REDUX_NATIVE_MESSAGE__"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/prefer-default-export": 0
   }
 }

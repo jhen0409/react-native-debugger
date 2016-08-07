@@ -1,1 +1,1 @@
-require('electron-debug')();
+require('electron-debug')(); // eslint-disable-line

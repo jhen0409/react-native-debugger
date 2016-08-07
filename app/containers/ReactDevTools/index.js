@@ -9,17 +9,17 @@
 
 // Edit from https://github.com/facebook/react-devtools/blob/master/shells/electron/src/ui.js
 
+/* eslint import/no-extraneous-dependencies: 0 import/no-unresolved: 0 */
+
 import ws from 'ws';
+import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react';
 
 import installGlobalHook from 'react-devtools/backend/installGlobalHook';
-installGlobalHook(window);
-
-import React, { Component, PropTypes } from 'react';
 import Panel from 'react-devtools/frontend/Panel';
-
 import backendScript from 'raw!react-devtools/shells/electron/build/backend.js';
 
-import { connect } from 'react-redux';
+installGlobalHook(window);
 
 const getNewKey = () => `react-panel${Math.random().toString().substr(2, 10)}`;
 

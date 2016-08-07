@@ -45,6 +45,7 @@ export default class ReduxDevTools extends Component {
       <TestGenerator
         name="default"
         store={this.state.store}
+        isRedux={this.state.store.isRedux()}
         useCodemirror
         testTemplates={getFromStorage('test-templates')}
         selectedTemplate={getFromStorage('test-templates-sel')}

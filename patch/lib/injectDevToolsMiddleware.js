@@ -2,11 +2,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const es6Template = require('es6-template');
+
 const template = fs.readFileSync(
   path.join(__dirname, 'injectDevToolsMiddleware.tmpl.js'),
   'utf-8'
 );
-const es6Template = require('es6-template');
 
 const name = 'react-native-debugger-patch';
 const startFlag = `/* ${name} start */`;

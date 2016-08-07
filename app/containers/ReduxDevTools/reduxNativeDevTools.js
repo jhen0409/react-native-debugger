@@ -31,8 +31,8 @@ function init(options) {
 function isFiltered(action) {
   if (!action || !action.action || !action.action.type) return false;
   return (
-    filters.whitelist && !action.action.type.match(filters.whitelist.join('|')) ||
-    filters.blacklist && action.action.type.match(filters.blacklist.join('|'))
+    (filters.whitelist && !action.action.type.match(filters.whitelist.join('|'))) ||
+    (filters.blacklist && action.action.type.match(filters.blacklist.join('|')))
   );
 }
 
