@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const argv = require('minimist')(process.argv.slice(2), {
-  boolean: ['inject', 'revert', 'desktop'],
+  boolean: ['inject', 'revert', 'desktop', 'macos'],
   default: {
     inject: true,
   },

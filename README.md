@@ -27,7 +27,7 @@ Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react
 #### Platform support
 
 * [React Native](https://github.com/facebook/react-native) >= 0.21.0
-* [React Native Desktop](https://github.com/ptmt/react-native-desktop) >= 0.8.7
+* [React Native for macOS](https://github.com/ptmt/react-native-desktop) (formerly react-native-desktop) >= 0.8.7
 
 ## Debugger
 

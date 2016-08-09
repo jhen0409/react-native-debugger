@@ -1,10 +1,10 @@
+'use strict';
+
 const fs = require('fs');
 const cp = require('child_process');
 const path = require('path');
 const chalk = require('chalk');
 const injectDevToolsMiddleware = require('./injectDevToolsMiddleware');
-
-const name = 'react-native';
 
 const getModulePath = moduleName =>
   path.join(process.cwd(), 'node_modules', moduleName);
@@ -16,7 +16,18 @@ const log = (pass, msg) => {
 };
 
 module.exports = (argv, cb) => {
-  const modulePath = getModulePath(argv.desktop ? 'react-native-desktop' : name);
+  let modulePath;
+  if (argv.macos) {
+    modulePath = getModulePath('react-native-macos');
+  } else if (argv.desktop) {
+    // react-native-macos is renamed from react-native-desktop
+    modulePath = getModulePath('react-native-desktop');
+    if (!fs.existsSync(modulePath)) {
+      modulePath = getModulePath('react-native-macos');
+    }
+  } else {
+    modulePath = getModulePath('react-native');
+  }
 
   // Revert injection
   if (argv.revert) {

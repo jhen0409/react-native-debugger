@@ -38,7 +38,7 @@ The `./node_modules/react-native/local-cli/server/middleware/getDevToolsMiddlewa
 
 Name                  | Description
 -------------         | -------------
-`desktop`             | Use [react-native-desktop](https://github.com/ptmt/react-native-desktop) module name instead of react-native. Default is `false`
+`macos`             | Use [react-native-macos](https://github.com/ptmt/react-native-macos) module name instead of react-native. Default is `false`
 `revert`              | Revert rndebugger-open injection. Default is `false`
 
 You can also use following command instead of this patch:
