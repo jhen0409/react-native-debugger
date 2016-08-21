@@ -14,13 +14,13 @@
     "build:devtools": "webpack --config webpack/devtools.backend.babel.js --progress --profile --colors",
     "build:main": "webpack --config webpack/main.prod.babel.js --progress --profile --colors",
     "build:renderer": "webpack --config webpack/renderer.prod.babel.js --progress --profile --colors",
+    "prebuild": "node scripts/prebuild.js",
     "build": "npm run build:main && npm run build:renderer",
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
     "dev:electron": "NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js",
-    "fetch-rdt": "./scripts/fetch-react-devtools.sh",
-    "postinstall": "node scripts/postinstall.js"
+    "fetch-rdt": "./scripts/fetch-react-devtools.sh"
   },
   "repository": {
     "type": "git",
