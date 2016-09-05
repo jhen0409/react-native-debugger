@@ -18,7 +18,7 @@ First, install [React Native Debugger](https://github.com/jhen0409/react-native-
 In your React Native project:
 
 ```bash
-$ npm i --save-dev react-native-debugger-open
+$ npm i --save-dev react-native-debugger-open -g
 ```
 
 ## Usage
