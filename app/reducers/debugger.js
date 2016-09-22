@@ -1,9 +1,10 @@
 import { SET_DEBUGGER_STATUS, SET_DEBUGGER_WORKER } from '../actions/debugger';
 
+const refreshShortcut = process.platform === 'darwin' ? '⌘R' : 'Ctrl+R';
 const initialState = {
   worker: null,
   status: 'waiting',
-  statusMessage: 'Waiting, press ⌘R in simulator to reload and connect.',
+  statusMessage: `Waiting, press ${refreshShortcut} in simulator to reload and connect.`,
 };
 
 const actionsMap = {

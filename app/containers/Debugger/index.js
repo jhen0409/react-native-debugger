@@ -17,8 +17,6 @@ import { connect } from 'react-redux';
 import Worker from 'worker?name=debugger.worker.js!./debuggerWorker'; // eslint-disable-line
 import * as debuggerAtions from '../../actions/debugger';
 
-const INITIAL_MESSAGE = 'Waiting, press ⌘R in simulator to reload and connect.';
-
 function setStatusToTitle(status, message) {
   document.title = `React Native Debugger - ${message}`;
 }
@@ -94,19 +92,21 @@ export default class Debugger extends Component {
     };
 
     ws.onopen = () => {
-      this.props.actions.debugger.setDebuggerStatus(INITIAL_MESSAGE);
-      setStatusToTitle('waiting', INITIAL_MESSAGE);
+      const { statusMessage } = this.props.debugger;
+      this.props.actions.debugger.setDebuggerStatus(statusMessage);
+      setStatusToTitle('waiting', statusMessage);
     };
 
     ws.onmessage = message => {
       if (!message.data) {
         return;
       }
+      const { statusMessage } = this.props.debugger;
       const object = JSON.parse(message.data);
 
       if (object.$event === 'client-disconnected') {
         shutdownJSRuntime();
-        setStatusToTitle('waiting', INITIAL_MESSAGE);
+        setStatusToTitle('waiting', statusMessage);
         return;
       }
 
@@ -125,7 +125,7 @@ export default class Debugger extends Component {
         setStatusToTitle('connected', `Debugger session #${object.id} active.`);
       } else if (object.method === '$disconnected') {
         shutdownJSRuntime();
-        setStatusToTitle('waiting', INITIAL_MESSAGE);
+        setStatusToTitle('waiting', statusMessage);
       } else {
         // Otherwise, pass through to the worker.
         const { worker } = this.props.debugger;
