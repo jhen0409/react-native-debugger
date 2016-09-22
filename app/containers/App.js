@@ -1,9 +1,10 @@
 import { ipcRenderer } from 'electron';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
+import * as settingActions from '../actions/setting';
 import Debugger from './Debugger';
 import ReduxDevTools from './ReduxDevTools';
 import ReactDevTools from './ReactDevTools';
@@ -56,19 +57,25 @@ const styles = {
 @connect(
   state => ({
     debugger: state.debugger,
+    setting: state.setting,
   }),
-  dispatch => bindActionCreators(debuggerActions, dispatch)
+  dispatch => ({
+    actions: {
+      debugger: bindActionCreators(debuggerActions, dispatch),
+      setting: bindActionCreators(settingActions, dispatch),
+    },
+  })
 )
 export default class App extends Component {
-  state = {
-    react: true,
-    redux: true,
-    size: 0.6,
+  static propTypes = {
+    setting: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
     ipcRenderer.on('toggle-devtools', (e, name) => {
-      this.setState({ [name]: !this.state[name] });
+      const { setting } = this.props.actions;
+      setting.toggleDevTools(name);
     });
   }
 
@@ -77,17 +84,16 @@ export default class App extends Component {
   }
 
   onReudxDockResize = size => {
-    if (!this.state.redux || !this.state.react) return;
-    if (size < 0.2) return this.setState({ size: 0.2 });
-    if (size > 0.8) return this.setState({ size: 0.8 });
-    this.setState({ size });
+    const { setting } = this.props.actions;
+    setting.resizeDevTools(size);
   };
 
   renderReduxDevTools() {
-    let size = this.state.size;
-    if (!this.state.redux) {
+    const { redux, react } = this.props.setting;
+    let { size } = this.props.setting;
+    if (!redux) {
       size = 0;
-    } else if (!this.state.react) {
+    } else if (!react) {
       size = 1;
     }
     return (
@@ -106,11 +112,12 @@ export default class App extends Component {
 
   renderReactDevTools() {
     const wrapStyle = Object.assign({}, styles.wrapReactPanel);
-    if (!this.state.react) {
+    const { redux, react, size } = this.props.setting;
+    if (!react) {
       wrapStyle.display = 'none';
     } else {
-      wrapStyle.height = this.state.redux ?
-        `${(1 - this.state.size) * 100}%` :
+      wrapStyle.height = redux ?
+        `${(1 - size) * 100}%` :
         '100%';
     }
     return (
@@ -134,12 +141,13 @@ export default class App extends Component {
   }
 
   render() {
+    const { redux, react } = this.props.setting;
     return (
       <div style={styles.container}>
         <Debugger />
         {this.renderReduxDevTools()}
         {this.renderReactDevTools()}
-        {!this.state.react && !this.state.redux && this.renderBackground()}
+        {!react && !redux && this.renderBackground()}
       </div>
     );
   }

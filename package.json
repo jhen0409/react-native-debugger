@@ -64,6 +64,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools-instrument": "^1.0.1",
+    "redux-persist": "^4.0.0-alpha5",
     "remotedev-app": "0.7.0",
     "remotedev-utils": "0.0.5",
     "ws": "^1.1.1"
