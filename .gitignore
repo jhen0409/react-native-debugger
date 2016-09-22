@@ -7,3 +7,4 @@ dist/**
 !dist/logo.png
 release/
 *.bundle.js
+tmp/

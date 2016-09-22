@@ -22,7 +22,7 @@ describe('Application launch', function spec() {
     );
     this.app = new Application({
       path: electronPath,
-      args: ['dist'],
+      args: ['--user-dir=test/e2e/tmp', 'dist'],
       env: {
         REACT_ONLY_FOR_LOCAL: 1,
       },
