@@ -3,6 +3,7 @@
 import { stringify, parse } from 'jsan';
 import instrument from 'redux-devtools-instrument';
 import { evalAction, getActionsArray } from 'remotedev-utils';
+import { isFiltered, filterStagedActions, filterState } from 'remotedev-utils/lib/filters';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
@@ -18,6 +19,8 @@ let filters;
 let isExcess;
 let started;
 let actionCreators;
+let stateSanitizer;
+let actionSanitizer;
 
 function init(options) {
   if (options.filters) {
@@ -26,34 +29,8 @@ function init(options) {
   if (options.actionCreators) {
     actionCreators = () => getActionsArray(options.actionCreators);
   }
-}
-
-function isFiltered(action) {
-  if (!action || !action.action || !action.action.type) return false;
-  return (
-    (filters.whitelist && !action.action.type.match(filters.whitelist.join('|'))) ||
-    (filters.blacklist && action.action.type.match(filters.blacklist.join('|')))
-  );
-}
-
-function filterStagedActions(state) {
-  if (!filters) return state;
-
-  const filteredStagedActionIds = [];
-  const filteredComputedStates = [];
-
-  state.stagedActionIds.forEach((id, idx) => {
-    if (!isFiltered(state.actionsById[id])) {
-      filteredStagedActionIds.push(id);
-      filteredComputedStates.push(state.computedStates[idx]);
-    }
-  });
-
-  return {
-    ...state,
-    stagedActionIds: filteredStagedActionIds,
-    computedStates: filteredComputedStates,
-  };
+  stateSanitizer = options.stateSanitizer;
+  actionSanitizer = options.actionSanitizer;
 }
 
 function getLiftedState() {
@@ -66,9 +43,15 @@ function relay(type, state, action, nextActionId) {
     type,
     id: 'redux-native-devtools',
   };
-  if (state) message.payload = type === 'ERROR' ? state : stringify(state);
+  if (state) {
+    message.payload = type === 'ERROR' ?
+      state :
+      stringify(filterState(state, type, filters, stateSanitizer, actionSanitizer, nextActionId));
+  }
   if (type === 'ACTION') {
-    message.action = stringify(action);
+    message.action = stringify(
+      !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1)
+    );
     message.isExcess = isExcess;
     message.nextActionId = nextActionId;
   } else if (action) {
