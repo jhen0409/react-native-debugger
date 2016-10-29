@@ -37,10 +37,6 @@ The React Developer Tools part from [react-devtools/shells/electron](https://git
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Devtools/setupDevtools.js#L17).
 
-#### Get $r or global variables of react-native runtime in the console
-
-You need to switch worker thread for console, open `Sources` tab on Chrome DevTools, and select `debugger.worker.js` in `Threads`.
-
 #### Note for Android
 
 It can be working directly on React Native ^0.30, for old versions, you need to add the following code:
@@ -92,6 +88,12 @@ Name                  | Description
 `actionCreators`      | *Array* or *Object* of action creators to dispatch remotely. See the [example](https://github.com/zalmoxisus/remote-redux-devtools/commit/b54652930dfd4e057991df8471c343957fd7bff7).
 
 These options are same with [remote-redux-devtools#parameters](https://github.com/zalmoxisus/remote-redux-devtools#parameters).
+
+## Debugging tips
+
+#### Get $r of React DevTools or global variables of react-native runtime in the console
+
+You need to switch worker thread for console, open `Console` tab on Chrome DevTools, tap `top` context and change to `debugger.worker.js` context.
 
 ## Development
 
