@@ -79,13 +79,12 @@ export default class ReactDevTools extends Component {
   };
 
   onError = e => {
-    let message;
-    if (e.code === 'EADDRINUSE') {
-      message = 'Another instance of DevTools is running';
-    } else {
-      message = `Unknown error (${e.message})`;
-    }
-    this.setState({ connected: false, message });
+    this.setState({
+      connected: false,
+      message: e.code === 'EADDRINUSE' ?
+        'Another instance of DevTools is running' :
+        `Unknown error (${e.message})`,
+    });
   };
 
   reload = payload => {

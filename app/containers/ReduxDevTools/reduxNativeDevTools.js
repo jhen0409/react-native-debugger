@@ -98,10 +98,6 @@ function start() {
   });
   if (typeof actionCreators === 'function') actionCreators = actionCreators();
   relay('STATE', getLiftedState(), actionCreators);
-
-  // Because the worker message not have notify the remote JS runtime
-  // we need to regularly update JS runtime
-  global.__RND_INTERVAL__ = setInterval(function(){}, 222); // eslint-disable-line
 }
 
 function monitorReducer(state = {}, action) {
