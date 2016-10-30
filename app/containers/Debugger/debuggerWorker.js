@@ -14,9 +14,6 @@
 self.global = self;
 // redux store enhancer
 self.reduxNativeDevTools = require('../ReduxDevTools/reduxNativeDevTools').default;
-// Because the worker message not have notify the remote JS runtime
-// we need to regularly update JS runtime
-self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
@@ -25,6 +22,11 @@ const messageHandlers = {
     });
     importScripts(message.url);
     sendReply();
+    // Because the worker message not have notify the remote JS runtime (for Electron?)
+    // we need to regularly update JS runtime
+    if (!self.__RND_INTERVAL__) { // eslint-disable-line
+      self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
+    }
   },
 };
 
