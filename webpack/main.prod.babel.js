@@ -12,6 +12,7 @@ export default {
     filename: './main.js',
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.BannerPlugin(
       'require("source-map-support").install();',

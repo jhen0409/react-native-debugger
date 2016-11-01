@@ -15,11 +15,8 @@ import ws from 'ws';
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 
-import installGlobalHook from 'react-devtools/backend/installGlobalHook';
 import Panel from 'react-devtools/frontend/Panel';
 import backendScript from 'raw!react-devtools/shells/electron/build/backend.js';
-
-installGlobalHook(window);
 
 const getNewKey = () => `react-panel${Math.random().toString().substr(2, 10)}`;
 
