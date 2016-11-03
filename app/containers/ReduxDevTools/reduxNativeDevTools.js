@@ -147,12 +147,23 @@ export default function devToolsEnhancer(options = {}) {
   init(options);
 
   const defaultName = global.require ? global.require('Platform').OS : 'default';
-  const { name, maxAge = 30 } = options;
+  const {
+    name,
+    maxAge = 30,
+    shouldHotReload,
+    shouldRecordChanges,
+    shouldStartLocked,
+  } = options;
   const id = generateId();
 
   return next => (reducer, initialState) => {
     const store = configureStore(
-      next, monitorReducer, { maxAge }
+      next, monitorReducer, {
+        maxAge,
+        shouldHotReload,
+        shouldRecordChanges,
+        shouldStartLocked,
+      }
     )(reducer, initialState);
 
     instances[id] = {
