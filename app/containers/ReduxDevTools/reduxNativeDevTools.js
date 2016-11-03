@@ -70,7 +70,7 @@ function dispatchRemotely(action, id) {
     const { store } = instances[id];
     store.dispatch(result);
   } catch (e) {
-    relay('ERROR', e.message);
+    relay('ERROR', e.message, instances[id]);
   }
 }
 
