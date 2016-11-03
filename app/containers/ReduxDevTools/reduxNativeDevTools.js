@@ -154,7 +154,7 @@ export default function devToolsEnhancer(options = {}) {
     shouldRecordChanges,
     shouldStartLocked,
   } = options;
-  const id = generateId();
+  const id = generateId(options.instanceId);
 
   return next => (reducer, initialState) => {
     const store = configureStore(
@@ -180,9 +180,13 @@ export default function devToolsEnhancer(options = {}) {
   };
 }
 
-function preEnhancer(createStore) {
-  return (reducer, preloadedState, enhancer) => {
-    const store = createStore(reducer, preloadedState, enhancer);
+const preEnhancer = instanceId => next =>
+  (reducer, initialState, enhancer) => {
+    const store = next(reducer, initialState, enhancer);
+
+    if (instances[instanceId]) {
+      instances[instanceId].store = store;
+    }
     return {
       ...store,
       dispatch: (action) => (
@@ -190,9 +194,8 @@ function preEnhancer(createStore) {
       ),
     };
   };
-}
 
-devToolsEnhancer.updateStore = (newStore, name) => {
+devToolsEnhancer.updateStore = (newStore, instanceId) => {
   console.warn(
     '`reduxNativeDevTools.updateStore` is deprecated use `reduxNativeDevToolsCompose` instead:',
     'https://github.com/jhen0409/react-native-debugger#advanced-store-setup'
@@ -201,26 +204,27 @@ devToolsEnhancer.updateStore = (newStore, name) => {
   const keys = Object.keys(instances);
   if (!keys.length) return;
 
-  if (keys.length > 1 && !name) {
+  if (keys.length > 1 && !instanceId) {
     console.warn(
       'You have multiple stores,',
-      'please provide `name` argument (`updateStore(store, name)`)'
+      'please provide `instanceId` argument (`updateStore(store, instanceId)`)'
     );
+  }
+  if (instanceId) {
+    const instance = instances[instanceId];
+    if (!instance) return;
+    instance.store = newStore;
   } else {
     instances[keys[0]].store = newStore;
   }
-  if (name) {
-    const index = keys.findIndex(key => instances[key].name === name);
-    const instance = instances[keys[index]];
-    if (!instance) return;
-    instance.store = newStore;
-  }
 };
 
-const compose = (options) => (...funcs) => (...args) =>
-  [preEnhancer, ...funcs].reduceRight(
-    (composed, f) => f(composed), devToolsEnhancer(options)(...args)
+const compose = options => (...funcs) => (...args) => {
+  const instanceId = generateId(options.instanceId);
+  return [preEnhancer(instanceId), ...funcs].reduceRight(
+    (composed, f) => f(composed), devToolsEnhancer({ ...options, instanceId })(...args)
   );
+};
 
 export function composeWithDevTools(...funcs) {
   if (funcs.length === 0) {
