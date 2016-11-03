@@ -15,11 +15,7 @@ import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Worker from 'worker?name=debugger.worker.js!./debuggerWorker'; // eslint-disable-line
-import * as debuggerAtions from '../../actions/debugger';
-
-function setStatusToTitle(status, message) {
-  document.title = `React Native Debugger - ${message}`;
-}
+import * as debuggerActions from '../../actions/debugger';
 
 @connect(
   state => ({
@@ -27,7 +23,7 @@ function setStatusToTitle(status, message) {
   }),
   dispatch => ({
     actions: {
-      debugger: bindActionCreators(debuggerAtions, dispatch),
+      debugger: bindActionCreators(debuggerActions, dispatch),
     },
   })
 )
@@ -74,39 +70,41 @@ export default class Debugger extends Component {
       ws.send(JSON.stringify(message.data));
     };
 
-    const createJSRuntime = () => {
+    const createJSRuntime = id => {
       // This worker will run the application javascript code,
       // making sure that it's run in an environment without a global
       // document, to make it consistent with the JSC executor environment.
       const worker = new Worker();
       worker.addEventListener('message', onmessage);
 
-      this.props.actions.debugger.setDebuggerWorker(worker);
+      const { setDebuggerWorker } = this.props.actions.debugger;
+      setDebuggerWorker(
+        worker,
+        'connected',
+        `Debugger session #${id} active.`
+      );
     };
 
-    const shutdownJSRuntime = () => {
-      if (this.props.debugger.worker) {
-        this.props.debugger.worker.terminate();
-        this.props.actions.debugger.setDebuggerWorker(null);
+    const shutdownJSRuntime = (status, statusMessage) => {
+      const { worker } = this.props.debugger;
+      const { setDebuggerWorker } = this.props.actions.debugger;
+      if (worker) {
+        worker.terminate();
       }
+      setDebuggerWorker(null, status, statusMessage);
     };
 
-    ws.onopen = () => {
-      const { statusMessage } = this.props.debugger;
-      this.props.actions.debugger.setDebuggerStatus(statusMessage);
-      setStatusToTitle('waiting', statusMessage);
-    };
+    const { setDebuggerStatus } = this.props.actions.debugger;
 
+    ws.onopen = () => setDebuggerStatus();
     ws.onmessage = message => {
       if (!message.data) {
         return;
       }
-      const { statusMessage } = this.props.debugger;
       const object = JSON.parse(message.data);
 
       if (object.$event === 'client-disconnected') {
         shutdownJSRuntime();
-        setStatusToTitle('waiting', statusMessage);
         return;
       }
 
@@ -120,12 +118,10 @@ export default class Debugger extends Component {
         if (process.env.NODE_ENV !== 'development') {
           console.clear();
         }
-        createJSRuntime();
+        createJSRuntime(object.id);
         ws.send(JSON.stringify({ replyID: object.id }));
-        setStatusToTitle('connected', `Debugger session #${object.id} active.`);
       } else if (object.method === '$disconnected') {
         shutdownJSRuntime();
-        setStatusToTitle('waiting', statusMessage);
       } else {
         // Otherwise, pass through to the worker.
         const { worker } = this.props.debugger;
@@ -137,13 +133,11 @@ export default class Debugger extends Component {
 
     ws.onerror = () => {};
     ws.onclose = e => {
-      shutdownJSRuntime();
-      setStatusToTitle(
+      shutdownJSRuntime(
         'disconnected',
         'Disconnected from proxy. Attempting reconnection. Is node server running?'
       );
       if (e.reason) {
-        setStatusToTitle(e.reason);
         console.warn(e.reason);
       }
       setTimeout(() => {

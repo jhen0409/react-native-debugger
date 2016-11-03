@@ -7,16 +7,30 @@ const initialState = {
   statusMessage: `Waiting, press ${refreshShortcut} in simulator to reload and connect.`,
 };
 
+function setStatusToTitle(message) {
+  document.title = `React Native Debugger - ${message}`;
+}
+
 const actionsMap = {
-  [SET_DEBUGGER_STATUS]: (state, action) => ({
-    ...state,
-    status: action.status,
-    statusMessage: action.statusMessage,
-  }),
-  [SET_DEBUGGER_WORKER]: (state, action) => ({
-    ...state,
-    worker: action.worker,
-  }),
+  [SET_DEBUGGER_STATUS]: (state, action) => {
+    const newState = {
+      ...state,
+      status: action.status || initialState.status,
+      statusMessage: action.statusMessage || initialState.statusMessage,
+    };
+    setStatusToTitle(newState.statusMessage);
+    return newState;
+  },
+  [SET_DEBUGGER_WORKER]: (state, action) => {
+    const newState = {
+      ...state,
+      worker: action.worker,
+      status: action.status || initialState.status,
+      statusMessage: action.statusMessage || initialState.statusMessage,
+    };
+    setStatusToTitle(newState.statusMessage);
+    return newState;
+  },
 };
 
 export default (state = initialState, action) => {
