@@ -9,11 +9,8 @@ function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
 }
 
-const monitorActions = [ // To be skipped for relaying actions
-  '@@redux/INIT', 'TOGGLE_ACTION', 'SWEEP', 'IMPORT_STATE', 'SET_ACTIONS_ACTIVE',
-];
+const instances = { /* id, name, store */ };
 
-let store = {};
 let lastAction;
 let filters;
 let isExcess;
@@ -21,6 +18,12 @@ let started;
 let actionCreators;
 let stateSanitizer;
 let actionSanitizer;
+let locked;
+let paused;
+
+function generateId(id) {
+  return id || Math.random().toString(36).substr(2);
+}
 
 function init(options) {
   if (options.filters) {
@@ -33,15 +36,16 @@ function init(options) {
   actionSanitizer = options.actionSanitizer;
 }
 
-function getLiftedState() {
+function getLiftedState(store) {
   return filterStagedActions(store.liftedStore.getState());
 }
 
-function relay(type, state, action, nextActionId) {
+function relay(type, state, instance, action, nextActionId) {
   if (filters && isFiltered(action)) return;
   const message = {
     type,
-    id: 'redux-native-devtools',
+    id: instance.id,
+    name: instance.name,
   };
   if (state) {
     message.payload = type === 'ERROR' ?
@@ -60,9 +64,10 @@ function relay(type, state, action, nextActionId) {
   postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
 }
 
-function dispatchRemotely(action) {
+function dispatchRemotely(action, id) {
   try {
     const result = evalAction(action, actionCreators);
+    const { store } = instances[id];
     store.dispatch(result);
   } catch (e) {
     relay('ERROR', e.message);
@@ -70,23 +75,25 @@ function dispatchRemotely(action) {
 }
 
 function handleMessages(message) {
-  if (message.type === 'IMPORT') {
+  const { id, instanceId, type, action, state } = message;
+  const { store } = instances[id || instanceId];
+  if (type === 'IMPORT') {
     store.liftedStore.dispatch({
       type: 'IMPORT_STATE',
-      nextLiftedState: parse(message.state),
+      nextLiftedState: parse(state),
     });
   }
-  if (message.type === 'UPDATE' || message.type === 'IMPORT') {
-    relay('STATE', getLiftedState());
+  if (type === 'UPDATE' || type === 'IMPORT') {
+    relay('STATE', getLiftedState(store), instances[id]);
   }
-  if (message.type === 'ACTION') {
-    dispatchRemotely(message.action);
-  } else if (message.type === 'DISPATCH') {
-    store.liftedStore.dispatch(message.action);
+  if (type === 'ACTION') {
+    dispatchRemotely(action, id);
+  } else if (type === 'DISPATCH') {
+    store.liftedStore.dispatch(action);
   }
 }
 
-function start() {
+function start(instance) {
   if (started) return;
   started = true;
 
@@ -97,7 +104,15 @@ function start() {
     }
   });
   if (typeof actionCreators === 'function') actionCreators = actionCreators();
-  relay('STATE', getLiftedState(), actionCreators);
+  relay('STATE', getLiftedState(instance.store), instance, actionCreators);
+}
+
+function checkForReducerErrors(liftedState, instance) {
+  if (liftedState.computedStates[liftedState.currentStateIndex].error) {
+    relay('STATE', filterStagedActions(liftedState, filters), instance);
+    return true;
+  }
+  return false;
 }
 
 function monitorReducer(state = {}, action) {
@@ -105,40 +120,103 @@ function monitorReducer(state = {}, action) {
   return state;
 }
 
-function handleChange(state, liftedState, maxAge) {
-  const nextActionId = liftedState.nextActionId;
-  const liftedAction = liftedState.actionsById[nextActionId - 1];
-  const action = liftedAction.action;
+function handleChange(state, liftedState, maxAge, instance) {
+  if (checkForReducerErrors(liftedState, instance)) return;
 
-  if (action.type === '@@INIT') {
-    relay('INIT', state, { timestamp: Date.now() });
-  } else if (monitorActions.indexOf(lastAction) === -1) {
-    if (lastAction === 'JUMP_TO_STATE') return;
-    relay('ACTION', state, liftedAction, nextActionId);
+  if (lastAction === 'PERFORM_ACTION') {
+    const nextActionId = liftedState.nextActionId;
+    const liftedAction = liftedState.actionsById[nextActionId - 1];
+    relay('ACTION', state, instance, liftedAction, nextActionId);
     if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
   } else {
-    relay('STATE', filterStagedActions(liftedState));
+    if (lastAction === 'JUMP_TO_STATE') return;
+    if (lastAction === 'PAUSE_RECORDING') {
+      paused = liftedState.isPaused;
+    } else if (lastAction === 'LOCK_CHANGES') {
+      locked = liftedState.isLocked;
+    }
+    if (paused || locked) {
+      if (lastAction) lastAction = undefined;
+      else return;
+    }
+    relay('STATE', filterStagedActions(liftedState, filters), instance);
   }
 }
 
-const reduxNatieDevToools = (options = {}) => {
+export default function devToolsEnhancer(options = {}) {
   init(options);
-  const maxAge = options.maxAge || 30;
+
+  const defaultName = window.require('Platform').OS;
+  const { name, maxAge = 30 } = options;
+  const id = generateId();
+
   return next => (reducer, initialState) => {
-    store = configureStore(
+    const store = configureStore(
       next, monitorReducer, { maxAge }
     )(reducer, initialState);
 
-    start();
+    instances[id] = {
+      name: name || `${defaultName}-${id}`,
+      id,
+      store,
+    };
+
+    start(instances[id]);
     store.subscribe(() => {
-      handleChange(store.getState(), store.liftedStore.getState(), maxAge);
+      handleChange(store.getState(), store.liftedStore.getState(), maxAge, instances[id]);
     });
     return store;
   };
+}
+
+function preEnhancer(createStore) {
+  return (reducer, preloadedState, enhancer) => {
+    const store = createStore(reducer, preloadedState, enhancer);
+    return {
+      ...store,
+      dispatch: (action) => (
+        locked ? action : store.dispatch(action)
+      ),
+    };
+  };
+}
+
+devToolsEnhancer.updateStore = (newStore, name) => {
+  console.warn(
+    '`reduxNativeDevTools.updateStore` is deprecated use `reduxNativeDevToolsCompose` instead:',
+    'https://github.com/jhen0409/react-native-debugger#advanced-store-setup'
+  );
+
+  const keys = Object.keys(instances);
+  if (!keys.length) return;
+
+  if (keys.length > 1 && !name) {
+    console.warn(
+      'You have multiple stores,',
+      'please provide `name` argument (`updateStore(store, name)`)'
+    );
+  } else {
+    instances[keys[0]].store = newStore;
+  }
+  if (name) {
+    const index = keys.findIndex(key => instances[key].name === name);
+    const instance = instances[keys[index]];
+    if (!instance) return;
+    instance.store = newStore;
+  }
 };
 
-reduxNatieDevToools.updateStore = newStore => {
-  store = newStore;
-};
+const compose = (options) => (...funcs) => (...args) =>
+  [preEnhancer, ...funcs].reduceRight(
+    (composed, f) => f(composed), devToolsEnhancer(options)(...args)
+  );
 
-export default reduxNatieDevToools;
+export function composeWithDevTools(...funcs) {
+  if (funcs.length === 0) {
+    return devToolsEnhancer();
+  }
+  if (funcs.length === 1 && typeof funcs[0] === 'object') {
+    return compose(funcs[0]);
+  }
+  return compose({})(...funcs);
+}
