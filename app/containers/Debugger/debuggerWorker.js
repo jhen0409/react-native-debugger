@@ -14,6 +14,7 @@
 self.global = self;
 // redux store enhancer
 const devTools = require('../ReduxDevTools/reduxNativeDevTools');
+
 self.reduxNativeDevTools = devTools.default;
 self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
 

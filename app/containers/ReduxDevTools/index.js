@@ -18,6 +18,12 @@ import Instances from 'remotedev-app/lib/components/Instances';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 
+const sliderStyle = {
+  padding: '15px 5px',
+  backgroundColor: 'rgb(53, 59, 70)',
+  color: 'white',
+};
+
 @enhance
 @connect(
   state => {
@@ -52,6 +58,7 @@ export default class ReduxDevTools extends Component {
 
   render() {
     const { monitor, dispatcherIsOpen, sliderIsOpen, options, liftedState } = this.props;
+    options.lib = 'redux';  // for currently
     return (
       <div style={styles.container}>
         <div style={styles.buttonBar}>
@@ -71,7 +78,7 @@ export default class ReduxDevTools extends Component {
             liftedState={liftedState}
             dispatch={this.props.liftedDispatch}
             showActions={monitor === 'ChartMonitor'}
-            style={{ padding: '15px 5px' }}
+            style={sliderStyle}
             fillColor="rgb(120, 144, 156)"
           />
         }
