@@ -3,20 +3,20 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import SliderMonitor from 'remotedev-slider/lib/Slider';
-import { liftedDispatch } from 'remotedev-app/lib/actions';
 
 import enhance from 'remotedev-app/lib/hoc';
-
 import styles from 'remotedev-app/lib/styles';
+import { liftedDispatch } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 
 import DevTools from 'remotedev-app/lib/containers/DevTools';
 import Dispatcher from 'remotedev-app/lib/containers/monitors/Dispatcher';
-import ButtonBar from 'remotedev-app/lib/components/ButtonBar';
 import Notification from 'remotedev-app/lib/components/Notification';
 import Instances from 'remotedev-app/lib/components/Instances';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
+
+import ButtonBar from './ButtonBar';
 
 const sliderStyle = {
   padding: '15px 5px',
