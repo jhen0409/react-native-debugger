@@ -58,7 +58,6 @@ export default class ReduxDevTools extends Component {
 
   render() {
     const { monitor, dispatcherIsOpen, sliderIsOpen, options, liftedState } = this.props;
-    options.lib = 'redux';  // for currently
     return (
       <div style={styles.container}>
         <div style={styles.buttonBar}>

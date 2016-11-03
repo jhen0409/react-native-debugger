@@ -14,7 +14,7 @@ const instances = { /* id, name, store */ };
 let lastAction;
 let filters;
 let isExcess;
-let started;
+let listenerAdded;
 let actionCreators;
 let stateSanitizer;
 let actionSanitizer;
@@ -94,15 +94,16 @@ function handleMessages(message) {
 }
 
 function start(instance) {
-  if (started) return;
-  started = true;
+  if (!listenerAdded) {
+    self.addEventListener('message', message => {
+      const { method, content } = message.data;
+      if (method === 'emitReduxMessage') {
+        handleMessages(content);
+      }
+    });
+    listenerAdded = true;
+  }
 
-  self.addEventListener('message', message => {
-    const { method, content } = message.data;
-    if (method === 'emitReduxMessage') {
-      handleMessages(content);
-    }
-  });
   if (typeof actionCreators === 'function') actionCreators = actionCreators();
   relay('STATE', getLiftedState(instance.store), instance, actionCreators);
 }
