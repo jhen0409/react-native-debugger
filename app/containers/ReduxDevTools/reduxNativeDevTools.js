@@ -146,7 +146,7 @@ function handleChange(state, liftedState, maxAge, instance) {
 export default function devToolsEnhancer(options = {}) {
   init(options);
 
-  const defaultName = window.require('Platform').OS;
+  const defaultName = global.require ? global.require('Platform').OS : 'default';
   const { name, maxAge = 30 } = options;
   const id = generateId();
 
