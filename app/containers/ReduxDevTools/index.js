@@ -1,151 +1,90 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { getFromStorage, saveToStorage } from 'remotedev-app/lib/utils/localStorage';
+import SliderMonitor from 'remotedev-slider/lib/Slider';
+import { liftedDispatch } from 'remotedev-app/lib/actions';
+
 import enhance from 'remotedev-app/lib/hoc';
+
 import styles from 'remotedev-app/lib/styles';
+import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
+
 import DevTools from 'remotedev-app/lib/containers/DevTools';
 import Dispatcher from 'remotedev-app/lib/containers/monitors/Dispatcher';
+import ButtonBar from 'remotedev-app/lib/components/ButtonBar';
+import Notification from 'remotedev-app/lib/components/Notification';
+import Instances from 'remotedev-app/lib/components/Instances';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
-import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
-import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
-import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
-import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
 import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
-
-import { createRemoteStore, setWorker, importState, exportState } from './createRemoteStore';
 
 @enhance
 @connect(
-  state => ({
-    debugger: state.debugger,
+  state => {
+    const instances = state.instances;
+    const id = getActiveInstance(instances);
+    return {
+      selected: instances.selected,
+      liftedState: instances.states[id],
+      options: instances.options[id],
+      monitor: state.monitor.selected,
+      dispatcherIsOpen: state.monitor.dispatcherIsOpen,
+      sliderIsOpen: state.monitor.sliderIsOpen,
+    };
+  },
+  dispatch => ({
+    liftedDispatch: bindActionCreators(liftedDispatch, dispatch),
+    dispatch,
   }),
-  dispatch => ({ dispatch }),
 )
 export default class ReduxDevTools extends Component {
   static propTypes = {
     style: PropTypes.object,
     debugger: PropTypes.object,
-  };
-
-  static childContextTypes = {
-    store: PropTypes.object,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      monitor: getFromStorage('select-monitor') || 'InspectorMonitor',
-      dispatcherIsOpen: false,
-      sliderIsOpen: false,
-      store: createRemoteStore(this.handleError),
-      error: null,
-    };
-    this.testComponent = p => (
-      <TestGenerator
-        name="default"
-        store={this.state.store}
-        isRedux={this.state.store.isRedux()}
-        useCodemirror
-        testTemplates={getFromStorage('test-templates')}
-        selectedTemplate={getFromStorage('test-templates-sel')}
-        {...p}
-      />
-    );
-  }
-
-  // Avoid createDevTools get store of this app
-  getChildContext = () => ({
-    store: null,
-  });
-
-  componentDidMount() {
-    const { worker } = this.props.debugger;
-    setWorker(worker);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { prevWorker } = this.props.debugger;
-    const { worker } = nextProps.debugger;
-    if (worker && prevWorker !== worker) {
-      setWorker(worker);
-    } else if (!worker) {
-      this.state.store.clear();
-      setWorker(null);
-    }
-  }
-
-  componentWillUnmount() {
-    setWorker(null);
-  }
-
-  handleError = error => {
-    this.setState({ error });
-  };
-
-  clearError = () => {
-    this.setState({ error: null });
-  };
-
-  handleSelectMonitor = (event, index, value) => {
-    this.setState({ monitor: saveToStorage('select-monitor', value) });
-  };
-
-  toggleDispatcher = () => {
-    this.setState({ dispatcherIsOpen: !this.state.dispatcherIsOpen });
-  };
-
-  toggleSlider = () => {
-    this.setState({ sliderIsOpen: !this.state.sliderIsOpen });
+    liftedDispatch: PropTypes.func.isRequired,
+    selected: PropTypes.string,
+    liftedState: PropTypes.object.isRequired,
+    options: PropTypes.object.isRequired,
+    monitor: PropTypes.string,
+    dispatcherIsOpen: PropTypes.bool,
+    sliderIsOpen: PropTypes.bool,
   };
 
   render() {
-    const { store, error, monitor } = this.state;
+    const { monitor, dispatcherIsOpen, sliderIsOpen, options, liftedState } = this.props;
     return (
-      <div style={{ ...styles.container, ...this.props.style }}>
+      <div style={styles.container}>
         <div style={styles.buttonBar}>
-          <MonitorSelector
-            selected={this.state.monitor}
-            onSelect={this.handleSelectMonitor}
-          />
+          <MonitorSelector selected={monitor} />
+          <Instances selected={this.props.selected} />
         </div>
         <DevTools
-          key={`${monitor}Monitor`}
           monitor={monitor}
-          store={store}
-          testComponent={this.testComponent}
+          liftedState={liftedState}
+          dispatch={this.props.liftedDispatch}
+          testComponent={options.lib === 'redux' && TestGenerator}
         />
-        {
-          this.state.sliderIsOpen &&
-            <div style={styles.sliderMonitor}>
-              <DevTools
-                key={'Slider'}
-                monitor="SliderMonitor"
-                store={store}
-              />
-            </div>
-        }
-        {
-          this.state.dispatcherIsOpen &&
-            <Dispatcher
-              store={store}
-              error={error}
-              clearError={this.clearError}
-              key={'Dispatch'}
-            />
-        }
-        <div style={styles.buttonBar}>
-          <DispatcherButton
-            dispatcherIsOpen={this.state.dispatcherIsOpen}
-            onClick={this.toggleDispatcher}
+        <Notification />
+        {sliderIsOpen && options.connectionId &&
+          <SliderMonitor
+            monitor="SliderMonitor"
+            liftedState={liftedState}
+            dispatch={this.props.liftedDispatch}
+            showActions={monitor === 'ChartMonitor'}
+            style={{ padding: '15px 5px' }}
+            fillColor="rgb(120, 144, 156)"
           />
-          <SliderButton
-            isOpen={this.state.sliderIsOpen}
-            onClick={this.toggleSlider}
-          />
-          <ImportButton importState={importState} />
-          <ExportButton exportState={exportState} />
-        </div>
+        }
+        {dispatcherIsOpen && options.connectionId &&
+          <Dispatcher options={options} />
+        }
+        <ButtonBar
+          liftedState={liftedState}
+          dispatcherIsOpen={dispatcherIsOpen}
+          sliderIsOpen={sliderIsOpen}
+          lib={options.lib}
+          noSettings
+        />
       </div>
     );
   }
