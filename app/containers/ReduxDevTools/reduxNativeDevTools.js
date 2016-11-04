@@ -75,7 +75,14 @@ function dispatchRemotely(action, id) {
 }
 
 function handleMessages(message) {
-  const { id, instanceId, type, action, state } = message;
+  const { id, instanceId, type, action, state, toAll } = message;
+  if (toAll) {
+    Object.keys(instances).forEach(key => {
+      handleMessages({ ...message, id: key, toAll: false });
+    });
+    return;
+  }
+
   const { store } = instances[id || instanceId];
   if (type === 'IMPORT') {
     store.liftedStore.dispatch({

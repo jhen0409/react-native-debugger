@@ -10,7 +10,7 @@ import { SET_DEBUGGER_WORKER } from '../actions/debugger';
 let worker;
 let store;
 
-function toWorker({ message, action, state }) {
+function toWorker({ message, action, state, toAll }) {
   if (!worker) return;
 
   const instances = store.getState().instances;
@@ -24,6 +24,7 @@ function toWorker({ message, action, state }) {
       state: nonReduxDispatch(store, message, instanceId, action, state, instances),
       instanceId,
       id,
+      toAll,
     },
   });
 }
