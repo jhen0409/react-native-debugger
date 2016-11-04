@@ -53,41 +53,58 @@ And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.3
 
 We used [remotedev-app](https://github.com/zalmoxisus/remotedev-app) as a Redux DevTools UI, but it not need `remotedev-server`. That was great because it included multiple monitors and there are many powerful features.
 
-The debugger will inject `reduxNativeDevTools` enhancer to global, you can add it to store:
+The debugger will inject `reduxNativeDevTools`, `reduxNativeDevToolsCompose` enhancer to global, you can add it to store:
+
+#### Basic store
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+
+const store = createStore(reducer, initialState, 
+  global.reduxNativeDevTools && global.reduxNativeDevTools({/* options */})
+);
+```
+
+#### Advanced store setup
+
+If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), just use `reduxNativeDevToolsCompose` instead of redux `compose`:
 
 ```js
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import reducer from '../reducers';
 
-export default initialState => {
-  const enhancer = compose(
-    applyMiddleware(thunk),
-    global.reduxNativeDevTools ?
-      global.reduxNativeDevTools(/*options*/) :
-      noop => noop
-  );
-  const store = createStore(reducer, initialState, enhancer);
-  // If you have other enhancers & middlewares
-  // update the store after creating / changing to allow devTools to use them
-  if (global.reduxNativeDevTools) {
-    global.reduxNativeDevTools.updateStore(store);
-  }
-  return store;
-}
+const composeEnhancers = global.reduxNativeDevToolsCompose || compose;
+const store = createStore(reducer, preloadedState, composeEnhancers(
+  applyMiddleware(...middleware)
+));
+```
+
+With [options](#options):
+
+```js
+import { createStore, applyMiddleware, compose } from 'redux';
+
+const composeEnhancers = global.reduxNativeDevToolsCompose ?
+  global.reduxNativeDevToolsCompose({/* options */}) :
+  compose;
+const store = createStore(reducer, preloadedState, composeEnhancers(
+  applyMiddleware(...middleware)
+));
 ```
 
 #### Options
 
 Name                  | Description
 -------------         | -------------
+`name`                | *String* representing the instance name to be shown on the remote monitor. Default is `{platform os}-{hash id}`.
 `filters`             | *Map of arrays* named `whitelist` or `blacklist` to filter action types.
 `actionSanitizer`     | *Function* which takes action object and id number as arguments, and should return action object back. See the example bellow.
 `stateSanitizer`      | *Function* which takes state object and index as arguments, and should return state object back. See the example bellow.
 `maxAge`              | *Number* of maximum allowed actions to be stored on the history tree, the oldest actions are removed once maxAge is reached. Default is `30`.
 `actionCreators`      | *Array* or *Object* of action creators to dispatch remotely. See the [example](https://github.com/zalmoxisus/remote-redux-devtools/commit/b54652930dfd4e057991df8471c343957fd7bff7).
-
-These options are same with [remote-redux-devtools#parameters](https://github.com/zalmoxisus/remote-redux-devtools#parameters).
+`shouldHotReload`     | *Boolean* - if set to `false`, will not recompute the states on hot reloading (or on replacing the reducers). Default to `true`.
+`shouldRecordChanges` | *Boolean* - if specified as `false`, it will not record the changes till clicked on "Start recording" button on the monitor app. Default is `true`.
+`shouldStartLocked`   | *Boolean* - if specified as `true`, it will not allow any non-monitor actions to be dispatched till `lockChanges(false)` is dispatched. Default is `false`.
+`pauseActionType`     | *String*  - if specified, whenever clicking on `Pause recording` button and there are actions in the history log, will add this action type. If not specified, will commit when paused. Default is `@@PAUSED`.
 
 ## Debugging tips
 

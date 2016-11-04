@@ -14,11 +14,6 @@ const styles = {
     width: '100%',
     heigth: '100%',
   },
-  reduxPanel: {
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-  },
   wrapReactPanel: {
     display: 'flex',
     position: 'fixed',
@@ -107,7 +102,7 @@ export default class App extends Component {
         dimMode="none"
         onSizeChange={this.onReudxDockResize}
       >
-        <ReduxDevTools style={styles.reduxPanel} />
+        <ReduxDevTools />
       </Dock>
     );
   }

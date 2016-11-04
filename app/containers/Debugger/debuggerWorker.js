@@ -13,7 +13,10 @@
 // NOTE: WebWorker not have `global`
 self.global = self;
 // redux store enhancer
-self.reduxNativeDevTools = require('../ReduxDevTools/reduxNativeDevTools').default;
+const devTools = require('../ReduxDevTools/reduxNativeDevTools');
+
+self.reduxNativeDevTools = devTools.default;
+self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
