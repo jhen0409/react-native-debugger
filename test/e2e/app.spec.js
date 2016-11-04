@@ -9,7 +9,7 @@ import { Application } from 'spectron';
 import { delay } from '../utils/e2e.js';
 
 describe('Application launch', function spec() {
-  this.timeout(10000);
+  this.timeout(100000);
 
   before(async () => {
     await new Promise(resolve =>
@@ -124,38 +124,71 @@ describe('Application launch', function spec() {
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
   });
 
-  it('should have @@INIT action on Redux DevTools with import fake script after', async () => {
-    const server = new WebSocketServer({ port: customRNServerPort });
+  describe('Import fake script after', () => {
+    before(() => {
+      const server = new WebSocketServer({ port: customRNServerPort });
 
-    await new Promise(resolve => {
-      server.on('connection', socket => {
-        socket.on('message', message => {
-          const data = JSON.parse(message);
-          switch (data.replyID) {
-            case 'createJSRuntime':
-              socket.send(JSON.stringify({
-                id: 'sendFakeScript',
-                method: 'executeApplicationScript',
-                inject: [],
-                url: '../../test/e2e/fixture/app.bundle.js',
-              }));
-              break;
-            case 'sendFakeScript':
-              return resolve();
-            default:
-              console.error(`Unexperted id ${data.replyID}`);
-          }
+      return new Promise(resolve => {
+        server.on('connection', socket => {
+          socket.on('message', message => {
+            const data = JSON.parse(message);
+            switch (data.replyID) {
+              case 'createJSRuntime':
+                socket.send(JSON.stringify({
+                  id: 'sendFakeScript',
+                  method: 'executeApplicationScript',
+                  inject: [],
+                  url: '../../test/e2e/fixture/app.bundle.js',
+                }));
+                break;
+              case 'sendFakeScript':
+                return resolve();
+              default:
+                console.error(`Unexperted id ${data.replyID}`);
+            }
+          });
+          socket.send(JSON.stringify({
+            id: 'createJSRuntime',
+            method: 'prepareJSRuntime',
+          }));
         });
-        socket.send(JSON.stringify({
-          id: 'createJSRuntime',
-          method: 'prepareJSRuntime',
-        }));
       });
     });
 
-    const { client } = this.app;
-    const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
-      .getText();
-    expect(val).toMatch(/@@INIT/);
+    it('should have @@INIT action on Redux DevTools', async () => {
+      const { client } = this.app;
+      const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+        .getText();
+      expect(val).toMatch(/@@INIT/);
+    });
+
+    it('should have two store instances on Redux DevTools', async () => {
+      const { client } = this.app;
+      const delay500 = () => delay(500);
+
+      // Click dropdown
+      await client.element('//div[text()="Autoselect instances"]')
+        .click().then(delay500);
+      // Click `Store instance 1`
+      await client.element('//div[text()="Store instance 1"]')
+        .click().then(delay500);
+      let val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+        .getText();
+      expect(val).toMatch(/@@INIT/);
+      expect(val).toMatch(/TEST_PASS_FOR_STORE_1/);
+      expect(val).toNotMatch(/TEST_PASS_FOR_STORE_2/);
+
+      // Click dropdown
+      await client.element('//div[text()="Store instance 1"]')
+        .click().then(delay500);
+      // Click `Store instance 2`
+      await client.element('//div[text()="Store instance 2"]')
+        .click().then(delay500);
+      val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+        .getText();
+      expect(val).toMatch(/@@INIT/);
+      expect(val).toMatch(/TEST_PASS_FOR_STORE_2/);
+      expect(val).toNotMatch(/TEST_PASS_FOR_STORE_1/);
+    });
   });
 });
