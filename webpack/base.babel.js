@@ -20,6 +20,9 @@ export default {
         join(__dirname, '../electron'),
         join(__dirname, '../node_modules/react-devtools'),
       ],
+      exclude: [
+        join(__dirname, '../node_modules/react-devtools/node_modules'),
+      ],
     }],
   },
   externals: [
