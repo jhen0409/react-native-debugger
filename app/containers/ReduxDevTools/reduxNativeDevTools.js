@@ -154,6 +154,7 @@ export default function devToolsEnhancer(options = {}) {
     shouldHotReload,
     shouldRecordChanges,
     shouldStartLocked,
+    pauseActionType,
   } = options;
   const id = generateId(options.instanceId);
 
@@ -164,6 +165,7 @@ export default function devToolsEnhancer(options = {}) {
         shouldHotReload,
         shouldRecordChanges,
         shouldStartLocked,
+        pauseActionType: pauseActionType || '@@PAUSED',
       }
     )(reducer, initialState);
 

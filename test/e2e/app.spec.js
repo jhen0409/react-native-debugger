@@ -9,7 +9,7 @@ import { Application } from 'spectron';
 import { delay } from '../utils/e2e.js';
 
 describe('Application launch', function spec() {
-  this.timeout(100000);
+  this.timeout(6E4);
 
   before(async () => {
     await new Promise(resolve =>
@@ -164,14 +164,14 @@ describe('Application launch', function spec() {
 
     it('should have two store instances on Redux DevTools', async () => {
       const { client } = this.app;
-      const delay500 = () => delay(500);
+      const wait = () => delay(750);
 
       // Click dropdown
       await client.element('//div[text()="Autoselect instances"]')
-        .click().then(delay500);
+        .click().then(wait);
       // Click `Store instance 1`
       await client.element('//div[text()="Store instance 1"]')
-        .click().then(delay500);
+        .click().then(wait);
       let val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
@@ -180,10 +180,10 @@ describe('Application launch', function spec() {
 
       // Click dropdown
       await client.element('//div[text()="Store instance 1"]')
-        .click().then(delay500);
+        .click().then(wait);
       // Click `Store instance 2`
       await client.element('//div[text()="Store instance 2"]')
-        .click().then(delay500);
+        .click().then(wait);
       val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);

@@ -95,7 +95,7 @@ const store = createStore(reducer, preloadedState, composeEnhancers(
 
 Name                  | Description
 -------------         | -------------
-`name`                | String representing the instance name to be shown on the remote monitor. Default is `{platform os}-{hash id}`
+`name`                | *String* representing the instance name to be shown on the remote monitor. Default is `{platform os}-{hash id}`.
 `filters`             | *Map of arrays* named `whitelist` or `blacklist` to filter action types.
 `actionSanitizer`     | *Function* which takes action object and id number as arguments, and should return action object back. See the example bellow.
 `stateSanitizer`      | *Function* which takes state object and index as arguments, and should return state object back. See the example bellow.
@@ -104,6 +104,7 @@ Name                  | Description
 `shouldHotReload`     | *Boolean* - if set to `false`, will not recompute the states on hot reloading (or on replacing the reducers). Default to `true`.
 `shouldRecordChanges` | *Boolean* - if specified as `false`, it will not record the changes till clicked on "Start recording" button on the monitor app. Default is `true`.
 `shouldStartLocked`   | *Boolean* - if specified as `true`, it will not allow any non-monitor actions to be dispatched till `lockChanges(false)` is dispatched. Default is `false`.
+`pauseActionType`     | *String*  - if specified, whenever clicking on `Pause recording` button and there are actions in the history log, will add this action type. If not specified, will commit when paused. Default is `@@PAUSED`.
 
 ## Debugging tips
 
