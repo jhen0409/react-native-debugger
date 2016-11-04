@@ -27,7 +27,10 @@ export default class ButtonBar extends Component {
   render() {
     const isRedux = this.props.lib === 'redux';
     return (
-      <div style={styles.buttonBar}>
+      <div
+        className="redux-buttonbar"
+        style={styles.buttonBar}
+      >
         {isRedux &&
           <RecordButton paused={this.props.liftedState.isPaused} />
         }

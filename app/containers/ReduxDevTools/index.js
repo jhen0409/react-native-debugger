@@ -59,7 +59,10 @@ export default class ReduxDevTools extends Component {
   render() {
     const { monitor, dispatcherIsOpen, sliderIsOpen, options, liftedState } = this.props;
     return (
-      <div style={styles.container}>
+      <div
+        className="redux-container"
+        style={styles.container}
+      >
         <div style={styles.buttonBar}>
           <MonitorSelector selected={monitor} />
           <Instances selected={this.props.selected} />
