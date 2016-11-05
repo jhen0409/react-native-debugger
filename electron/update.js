@@ -4,7 +4,10 @@ import GhReleases from 'electron-gh-releases';
 let checking = false;
 
 export default (mainWindow, icon, notify) => {
-  if (checking) return;
+  if (checking) {
+    console.log('[Updater] Already checking...');
+    return;
+  }
 
   checking = true;
   const updater = new GhReleases({
@@ -29,9 +32,14 @@ export default (mainWindow, icon, notify) => {
         message: err.message,
       });
       checking = false;
+      console.log('[Updater]', err.message);
       return;
     }
-    if (err || !status) return;
+    if (err || !status) {
+      console.log('[Updater] Error', err && err.message, status);
+      checking = false;
+      return;
+    }
     if (notify) {
       const index = dialog.showMessageBox(mainWindow, {
         type: 'info',
@@ -43,14 +51,18 @@ export default (mainWindow, icon, notify) => {
       if (index === 1) return;
       shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
       checking = false;
+      console.log('[Updater] Open external link.');
       return;
     }
     if (process.env.NODE_ENV === 'production' && process.platform === 'darwin') {
       updater.download();
+      console.log('[Updater] Starting download...');
     }
   });
+  console.log('[Updater] Checking updates...');
 
   updater.on('update-downloaded', ([, releaseNotes, releaseName]) => {
+    console.log('[Updater] Downloaded.');
     const index = dialog.showMessageBox(mainWindow, {
       type: 'info',
       buttons: ['Restart', 'Later'],
