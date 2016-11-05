@@ -27,8 +27,13 @@ const messageHandlers = {
     Object.keys(message.inject).forEach(key => {
       self[key] = JSON.parse(message.inject[key]);
     });
-    importScripts(message.url);
-    sendReply();
+    let error;
+    try {
+      importScripts(message.url);
+    } catch (err) {
+      error = JSON.stringify(err);
+    }
+    sendReply(null /* result */, error);
     // Because the worker message not have notify the remote JS runtime (for Electron?)
     // we need to regularly update JS runtime
     if (!self.__RND_INTERVAL__) { // eslint-disable-line
@@ -45,8 +50,8 @@ addEventListener('message', message => {
     return true;
   }
 
-  const sendReply = result => {
-    postMessage({ replyID: object.id, result });
+  const sendReply = (result, error) => {
+    postMessage({ replyID: object.id, result, error });
   };
 
   const handler = messageHandlers[object.method];
