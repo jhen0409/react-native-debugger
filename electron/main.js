@@ -1,24 +1,9 @@
 import { resolve } from 'path';
 import { app, BrowserWindow, Menu } from 'electron';
+import autoUpdate from './update';
+import installExtensions from './extensions';
 import { startListeningHandleURL } from './url-handle';
 import { createContextMenu, createMenuTemplate } from './menu';
-
-const installExtensions = async () => {
-  if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line
-
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS',
-    ];
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-    for (const name of extensions) {
-      try {
-        await installer.default(installer[name], forceDownload);
-      } catch (e) {} // eslint-disable-line
-    }
-  }
-};
 
 const iconPath = resolve(__dirname, 'logo.png');
 let mainWindow = null;
@@ -38,6 +23,7 @@ app.on('ready', async () => {
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
+    autoUpdate(mainWindow);
   });
   mainWindow.on('closed', () => {
     mainWindow = null;

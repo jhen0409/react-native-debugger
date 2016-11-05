@@ -23,6 +23,9 @@ export default {
       exclude: [
         join(__dirname, '../node_modules/react-devtools/node_modules'),
       ],
+    }, {
+      test: /\.json/,
+      loader: 'json',
     }],
   },
   externals: [
