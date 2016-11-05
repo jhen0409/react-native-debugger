@@ -53,7 +53,7 @@ And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.3
 
 We used [remotedev-app](https://github.com/zalmoxisus/remotedev-app) as a Redux DevTools UI, but it not need `remotedev-server`. That was great because it included multiple monitors and there are many powerful features.
 
-The debugger will inject `reduxNativeDevTools`, `reduxNativeDevToolsCompose` enhancer to global, you can add it to store:
+The debugger worker will inject `__REDUX_DEVTOOLS_EXTENSION__` enhancer, `__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` to global, we provide the same name as [redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension), you can add it to store:
 
 #### Basic store
 
@@ -61,18 +61,18 @@ The debugger will inject `reduxNativeDevTools`, `reduxNativeDevToolsCompose` enh
 import { createStore, applyMiddleware } from 'redux';
 
 const store = createStore(reducer, initialState, 
-  global.reduxNativeDevTools && global.reduxNativeDevTools({/* options */})
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({/* options */})
 );
 ```
 
 #### Advanced store setup
 
-If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), just use `reduxNativeDevToolsCompose` instead of redux `compose`:
+If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), just use `__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` instead of redux `compose`:
 
 ```js
 import { createStore, applyMiddleware, compose } from 'redux';
 
-const composeEnhancers = global.reduxNativeDevToolsCompose || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, preloadedState, composeEnhancers(
   applyMiddleware(...middleware)
 ));
@@ -83,13 +83,52 @@ With [options](#options):
 ```js
 import { createStore, applyMiddleware, compose } from 'redux';
 
-const composeEnhancers = global.reduxNativeDevToolsCompose ?
-  global.reduxNativeDevToolsCompose({/* options */}) :
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({/* options */}) :
   compose;
 const store = createStore(reducer, preloadedState, composeEnhancers(
   applyMiddleware(...middleware)
 ));
 ```
+
+__*NOTE*__ Old `reduxNativeDevTools` and `reduxNativeDevToolsCompose` can still be used.
+
+#### Use `redux-devtools-extension` package from npm
+
+To make things easier, there's a npm package to install:
+
+```bash
+$ npm install --save redux-devtools-extension
+```
+
+and to use like that:
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+const store = createStore(reducer, composeWithDevTools(
+  applyMiddleware(...middleware),
+  // other store enhancers if any
+));
+```
+
+or if needed to apply [options](#options):
+
+```js
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+const composeEnhancers = composeWithDevTools({
+  // Specify here name, actionsBlacklist, actionsCreators and other options
+});
+const store = createStore(reducer, composeEnhancers(
+  applyMiddleware(...middleware),
+  // other store enhancers if any
+));
+```
+
+There’re [just few lines](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/index.js) of code.
 
 #### Options
 

@@ -18,6 +18,10 @@ const devTools = require('../ReduxDevTools/reduxNativeDevTools');
 self.reduxNativeDevTools = devTools.default;
 self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
 
+self.devToolsExtension = devTools.default;
+self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default; // eslint-disable-line
+self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools; // eslint-disable-line
+
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
     Object.keys(message.inject).forEach(key => {
