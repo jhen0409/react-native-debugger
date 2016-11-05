@@ -13,6 +13,7 @@ electron-packager dist/ \
   --protocol "rndebugger" \
   --version $(npm info electron version) \
   --app-version $npm_package_version \
+  --osx-sign='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
   --icon electron/logo.icns
 
 cd release/React\ Native\ Debugger-darwin-x64
