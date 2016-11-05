@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.4.0/rn-debugger-darwin-x64.zip",
-  "name": "v0.4.0",
-  "notes": "<Test with old version>\n<New line>\n\n<New line>"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.0/rn-debugger-darwin-x64.zip",
+  "name": "v0.5.0",
+  "notes": "The auto_updater.json is unnecessary in this version, just retention."
 }
