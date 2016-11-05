@@ -110,7 +110,9 @@ Name                  | Description
 
 #### Get $r of React DevTools or global variables of react-native runtime in the console
 
-You need to switch worker thread for console, open `Console` tab on Chrome DevTools, tap `top` context and change to `debugger.worker.js` context.
+You need to switch worker thread for console, open `Console` tab on Chrome DevTools, tap `top` context and change to `RNDebuggerWorker.js` context:
+
+![2016-11-05 6 56 45](https://cloud.githubusercontent.com/assets/3001525/20025024/7edce770-a325-11e6-9e77-618c7ba04123.png)
 
 ## Development
 
