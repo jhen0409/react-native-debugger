@@ -180,6 +180,8 @@ $ npm run pack-windows
 $ npm run pack # all
 ```
 
+If you want to build binaries yourself, please remove [electron/update.js](electron/update.js) (and [electon/main.js usage](electon/main.js)), `osx-sign` in [scripts/package-macos.sh](scripts/package-macos.sh).
+
 ## Credits
 
 * Great work of [React DevTools](https://github.com/facebook/react-devtools)

@@ -1,29 +1,69 @@
-import { app, dialog } from 'electron';
+import { app, dialog, shell } from 'electron';
 import GhReleases from 'electron-gh-releases';
 
-export default mainWindow => {
-  if (process.env.NODE_ENV === 'production' && process.platform === 'darwin') {
-    const updater = new GhReleases({
-      repo: 'jhen0409/react-native-debugger',
-      currentVersion: app.getVersion(),
-    });
+let checking = false;
 
-    updater.check((err, status) => {
-      if (err || !status) return;
-      updater.download();
-    });
+export default (mainWindow, icon, notify) => {
+  if (checking) return;
 
-    updater.on('update-downloaded', ([, releaseNotes, releaseName]) => {
+  checking = true;
+  const updater = new GhReleases({
+    repo: 'jhen0409/react-native-debugger',
+    currentVersion: app.getVersion(),
+  });
+
+  updater.check((err, status) => {
+    if (
+      process.platform === 'linux' &&
+      err.message === 'This platform is not supported.'
+    ) {
+      err = null; // eslint-disable-line
+      status = true; // eslint-disable-line
+    }
+    if (notify && err) {
+      dialog.showMessageBox(mainWindow, {
+        type: 'info',
+        buttons: ['OK'],
+        title: 'React Native Debugger',
+        icon,
+        message: err.message,
+      });
+      checking = false;
+      return;
+    }
+    if (err || !status) return;
+    if (notify) {
       const index = dialog.showMessageBox(mainWindow, {
         type: 'info',
-        buttons: ['Restart', 'Later'],
+        buttons: ['Download', 'Later'],
         title: 'React Native Debugger',
-        message: 'The new version has been downloaded. ' +
-          'Please restart the application to apply the updates.',
-        detail: `${releaseName}\n\n${releaseNotes}`,
+        icon,
+        message: 'The new version has been released.',
       });
       if (index === 1) return;
-      updater.install();
+      shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
+      checking = false;
+      return;
+    }
+    if (process.env.NODE_ENV === 'production' && process.platform === 'darwin') {
+      updater.download();
+    }
+  });
+
+  updater.on('update-downloaded', ([, releaseNotes, releaseName]) => {
+    const index = dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      buttons: ['Restart', 'Later'],
+      title: 'React Native Debugger',
+      icon,
+      message: 'The new version has been downloaded. ' +
+        'Please restart the application to apply the updates.',
+      detail: `${releaseName}\n\n${releaseNotes}`,
     });
-  }
+    if (index === 1) {
+      checking = false;
+      return;
+    }
+    updater.install();
+  });
 };

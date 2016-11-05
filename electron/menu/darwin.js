@@ -10,10 +10,10 @@ export default (win, iconPath) =>
         showAboutDialog(iconPath);
       },
     }, {
-      type: 'separator',
-    }, {
-      label: 'Services',
-      submenu: [],
+      label: 'Check for Updates...',
+      click() {
+        win.checkUpdate(win, iconPath, true);
+      },
     }, {
       type: 'separator',
     }, {

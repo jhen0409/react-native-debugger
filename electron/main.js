@@ -23,7 +23,8 @@ app.on('ready', async () => {
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
-    autoUpdate(mainWindow);
+    mainWindow.checkUpdate = autoUpdate;
+    autoUpdate(mainWindow, iconPath);
   });
   mainWindow.on('closed', () => {
     mainWindow = null;

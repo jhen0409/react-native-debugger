@@ -10,6 +10,11 @@ export default (win, iconPath) =>
         showAboutDialog(iconPath);
       },
     }, {
+      label: 'Check for Updates...',
+      click() {
+        win.checkUpdate(win, iconPath, true);
+      },
+    }, {
       label: 'Close',
       accelerator: 'Ctrl+W',
       click() {
