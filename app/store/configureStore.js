@@ -1,9 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { autoRehydrate, persistStore } from 'redux-persist';
+import debuggerAPI from '../middlewares/debuggerAPI';
 import reduxAPI from '../middlewares/redux-api';
 import reducer from '../reducers';
 
-const middlewares = applyMiddleware(reduxAPI);
+const middlewares = applyMiddleware(
+  debuggerAPI,
+  reduxAPI
+);
 
 // If Redux DevTools Extension is installed use it, otherwise use Redux compose
 /* eslint-disable no-underscore-dangle */

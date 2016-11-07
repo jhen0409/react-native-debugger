@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
-import Debugger from './Debugger';
 import ReduxDevTools from './ReduxDevTools';
 import ReactDevTools from './ReactDevTools';
 
@@ -70,10 +69,16 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => {
-      const { setting } = this.props.actions;
-      setting.toggleDevTools(name);
+      toggleDevTools(name);
     });
+
+    const { setDebuggerLocation } = this.props.actions.debugger;
+    ipcRenderer.on('set-debugger-loc', (e, payload) => {
+      setDebuggerLocation(JSON.parse(payload));
+    });
+    setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
   }
 
   componentWillUnmount() {
@@ -141,7 +146,6 @@ export default class App extends Component {
     const { redux, react } = this.props.setting;
     return (
       <div style={styles.container}>
-        <Debugger />
         {this.renderReduxDevTools()}
         {this.renderReactDevTools()}
         {!react && !redux && this.renderBackground()}
