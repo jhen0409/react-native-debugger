@@ -13,7 +13,7 @@
 // NOTE: WebWorker not have `global`
 self.global = self;
 // redux store enhancer
-const devTools = require('../ReduxDevTools/reduxNativeDevTools');
+const devTools = require('./reduxAPI');
 
 self.reduxNativeDevTools = devTools.default;
 self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;

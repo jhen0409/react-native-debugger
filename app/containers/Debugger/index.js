@@ -14,7 +14,7 @@ import { ipcRenderer } from 'electron';
 import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Worker from 'worker?name=RNDebuggerWorker.js!./debuggerWorker'; // eslint-disable-line
+import Worker from 'worker?name=RNDebuggerWorker.js!../../worker'; // eslint-disable-line
 import * as debuggerActions from '../../actions/debugger';
 
 @connect(
