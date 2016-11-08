@@ -6,7 +6,7 @@ import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
 import ReduxDevTools from './ReduxDevTools';
-import ReactDevTools from './ReactDevTools';
+import ReactInspector from './ReactInspector';
 
 const styles = {
   container: {
@@ -112,7 +112,7 @@ export default class App extends Component {
     );
   }
 
-  renderReactDevTools() {
+  renderReactInspector() {
     const wrapStyle = Object.assign({}, styles.wrapReactPanel);
     const { redux, react, size } = this.props.setting;
     if (!react) {
@@ -124,7 +124,7 @@ export default class App extends Component {
     }
     return (
       <div style={wrapStyle}>
-        <ReactDevTools />
+        <ReactInspector />
       </div>
     );
   }
@@ -147,7 +147,7 @@ export default class App extends Component {
     return (
       <div style={styles.container}>
         {this.renderReduxDevTools()}
-        {this.renderReactDevTools()}
+        {this.renderReactInspector()}
         {!react && !redux && this.renderBackground()}
       </div>
     );
