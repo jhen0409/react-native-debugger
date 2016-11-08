@@ -6,7 +6,7 @@ import SliderMonitor from 'remotedev-slider/lib/Slider';
 
 import enhance from 'remotedev-app/lib/hoc';
 import styles from 'remotedev-app/lib/styles';
-import { liftedDispatch } from 'remotedev-app/lib/actions';
+import { liftedDispatch as liftedDispatchAction } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 
 import DevTools from 'remotedev-app/lib/containers/DevTools';
@@ -16,7 +16,14 @@ import Instances from 'remotedev-app/lib/components/Instances';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
 import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 
-import ButtonBar from './ButtonBar';
+// Button bar
+import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
+import ImportButton from 'remotedev-app/lib/components/buttons/ImportButton';
+import ExportButton from 'remotedev-app/lib/components/buttons/ExportButton';
+import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
+import LockButton from 'remotedev-app/lib/components/buttons/LockButton';
+import RecordButton from 'remotedev-app/lib/components/buttons/RecordButton';
+import PrintButton from 'remotedev-app/lib/components/buttons/PrintButton';
 
 const sliderStyle = {
   padding: '15px 5px',
@@ -39,7 +46,7 @@ const sliderStyle = {
     };
   },
   dispatch => ({
-    liftedDispatch: bindActionCreators(liftedDispatch, dispatch),
+    liftedDispatch: bindActionCreators(liftedDispatchAction, dispatch),
     dispatch,
   }),
 )
@@ -57,7 +64,13 @@ export default class ReduxDevTools extends Component {
   };
 
   render() {
-    const { monitor, dispatcherIsOpen, sliderIsOpen, options, liftedState } = this.props;
+    const {
+      selected, monitor,
+      dispatcherIsOpen, sliderIsOpen,
+      liftedState, liftedDispatch,
+      options,
+    } = this.props;
+    const isRedux = options.lib === 'redux';
     return (
       <div
         className="redux-container"
@@ -65,20 +78,20 @@ export default class ReduxDevTools extends Component {
       >
         <div style={styles.buttonBar}>
           <MonitorSelector selected={monitor} />
-          <Instances selected={this.props.selected} />
+          <Instances selected={selected} />
         </div>
         <DevTools
           monitor={monitor}
           liftedState={liftedState}
-          dispatch={this.props.liftedDispatch}
-          testComponent={options.lib === 'redux' && TestGenerator}
+          dispatch={liftedDispatch}
+          testComponent={isRedux && TestGenerator}
         />
         <Notification />
         {sliderIsOpen && options.connectionId &&
           <SliderMonitor
             monitor="SliderMonitor"
             liftedState={liftedState}
-            dispatch={this.props.liftedDispatch}
+            dispatch={liftedDispatch}
             showActions={monitor === 'ChartMonitor'}
             style={sliderStyle}
             fillColor="rgb(120, 144, 156)"
@@ -87,13 +100,22 @@ export default class ReduxDevTools extends Component {
         {dispatcherIsOpen && options.connectionId &&
           <Dispatcher options={options} />
         }
-        <ButtonBar
-          liftedState={liftedState}
-          dispatcherIsOpen={dispatcherIsOpen}
-          sliderIsOpen={sliderIsOpen}
-          lib={options.lib}
-          noSettings
-        />
+        <div
+          className="redux-buttonbar"
+          style={styles.buttonBar}
+        >
+          {isRedux &&
+            <RecordButton paused={liftedState.isPaused} />
+          }
+          {isRedux &&
+            <LockButton locked={liftedState.isLocked} />
+          }
+          <DispatcherButton dispatcherIsOpen={dispatcherIsOpen} />
+          <SliderButton isOpen={sliderIsOpen} />
+          <ImportButton />
+          <ExportButton liftedState={liftedState} />
+          <PrintButton />
+        </div>
       </div>
     );
   }

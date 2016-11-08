@@ -7,7 +7,7 @@ const port = 3000;
 export default {
   ...baseConfig,
   entry: './app/index',
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'inline-source-map',
   devServer: { host, port },
   output: {
     ...baseConfig.output,
