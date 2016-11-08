@@ -58,8 +58,9 @@ const removeWorker = () => {
   worker = null;
 };
 
-export default ({ dispatch }) => {
-  actions = bindActionCreators(unboundActions, dispatch);
+export default inStore => {
+  store = inStore;
+  actions = bindActionCreators(unboundActions, store.dispatch);
   return next => action => {
     if (action.type === SET_DEBUGGER_WORKER) {
       if (action.worker) {
