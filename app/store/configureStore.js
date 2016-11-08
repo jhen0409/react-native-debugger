@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { autoRehydrate, persistStore } from 'redux-persist';
 import debuggerAPI from '../middlewares/debuggerAPI';
-import reduxAPI from '../middlewares/redux-api';
+import reduxAPI from '../middlewares/reduxAPI';
 import reducer from '../reducers';
 
 const middlewares = applyMiddleware(
