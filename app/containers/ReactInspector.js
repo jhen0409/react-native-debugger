@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-// Edit from https://github.com/facebook/react-devtools/blob/master/shells/electron/src/ui.js
+// Take from https://github.com/facebook/react-devtools/blob/master/shells/electron/src/ui.js
 
 /* eslint import/no-extraneous-dependencies: 0 import/no-unresolved: 0 */
 
@@ -35,7 +35,7 @@ const styles = {
   }),
   dispatch => ({ dispatch }),
 )
-export default class ReactDevTools extends Component {
+export default class ReactInspector extends Component {
   static propTypes = {
     debugger: PropTypes.object,
   };

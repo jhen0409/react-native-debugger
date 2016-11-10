@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
-import Debugger from './Debugger';
 import ReduxDevTools from './ReduxDevTools';
-import ReactDevTools from './ReactDevTools';
+import ReactInspector from './ReactInspector';
 
 const styles = {
   container: {
@@ -70,10 +69,16 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => {
-      const { setting } = this.props.actions;
-      setting.toggleDevTools(name);
+      toggleDevTools(name);
     });
+
+    const { setDebuggerLocation } = this.props.actions.debugger;
+    ipcRenderer.on('set-debugger-loc', (e, payload) => {
+      setDebuggerLocation(JSON.parse(payload));
+    });
+    setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
   }
 
   componentWillUnmount() {
@@ -84,6 +89,16 @@ export default class App extends Component {
     const { setting } = this.props.actions;
     setting.resizeDevTools(size);
   };
+
+  background =
+    <div style={styles.wrapBackground}>
+      <div style={styles.text}>
+        <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd> to toggle Redux DevTools
+      </div>
+      <div style={styles.text}>
+        <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd> to toggle React DevTools
+      </div>
+    </div>;
 
   renderReduxDevTools() {
     const { redux, react } = this.props.setting;
@@ -107,7 +122,7 @@ export default class App extends Component {
     );
   }
 
-  renderReactDevTools() {
+  renderReactInspector() {
     const wrapStyle = Object.assign({}, styles.wrapReactPanel);
     const { redux, react, size } = this.props.setting;
     if (!react) {
@@ -119,20 +134,7 @@ export default class App extends Component {
     }
     return (
       <div style={wrapStyle}>
-        <ReactDevTools />
-      </div>
-    );
-  }
-
-  renderBackground() {
-    return (
-      <div style={styles.wrapBackground}>
-        <div style={styles.text}>
-          <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd> to toggle Redux DevTools
-        </div>
-        <div style={styles.text}>
-          <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd> to toggle React DevTools
-        </div>
+        <ReactInspector />
       </div>
     );
   }
@@ -141,10 +143,9 @@ export default class App extends Component {
     const { redux, react } = this.props.setting;
     return (
       <div style={styles.container}>
-        <Debugger />
         {this.renderReduxDevTools()}
-        {this.renderReactDevTools()}
-        {!react && !redux && this.renderBackground()}
+        {this.renderReactInspector()}
+        {!react && !redux && this.background}
       </div>
     );
   }

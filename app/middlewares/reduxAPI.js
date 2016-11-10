@@ -1,16 +1,23 @@
-// import { stringify } from 'jsan';
+import { bindActionCreators } from 'redux';
 import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { DISCONNECTED } from 'remotedev-app/lib/constants/socketActionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
 import { showNotification } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
-
 import { SET_DEBUGGER_WORKER } from '../actions/debugger';
 
+const unboundActions = {
+  showNotification,
+  updateState: request => ({
+    type: UPDATE_STATE,
+    request: request.data ? { ...request.data, id: request.id } : request,
+  }),
+};
+let actions;
 let worker;
 let store;
 
-function toWorker({ message, action, state, toAll }) {
+const toWorker = ({ message, action, state, toAll }) => {
   if (!worker) return;
 
   const instances = store.getState().instances;
@@ -27,35 +34,33 @@ function toWorker({ message, action, state, toAll }) {
       toAll,
     },
   });
-}
+};
 
 // Receive messages from worker
-function messaging(message) {
+const messaging = message => {
   const { data } = message;
   if (!data || !data.__IS_REDUX_NATIVE_MESSAGE__) return;
 
   const { content: request } = data;
   if (request.type === 'ERROR') {
-    store.dispatch(showNotification(request.payload));
+    actions.showNotification(request.payload);
     return;
   }
-  store.dispatch({
-    type: UPDATE_STATE,
-    request: request.data ? { ...request.data, id: request.id } : request,
-  });
-}
+  actions.updateState(request);
+};
 
-function initWorker(wkr) {
+const initWorker = wkr => {
   wkr.addEventListener('message', messaging);
   worker = wkr;
-}
+};
 
-function removeWorker() {
+const removeWorker = () => {
   worker = null;
-}
+};
 
-export default function api(inStore) {
+export default inStore => {
   store = inStore;
+  actions = bindActionCreators(unboundActions, store.dispatch);
   return next => action => {
     if (action.type === SET_DEBUGGER_WORKER) {
       if (action.worker) {
@@ -68,4 +73,4 @@ export default function api(inStore) {
     if (action.type === LIFTED_ACTION) toWorker(action);
     return next(action);
   };
-}
+};
