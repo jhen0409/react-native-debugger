@@ -41,7 +41,7 @@ function getLiftedState(store) {
 }
 
 function relay(type, state, instance, action, nextActionId) {
-  if (filters && isFiltered(action)) return;
+  if (filters && isFiltered(action, filters)) return;
   const message = {
     type,
     id: instance.id,
