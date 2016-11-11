@@ -14,10 +14,9 @@ install:
   - set PATH=%cd%\flow-0.19.1-windows-20151211;%PATH%
   - ps: Install-Product node $env:nodejs_version
   - npm install -g npm
-  - rm -rf node_modules\react-devtools
   - npm install
-  - git clone https://github.com/jhen0409/react-devtools.git node_modules\react-devtools
-  - rm node_modules\react-devtools\.babelrc
+  - git clone https://github.com/jhen0409/react-devtools.git app\react-devtools
+  - rm app\react-devtools\.babelrc
   - cd patch && npm install && cd ..
 
 test_script:
