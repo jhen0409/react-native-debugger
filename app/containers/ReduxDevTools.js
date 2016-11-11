@@ -39,6 +39,7 @@ const sliderStyle = {
     return {
       selected: instances.selected,
       liftedState: instances.states[id],
+      monitorState: state.monitor.monitorState,
       options: instances.options[id],
       monitor: state.monitor.selected,
       dispatcherIsOpen: state.monitor.dispatcherIsOpen,
@@ -57,6 +58,7 @@ export default class ReduxDevTools extends Component {
     liftedDispatch: PropTypes.func.isRequired,
     selected: PropTypes.string,
     liftedState: PropTypes.object.isRequired,
+    monitorState: PropTypes.object,
     options: PropTypes.object.isRequired,
     monitor: PropTypes.string,
     dispatcherIsOpen: PropTypes.bool,
@@ -67,7 +69,7 @@ export default class ReduxDevTools extends Component {
     const {
       selected, monitor,
       dispatcherIsOpen, sliderIsOpen,
-      liftedState, liftedDispatch,
+      liftedState, liftedDispatch, monitorState,
       options,
     } = this.props;
     const isRedux = options.lib === 'redux';
@@ -83,6 +85,7 @@ export default class ReduxDevTools extends Component {
         <DevTools
           monitor={monitor}
           liftedState={liftedState}
+          monitorState={monitorState}
           dispatch={liftedDispatch}
           testComponent={isRedux && TestGenerator}
         />

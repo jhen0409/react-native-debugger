@@ -60,7 +60,7 @@ describe('Application launch', function spec() {
   it('should contain Inspector monitor\'s component on Redux DevTools', async () => {
     const { client } = this.app;
 
-    const val = await client.element('//div[contains(@class, "inspector--jss-")]')
+    const val = await client.element('//div[contains(@class, "inspector-")]')
       .getText();
     expect(val).toExist();
   });
@@ -68,7 +68,7 @@ describe('Application launch', function spec() {
   it('should contain an empty actions list on Redux DevTools', async () => {
     const { client } = this.app;
 
-    const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+    const val = await client.element('//div[contains(@class, "actionListRows-")]')
       .getText();
     expect(val).toBe('');
   });
@@ -157,7 +157,7 @@ describe('Application launch', function spec() {
 
     it('should have @@INIT action on Redux DevTools', async () => {
       const { client } = this.app;
-      const val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+      const val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
     });
@@ -172,7 +172,7 @@ describe('Application launch', function spec() {
       // Click `Store instance 1`
       await client.element('//div[text()="Store instance 1"]')
         .click().then(wait);
-      let val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+      let val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
       expect(val).toMatch(/TEST_PASS_FOR_STORE_1/);
@@ -184,7 +184,7 @@ describe('Application launch', function spec() {
       // Click `Store instance 2`
       await client.element('//div[text()="Store instance 2"]')
         .click().then(wait);
-      val = await client.element('//div[contains(@class, "actionListRows--jss-")]')
+      val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
       expect(val).toMatch(/TEST_PASS_FOR_STORE_2/);
