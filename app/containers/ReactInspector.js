@@ -15,8 +15,8 @@ import ws from 'ws';
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 
-import Panel from 'react-devtools/frontend/Panel';
-import backendScript from 'raw!react-devtools/shells/electron/build/backend.js';
+import backendScript from 'raw!../react-devtools/shells/electron/build/backend.js';
+import Panel from '../react-devtools/frontend/Panel';
 
 const getNewKey = () => `react-panel${Math.random().toString().substr(2, 10)}`;
 

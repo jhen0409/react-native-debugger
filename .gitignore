@@ -8,3 +8,4 @@ dist/**
 release/
 *.bundle.js
 tmp/
+app/react-devtools

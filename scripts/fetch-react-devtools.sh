@@ -1,8 +1,9 @@
 #!/bin/bash
 
-git clone https://github.com/jhen0409/react-devtools.git node_modules/react-devtools
-cd node_modules/react-devtools && git checkout rndebugger
+rm -rf app/react-devtools
+git clone https://github.com/jhen0409/react-devtools.git app/react-devtools
+cd app/react-devtools && git checkout rndebugger
 cd ../..
-rm -rf node_modules/react-devtools/.*
+rm -rf app/react-devtools/.*
 
 npm run build:devtools

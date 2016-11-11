@@ -18,10 +18,6 @@ export default {
       include: [
         join(__dirname, '../app'),
         join(__dirname, '../electron'),
-        join(__dirname, '../node_modules/react-devtools'),
-      ],
-      exclude: [
-        join(__dirname, '../node_modules/react-devtools/node_modules'),
       ],
     }, {
       test: /\.json/,
