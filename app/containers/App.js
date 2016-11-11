@@ -85,7 +85,7 @@ export default class App extends Component {
     ipcRenderer.removeAllListeners('toggle-devtools');
   }
 
-  onReudxDockResize = size => {
+  onReduxDockResize = size => {
     const { setting } = this.props.actions;
     setting.resizeDevTools(size);
   };
@@ -115,7 +115,7 @@ export default class App extends Component {
         position="top"
         size={size}
         dimMode="none"
-        onSizeChange={this.onReudxDockResize}
+        onSizeChange={this.onReduxDockResize}
       >
         <ReduxDevTools />
       </Dock>
