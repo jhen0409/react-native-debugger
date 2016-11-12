@@ -145,6 +145,7 @@ export default function devToolsEnhancer(options = {}) {
   const {
     name,
     maxAge = 30,
+    shouldCatchErrors = !!global.shouldCatchErrors,
     shouldHotReload,
     shouldRecordChanges,
     shouldStartLocked,
@@ -162,6 +163,7 @@ export default function devToolsEnhancer(options = {}) {
     const store = configureStore(
       next, monitorReducer, {
         maxAge,
+        shouldCatchErrors,
         shouldHotReload,
         shouldRecordChanges,
         shouldStartLocked,
