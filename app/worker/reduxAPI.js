@@ -12,12 +12,8 @@ function configureStore(next, subscriber, options) {
 const instances = { /* id, name, store */ };
 
 let lastAction;
-let filters;
 let isExcess;
 let listenerAdded;
-let actionCreators;
-let stateSanitizer;
-let actionSanitizer;
 let locked;
 let paused;
 
@@ -25,23 +21,14 @@ function generateId(id) {
   return id || Math.random().toString(36).substr(2);
 }
 
-function init(options) {
-  if (options.filters) {
-    filters = options.filters;
-  }
-  if (options.actionCreators) {
-    actionCreators = () => getActionsArray(options.actionCreators);
-  }
-  stateSanitizer = options.stateSanitizer;
-  actionSanitizer = options.actionSanitizer;
-}
-
 function getLiftedState(store) {
   return filterStagedActions(store.liftedStore.getState());
 }
 
 function relay(type, state, instance, action, nextActionId) {
-  if (filters && isFiltered(action, filters)) return;
+  const { filters, stateSanitizer, actionSanitizer } = instance;
+
+  if (filters && !Array.isArray(action) && isFiltered(action, filters)) return;
   const message = {
     type,
     id: instance.id,
@@ -66,8 +53,8 @@ function relay(type, state, instance, action, nextActionId) {
 
 function dispatchRemotely(action, id) {
   try {
+    const { store, actionCreators } = instances[id];
     const result = evalAction(action, actionCreators);
-    const { store } = instances[id];
     store.dispatch(result);
   } catch (e) {
     relay('ERROR', e.message, instances[id]);
@@ -110,14 +97,16 @@ function start(instance) {
     });
     listenerAdded = true;
   }
-
-  if (typeof actionCreators === 'function') actionCreators = actionCreators();
-  relay('STATE', getLiftedState(instance.store), instance, actionCreators);
+  const { store, actionCreators } = instance;
+  if (typeof actionCreators === 'function') {
+    instance.actionCreators = actionCreators();
+  }
+  relay('STATE', getLiftedState(store), instance, instance.actionCreators);
 }
 
 function checkForReducerErrors(liftedState, instance) {
   if (liftedState.computedStates[liftedState.currentStateIndex].error) {
-    relay('STATE', filterStagedActions(liftedState, filters), instance);
+    relay('STATE', filterStagedActions(liftedState, instance.filters), instance);
     return true;
   }
   return false;
@@ -147,13 +136,11 @@ function handleChange(state, liftedState, maxAge, instance) {
       if (lastAction) lastAction = undefined;
       else return;
     }
-    relay('STATE', filterStagedActions(liftedState, filters), instance);
+    relay('STATE', filterStagedActions(liftedState, instance.filters), instance);
   }
 }
 
 export default function devToolsEnhancer(options = {}) {
-  init(options);
-
   const defaultName = global.require ? global.require('Platform').OS : 'default';
   const {
     name,
@@ -161,7 +148,11 @@ export default function devToolsEnhancer(options = {}) {
     shouldHotReload,
     shouldRecordChanges,
     shouldStartLocked,
-    pauseActionType,
+    pauseActionType = '@@PAUSED',
+    actionCreators,
+    filters,
+    actionSanitizer,
+    stateSanitizer,
   } = options;
   const id = generateId(options.instanceId);
 
@@ -172,7 +163,7 @@ export default function devToolsEnhancer(options = {}) {
         shouldHotReload,
         shouldRecordChanges,
         shouldStartLocked,
-        pauseActionType: pauseActionType || '@@PAUSED',
+        pauseActionType,
       }
     )(reducer, initialState);
 
@@ -180,6 +171,10 @@ export default function devToolsEnhancer(options = {}) {
       name: name || `${defaultName}-${id}`,
       id,
       store,
+      filters,
+      actionCreators: actionCreators && (() => getActionsArray(actionCreators)),
+      stateSanitizer,
+      actionSanitizer,
     };
 
     start(instances[id]);
