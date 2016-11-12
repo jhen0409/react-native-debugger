@@ -118,6 +118,13 @@ export default (win, iconPath) =>
     }, {
       label: 'Bring All to Front',
       selector: 'arrangeInFront:',
+    }, {
+      label: 'Stay in Front',
+      type: 'checkbox',
+      checked: false,
+      click({ checked }) {
+        win.setAlwaysOnTop(checked, 'floating');
+      },
     }],
   }, {
     label: 'Help',

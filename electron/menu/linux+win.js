@@ -15,6 +15,17 @@ export default (win, iconPath) =>
         win.checkUpdate(win, iconPath, true);
       },
     }, {
+      type: 'separator',
+    }, {
+      label: 'Stay in Front',
+      type: 'checkbox',
+      checked: false,
+      click({ checked }) {
+        win.setAlwaysOnTop(checked);
+      },
+    }, {
+      type: 'separator',
+    }, {
       label: 'Close',
       accelerator: 'Ctrl+W',
       click() {
