@@ -3,3 +3,4 @@ dist/
 release/
 node_modules/
 test/e2e/fixture/
+app/react-devtools
