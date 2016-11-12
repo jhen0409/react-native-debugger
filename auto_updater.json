@@ -1,5 +1,5 @@
 {
   "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.0/rn-debugger-darwin-x64.zip",
-  "name": "v0.5.0",
-  "notes": "The auto_updater.json is unnecessary in this version, just retention."
+  "name": "v0.5.1",
+  "notes": "1. [Feature] Add `Stay in Front` menu item.\n2. [Feature] Add shouldCatchErrors, actionsBlacklist, actionsWhitelist option for redux API of worker\n3. [Bugfix] Pass filters to `isFiltered` call to satisfy expected signature"
 }
