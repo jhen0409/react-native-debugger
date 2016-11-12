@@ -4,8 +4,7 @@
 
 ![React Native Debugger](https://cloud.githubusercontent.com/assets/3001525/15636231/9e47d322-262a-11e6-8326-9a05fc73adec.png)
 
-The standalone app based on official debugger of React Native
-This is a standalone app for debugging React Native apps, it's based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), and include React Developer Tools / Redux DevTools.
+This is a standalone app for debugging React Native apps, it's based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), and include React Inspector / Redux DevTools.
 
 ## Installation
 
@@ -157,6 +156,21 @@ Name                  | Description
 You need to switch worker thread for console, open `Console` tab on Chrome DevTools, tap `top` context and change to `RNDebuggerWorker.js` context:
 
 ![2016-11-05 6 56 45](https://cloud.githubusercontent.com/assets/3001525/20025024/7edce770-a325-11e6-9e77-618c7ba04123.png)
+
+#### Inpsect network requests by `Network` tab of Chrome DevTools (See also [#15](https://github.com/jhen0409/react-native-debugger/issues/15))
+
+We can do:
+
+```js
+// const bak = global.XMLHttpRequest;
+const xhr = global.originalXMLHttpRequest ?
+  global.originalXMLHttpRequest :
+  global.XMLHttpRequest;
+
+global.XMLHttpRequest = xhr;
+```
+
+__WARNING__ It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
 
 ## Development
 
