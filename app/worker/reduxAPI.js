@@ -151,6 +151,8 @@ export default function devToolsEnhancer(options = {}) {
     pauseActionType = '@@PAUSED',
     actionCreators,
     filters,
+    actionsBlacklist,
+    actionsWhitelist,
     actionSanitizer,
     stateSanitizer,
   } = options;
@@ -171,7 +173,11 @@ export default function devToolsEnhancer(options = {}) {
       name: name || `${defaultName}-${id}`,
       id,
       store,
-      filters,
+      filters: (filters || actionsBlacklist || actionsWhitelist) && {
+        whitelist: actionsWhitelist,
+        blacklist: actionsBlacklist,
+        ...filters,
+      },
       actionCreators: actionCreators && (() => getActionsArray(actionCreators)),
       stateSanitizer,
       actionSanitizer,
