@@ -71,6 +71,8 @@ function handleMessages(message) {
   }
 
   const { store } = instances[id || instanceId];
+  if (!store) return;
+
   if (type === 'IMPORT') {
     store.liftedStore.dispatch({
       type: 'IMPORT_STATE',
