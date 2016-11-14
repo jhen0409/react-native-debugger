@@ -52,11 +52,15 @@ if (__DEV__) {
 
 And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.31 isn't need `adb reverse`)
 
-## Redux DevTools
+## Redux DevTools (and [RemoteDev on local](https://github.com/zalmoxisus/remotedev) even [MobX](https://github.com/zalmoxisus/mobx-remotedev))
 
 We used [remotedev-app](https://github.com/zalmoxisus/remotedev-app) as a Redux DevTools UI, but it not need `remotedev-server`. That was great because it included multiple monitors and there are many powerful features.
 
-The debugger worker will inject `__REDUX_DEVTOOLS_EXTENSION__` enhancer, `__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` to global, we provide the same name as [redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension), you can add it to store:
+For [`RemoteDev`](https://github.com/zalmoxisus/remotedev) (Any flux architecture), you can use `__REMOTEDEV__` instead of `require('remotedev')`.
+
+For [`MobX`](https://github.com/mobxjs/mobx), you can use [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) directly, and ensure `remote` option is `false`. ([`Example`](https://github.com/jhen0409/react-native-debugger-mobx-example))
+
+For [`Redux`](https://github.com/reactjs/redux), the debugger worker will inject `__REDUX_DEVTOOLS_EXTENSION__`, `__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` to global, we provide the same name as [redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension), you can add it to store: ([`Example`](https://github.com/jhen0409/react-native-debugger-redux-example))
 
 #### Basic store
 
@@ -171,6 +175,8 @@ global.XMLHttpRequest = xhr;
 ```
 
 __WARNING__ It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
+
+If you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
 
 ## Development
 
