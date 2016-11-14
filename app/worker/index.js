@@ -15,12 +15,19 @@ self.global = self;
 // redux store enhancer
 const devTools = require('./reduxAPI');
 
+/* eslint-disable no-underscore-dangle */
+
+self.__REMOTEDEV__ = require('./remotedev');
+
+devTools.default.send = self.__REMOTEDEV__.send;
+devTools.default.connect = self.__REMOTEDEV__.connect;
+
 self.reduxNativeDevTools = devTools.default;
 self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
 
 self.devToolsExtension = devTools.default;
-self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default; // eslint-disable-line
-self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools; // eslint-disable-line
+self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default;
+self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
@@ -36,7 +43,7 @@ const messageHandlers = {
     sendReply(null /* result */, error);
     // Because the worker message not have notify the remote JS runtime (for Electron?)
     // we need to regularly update JS runtime
-    if (!self.__RND_INTERVAL__) { // eslint-disable-line
+    if (!self.__RND_INTERVAL__) {
       self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
     }
   },

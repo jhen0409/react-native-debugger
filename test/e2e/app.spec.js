@@ -159,10 +159,10 @@ describe('Application launch', function spec() {
       const { client } = this.app;
       const val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
-      expect(val).toMatch(/@@INIT/);
+      expect(val).toMatch(/@@redux\/INIT/);
     });
 
-    it('should have two store instances on Redux DevTools', async () => {
+    it('should have four store instances on Redux DevTools', async () => {
       const { client } = this.app;
       const wait = () => delay(750);
 
@@ -189,6 +189,30 @@ describe('Application launch', function spec() {
       expect(val).toMatch(/@@INIT/);
       expect(val).toMatch(/TEST_PASS_FOR_STORE_2/);
       expect(val).toNotMatch(/TEST_PASS_FOR_STORE_1/);
+
+      // Click dropdown
+      await client.element('//div[text()="Store instance 2"]')
+        .click().then(wait);
+      // Click `Store instance 2`
+      await client.element('//div[text()="Store instance 3 for MobX"]')
+        .click().then(wait);
+      val = await client.element('//div[contains(@class, "actionListRows-")]')
+        .getText();
+      expect(val).toMatch(/@@INIT/);
+      expect(val).toMatch(/increment/);
+      expect(val).toNotMatch(/TEST_PASS_FOR_STORE_2/);
+
+      // Click dropdown
+      await client.element('//div[text()="Store instance 3 for MobX"]')
+        .click().then(wait);
+      // Click `Store instance 2`
+      await client.element('//div[text()="Store instance 4 for RemoteDev"]')
+        .click().then(wait);
+      val = await client.element('//div[contains(@class, "actionListRows-")]')
+        .getText();
+      expect(val).toMatch(/@@redux\/INIT/);
+      expect(val).toMatch(/TEST_PASS_FOR_STORE_4/);
+      expect(val).toNotMatch(/increment/);
     });
   });
 });
