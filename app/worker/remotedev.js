@@ -64,9 +64,8 @@ export function send(action, state, name, type, instanceId) {
 }
 
 export function connect(options = {}) {
-  const defaultName = global.require ? global.require('Platform').OS : 'default';
   const id = generateId(options.instanceId);
-  const name = options.name || `${defaultName}-${id}`;
+  const name = options.name || id;
   start();
   return {
     init(state, action) {

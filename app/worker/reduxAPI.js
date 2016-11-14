@@ -143,7 +143,6 @@ function handleChange(state, liftedState, maxAge, instance) {
 }
 
 export default function devToolsEnhancer(options = {}) {
-  const defaultName = global.require ? global.require('Platform').OS : 'default';
   const {
     name,
     maxAge = 30,
@@ -174,7 +173,7 @@ export default function devToolsEnhancer(options = {}) {
     )(reducer, initialState);
 
     instances[id] = {
-      name: name || `${defaultName}-${id}`,
+      name: name || id,
       id,
       store,
       filters: (filters || actionsBlacklist || actionsWhitelist) && {
