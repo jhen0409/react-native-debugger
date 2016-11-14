@@ -159,60 +159,69 @@ describe('Application launch', function spec() {
       const { client } = this.app;
       const val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
-      expect(val).toMatch(/@@redux\/INIT/);
+      expect(val).toMatch(/@@redux\/INIT/);  // Last store is `RemoteDev store instance 1`
     });
 
-    it('should have four store instances on Redux DevTools', async () => {
-      const { client } = this.app;
-      const wait = () => delay(750);
+    let currentInstance = 'Autoselect instances';  // Default instance
+    const wait = () => delay(750);
+    const selectInstance = async (client, instance) => {
+      await client.element(`//div[text()="${currentInstance}"]`)
+        .click().then(wait);
+      currentInstance = instance;
+      return client.element(`//div[text()="${instance}"]`)
+        .click().then(wait);
+    };
 
-      // Click dropdown
-      await client.element('//div[text()="Autoselect instances"]')
-        .click().then(wait);
-      // Click `Store instance 1`
-      await client.element('//div[text()="Store instance 1"]')
-        .click().then(wait);
+    it('should have two Redux store instances on Redux DevTools', async () => {
+      const { client } = this.app;
+
+      await selectInstance(client, 'Redux store instance 1');
+
       let val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/TEST_PASS_FOR_STORE_1/);
-      expect(val).toNotMatch(/TEST_PASS_FOR_STORE_2/);
+      expect(val).toMatch(/TEST_PASS_FOR_REDUX_STORE_1/);
+      expect(val).toNotMatch(/TEST_PASS_FOR_REDUX_STORE_2/);
 
-      // Click dropdown
-      await client.element('//div[text()="Store instance 1"]')
-        .click().then(wait);
-      // Click `Store instance 2`
-      await client.element('//div[text()="Store instance 2"]')
-        .click().then(wait);
+      await selectInstance(client, 'Redux store instance 2');
+
       val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/TEST_PASS_FOR_STORE_2/);
-      expect(val).toNotMatch(/TEST_PASS_FOR_STORE_1/);
+      expect(val).toMatch(/TEST_PASS_FOR_REDUX_STORE_2/);
+      expect(val).toNotMatch(/TEST_PASS_FOR_REDUX_STORE_1/);
+    });
 
-      // Click dropdown
-      await client.element('//div[text()="Store instance 2"]')
-        .click().then(wait);
-      // Click `Store instance 2`
-      await client.element('//div[text()="Store instance 3 for MobX"]')
-        .click().then(wait);
+    it('should have two MobX store instances on Redux DevTools', async () => {
+      const { client } = this.app;
+
+      await selectInstance(client, 'MobX store instance 1');
+
+      let val = await client.element('//div[contains(@class, "actionListRows-")]')
+        .getText();
+      expect(val).toMatch(/@@INIT/);
+      expect(val).toMatch(/testPassForMobXStore1/);
+      expect(val).toNotMatch(/TEST_PASS_FOR_REDUX_STORE_2/);
+
+      await selectInstance(client, 'MobX store instance 2');
+
       val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/increment/);
-      expect(val).toNotMatch(/TEST_PASS_FOR_STORE_2/);
+      expect(val).toMatch(/testPassForMobXStore2/);
+      expect(val).toNotMatch(/testPassForMobXStore1/);
+    });
 
-      // Click dropdown
-      await client.element('//div[text()="Store instance 3 for MobX"]')
-        .click().then(wait);
-      // Click `Store instance 2`
-      await client.element('//div[text()="Store instance 4 for RemoteDev"]')
-        .click().then(wait);
-      val = await client.element('//div[contains(@class, "actionListRows-")]')
+    it('should have one RemoteDev store instances on Redux DevTools', async () => {
+      const { client } = this.app;
+
+      await selectInstance(client, 'RemoteDev store instance 1');
+
+      const val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
       expect(val).toMatch(/@@redux\/INIT/);
-      expect(val).toMatch(/TEST_PASS_FOR_STORE_4/);
-      expect(val).toNotMatch(/increment/);
+      expect(val).toMatch(/TEST_PASS_FOR_REMOTEDEV_STORE_1/);
+      expect(val).toNotMatch(/testPassForMobXStore2/);
     });
   });
 });

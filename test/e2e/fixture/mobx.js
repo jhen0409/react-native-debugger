@@ -3,14 +3,12 @@ const remotedev = require('mobx-remotedev/lib/dev').default;
 
 useStrict(true);
 
-const counter = observable({
-  counter: 0,
-});
+const store = observable({ value: 0 });
+store.testPassForMobXStore1 = action(function testPassForMobXStore1() {});
+remotedev(store, { name: 'MobX store instance 1' })
+  .testPassForMobXStore1();
 
-counter.increment = action(function increment() {
-  counter.counter++;
-});
-
-const store = remotedev(counter, { name: 'Store instance 3 for MobX' });
-
-store.increment();
+const store2 = observable({ value: 1 });
+store2.testPassForMobXStore2 = action(function testPassForMobXStore2() {});
+remotedev(store2, { name: 'MobX store instance 2' })
+  .testPassForMobXStore2();
