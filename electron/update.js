@@ -31,8 +31,8 @@ export default (mainWindow, icon, notify) => {
         icon,
         message: err.message,
       });
-      checking = false;
       console.log('[Updater]', err.message);
+      checking = false;
       return;
     }
     if (err || !status) {
@@ -48,9 +48,9 @@ export default (mainWindow, icon, notify) => {
         icon,
         message: 'The new version has been released.',
       });
+      checking = false;
       if (index === 1) return;
       shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
-      checking = false;
       console.log('[Updater] Open external link.');
       return;
     }
@@ -72,10 +72,8 @@ export default (mainWindow, icon, notify) => {
         'Please restart the application to apply the updates.',
       detail: `${releaseName}\n\n${releaseNotes}`,
     });
-    if (index === 1) {
-      checking = false;
-      return;
-    }
+    checking = false;
+    if (index === 1) return;
     updater.install();
   });
 };
