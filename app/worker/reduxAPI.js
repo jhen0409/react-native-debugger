@@ -28,7 +28,6 @@ function getLiftedState(store) {
 function relay(type, state, instance, action, nextActionId) {
   const { filters, stateSanitizer, actionSanitizer } = instance;
 
-  if (filters && !Array.isArray(action) && isFiltered(action, filters)) return;
   const message = {
     type,
     id: instance.id,
@@ -122,9 +121,11 @@ function monitorReducer(state = {}, action) {
 function handleChange(state, liftedState, maxAge, instance) {
   if (checkForReducerErrors(liftedState, instance)) return;
 
+  const { filters } = instance;
   if (lastAction === 'PERFORM_ACTION') {
     const nextActionId = liftedState.nextActionId;
     const liftedAction = liftedState.actionsById[nextActionId - 1];
+    if (isFiltered(liftedAction.action, filters)) return;
     relay('ACTION', state, instance, liftedAction, nextActionId);
     if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
   } else {
@@ -138,7 +139,7 @@ function handleChange(state, liftedState, maxAge, instance) {
       if (lastAction) lastAction = undefined;
       else return;
     }
-    relay('STATE', filterStagedActions(liftedState, instance.filters), instance);
+    relay('STATE', filterStagedActions(liftedState, filters), instance);
   }
 }
 
