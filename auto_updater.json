@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.2/rn-debugger-darwin-x64.zip",
-  "name": "v0.5.2",
-  "notes": "1. [Feature] Support MobX (mobx-remotedev)\n2. [Fix] Remove `global.require` usage for worker (For RN 0.38)"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.3/rn-debugger-darwin-x64.zip",
+  "name": "v0.5.3",
+  "notes": "1. [Fix] `forward slash` key listen when typing on another input (React Inspector)\n2. Update remotedev-app to v0.10.0-beta4"
 }

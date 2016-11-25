@@ -1599,9 +1599,9 @@ electron-chromedriver@~1.4.0:
     mkdirp "^0.5.1"
     request "^2.65.0"
 
-electron-context-menu@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.7.0.tgz#c6066aac73108a128759c1971eb67a3281074495"
+electron-context-menu@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.8.0.tgz#60c4b5e29d5514007be8728a6ebdf3cb694c4e3e"
   dependencies:
     electron-dl "^1.2.0"
     electron-is-dev "^0.1.1"
