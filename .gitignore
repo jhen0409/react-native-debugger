@@ -2,6 +2,7 @@ node_modules
 npm-debug.log
 .DS_Store
 dist/**
+!dist/css
 !dist/package.json
 !dist/app.html
 !dist/logo.png

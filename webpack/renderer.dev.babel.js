@@ -13,6 +13,15 @@ export default {
     ...baseConfig.output,
     publicPath: `http://localhost:${port}/js/`,
   },
+  module: {
+    loaders: [
+      ...baseConfig.module.loaders,
+      {
+        test: /\.css?$/,
+        loaders: ['style', 'raw'],
+      },
+    ],
+  },
   plugins: [
     ...baseConfig.plugins,
     new webpack.NoErrorsPlugin(),

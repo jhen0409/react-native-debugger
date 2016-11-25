@@ -9,6 +9,15 @@ export default {
     ...baseConfig.output,
     publicPath: 'js/',
   },
+  module: {
+    loaders: [
+      ...baseConfig.module.loaders,
+      {
+        test: /\.css?$/,
+        loaders: ['style', 'raw'],
+      },
+    ],
+  },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),

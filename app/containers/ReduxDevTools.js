@@ -1,3 +1,5 @@
+import 'remotedev-monitor-components/lib/presets';
+
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,7 +16,6 @@ import Dispatcher from 'remotedev-app/lib/containers/monitors/Dispatcher';
 import Notification from 'remotedev-app/lib/components/Notification';
 import Instances from 'remotedev-app/lib/components/Instances';
 import MonitorSelector from 'remotedev-app/lib/components/MonitorSelector';
-import TestGenerator from 'remotedev-app/lib/components/TestGenerator';
 
 // Button bar
 import DispatcherButton from 'remotedev-app/lib/components/buttons/DispatcherButton';
@@ -87,7 +88,7 @@ export default class ReduxDevTools extends Component {
           liftedState={liftedState}
           monitorState={monitorState}
           dispatch={liftedDispatch}
-          testComponent={isRedux && TestGenerator}
+          lib={options.lib}
         />
         <Notification />
         {sliderIsOpen && options.connectionId &&

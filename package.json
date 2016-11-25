@@ -14,7 +14,6 @@
     "build:devtools": "cross-env NODE_ENV=production webpack --config webpack/devtools.backend.babel.js --progress --profile --colors",
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.babel.js --progress --profile --colors",
     "build:renderer": "cross-env NODE_ENV=production webpack --config webpack/renderer.prod.babel.js --progress --profile --colors",
-    "prebuild": "node scripts/prebuild.js",
     "build": "npm run build:main && npm run build:renderer",
     "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
@@ -56,6 +55,7 @@
     "mocha": "^3.0.1",
     "raw-loader": "^0.5.1",
     "spectron": "^3.2.4",
+    "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "worker-loader": "^0.7.0"
@@ -73,7 +73,8 @@
     "redux": "^3.5.2",
     "redux-devtools-instrument": "^1.0.1",
     "redux-persist": "^4.0.0-beta1",
-    "remotedev-app": "^0.10.0-beta-4",
+    "remotedev-app": "^0.10.1",
+    "remotedev-monitor-components": "0.0.4",
     "remotedev-slider": "^1.1.1",
     "remotedev-utils": "0.0.5",
     "ws": "^1.1.1"
