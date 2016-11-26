@@ -26,5 +26,9 @@ export default {
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
     }),
   ],
+  resolve: {
+    ...baseConfig.resolve,
+    packageAlias: 'browser',
+  },
   target: 'electron-renderer',
 };

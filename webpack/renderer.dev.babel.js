@@ -29,5 +29,9 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
+  resolve: {
+    ...baseConfig.resolve,
+    packageAlias: 'browser',
+  },
   target: 'electron-renderer',
 };

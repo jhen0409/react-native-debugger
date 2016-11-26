@@ -1,9 +1,18 @@
 // Edit from https://github.com/zalmoxisus/remote-redux-devtools/blob/master/src/devTools.js
 
-import { stringify, parse } from 'jsan';
 import instrument from 'redux-devtools-instrument';
-import { evalAction, getActionsArray } from 'remotedev-utils';
-import { isFiltered, filterStagedActions, filterState } from 'remotedev-utils/lib/filters';
+import {
+  evalAction,
+  getActionsArray,
+  generateId,
+  stringify,
+} from 'remotedev-utils';
+import importState from 'remotedev-utils/lib/importState';
+import {
+  isFiltered,
+  filterStagedActions,
+  filterState,
+} from 'remotedev-utils/lib/filters';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
@@ -17,16 +26,16 @@ let listenerAdded;
 let locked;
 let paused;
 
-function generateId(id) {
-  return id || Math.random().toString(36).substr(2);
-}
-
 function getLiftedState(store) {
   return filterStagedActions(store.liftedStore.getState());
 }
 
 function relay(type, state, instance, action, nextActionId) {
-  const { filters, stateSanitizer, actionSanitizer } = instance;
+  const {
+    filters, predicate,
+    stateSanitizer, actionSanitizer,
+    serializeState, serializeAction,
+  } = instance;
 
   const message = {
     type,
@@ -36,16 +45,20 @@ function relay(type, state, instance, action, nextActionId) {
   if (state) {
     message.payload = type === 'ERROR' ?
       state :
-      stringify(filterState(state, type, filters, stateSanitizer, actionSanitizer, nextActionId));
+      stringify(
+        filterState(state, type, filters, stateSanitizer, actionSanitizer, nextActionId, predicate),
+        serializeState
+      );
   }
   if (type === 'ACTION') {
     message.action = stringify(
-      !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1)
+      !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1),
+      serializeAction
     );
     message.isExcess = isExcess;
     message.nextActionId = nextActionId;
   } else if (action) {
-    message.action = stringify(action);
+    message.action = stringify(action, serializeAction);
   }
   postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
 }
@@ -60,6 +73,17 @@ function dispatchRemotely(action, id) {
   }
 }
 
+function importPayloadFrom(store, state, instance) {
+  try {
+    const nextLiftedState = importState(state, instance);
+    if (!nextLiftedState) return;
+    store.liftedStore.dispatch({ type: 'IMPORT_STATE', ...nextLiftedState });
+    relay('STATE', getLiftedState(store), instance);
+  } catch (e) {
+    relay('ERROR', e.message);
+  }
+}
+
 function handleMessages(message) {
   const { id, instanceId, type, action, state, toAll } = message;
   if (toAll) {
@@ -69,17 +93,15 @@ function handleMessages(message) {
     return;
   }
 
-  const { store } = instances[id || instanceId];
+  const instance = instances[id || instanceId];
+  const { store } = instance;
   if (!store) return;
 
   if (type === 'IMPORT') {
-    store.liftedStore.dispatch({
-      type: 'IMPORT_STATE',
-      nextLiftedState: parse(state),
-    });
+    importPayloadFrom(store, state, instance);
   }
-  if (type === 'UPDATE' || type === 'IMPORT') {
-    relay('STATE', getLiftedState(store), instances[id]);
+  if (type === 'UPDATE') {
+    relay('STATE', getLiftedState(store), instance);
   }
   if (type === 'ACTION') {
     dispatchRemotely(action, id);
@@ -158,6 +180,11 @@ export default function devToolsEnhancer(options = {}) {
     actionsWhitelist,
     actionSanitizer,
     stateSanitizer,
+    deserializeState,
+    deserializeAction,
+    serializeState,
+    serializeAction,
+    predicate,
   } = options;
   const id = generateId(options.instanceId);
 
@@ -185,6 +212,11 @@ export default function devToolsEnhancer(options = {}) {
       actionCreators: actionCreators && (() => getActionsArray(actionCreators)),
       stateSanitizer,
       actionSanitizer,
+      deserializeState,
+      deserializeAction,
+      serializeState,
+      serializeAction,
+      predicate,
     };
 
     start(instances[id]);
