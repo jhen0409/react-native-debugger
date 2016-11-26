@@ -1,4 +1,5 @@
 ${startFlag}
+var __opn = require('opn');
 var __rndebuggerIsOpening = false;
 ${replaceFuncFlag}
   var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port;
@@ -42,7 +43,7 @@ ${replaceFuncFlag}
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
   if (process.platform === 'darwin' && !skipRNDebugger) {
-    opn(__rnd_path, { wait: false }, err => {
+    __opn(__rnd_path, { wait: false }, err => {
       if (err) {
         __connectToRND(false, pass => {
           if (!pass) {
