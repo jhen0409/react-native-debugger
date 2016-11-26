@@ -1,11 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { autoRehydrate, persistStore } from 'redux-persist';
+import exportState from 'remotedev-app/lib/middlewares/exportState';
 import debuggerAPI from '../middlewares/debuggerAPI';
 import reduxAPI from '../middlewares/reduxAPI';
 import reducer from '../reducers';
 
 const middlewares = applyMiddleware(
   debuggerAPI,
+  exportState,
   reduxAPI
 );
 

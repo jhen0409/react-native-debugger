@@ -63,13 +63,13 @@ function relay(type, state, instance, action, nextActionId) {
   postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
 }
 
-function dispatchRemotely(action, id) {
+function dispatchRemotely(action, instance) {
   try {
-    const { store, actionCreators } = instances[id];
+    const { store, actionCreators } = instance;
     const result = evalAction(action, actionCreators);
     store.dispatch(result);
   } catch (e) {
-    relay('ERROR', e.message, instances[id]);
+    relay('ERROR', e.message, instance);
   }
 }
 
@@ -80,8 +80,29 @@ function importPayloadFrom(store, state, instance) {
     store.liftedStore.dispatch({ type: 'IMPORT_STATE', ...nextLiftedState });
     relay('STATE', getLiftedState(store), instance);
   } catch (e) {
-    relay('ERROR', e.message);
+    relay('ERROR', e.message, instance);
   }
+}
+
+function exportState({ id: instanceId, store, serializeState }) {
+  const liftedState = store.liftedStore.getState();
+  const actionsById = liftedState.actionsById;
+  const payload = [];
+  liftedState.stagedActionIds.slice(1).forEach(id => {
+    payload.push(actionsById[id].action);
+  });
+  postMessage({
+    __IS_REDUX_NATIVE_MESSAGE__: true,
+    content: {
+      type: 'EXPORT',
+      payload: stringify(payload, serializeState),
+      committedState:
+        typeof liftedState.committedState !== 'undefined' ?
+          stringify(liftedState.committedState, serializeState) :
+          undefined,
+      instanceId,
+    },
+  });
 }
 
 function handleMessages(message) {
@@ -97,16 +118,24 @@ function handleMessages(message) {
   const { store } = instance;
   if (!store) return;
 
-  if (type === 'IMPORT') {
-    importPayloadFrom(store, state, instance);
-  }
-  if (type === 'UPDATE') {
-    relay('STATE', getLiftedState(store), instance);
-  }
-  if (type === 'ACTION') {
-    dispatchRemotely(action, id);
-  } else if (type === 'DISPATCH') {
-    store.liftedStore.dispatch(action);
+  switch (type) {
+    case 'DISPATCH':
+      store.liftedStore.dispatch(action);
+      return;
+    case 'ACTION':
+      dispatchRemotely(action, instance);
+      return;
+    case 'IMPORT':
+      importPayloadFrom(store, state, instance);
+      return;
+    case 'EXPORT':
+      exportState(instance);
+      return;
+    case 'UPDATE':
+      relay('STATE', getLiftedState(store), instance);
+      return;
+    default:
+      return;
   }
 }
 
