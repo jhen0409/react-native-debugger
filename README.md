@@ -139,19 +139,7 @@ There’re [just few lines](https://github.com/zalmoxisus/redux-devtools-extensi
 
 #### Options
 
-Name                  | Description
--------------         | -------------
-`name`                | *String* representing the instance name to be shown on the remote monitor. Default is `{platform os}-{hash id}`.
-`filters`             | *Map of arrays* named `whitelist` or `blacklist` to filter action types.
-`actionSanitizer`     | *Function* which takes action object and id number as arguments, and should return action object back. See the example bellow.
-`stateSanitizer`      | *Function* which takes state object and index as arguments, and should return state object back. See the example bellow.
-`maxAge`              | *Number* of maximum allowed actions to be stored on the history tree, the oldest actions are removed once maxAge is reached. Default is `30`.
-`actionCreators`      | *Array* or *Object* of action creators to dispatch remotely. See the [example](https://github.com/zalmoxisus/remote-redux-devtools/commit/b54652930dfd4e057991df8471c343957fd7bff7).
-`shouldCatchErrors`   | *Boolean* - if specified as `true`, whenever there’s an exception in reducers, the monitors will show the error message, and next actions will not be dispatched.
-`shouldHotReload`     | *Boolean* - if set to `false`, will not recompute the states on hot reloading (or on replacing the reducers). Default to `true`.
-`shouldRecordChanges` | *Boolean* - if specified as `false`, it will not record the changes till clicked on "Start recording" button on the monitor app. Default is `true`.
-`shouldStartLocked`   | *Boolean* - if specified as `true`, it will not allow any non-monitor actions to be dispatched till `lockChanges(false)` is dispatched. Default is `false`.
-`pauseActionType`     | *String*  - if specified, whenever clicking on `Pause recording` button and there are actions in the history log, will add this action type. If not specified, will commit when paused. Default is `@@PAUSED`.
+See [API documention of redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md) for more information.
 
 ## Debugging tips
 
