@@ -1,0 +1,49 @@
+html, body {
+  font-family: monaco, Consolas, Lucida Console, monospace;
+  overflow-y: hidden;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: rgb(53, 59, 70);
+}
+#root {
+  width: 100%;
+  height: 100%;
+}
+#logs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  white-space: pre;
+}
+@media print {
+  @page {
+    size: auto;
+    margin: 0;
+  }
+  body {
+    position: static;
+  }
+  /* Hide all elements except remotedev-app */
+  #root > div > div:not(:nth-child(1)) {
+    display: none !important;
+  }
+  .redux-container {
+    width: 100%;
+    height: 100%;
+    overflow: visible !important;
+    position: absolute !important;
+    z-index: 2147483647;
+    page-break-after: avoid;
+  }
+  .redux-container * {
+    overflow: visible !important;
+  }
+  .redux-buttonbar {
+    display: none !important;
+  }
+}
+.CodeMirror {
+  font-family: monaco, Consolas, Lucida Console, monospace !important;
+}
