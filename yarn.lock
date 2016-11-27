@@ -3136,7 +3136,7 @@ js-yaml@^3.5.1:
     argparse "^1.0.7"
     esprima "^2.6.0"
 
-jsan@^3.1.2, jsan@^3.1.3:
+jsan@^3.1.2, jsan@^3.1.3, jsan@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.5.tgz#8144b968ace7db092914a3639e9768181d686f61"
 
@@ -4578,9 +4578,9 @@ remotedev-app@^0.10.1:
     socketcluster-client "^5.0.0"
     styled-components "^1.1.1"
 
-remotedev-monitor-components@0.0.4, remotedev-monitor-components@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.4.tgz#b782c3992c89367f04af5ca1fc63b81b582c761a"
+remotedev-monitor-components@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.5.tgz#3a8142a0795f4893d665e42e1d4825fe7536104d"
   dependencies:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
@@ -4588,6 +4588,13 @@ remotedev-monitor-components@0.0.4, remotedev-monitor-components@^0.0.4:
 remotedev-monitor-components@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.2.tgz#96c1e14f7b7fd25d8fc0fd954e2311d00cbb7b56"
+  dependencies:
+    codemirror "^5.21.0"
+    styled-components "^1.1.1"
+
+remotedev-monitor-components@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.4.tgz#b782c3992c89367f04af5ca1fc63b81b582c761a"
   dependencies:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
@@ -4601,18 +4608,20 @@ remotedev-slider@1.1.3, remotedev-slider@^1.1.1:
     rebass "0.4.0-beta.6"
     reflexbox "^2.2.2"
 
-remotedev-utils@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/remotedev-utils/-/remotedev-utils-0.0.5.tgz#51816a7b856f3b5a161ac74bd91f6f00b2522c74"
-  dependencies:
-    get-params "^0.1.2"
-    lodash "^4.0.0"
-
 remotedev-utils@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/remotedev-utils/-/remotedev-utils-0.0.3.tgz#2119c3fa1b3e7e070fa2abe7cfbf618c55fb45c3"
   dependencies:
     get-params "^0.1.2"
+
+remotedev-utils@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/remotedev-utils/-/remotedev-utils-0.1.1.tgz#b4dc44d780cf4ef3656dda519b3d12246f5da825"
+  dependencies:
+    get-params "^0.1.2"
+    jsan "^3.1.5"
+    lodash "^4.0.0"
+    shortid "^2.2.6"
 
 remotedev@^0.2.2:
   version "0.2.3"
@@ -4903,6 +4912,10 @@ shelljs@^0.7.5:
     glob "^7.0.0"
     interpret "^1.0.0"
     rechoir "^0.6.2"
+
+shortid@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.6.tgz#3abbefc6c51074cf2c1f1e72f6216a1b45876d72"
 
 signal-exit@^3.0.0:
   version "3.0.1"
