@@ -1,16 +1,13 @@
 // Edit from https://github.com/zalmoxisus/remotedev/blob/master/src/devTools.js
 
 import { stringify, parse } from 'jsan';
+import { generateId } from 'remotedev-utils';
 
 let listenerAdded;
 const listeners = {};
 
 export function extractState(message) {
   return message.state ? parse(message.state) : undefined;
-}
-
-function generateId(instanceId) {
-  return instanceId || Math.random().toString(36).substr(2);
 }
 
 function handleMessages(message) {
