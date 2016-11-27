@@ -172,56 +172,64 @@ describe('Application launch', function spec() {
         .click().then(wait);
     };
 
-    it('should have two Redux store instances on Redux DevTools', async () => {
+    const expectActions = {
+      'Redux store instance 1': {
+        expt: [/@@INIT/, /TEST_PASS_FOR_REDUX_STORE_1/, /SHOW_FOR_REDUX_STORE_1/],
+        notExpt: [/NOT_SHOW_FOR_REDUX_STORE_1/, /TEST_PASS_FOR_REDUX_STORE_2/],
+      },
+      'Redux store instance 2': {
+        expt: [/@@INIT/, /TEST_PASS_FOR_REDUX_STORE_2/],
+        notExpt: [
+          /TEST_PASS_FOR_REDUX_STORE_1/,
+          /NOT_SHOW_1_FOR_REDUX_STORE_2/, /NOT_SHOW_1_FOR_REDUX_STORE_2/,
+        ],
+      },
+      'MobX store instance 1': {
+        expt: [/@@INIT/, /testPassForMobXStore1/],
+        notExpt: [/TEST_PASS_FOR_REDUX_STORE_2/],
+      },
+      'MobX store instance 2': {
+        expt: [/@@INIT/, /testPassForMobXStore2/],
+        notExpt: [/testPassForMobXStore1/],
+      },
+      'RemoteDev store instance 1': {
+        expt: [/@@redux\/INIT/, /TEST_PASS_FOR_REMOTEDEV_STORE_1/],
+        notExpt: [/testPassForMobXStore2/],
+      },
+    };
+
+    const runExpectActions = (name, val) => {
+      const { expt, notExpt } = expectActions[name];
+
+      for (const action of expt) {
+        expect(val).toMatch(action);
+      }
+      for (const action of notExpt) {
+        expect(val).toNotMatch(action);
+      }
+    };
+
+    const checkInstance = async name => {
       const { client } = this.app;
 
-      await selectInstance(client, 'Redux store instance 1');
-
-      let val = await client.element('//div[contains(@class, "actionListRows-")]')
+      await selectInstance(client, name);
+      const val = await client.element('//div[contains(@class, "actionListRows-")]')
         .getText();
-      expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/TEST_PASS_FOR_REDUX_STORE_1/);
-      expect(val).toNotMatch(/TEST_PASS_FOR_REDUX_STORE_2/);
+      runExpectActions(name, val);
+    };
 
-      await selectInstance(client, 'Redux store instance 2');
-
-      val = await client.element('//div[contains(@class, "actionListRows-")]')
-        .getText();
-      expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/TEST_PASS_FOR_REDUX_STORE_2/);
-      expect(val).toNotMatch(/TEST_PASS_FOR_REDUX_STORE_1/);
+    it('should have two Redux store instances on Redux DevTools', async () => {
+      await checkInstance('Redux store instance 1');
+      await checkInstance('Redux store instance 2');
     });
 
     it('should have two MobX store instances on Redux DevTools', async () => {
-      const { client } = this.app;
-
-      await selectInstance(client, 'MobX store instance 1');
-
-      let val = await client.element('//div[contains(@class, "actionListRows-")]')
-        .getText();
-      expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/testPassForMobXStore1/);
-      expect(val).toNotMatch(/TEST_PASS_FOR_REDUX_STORE_2/);
-
-      await selectInstance(client, 'MobX store instance 2');
-
-      val = await client.element('//div[contains(@class, "actionListRows-")]')
-        .getText();
-      expect(val).toMatch(/@@INIT/);
-      expect(val).toMatch(/testPassForMobXStore2/);
-      expect(val).toNotMatch(/testPassForMobXStore1/);
+      await checkInstance('MobX store instance 1');
+      await checkInstance('MobX store instance 2');
     });
 
     it('should have one RemoteDev store instances on Redux DevTools', async () => {
-      const { client } = this.app;
-
-      await selectInstance(client, 'RemoteDev store instance 1');
-
-      const val = await client.element('//div[contains(@class, "actionListRows-")]')
-        .getText();
-      expect(val).toMatch(/@@redux\/INIT/);
-      expect(val).toMatch(/TEST_PASS_FOR_REMOTEDEV_STORE_1/);
-      expect(val).toNotMatch(/testPassForMobXStore2/);
+      await checkInstance('RemoteDev store instance 1');
     });
   });
 });

@@ -76,7 +76,7 @@
     "remotedev-app": "^0.10.1",
     "remotedev-monitor-components": "0.0.5",
     "remotedev-slider": "^1.1.1",
-    "remotedev-utils": "^0.1.0",
+    "remotedev-utils": "^0.1.1",
     "ws": "^1.1.1"
   }
 }

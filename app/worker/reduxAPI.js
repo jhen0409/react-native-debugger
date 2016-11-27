@@ -9,6 +9,7 @@ import {
 } from 'remotedev-utils';
 import importState from 'remotedev-utils/lib/importState';
 import {
+  getLocalFilter,
   isFiltered,
   filterStagedActions,
   filterState,
@@ -26,8 +27,8 @@ let listenerAdded;
 let locked;
 let paused;
 
-function getLiftedState(store) {
-  return filterStagedActions(store.liftedStore.getState());
+function getLiftedState(store, filters) {
+  return filterStagedActions(store.liftedStore.getState(), filters);
 }
 
 function relay(type, state, instance, action, nextActionId) {
@@ -78,7 +79,7 @@ function importPayloadFrom(store, state, instance) {
     const nextLiftedState = importState(state, instance);
     if (!nextLiftedState) return;
     store.liftedStore.dispatch({ type: 'IMPORT_STATE', ...nextLiftedState });
-    relay('STATE', getLiftedState(store), instance);
+    relay('STATE', getLiftedState(store, instance.filters), instance);
   } catch (e) {
     relay('ERROR', e.message, instance);
   }
@@ -115,7 +116,7 @@ function handleMessages(message) {
   }
 
   const instance = instances[id || instanceId];
-  const { store } = instance;
+  const { store, filters } = instance;
   if (!store) return;
 
   switch (type) {
@@ -132,7 +133,7 @@ function handleMessages(message) {
       exportState(instance);
       return;
     case 'UPDATE':
-      relay('STATE', getLiftedState(store), instance);
+      relay('STATE', getLiftedState(store, filters), instance);
       return;
     default:
       return;
@@ -149,11 +150,11 @@ function start(instance) {
     });
     listenerAdded = true;
   }
-  const { store, actionCreators } = instance;
+  const { store, actionCreators, filters } = instance;
   if (typeof actionCreators === 'function') {
     instance.actionCreators = actionCreators();
   }
-  relay('STATE', getLiftedState(store), instance, instance.actionCreators);
+  relay('STATE', getLiftedState(store, filters), instance, instance.actionCreators);
 }
 
 function checkForReducerErrors(liftedState, instance) {
@@ -233,11 +234,10 @@ export default function devToolsEnhancer(options = {}) {
       name: name || id,
       id,
       store,
-      filters: (filters || actionsBlacklist || actionsWhitelist) && {
-        whitelist: actionsWhitelist,
-        blacklist: actionsBlacklist,
-        ...filters,
-      },
+      filters: getLocalFilter({
+        actionsWhitelist: (filters && filters.whitelist) || actionsWhitelist,
+        actionsBlacklist: (filters && filters.blacklist) || actionsBlacklist,
+      }),
       actionCreators: actionCreators && (() => getActionsArray(actionCreators)),
       stateSanitizer,
       actionSanitizer,
