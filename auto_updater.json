@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.4/rn-debugger-darwin-x64.zip",
-  "name": "v0.5.4",
-  "notes": "1. Upgrade remotedev-app to v0.10.1\n2. Support more options for compatible redux-devtools-extension API\n3. Fix export button"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.5/rn-debugger-darwin-x64.zip",
+  "name": "v0.5.5",
+  "notes": "1. Fix `forward slash` key listen for typing on Dispatcher input\n2. Fix filters not work if filter more than two actions for reduxAPI"
 }

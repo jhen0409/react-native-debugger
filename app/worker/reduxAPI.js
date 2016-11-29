@@ -19,7 +19,7 @@ function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
 }
 
-const instances = { /* id, name, store */ };
+const instances = { /* [id]: { name, store, ... } */ };
 
 let lastAction;
 let isExcess;
