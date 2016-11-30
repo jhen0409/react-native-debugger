@@ -64,6 +64,7 @@
     "electron-context-menu": "^0.8.0",
     "electron-gh-releases": "^2.0.4",
     "jsan": "^3.1.2",
+    "multiline-template": "^0.1.1",
     "node-watch": "^0.4.0",
     "react": "^15.4.0",
     "react-addons-create-fragment": "^15.4.0",
