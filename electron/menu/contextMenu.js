@@ -1,17 +1,11 @@
 import contextMenu from 'electron-context-menu';
+import { item, n, toggleDevTools } from './util';
 
 export default win =>
   contextMenu({
     showInspectElement: process.env.NODE_ENV === 'development',
-    prepend: () => [{
-      label: 'Toggle React DevTools',
-      click() {
-        win.webContents.send('toggle-devtools', 'react');
-      },
-    }, {
-      label: 'Toggle Redux DevTools',
-      click() {
-        win.webContents.send('toggle-devtools', 'redux');
-      },
-    }],
+    prepend: () => [
+      item('Toggle React DevTools', n, () => toggleDevTools(win, 'react')),
+      item('Toggle Redux DevTools', n, () => toggleDevTools(win, 'redux')),
+    ],
   });
