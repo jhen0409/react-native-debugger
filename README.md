@@ -4,7 +4,7 @@
 
 ![React Native Debugger](https://cloud.githubusercontent.com/assets/3001525/15636231/9e47d322-262a-11e6-8326-9a05fc73adec.png)
 
-This is a standalone app for debugging React Native apps, it's based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), and include React Inspector / Redux DevTools.
+This is a standalone app for debugging React Native apps, it's based on the official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), and includes React Inspector / Redux DevTools.
 
 ## Installation
 
@@ -20,10 +20,9 @@ $ brew update && brew cask install react-native-debugger
 
 You must make sure all `http://localhost:8081/debugger-ui` pages are closed, then open the app to wait state, and reload JS with your simulator / device.
 
-Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react-native-debugger/blob/master/patch), it's can be:
+Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react-native-debugger/blob/master/patch), it can:
 
-* Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager.
-* Avoid you open `deubgger-ui` page, and forget to close it. :)
+* Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
 
 #### Platform support
 
@@ -32,7 +31,7 @@ Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react
 
 ## Debugger
 
-The Debugger part is reference from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
+The Debugger part is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
 
 ## React DevTools
 
