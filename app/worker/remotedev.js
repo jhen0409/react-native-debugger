@@ -7,7 +7,9 @@ let listenerAdded;
 const listeners = {};
 
 export function extractState(message) {
-  return message.state ? parse(message.state) : undefined;
+  if (!message || !message.state) return undefined;
+  if (typeof message.state === 'string') return parse(message.state);
+  return message.state;
 }
 
 function handleMessages(message) {
@@ -31,30 +33,35 @@ export function start() {
   }
 }
 
-function transformAction(action) {
+function transformAction(action, config) {
   if (action.action) return action;
   const liftedAction = { timestamp: Date.now() };
-  if (typeof action === 'object') {
-    liftedAction.action = action;
-    if (!action.type) liftedAction.action.type = action.id || action.actionType || 'update';
-  } else if (typeof action === 'undefined') {
-    liftedAction.action = 'update';
+  if (action) {
+    if (config.getActionType) {
+      liftedAction.action = config.getActionType(action);
+    } else if (typeof action === 'string') {
+      liftedAction.action = { type: action };
+    } else if (!action.type) {
+      liftedAction.action = { type: 'update' };
+    } else {
+      liftedAction.action = action;
+    }
   } else {
     liftedAction.action = { type: action };
   }
   return liftedAction;
 }
 
-export function send(action, state, name, type, instanceId) {
+export function send(action, state, type, options) {
   start();
   setTimeout(() => {
     const message = {
       payload: state ? stringify(state) : '',
-      action: type === 'ACTION' ? stringify(transformAction(action)) : action,
+      action: type === 'ACTION' ? stringify(transformAction(action, options)) : action,
       type: type || 'ACTION',
-      id: instanceId,
-      instanceId,
-      name,
+      id: options.instanceId,
+      instanceId: options.instanceId,
+      name: options.name,
     };
     postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
   }, 0);
@@ -62,11 +69,15 @@ export function send(action, state, name, type, instanceId) {
 
 export function connect(options = {}) {
   const id = generateId(options.instanceId);
-  const name = options.name || id;
+  const opts = {
+    ...options,
+    instanceId: id,
+    name: options.name || id,
+  };
   start();
   return {
     init(state, action) {
-      send(action || {}, state, name, 'INIT', id);
+      send(action || {}, state, 'INIT', opts);
     },
     subscribe(listener) {
       if (!listener) return undefined;
@@ -83,13 +94,13 @@ export function connect(options = {}) {
     },
     send(action, payload) {
       if (action) {
-        send(action, payload, name, 'ACTION', id);
+        send(action, payload, 'ACTION', opts);
       } else {
-        send(undefined, payload, name, 'STATE', id);
+        send(undefined, payload, 'STATE', opts);
       }
     },
     error(payload) {
-      send(undefined, payload, name, 'Error', id);
+      send(undefined, payload, 'Error', opts);
     },
   };
 }
