@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { BrowserWindow } from 'electron';
 
 export default async () => {
@@ -16,6 +18,8 @@ export default async () => {
       } catch (e) {} // eslint-disable-line
     }
   } else {
+    if (!fs.existsSync(path.join(__dirname, 'devtools_author'))) return;
+
     const name = 'DevTools Author';
     const extension = BrowserWindow.getDevToolsExtensions()[name];
     const { version } = require('./devtools_author/manifest.json'); // eslint-disable-line
