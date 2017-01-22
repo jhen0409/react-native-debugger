@@ -27,6 +27,6 @@ export default async () => {
       if (extension.version === version) return;
       BrowserWindow.removeDevToolsExtension(name);
     }
-    BrowserWindow.addDevToolsExtension('devtools_author/');
+    BrowserWindow.addDevToolsExtension(path.join(__dirname, 'devtools_author/'));
   }
 };
