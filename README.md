@@ -23,19 +23,21 @@ You must make sure all `http://localhost:8081/debugger-ui` pages are closed, the
 Also, you can use [react-native-debugger-open](https://github.com/jhen0409/react-native-debugger/blob/master/patch), it can:
 
 * Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
+* Detect react-native packager port then send to the app, if you launch packager with custom `--port`, this will very useful
 
 #### Platform support
 
 * [React Native](https://github.com/facebook/react-native) >= 0.21.0
 * [React Native for macOS](https://github.com/ptmt/react-native-desktop) (formerly react-native-desktop) >= 0.8.7
+* [React Native for Windows](https://github.com/ReactWindows/react-native-windows/blob/master/Libraries/Devtools/setupDevtools.windows.js) (need to remove [setupDevtools.windows.js](https://github.com/ReactWindows/react-native-windows/blob/master/Libraries/Devtools/setupDevtools.windows.js))
 
 ## Debugger
 
 The Debugger part is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
 
-## React DevTools
+## React Inspector
 
-The React Developer Tools part from [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a WebSocket server (port: `8097`) to waiting React Native connection.
+The React Inspector part from [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a WebSocket server (port: `8097`) to waiting React Native connection.
 
 If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Core/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Core/Devtools/setupDevtools.js#L17).
 
@@ -53,92 +55,19 @@ And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.3
 
 ## Redux DevTools (and [RemoteDev on local](https://github.com/zalmoxisus/remotedev) even [MobX](https://github.com/zalmoxisus/mobx-remotedev))
 
-We used [remotedev-app](https://github.com/zalmoxisus/remotedev-app) as a Redux DevTools UI, but it not need `remotedev-server`. That was great because it included multiple monitors and there are many powerful features.
+We used [RemoteDev App](https://github.com/zalmoxisus/remotedev-app) and made the API same with [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension)!
 
-For [`RemoteDev`](https://github.com/zalmoxisus/remotedev) (Any flux architecture), you can use `__REMOTEDEV__` instead of `require('remotedev')`.
+If you're enabled `Debug JS remotely` with React Native Debugger, the following API is already included in global:
 
-For [`MobX`](https://github.com/mobxjs/mobx), you can use [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) directly, and ensure `remote` option is `false`. ([`Example`](https://github.com/jhen0409/react-native-debugger-mobx-example))
+* `window.__REDUX_DEVTOOLS_EXTENSION__`
+* `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__`
 
-For [`Redux`](https://github.com/reactjs/redux), the debugger worker will inject `__REDUX_DEVTOOLS_EXTENSION__`, `__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` to global, we provide the same name as [redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension), you can add it to store: ([`Example`](https://github.com/jhen0409/react-native-debugger-redux-example))
+See [usage of redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension#usage) for more information.
 
-#### Basic store
+#### Examples
 
-```js
-import { createStore, applyMiddleware } from 'redux';
-
-const store = createStore(reducer, initialState, 
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({/* options */})
-);
-```
-
-#### Advanced store setup
-
-If you setup your store with [middleware and enhancers](http://redux.js.org/docs/api/applyMiddleware.html), just use `__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` instead of redux `compose`:
-
-```js
-import { createStore, applyMiddleware, compose } from 'redux';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducer, preloadedState, composeEnhancers(
-  applyMiddleware(...middleware)
-));
-```
-
-With [options](#options):
-
-```js
-import { createStore, applyMiddleware, compose } from 'redux';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({/* options */}) :
-  compose;
-const store = createStore(reducer, preloadedState, composeEnhancers(
-  applyMiddleware(...middleware)
-));
-```
-
-__*NOTE*__ Old `reduxNativeDevTools` and `reduxNativeDevToolsCompose` can still be used.
-
-#### Use `redux-devtools-extension` package from npm
-
-To make things easier, there's a npm package to install:
-
-```bash
-$ npm install --save redux-devtools-extension
-```
-
-and to use like that:
-
-```js
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-
-const store = createStore(reducer, composeWithDevTools(
-  applyMiddleware(...middleware),
-  // other store enhancers if any
-));
-```
-
-or if needed to apply [options](#options):
-
-```js
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-
-const composeEnhancers = composeWithDevTools({
-  // Specify here name, actionsBlacklist, actionsCreators and other options
-});
-const store = createStore(reducer, composeEnhancers(
-  applyMiddleware(...middleware),
-  // other store enhancers if any
-));
-```
-
-There’re [just few lines](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/npm-package/index.js) of code.
-
-#### Options
-
-See [API documention of redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md) for more information.
+* [`Redux counter`](https://github.com/jhen0409/react-native-debugger-redux-example)
+* [`MobX counter`](https://github.com/jhen0409/react-native-debugger-mobx-example) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
 
 ## Debugging tips
 
@@ -153,12 +82,14 @@ You need to switch worker thread for console, open `Console` tab on Chrome DevTo
 We can do:
 
 ```js
-// const bak = global.XMLHttpRequest;
-const xhr = global.originalXMLHttpRequest ?
+// const bakXHR = global.XMLHttpRequest;
+// const bakFormData = global.FormData;
+global.XMLHttpRequest = global.originalXMLHttpRequest ?
   global.originalXMLHttpRequest :
   global.XMLHttpRequest;
-
-global.XMLHttpRequest = xhr;
+global.FormData = global.originalFormData ?
+  global.originalFormData :
+  global.FormData;
 ```
 
 __WARNING__ It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
