@@ -109,6 +109,7 @@ $ npm run dev:webpack
 $ npm run dev:electron
 
 # Run on production
+$ npm run fetch-ext # Fetch chrome extensions for prod usage
 $ npm run build
 $ npm start
 
