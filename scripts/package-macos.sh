@@ -17,4 +17,4 @@ electron-packager dist/ \
   --icon electron/logo.icns
 
 cd release/React\ Native\ Debugger-darwin-x64
-zip -ryq9 ../rn-debugger-darwin-x64.zip React\ Native\ Debugger.app
+zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app

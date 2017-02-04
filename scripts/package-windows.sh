@@ -14,4 +14,4 @@ electron-packager dist/ \
   --icon electron/logo.ico
 
 cd release/React\ Native\ Debugger-win32-ia32
-zip -ryq9 ../rn-debugger-win32.zip *
+zip -ryq9 ../rn-debugger-windows-ia32.zip *
