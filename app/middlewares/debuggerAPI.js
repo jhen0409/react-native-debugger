@@ -53,7 +53,7 @@ const shutdownJSRuntime = (status, statusMessage) => {
 };
 
 const connectToDebuggerProxy = () => {
-  const ws = WebSocket.connect(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
+  const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus();

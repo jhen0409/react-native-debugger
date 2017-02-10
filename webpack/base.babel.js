@@ -25,8 +25,9 @@ export default {
     }],
   },
   externals: [
+    'react-devtools-core/standalone',
     // just avoid warning.
     // this is not really used from ws. (it used fallback)
-    'bufferutil', 'utf-8-validate',
+    'utf-8-validate', 'bufferutil',
   ],
 };

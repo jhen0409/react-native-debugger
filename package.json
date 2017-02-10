@@ -11,15 +11,13 @@
     "pack-windows": "npm run prepack && ./scripts/package-windows.sh",
     "pack": "./scripts/package-macos.sh && ./scripts/package-linux.sh && ./scripts/package-windows.sh",
     "start": "cd dist && cross-env NODE_ENV=production electron ./",
-    "build:devtools": "cross-env NODE_ENV=production webpack --config webpack/devtools.backend.babel.js --progress --profile --colors",
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.babel.js --progress --profile --colors",
     "build:renderer": "cross-env NODE_ENV=production webpack --config webpack/renderer.prod.babel.js --progress --profile --colors",
     "build": "npm run build:main && npm run build:renderer",
-    "dev:webpack": "npm run build:devtools && webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
+    "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
-    "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js",
-    "fetch-rdt": "./scripts/fetch-react-devtools.sh"
+    "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js"
   },
   "repository": {
     "type": "git",
@@ -68,6 +66,7 @@
     "node-watch": "^0.4.0",
     "react": "^15.4.0",
     "react-addons-create-fragment": "^15.4.0",
+    "react-devtools-core": "^2.0.4",
     "react-dock": "^0.2.3",
     "react-dom": "^15.4.0",
     "react-redux": "^4.4.5",
@@ -78,6 +77,6 @@
     "remotedev-monitor-components": "0.0.5",
     "remotedev-slider": "^1.1.1",
     "remotedev-utils": "^0.1.1",
-    "ws": "^1.1.1"
+    "ws": "^2.0.0"
   }
 }

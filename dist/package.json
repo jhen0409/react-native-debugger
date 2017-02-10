@@ -11,6 +11,7 @@
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "dependencies": {
+    "react-devtools-core": "^2.0.4",
     "source-map-support": "^0.4.1"
   }
 }
