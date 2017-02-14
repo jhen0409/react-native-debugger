@@ -17,6 +17,13 @@ html, body {
   left: 0;
   white-space: pre;
 }
+#waiting {
+  -webkit-user-select: none;
+  text-align: center;
+  padding: 30px;
+  color: #aaa;
+  align-self: center;
+}
 @media print {
   @page {
     size: auto;

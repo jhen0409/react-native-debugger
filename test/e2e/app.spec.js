@@ -76,7 +76,7 @@ describe('Application launch', function spec() {
   it('should show waiting message on React DevTools', async () => {
     const { client } = this.app;
     const exist = await client.isExisting(
-      '//h2[text()="Waiting for a connection from React Native"]'
+      '//h2[text()="Waiting for React to connect…"]'
     );
     expect(exist).toBe(true);
   });
