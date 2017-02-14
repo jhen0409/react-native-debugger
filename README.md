@@ -102,7 +102,6 @@ If you want to inspect deeper network requests (Like request of `Image`), use to
 # Just clone it
 $ git clone https://github.com/jhen0409/react-native-debugger
 $ cd react-native-debugger && npm install
-$ npm run fetch-rdt # Fetch react-devtools source
 
 # Run on development
 $ npm run dev:webpack
