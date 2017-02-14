@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.5/rn-debugger-darwin-x64.zip",
-  "name": "v0.5.5",
-  "notes": "1. Fix `forward slash` key listen for typing on Dispatcher input\n2. Fix filters not work if filter more than two actions for reduxAPI"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.5.6/rn-debugger-macos-x64.zip",
+  "name": "v0.5.6",
+  "notes": "1. Use `react-devtools-core/standalone` instead of fork\n2. Disable zooming for app\n3. Update dependencies"
 }
