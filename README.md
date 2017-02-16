@@ -96,6 +96,23 @@ __WARNING__ It will break `NSExceptionDomains` for iOS, because `originalXMLHttp
 
 If you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
 
+## Troubleshooting
+
+#### [Android] React Inspector get stuck at "Connecting to React…" ([#45](https://github.com/jhen0409/react-native-debugger/issues/45))
+
+Maybe the problem is related to `requestIdleCallback` API (try to check if it not work on debug mode), make sure the device time is the same as the host (your computer), otherwise:
+
+```js
+// Not recommended
+if (__DEV__) {
+  window.requestIdleCallback = null
+  window.cancelIdleCallback = null
+}
+// Make sure it before call at `import { ... } from 'react-native'`
+```
+
+Or use polyfill instead. (Like: [react-devtools/agent/Bridge.js#L21-L22](https://github.com/facebook/react-devtools/blob/master/agent/Bridge.js#L21-L22))
+
 ## Development
 
 ```bash
@@ -104,7 +121,7 @@ $ git clone https://github.com/jhen0409/react-native-debugger
 $ cd react-native-debugger && npm install
 
 # Run on development
-$ npm run dev:webpack
+$ npm run dev:webpack  # Then open the another 
 $ npm run dev:electron
 
 # Run on production
