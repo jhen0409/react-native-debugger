@@ -4,9 +4,6 @@ import GhReleases from 'electron-gh-releases';
 let checking = false;
 
 export default (mainWindow, icon, notify) => {
-  // Don't check update for beta version
-  if (app.getVersion().includes('beta')) return;
-
   if (checking) {
     console.log('[Updater] Already checking...');
     return;
