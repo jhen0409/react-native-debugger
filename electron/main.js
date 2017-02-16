@@ -18,11 +18,11 @@ app.on('ready', async () => {
   createContextMenu(mainWindow);
 
   mainWindow.loadURL(`file://${resolve(__dirname)}/app.html`);
-  mainWindow.openDevTools();
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
+    mainWindow.openDevTools();
     mainWindow.checkUpdate = autoUpdate;
     autoUpdate(mainWindow, iconPath);
   });
