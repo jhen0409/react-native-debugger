@@ -25,6 +25,7 @@ describe('Application launch', function spec() {
       args: ['--user-dir=test/e2e/tmp', 'dist'],
       env: {
         REACT_ONLY_FOR_LOCAL: 1,
+        OPEN_DEVTOOLS: 0,
       },
     });
     return this.app.start();
@@ -52,9 +53,6 @@ describe('Application launch', function spec() {
       'React Native Debugger - Disconnected from proxy. ' +
       'Attempting reconnection. Is node server running?',
     );
-
-    // Focus main window
-    await client.windowByIndex(1);
   });
 
   it('should contain Inspector monitor\'s component on Redux DevTools', async () => {

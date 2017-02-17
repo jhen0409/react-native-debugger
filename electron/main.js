@@ -22,7 +22,9 @@ app.on('ready', async () => {
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
     mainWindow.focus();
-    mainWindow.openDevTools();
+    if (process.env.OPEN_DEVTOOLS !== '0') {
+      mainWindow.openDevTools();
+    }
     mainWindow.checkUpdate = autoUpdate;
     autoUpdate(mainWindow, iconPath);
   });
