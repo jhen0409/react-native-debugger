@@ -273,8 +273,9 @@ const preEnhancer = instanceId => next =>
 
 devToolsEnhancer.updateStore = (newStore, instanceId) => {
   console.warn(
-    '`reduxNativeDevTools.updateStore` is deprecated use `reduxNativeDevToolsCompose` instead:',
-    'https://github.com/jhen0409/react-native-debugger#advanced-store-setup'
+    '[RNDebugger]',
+    '`updateStore` is deprecated use `window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__` instead:',
+    'https://github.com/jhen0409/react-native-debugger#redux-devtools-and-remotedev-on-local-even-mobx'
   );
 
   const keys = Object.keys(instances);
