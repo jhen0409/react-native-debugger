@@ -37,21 +37,12 @@ The Debugger part is referenced from [react-native](https://github.com/facebook/
 
 ## React Inspector
 
-The React Inspector part from [react-devtools/shells/electron](https://github.com/facebook/react-devtools/tree/master/shells/electron), it will open a WebSocket server (port: `8097`) to waiting React Native connection.
+The React Inspector is used [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), it will open a WebSocket server (port: `8097`) to waiting React Native connection.
 
-If you're debugging with a real device, you need to edit [node_modules/react-native/Libraries/Core/Devtools/setupDevtools.js](https://github.com/facebook/react-native/tree/master/Libraries/Core/Devtools/setupDevtools.js#L17).
+#### Use real device
 
-#### Note for Android
-
-It can be working directly on React Native ^0.30, for old versions, you need to add the following code:
-
-```js
-if (__DEV__) {
-  require('react-native/Libraries/Devtools/setupDevtools')();
-}
-```
-
-And run `adb reverse tcp:8097 tcp:8097` on your terminal. (For emulator, RN ^0.31 isn't need `adb reverse`)
+* If you're debugging via WIFI, you need to edit `node_modules/react-native/Libraries/Core/Devtools/setupDevtools.js`, change `'localhost'` to your machine IP.
+* [Android only] If you're debugging via USB, you can just run `adb reverse tcp:8097 tcp:8097` on your terminal.
 
 ## Redux DevTools (and [RemoteDev on local](https://github.com/zalmoxisus/remotedev) even [MobX](https://github.com/zalmoxisus/mobx-remotedev))
 
