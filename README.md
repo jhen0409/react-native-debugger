@@ -41,8 +41,11 @@ The React Inspector is used [`react-devtools-core/standalone`](https://github.co
 
 #### Use real device
 
-* If you're debugging via WIFI, you need to edit `node_modules/react-native/Libraries/Core/Devtools/setupDevtools.js`, change `'localhost'` to your machine IP.
-* [Android only] If you're debugging via USB, you can just run `adb reverse tcp:8097 tcp:8097` on your terminal.
+* If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native, change `'localhost'` to your machine IP.
+  - `<= 0.30` - [Change `localhost` of `Libraries/Devtools/setupDevtools.js#L17`](https://github.com/facebook/react-native/blob/bd60d828c5fc9cb066e5f647c87ecd6f70cb63a5/Libraries/Devtools/setupDevtools.js#L17)
+  - `>= 0.31` - [Add `hostname = 'your IP'` to next line of `Libraries/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/46417dd26a4ab247d59ad147fdfe1655cb23edf9/Libraries/Devtools/setupDevtools.js#L20-L23)
+  - `>= 0.37` - [The same as above, but the path is changed to `Libraries/Core/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/292cc82d0ebc437a6f1cdd2e972b3917b7ee05a4/Libraries/Core/Devtools/setupDevtools.js#L20-L23)
+* [Android] If you're debugging via USB, you can just run `adb reverse tcp:8097 tcp:8097` on your terminal.
 
 ## Redux DevTools (and [RemoteDev on local](https://github.com/zalmoxisus/remotedev) even [MobX](https://github.com/zalmoxisus/mobx-remotedev))
 
