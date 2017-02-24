@@ -2,7 +2,7 @@
 
 echo '\n\n## PATCH REACT DEVTOOLS\n'
 
-FILE='./node_modules/react-devtools-core/vendor/backend-1.0.6.js'
+FILE='./dist/node_modules/react-devtools-core/vendor/backend-1.0.6.js'
 
 TARGET='window.requestIdleCallback'
 REPLACE='window.__REQUEST_IDLE_CALLBACK_REPLACED_BY_PATCH__'

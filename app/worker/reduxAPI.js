@@ -6,6 +6,7 @@ import {
   getActionsArray,
   generateId,
   stringify,
+  getSeralizeParameter,
 } from 'remotedev-utils';
 import importState from 'remotedev-utils/lib/importState';
 import {
@@ -58,8 +59,12 @@ function relay(type, state, instance, action, nextActionId) {
     );
     message.isExcess = isExcess;
     message.nextActionId = nextActionId;
-  } else if (action) {
-    message.action = stringify(action, serializeAction);
+  } else if (instance) {
+    message.libConfig = {
+      type: 'redux',
+      actionCreators: stringify(instance.actionCreators),
+      serialize: !!instance.serialize,
+    };
   }
   postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
 }
@@ -154,7 +159,7 @@ function start(instance) {
   if (typeof actionCreators === 'function') {
     instance.actionCreators = actionCreators();
   }
-  relay('STATE', getLiftedState(store, filters), instance, instance.actionCreators);
+  relay('STATE', getLiftedState(store, filters), instance);
 }
 
 function checkForReducerErrors(liftedState, instance) {
@@ -212,11 +217,13 @@ export default function devToolsEnhancer(options = {}) {
     stateSanitizer,
     deserializeState,
     deserializeAction,
-    serializeState,
-    serializeAction,
+    serialize,
     predicate,
   } = options;
   const id = generateId(options.instanceId);
+
+  const serializeState = getSeralizeParameter(options, 'serializeState');
+  const serializeAction = getSeralizeParameter(options, 'serializeAction');
 
   return next => (reducer, initialState) => {
     const store = configureStore(
@@ -245,6 +252,7 @@ export default function devToolsEnhancer(options = {}) {
       deserializeAction,
       serializeState,
       serializeAction,
+      serialize,
       predicate,
     };
 
