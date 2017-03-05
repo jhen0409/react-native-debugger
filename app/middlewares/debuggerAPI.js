@@ -26,6 +26,10 @@ const workerOnMessage = message => {
   if (message.data && message.data.__IS_REDUX_NATIVE_MESSAGE__) {
     return true;
   }
+  if (message.data && message.data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__) {
+    // TODO: Set Touch bar
+    return false;
+  }
   socket.send(JSON.stringify(message.data));
 };
 

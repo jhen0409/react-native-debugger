@@ -29,6 +29,55 @@ self.devToolsExtension = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
 
+const avoidWarnForRequire = (moduleName = 'NativeModules') => new Promise(resolve =>
+  setTimeout(() => {
+    // It's replaced console.warn of react-native
+    const originalWarn = console.warn;
+    console.warn = (...args) => {
+      if (args[0] && args[0].indexOf(`Requiring module '${moduleName}' by name`) >= -1) return;
+      return originalWarn(...args);
+    };
+    resolve(() => { console.warn = originalWarn; });
+  })
+);
+
+const XHRInspect = enabled => {
+  if (!enabled && window.__XHR_INSPECT__) {
+    window.XMLHttpRequest = window.__XHR_INSPECT__.XMLHttpRequest;
+    window.FormData = window.__XHR_INSPECT__.FormData;
+    delete window.__XHR_INSPECT__;
+    return;
+  }
+  if (!enabled) return;
+  window.__XHR_INSPECT__ = {
+    XMLHttpRequest: window.XMLHttpRequest,
+    FormData: window.FormData,
+  };
+  window.XMLHttpRequest = window.originalXMLHttpRequest ?
+    window.originalXMLHttpRequest :
+    window.XMLHttpRequest;
+  window.FormData = window.originalFormData ?
+    window.originalFormData :
+    window.FormData;
+};
+
+const checkAvailableDevMenuMethods = async () => {
+  const done = await avoidWarnForRequire();
+  const { DevMenu } = window.require('NativeModules');
+  done();
+
+  let result = ['enableXHRInspect'];
+  window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__ = {
+    enableXHRInspect: XHRInspect,
+  };
+  if (DevMenu && DevMenu.reload) {
+    window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__.reload = DevMenu.reload;
+    result = ['reload', ...result];
+  }
+
+  postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
+};
+
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
     Object.keys(message.inject).forEach(key => {
@@ -46,6 +95,8 @@ const messageHandlers = {
     if (!self.__RND_INTERVAL__) {
       self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
     }
+
+    checkAvailableDevMenuMethods();
   },
 };
 

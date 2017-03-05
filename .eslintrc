@@ -14,7 +14,10 @@
     "strict": 0,
     "no-console": 0,
     "no-param-reassign": ["error", { "props": false }],
-    "no-underscore-dangle": ["error", { "allow": ["__IS_REDUX_NATIVE_MESSAGE__"] }],
+    "no-underscore-dangle": [
+      "error",
+      { "allow": ["__IS_REDUX_NATIVE_MESSAGE__", "__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__"] }
+    ],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "import/prefer-default-export": 0
   }
