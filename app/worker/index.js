@@ -78,6 +78,11 @@ const checkAvailableDevMenuMethods = async () => {
   postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
 
+const invokeDevMenuMethod = (name, args = []) => {
+  const method = window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__[name];
+  if (method) method(...args);
+};
+
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
     Object.keys(message.inject).forEach(key => {
@@ -106,6 +111,11 @@ addEventListener('message', message => {
   // handle redux message
   if (object.method === 'emitReduxMessage') {
     return true;
+  }
+
+  if (object.method === 'invokeDevMenuMethod') {
+    invokeDevMenuMethod(object.name, object.args);
+    return false;
   }
 
   const sendReply = (result, error) => {
