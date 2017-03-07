@@ -67,14 +67,13 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
     value: 0,
     minValue: 0,
     maxValue: 0,
-    change: newValue => {
+    change: newValue =>
       dispatch({
         type: 'JUMP_TO_STATE',
         actionId: storeLiftedState.stagedActionIds[newValue],
         index: newValue,
         dontUpdateTouchBarSlider: true,
-      });
-    },
+      }),
   }) : null;
   resetTouchBar();
 };
