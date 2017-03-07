@@ -4,7 +4,6 @@ const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
 
 let worker;
-let enableXHRInspect = false;
 const leftBar = {
   reload: null,
   enableXHRInspect: null,
@@ -44,14 +43,15 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
   }
 
   if (list.includes('enableXHRInspect')) {
+    const disabled = () => localStorage.enableXHRInspect === 'disabled';
+    const getLabel = () => (disabled() ? 'Disable XHR Inspect' : 'Enable XHR Inspect');
+    const toggle = () => (disabled() ? 'enabled' : 'disabled');
     leftBar.enableXHRInspect = new TouchBarButton({
-      label: 'Enable XHR Inspect',
+      label: getLabel(),
       click: () => {
-        enableXHRInspect = !enableXHRInspect;
-        leftBar.enableXHRInspect.label = enableXHRInspect ?
-          'Disable XHR Inspect' :
-          'Enable XHR Inspect';
-        invokeDevMenuMethod({ name: 'enableXHRInspect', args: [enableXHRInspect] });
+        localStorage.enableXHRInspect = toggle();
+        leftBar.enableXHRInspect.label = getLabel();
+        invokeDevMenuMethod({ name: 'enableXHRInspect', args: [localStorage.enableXHRInspect] });
       },
     });
   }

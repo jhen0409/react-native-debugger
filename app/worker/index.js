@@ -41,7 +41,7 @@ const avoidWarnForRequire = (moduleName = 'NativeModules') => new Promise(resolv
   })
 );
 
-const XHRInspect = enabled => {
+const toggleXHRInspect = enabled => {
   if (!enabled && window.__XHR_INSPECT__) {
     window.XMLHttpRequest = window.__XHR_INSPECT__.XMLHttpRequest;
     window.FormData = window.__XHR_INSPECT__.FormData;
@@ -61,19 +61,21 @@ const XHRInspect = enabled => {
     window.FormData;
 };
 
-const checkAvailableDevMenuMethods = async () => {
+const checkAvailableDevMenuMethods = async (enableXHRInspect) => {
   const done = await avoidWarnForRequire();
   const { DevMenu } = window.require('NativeModules');
   done();
 
   let result = ['enableXHRInspect'];
   window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__ = {
-    enableXHRInspect: XHRInspect,
+    enableXHRInspect: toggleXHRInspect,
   };
   if (DevMenu && DevMenu.reload) {
     window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__.reload = DevMenu.reload;
     result = ['reload', ...result];
   }
+
+  toggleXHRInspect(enableXHRInspect);
 
   postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
@@ -101,7 +103,7 @@ const messageHandlers = {
       self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
     }
 
-    checkAvailableDevMenuMethods();
+    checkAvailableDevMenuMethods(message.enableXHRInspect);
   },
 };
 
