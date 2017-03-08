@@ -1674,9 +1674,9 @@ electron-packager@^8.2.0:
     sanitize-filename "^1.6.0"
     semver "^5.3.0"
 
-electron@^1.6.0:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.6.1.tgz#aa426e83bfb5919c3a492297eff368b67e66f1ae"
+electron@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.6.3.tgz#95fc62899e50838563fa768baa2011ea860d04b1"
   dependencies:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
@@ -5040,7 +5040,7 @@ sumchecker@^2.0.1:
   dependencies:
     debug "^2.2.0"
 
-supports-color@3.1.2:
+supports-color@3.1.2, supports-color@^3.1.0, supports-color@^3.1.1, supports-color@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.1.2.tgz#72a262894d9d408b956ca05ff37b2ed8a6e2a2d5"
   dependencies:
@@ -5053,12 +5053,6 @@ supports-color@^0.2.0:
 supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
-
-supports-color@^3.1.0, supports-color@^3.1.1, supports-color@^3.1.2:
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.2.3.tgz#65ac0504b3954171d8a64946b2ae3cbb8a5f54f6"
-  dependencies:
-    has-flag "^1.0.0"
 
 symbol-observable@^0.2.4:
   version "0.2.4"
