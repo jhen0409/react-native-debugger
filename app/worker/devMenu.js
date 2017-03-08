@@ -6,7 +6,7 @@ const avoidWarnForRequire = (moduleName = 'NativeModules') => new Promise(resolv
     // It's replaced console.warn of react-native
     const originalWarn = console.warn;
     console.warn = (...args) => {
-      if (args[0] && args[0].indexOf(`Requiring module '${moduleName}' by name`) >= -1) return;
+      if (args[0] && args[0].indexOf(`Requiring module '${moduleName}' by name`) > -1) return;
       return originalWarn(...args);
     };
     resolve(() => { console.warn = originalWarn; });
