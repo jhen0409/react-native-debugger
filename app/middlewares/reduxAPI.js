@@ -82,16 +82,12 @@ export default inStore => {
       const instances = state.instances;
       const id = getActiveInstance(instances);
       const liftedState = instances.states[id];
-      if (
-        (!action.action || !action.action.dontUpdateTouchBarSlider) &&
-        liftedState && liftedState.computedStates.length > 1
-      ) {
+      if (liftedState && liftedState.computedStates.length > 1) {
         setReduxDevToolsMethods(true, actions.liftedDispatch);
-        updateSliderContent(liftedState);
-      }
-      if (liftedState && liftedState.computedStates.length <= 1) {
+      } else if (liftedState && liftedState.computedStates.length <= 1) {
         setReduxDevToolsMethods(false);
       }
+      updateSliderContent(liftedState, action.action && action.action.dontUpdateTouchBarSlider);
       return;
     }
     return next(action);

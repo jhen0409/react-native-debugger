@@ -110,9 +110,11 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
   resetTouchBar();
 };
 
-export const updateSliderContent = liftedState => {
+export const updateSliderContent = (liftedState, dontUpdateTouchBarSlider) => {
   storeLiftedState = liftedState;
-  const { currentStateIndex, computedStates } = liftedState;
-  rightBar.slider.maxValue = computedStates.length - 1;
-  rightBar.slider.value = currentStateIndex;
+  if (sliderEnabled && !dontUpdateTouchBarSlider) {
+    const { currentStateIndex, computedStates } = liftedState;
+    rightBar.slider.maxValue = computedStates.length - 1;
+    rightBar.slider.value = currentStateIndex;
+  }
 };
