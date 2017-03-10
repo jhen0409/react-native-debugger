@@ -78,13 +78,13 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       dontUpdateTouchBarSlider,
     });
 
-  leftBar.slider = new TouchBarSlider({
+  rightBar.slider = new TouchBarSlider({
     value: 0,
     minValue: 0,
     maxValue: 0,
     change: handleSliderChange,
   });
-  leftBar.prev = new TouchBarButton({
+  rightBar.prev = new TouchBarButton({
     label: 'Prev',
     click() {
       const nextIndex = storeLiftedState.currentStateIndex - 1;
@@ -93,7 +93,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       }
     },
   });
-  leftBar.next = new TouchBarButton({
+  rightBar.next = new TouchBarButton({
     label: 'Next',
     click() {
       const nextIndex = storeLiftedState.currentStateIndex + 1;
@@ -109,6 +109,6 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
 export const updateSliderContent = liftedState => {
   storeLiftedState = liftedState;
   const { currentStateIndex, computedStates } = liftedState;
-  leftBar.slider.maxValue = computedStates.length - 1;
-  leftBar.slider.value = currentStateIndex;
+  rightBar.slider.maxValue = computedStates.length - 1;
+  rightBar.slider.value = currentStateIndex;
 };
