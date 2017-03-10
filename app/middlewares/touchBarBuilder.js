@@ -70,7 +70,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
   // Already setup
   if (enabled && sliderEnabled) return;
 
-  const handleSliderChange = (nextIndex, dontUpdateTouchBarSlider = true) =>
+  const handleSliderChange = (nextIndex, dontUpdateTouchBarSlider = false) =>
     dispatch({
       type: 'JUMP_TO_STATE',
       actionId: storeLiftedState.stagedActionIds[nextIndex],
@@ -82,14 +82,18 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
     value: 0,
     minValue: 0,
     maxValue: 0,
-    change: handleSliderChange,
+    change(nextIndex) {
+      if (nextIndex !== storeLiftedState.currentStateIndex) {
+        handleSliderChange(nextIndex, true);
+      }
+    },
   });
   rightBar.prev = new TouchBarButton({
     label: 'Prev',
     click() {
       const nextIndex = storeLiftedState.currentStateIndex - 1;
       if (nextIndex >= 0) {
-        handleSliderChange(nextIndex, false);
+        handleSliderChange(nextIndex);
       }
     },
   });
@@ -98,7 +102,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
     click() {
       const nextIndex = storeLiftedState.currentStateIndex + 1;
       if (nextIndex < storeLiftedState.computedStates.length) {
-        handleSliderChange(nextIndex, false);
+        handleSliderChange(nextIndex);
       }
     },
   });
