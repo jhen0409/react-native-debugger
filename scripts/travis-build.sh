@@ -15,7 +15,6 @@ node --version
 npm --version
 
 npm install
-npm run fetch-rdt
 cd patch && npm install && cd ..
 npm run lint
 npm run build

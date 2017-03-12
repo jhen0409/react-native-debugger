@@ -67,7 +67,6 @@
     "multiline-template": "^0.1.1",
     "node-watch": "^0.4.0",
     "react": "^15.4.0",
-    "react-addons-create-fragment": "^15.4.0",
     "react-devtools-core": "^2.0.4",
     "react-dock": "^0.2.3",
     "react-dom": "^15.4.0",

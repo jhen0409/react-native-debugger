@@ -12,7 +12,7 @@ let mainWindow = null;
 
 startListeningHandleURL(() => mainWindow);
 
-// app.on('window-all-closed', () => app.quit());
+app.on('window-all-closed', () => app.quit());
 app.on('ready', async () => {
   await installExtensions();
 
