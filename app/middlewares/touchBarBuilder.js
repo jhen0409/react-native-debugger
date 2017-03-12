@@ -6,7 +6,7 @@ const currentWindow = remote.getCurrentWindow();
 let worker;
 const leftBar = {
   reload: null,
-  enableXHRInspect: null,
+  enableNetworkInspect: null,
 };
 
 let sliderEnabled;
@@ -37,7 +37,7 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
   worker = wkr;
 
   leftBar.reload = null;
-  leftBar.enableXHRInspect = null;
+  leftBar.enableNetworkInspect = null;
   if (list.includes('reload')) {
     leftBar.reload = new TouchBarButton({
       label: 'Reload JS',
@@ -47,16 +47,19 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
     });
   }
 
-  if (list.includes('enableXHRInspect')) {
-    const disabled = () => localStorage.enableXHRInspect === 'disabled';
-    const getLabel = () => (disabled() ? 'Disable XHR Inspect' : 'Enable XHR Inspect');
+  if (list.includes('enableNetworkInspect')) {
+    const disabled = () => localStorage.enableNetworkInspect === 'disabled';
+    const getLabel = () => (disabled() ? 'Disable Network Inspect' : 'Enable Network Inspect');
     const toggle = () => (disabled() ? 'enabled' : 'disabled');
-    leftBar.enableXHRInspect = new TouchBarButton({
+    leftBar.enableNetworkInspect = new TouchBarButton({
       label: getLabel(),
       click: () => {
-        localStorage.enableXHRInspect = toggle();
-        leftBar.enableXHRInspect.label = getLabel();
-        invokeDevMenuMethod({ name: 'enableXHRInspect', args: [localStorage.enableXHRInspect] });
+        localStorage.enableNetworkInspect = toggle();
+        leftBar.enableNetworkInspect.label = getLabel();
+        invokeDevMenuMethod({
+          name: 'enableNetworkInspect',
+          args: [localStorage.enableNetworkInspect],
+        });
       },
     });
   }

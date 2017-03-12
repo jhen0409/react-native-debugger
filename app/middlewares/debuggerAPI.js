@@ -93,7 +93,7 @@ const connectToDebuggerProxy = () => {
       // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        object.enableXHRInspect = localStorage.enableXHRInspect === 'enabled';
+        object.enableNetworkInspect = localStorage.enableNetworkInspect === 'enabled';
       }
       worker.postMessage(object);
     }
