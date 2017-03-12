@@ -60,6 +60,7 @@
     "worker-loader": "^0.7.0"
   },
   "dependencies": {
+    "electron-config": "^0.2.1",
     "electron-context-menu": "^0.8.0",
     "electron-gh-releases": "^2.0.4",
     "jsan": "^3.1.2",

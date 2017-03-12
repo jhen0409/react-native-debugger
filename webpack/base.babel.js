@@ -29,5 +29,7 @@ export default {
     // just avoid warning.
     // this is not really used from ws. (it used fallback)
     'utf-8-validate', 'bufferutil',
+    // https://github.com/sindresorhus/conf/blob/master/index.js#L13
+    'electron-config',
   ],
 };

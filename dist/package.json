@@ -11,6 +11,7 @@
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "dependencies": {
+    "electron-config": "^0.2.1",
     "react-devtools-core": "^2.0.4",
     "source-map-support": "^0.4.1"
   }
