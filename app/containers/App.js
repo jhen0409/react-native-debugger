@@ -79,16 +79,23 @@ export default class App extends Component {
       setDebuggerLocation(JSON.parse(payload));
     });
     setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
+
+    window.onbeforeunload = this.removeAllListeners;
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeAllListeners('toggle-devtools');
+    this.removeAllListeners();
   }
 
   onReduxDockResize = size => {
     const { setting } = this.props.actions;
     setting.resizeDevTools(size);
   };
+
+  removeAllListeners() {
+    ipcRenderer.removeAllListeners('toggle-devtools');
+    ipcRenderer.removeAllListeners('set-debugger-loc');
+  }
 
   background =
     <div style={styles.wrapBackground}>
