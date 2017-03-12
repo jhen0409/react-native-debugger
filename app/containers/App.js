@@ -9,10 +9,6 @@ import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
 
 const styles = {
-  container: {
-    width: '100%',
-    heigth: '100%',
-  },
   wrapReactPanel: {
     display: 'flex',
     position: 'fixed',
@@ -149,7 +145,7 @@ export default class App extends Component {
   render() {
     const { redux, react } = this.props.setting;
     return (
-      <div style={styles.container}>
+      <div>
         {this.renderReduxDevTools()}
         {this.renderReactInspector()}
         {!react && !redux && this.background}
