@@ -2,9 +2,10 @@ import { bindActionCreators } from 'redux';
 import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { DISCONNECTED } from 'remotedev-app/lib/constants/socketActionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
-import { showNotification } from 'remotedev-app/lib/actions';
+import { showNotification, liftedDispatch } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 import { SET_DEBUGGER_WORKER } from '../actions/debugger';
+import { setReduxDevToolsMethods, updateSliderContent } from './touchBarBuilder';
 
 const unboundActions = {
   showNotification,
@@ -12,6 +13,7 @@ const unboundActions = {
     type: UPDATE_STATE,
     request: request.data ? { ...request.data, id: request.id } : request,
   }),
+  liftedDispatch,
 };
 let actions;
 let worker;
@@ -67,10 +69,27 @@ export default inStore => {
         initWorker(action.worker);
       } else {
         removeWorker(action.worker);
+        setReduxDevToolsMethods(false);
         next({ type: DISCONNECTED });
       }
     }
-    if (action.type === LIFTED_ACTION) toWorker(action);
+    if (action.type === LIFTED_ACTION) {
+      toWorker(action);
+    }
+    if (action.type === UPDATE_STATE || action.type === LIFTED_ACTION) {
+      next(action);
+      const state = store.getState();
+      const instances = state.instances;
+      const id = getActiveInstance(instances);
+      const liftedState = instances.states[id];
+      if (liftedState && liftedState.computedStates.length > 1) {
+        setReduxDevToolsMethods(true, actions.liftedDispatch);
+      } else if (liftedState && liftedState.computedStates.length <= 1) {
+        setReduxDevToolsMethods(false);
+      }
+      updateSliderContent(liftedState, action.action && action.action.dontUpdateTouchBarSlider);
+      return;
+    }
     return next(action);
   };
 };

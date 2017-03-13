@@ -13,6 +13,7 @@ import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
 import Worker from 'worker?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
+import { setAvailableDevMenuMethods } from './touchBarBuilder';
 
 const { SET_DEBUGGER_LOCATION } = debuggerActions;
 
@@ -25,6 +26,11 @@ let socket;
 const workerOnMessage = message => {
   if (message.data && message.data.__IS_REDUX_NATIVE_MESSAGE__) {
     return true;
+  }
+  const list = message.data && message.data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
+  if (list) {
+    setAvailableDevMenuMethods(list, worker);
+    return false;
   }
   socket.send(JSON.stringify(message.data));
 };
@@ -47,6 +53,7 @@ const shutdownJSRuntime = (status, statusMessage) => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
+    setAvailableDevMenuMethods([]);
   }
   worker = null;
   setDebuggerWorker(null, status, statusMessage);
@@ -85,6 +92,9 @@ const connectToDebuggerProxy = () => {
     } else {
       // Otherwise, pass through to the worker.
       if (!worker) return;
+      if (object.method === 'executeApplicationScript') {
+        object.enableNetworkInspect = localStorage.enableNetworkInspect === 'enabled';
+      }
       worker.postMessage(object);
     }
   };

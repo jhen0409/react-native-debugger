@@ -10,12 +10,14 @@
 
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debuggerWorker.js
 
-// NOTE: WebWorker not have `global`
+/* eslint-disable no-underscore-dangle */
+import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
+
+// WebWorker not have `global`
 self.global = self;
+
 // redux store enhancer
 const devTools = require('./reduxAPI');
-
-/* eslint-disable no-underscore-dangle */
 
 self.__REMOTEDEV__ = require('./remotedev');
 
@@ -46,6 +48,8 @@ const messageHandlers = {
     if (!self.__RND_INTERVAL__) {
       self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
     }
+
+    checkAvailableDevMenuMethods(message.enableNetworkInspect);
   },
 };
 
@@ -55,6 +59,11 @@ addEventListener('message', message => {
   // handle redux message
   if (object.method === 'emitReduxMessage') {
     return true;
+  }
+
+  if (object.method === 'invokeDevMenuMethod') {
+    invokeDevMenuMethod(object.name, object.args);
+    return false;
   }
 
   const sendReply = (result, error) => {
