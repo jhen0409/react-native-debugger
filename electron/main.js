@@ -21,6 +21,7 @@ app.on('ready', async () => {
     height: 750,
     ...config.get('winBounds'),
     show: false,
+    backgroundColor: '#272c37',
   });
   createContextMenu(mainWindow);
 
