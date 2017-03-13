@@ -45,6 +45,7 @@ The React Inspector is used [`react-devtools-core/standalone`](https://github.co
   - `<= 0.30` - [Change `localhost` of `Libraries/Devtools/setupDevtools.js#L17`](https://github.com/facebook/react-native/blob/bd60d828c5fc9cb066e5f647c87ecd6f70cb63a5/Libraries/Devtools/setupDevtools.js#L17)
   - `>= 0.31` - [Add `hostname = 'your IP'` to next line of `Libraries/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/46417dd26a4ab247d59ad147fdfe1655cb23edf9/Libraries/Devtools/setupDevtools.js#L20-L23)
   - `>= 0.37` - [The same as above, but the path is changed to `Libraries/Core/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/292cc82d0ebc437a6f1cdd2e972b3917b7ee05a4/Libraries/Core/Devtools/setupDevtools.js#L20-L23)
+  - `>= 0.43` - [Change `host` of `Libraries/Core/Devtools/setupDevtools.js#L28-L30`](https://github.com/facebook/react-native/blob/0.43-stable/Libraries/Core/Devtools/setupDevtools.js)
 * [Android] If you're debugging via USB, you can just run `adb reverse tcp:8097 tcp:8097` on your terminal.
 
 ## Redux DevTools (and [RemoteDev on local](https://github.com/zalmoxisus/remotedev) even [MobX](https://github.com/zalmoxisus/mobx-remotedev))
@@ -115,7 +116,7 @@ $ git clone https://github.com/jhen0409/react-native-debugger
 $ cd react-native-debugger && npm install
 
 # Run on development
-$ npm run dev:webpack  # Then open the another 
+$ npm run dev:webpack  # Then open the another
 $ npm run dev:electron
 
 # Run on production
