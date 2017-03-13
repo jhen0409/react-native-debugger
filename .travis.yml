@@ -2,7 +2,7 @@ os:
   - linux
   - osx
 env:
-  - NODE_VERSION="6"
+  - NODE_VERSION="7"
 cache:
   directories:
     - node_modules

@@ -11,7 +11,7 @@
 
 import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
-import Worker from 'worker?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
+import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
 import { setAvailableDevMenuMethods } from './touchBarBuilder';
 

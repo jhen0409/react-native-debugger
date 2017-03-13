@@ -1,4 +1,15 @@
+import fs from 'fs';
 import { join } from 'path';
+
+const babelConfig = JSON.parse(
+  fs.readFileSync(join(__dirname, '../.babelrc'), 'utf-8')
+);
+// Webpack 2 have native import / export support
+babelConfig.presets = [
+  ['env', { targets: { node: 7.6 }, modules: false }],
+  'react',
+];
+babelConfig.babelrc = false;
 
 export default {
   output: {
@@ -9,19 +20,16 @@ export default {
   plugins: [
   ],
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['.js'],
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
-      loader: 'babel',
-      include: [
-        join(__dirname, '../app'),
-        join(__dirname, '../electron'),
-      ],
-    }, {
-      test: /\.json/,
-      loader: 'json',
+      use: [{
+        loader: 'babel-loader',
+        query: babelConfig,
+      }],
+      exclude: /node_modules/,
     }],
   },
   externals: [

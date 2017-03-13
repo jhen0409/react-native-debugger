@@ -14,24 +14,23 @@ export default {
     publicPath: `http://localhost:${port}/js/`,
   },
   module: {
-    loaders: [
-      ...baseConfig.module.loaders,
+    rules: [
+      ...baseConfig.module.rules,
       {
         test: /\.css?$/,
-        loaders: ['style', 'raw'],
+        use: ['style-loader', 'raw-loader'],
       },
     ],
   },
   plugins: [
     ...baseConfig.plugins,
-    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
   resolve: {
     ...baseConfig.resolve,
-    packageAlias: 'browser',
+    aliasFields: ['browser'],
   },
   target: 'electron-renderer',
 };

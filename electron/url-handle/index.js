@@ -1,2 +1,4 @@
-export startListeningHandleURL from './handleURL';
-export * as port from './port';
+import startListeningHandleURL from './handleURL';
+import * as port from './port';
+
+export { startListeningHandleURL, port };

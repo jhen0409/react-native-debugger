@@ -1,6 +1,13 @@
 {
-  "presets": ["es2015-node6", "stage-0", "react"],
-  "plugins": ["transform-decorators-legacy"],
+  "presets": [
+    ["env", { "targets": { "node": 7.6 } }],
+    "react"
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-decorators-legacy"
+  ],
   "env": {
     "production": {
       "presets": ["react-optimize"],

@@ -14,7 +14,7 @@
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.babel.js --progress --profile --colors",
     "build:renderer": "cross-env NODE_ENV=production webpack --config webpack/renderer.prod.babel.js --progress --profile --colors",
     "build": "npm run build:main && npm run build:renderer",
-    "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.babel.js --hot --inline --colors",
+    "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.babel.js",
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js"
@@ -30,8 +30,10 @@
     "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-closure-elimination": "^1.1.11",
+    "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-es2015-node6": "^0.4.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.2.1",
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.5.0",
@@ -55,9 +57,9 @@
     "raw-loader": "^0.5.1",
     "spectron": "^3.2.4",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "worker-loader": "^0.7.0"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
+    "worker-loader": "^0.8.0"
   },
   "dependencies": {
     "electron-config": "^0.2.1",

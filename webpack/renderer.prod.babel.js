@@ -11,17 +11,15 @@ export default {
     publicPath: 'js/',
   },
   module: {
-    loaders: [
-      ...baseConfig.module.loaders,
+    rules: [
+      ...baseConfig.module.rules,
       {
         test: /\.css?$/,
-        loaders: ['style', 'raw'],
+        use: ['style-loader', 'raw-loader'],
       },
     ],
   },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
@@ -32,7 +30,7 @@ export default {
   ],
   resolve: {
     ...baseConfig.resolve,
-    packageAlias: 'browser',
+    aliasFields: ['browser'],
   },
   target: 'electron-renderer',
 };

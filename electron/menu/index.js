@@ -1,9 +1,11 @@
 /* eslint global-require: 0 */
 
-export createContextMenu from './contextMenu';
+import createContextMenu from './contextMenu';
+import createMenuTemplateDarwin from './darwin';
+import createMenuTemplateLinuxWin from './linux+win';
 
-if (process.platform === 'darwin') {
-  exports.createMenuTemplate = require('./darwin').default;
-} else {
-  exports.createMenuTemplate = require('./linux+win').default;
-}
+const createMenuTemplate = process.platform === 'darwin' ?
+  createMenuTemplateDarwin :
+  createMenuTemplateLinuxWin;
+
+export { createContextMenu, createMenuTemplate };
