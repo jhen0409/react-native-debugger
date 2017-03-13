@@ -48,9 +48,9 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
   }
 
   if (list.includes('enableNetworkInspect')) {
-    const disabled = () => localStorage.enableNetworkInspect === 'disabled';
-    const getLabel = () => (disabled() ? 'Disable Network Inspect' : 'Enable Network Inspect');
-    const toggle = () => (disabled() ? 'enabled' : 'disabled');
+    const enabled = () => localStorage.enableNetworkInspect === 'enabled';
+    const getLabel = () => (enabled() ? 'Disable Network Inspect' : 'Enable Network Inspect');
+    const toggle = () => (enabled() ? 'disabled' : 'enabled');
     leftBar.enableNetworkInspect = new TouchBarButton({
       label: getLabel(),
       click: () => {
@@ -58,7 +58,7 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
         leftBar.enableNetworkInspect.label = getLabel();
         invokeDevMenuMethod({
           name: 'enableNetworkInspect',
-          args: [localStorage.enableNetworkInspect],
+          args: [enabled()],
         });
       },
     });

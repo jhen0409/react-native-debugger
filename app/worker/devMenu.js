@@ -14,14 +14,14 @@ const avoidWarnForRequire = (moduleName = 'NativeModules') => new Promise(resolv
 );
 
 const toggleNetworkInspect = enabled => {
-  if (!enabled && window.__Network_INSPECT__) {
-    window.XMLHttpRequest = window.__Network_INSPECT__.XMLHttpRequest;
-    window.FormData = window.__Network_INSPECT__.FormData;
-    delete window.__Network_INSPECT__;
+  if (!enabled && window.__NETWORK_INSPECT__) {
+    window.XMLHttpRequest = window.__NETWORK_INSPECT__.XMLHttpRequest;
+    window.FormData = window.__NETWORK_INSPECT__.FormData;
+    delete window.__NETWORK_INSPECT__;
     return;
   }
   if (!enabled) return;
-  window.__Network_INSPECT__ = {
+  window.__NETWORK_INSPECT__ = {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
   };
