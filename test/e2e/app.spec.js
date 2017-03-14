@@ -229,5 +229,17 @@ describe('Application launch', function spec() {
     it('should have one RemoteDev store instances on Redux DevTools', async () => {
       await checkInstance('RemoteDev store instance 1');
     });
+
+    it('should haven\'t any logs in console of main window', async () => {
+      const { client } = this.app;
+      const logs = await client.getRenderProcessLogs();
+      // Print renderer process logs
+      logs.forEach(log => {
+        console.log('Message:', log.message);
+        console.log('Source:', log.source);
+        console.log('Level:', log.level);
+      });
+      expect(logs.length).toEqual(0);
+    });
   });
 });
