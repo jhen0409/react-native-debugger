@@ -4053,9 +4053,9 @@ mobx-remotedev@^0.2.5:
     remotedev "^0.2.7"
     remotedev-utils "^0.0.3"
 
-mobx@^3.0.2:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.1.6.tgz#d985bcb2d21dd67dff799136532468a6fa39219e"
+mobx@3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.1.5.tgz#1135ad29d2b5b6160ddbcb702a36d3e7211748ec"
 
 mocha@^3.0.1:
   version "3.2.0"

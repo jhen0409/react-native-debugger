@@ -51,7 +51,7 @@
     "eslint-plugin-react": "^6.0.0",
     "expect": "^1.20.2",
     "json-loader": "^0.5.4",
-    "mobx": "^3.0.2",
+    "mobx": "3.1.5",
     "mobx-remotedev": "^0.2.5",
     "mocha": "^3.0.1",
     "raw-loader": "^0.5.1",
