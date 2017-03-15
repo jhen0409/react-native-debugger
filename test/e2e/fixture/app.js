@@ -8,6 +8,7 @@ window.require = moduleName => {
   if (moduleName !== 'NativeModules') return undefined;
   return {};
 };
+window.__DEV__ = true;
 
 require('./redux');
 require('./mobx');

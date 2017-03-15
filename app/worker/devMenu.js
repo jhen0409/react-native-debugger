@@ -35,7 +35,7 @@ const toggleNetworkInspect = enabled => {
 
 export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false) => {
   const done = await avoidWarnForRequire();
-  const { DevMenu } = window.require('NativeModules');
+  const { DevMenu } = window.__DEV__ ? window.require('NativeModules') : {};
   done();
 
   let result = ['enableNetworkInspect'];
