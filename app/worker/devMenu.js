@@ -1,5 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 
+/*
+ * Currently Blob is not supported for RN,
+ * we should remove it in WebWorker because it will used for `whatwg-fetch`
+ */
+if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
+  delete self.Blob;
+}
+
 // Avoid warning of use `window.require` on dev mode
 const avoidWarnForRequire = (moduleName = 'NativeModules') => new Promise(resolve =>
   setTimeout(() => {
