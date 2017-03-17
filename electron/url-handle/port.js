@@ -24,7 +24,7 @@ export const unlink = () => {
 export const watchExists = port => {
   if (isWatching) return;
   isWatching = true;
-  watch(portFile, file => {
+  watch(portFile, (evt, file) => {
     if (!fs.existsSync(file) || read() !== port) {
       write(port);
     }
