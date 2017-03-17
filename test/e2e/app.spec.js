@@ -55,6 +55,25 @@ describe('Application launch', function spec() {
     );
   });
 
+  it('should portfile (for debugger-open usage) always exists in home dir', async () => {
+    const portFile = path.join(
+      process.env.USERPROFILE || process.env.HOME,
+      '.rndebugger_port'
+    );
+
+    expect(fs.existsSync(portFile)).toBe(true);
+    fs.unlinkSync(portFile);
+
+    let attempts = 10;
+    let expected = false;
+    while (attempts > 0 && !expected) {
+      expected = fs.existsSync(portFile);
+      await delay(100);
+      attempts--;
+    }
+    expect(expected).toBe(true);
+  });
+
   it('should contain Inspector monitor\'s component on Redux DevTools', async () => {
     const { client } = this.app;
 
@@ -79,7 +98,7 @@ describe('Application launch', function spec() {
     expect(exist).toBe(true);
   });
 
-  const customRNServerPort = 8087;
+  const customRNServerPort = 8088;
   const getURLFromConnection = server =>
     new Promise(resolve => {
       server.on('connection', socket => {
@@ -95,7 +114,7 @@ describe('Application launch', function spec() {
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
   });
 
-  it('should connect to fake RN server (port 8087) with send set-debugger-loc after', async () => {
+  it('should connect to fake RN server (port 8088) with send set-debugger-loc after', async () => {
     const server = new WebSocketServer({ port: customRNServerPort });
 
     const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${customRNServerPort}`;
