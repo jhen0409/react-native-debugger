@@ -41,25 +41,31 @@ const toggleNetworkInspect = enabled => {
     window.FormData;
 };
 
+const methodsGlobalName = '__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__';
+
 export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false) => {
   const done = await avoidWarnForRequire();
-  const { DevMenu } = window.__DEV__ ? window.require('NativeModules') : {};
+  const NativeModules = window.__DEV__ ? window.require('NativeModules') : {};
   done();
 
+  // RN 0.43 use DevSettings, DevMenu is deprecated
+  const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
+
   let result = ['enableNetworkInspect'];
-  window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__ = {
+  const methods = {
     enableNetworkInspect: toggleNetworkInspect,
   };
-  if (DevMenu && DevMenu.reload) {
-    window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__.reload = DevMenu.reload;
+  if (DevSettings && DevSettings.reload) {
+    methods.reload = DevSettings.reload;
     result = ['reload', ...result];
   }
+  window[methodsGlobalName] = methods;
 
   toggleNetworkInspect(enableNetworkInspect);
-  postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
+  postMessage({ [methodsGlobalName]: result });
 };
 
 export const invokeDevMenuMethod = (name, args = []) => {
-  const method = window.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__[name];
+  const method = window[methodsGlobalName][name];
   if (method) method(...args);
 };
