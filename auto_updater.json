@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.0/rn-debugger-macos-x64.zip",
-  "name": "v0.6.0",
-  "notes": "1. Based on `electron@1.6.3` (beta) (Chrome 53 -> 56)\n2. React Inspector used `react-devtools-core@2.0.12`\n3. Add `serialize` option for redux enhancer\n4. Save window bounds when the app window closed\n5. [macOS] Add TouchBar integration"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.1/rn-debugger-macos-x64.zip",
+  "name": "v0.6.1",
+  "notes": "1. [Fix] Check __DEV__ for require NativeModules\n2. [Fix] Remove Blob in debugger worker"
 }
