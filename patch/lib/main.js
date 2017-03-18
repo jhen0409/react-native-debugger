@@ -58,10 +58,10 @@ module.exports = (argv, cb) => {
       if (stdout.length === 0) {
         log(
           false,
-          '[RNDebugger] Cannot find `rndebugger` URI Scheme, ' +
-          'maybe not install the app? ' +
+          '[RNDebugger] The `rndebugger://` URI scheme seems not registered, ' +
+          'maybe you haven\'t install the app? ' +
           '(Please visit https://github.com/jhen0409/react-native-debugger#installation) ' +
-          'Or it\'s never started. (Not registered URI Scheme)'
+          'Or it\'s never open. (Not registered URI Scheme)'
         );
       }
       inject();
