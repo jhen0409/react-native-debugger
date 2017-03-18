@@ -91,7 +91,7 @@ const connectToDebuggerProxy = () => {
       ws.send(JSON.stringify({ replyID: object.id }));
 
       // [Android] reserve React Inspector port for debug via USB on Android real device
-      tryADBReverse(8097);
+      tryADBReverse(8097).catch(() => {});
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
     } else {
