@@ -13,7 +13,8 @@ import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
 import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
-import { setAvailableDevMenuMethods } from './touchBarBuilder';
+import { setAvailableDevMenuMethods } from '../utils/touchBarBuilder';
+import { tryADBReverse } from '../utils/adb';
 
 const { SET_DEBUGGER_LOCATION } = debuggerActions;
 
@@ -24,15 +25,16 @@ let port;
 let socket;
 
 const workerOnMessage = message => {
-  if (message.data && message.data.__IS_REDUX_NATIVE_MESSAGE__) {
+  const { data } = message;
+  if (data && data.__IS_REDUX_NATIVE_MESSAGE__) {
     return true;
   }
-  const list = message.data && message.data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
+  const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
   if (list) {
     setAvailableDevMenuMethods(list, worker);
     return false;
   }
-  socket.send(JSON.stringify(message.data));
+  socket.send(JSON.stringify(data));
 };
 
 const createJSRuntime = id => {
@@ -87,6 +89,9 @@ const connectToDebuggerProxy = () => {
       }
       createJSRuntime(object.id);
       ws.send(JSON.stringify({ replyID: object.id }));
+
+      // [Android] reserve React Inspector port for debug via USB on Android real device
+      tryADBReverse(8097);
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
     } else {

@@ -5,7 +5,7 @@ import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
 import { showNotification, liftedDispatch } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 import { SET_DEBUGGER_WORKER } from '../actions/debugger';
-import { setReduxDevToolsMethods, updateSliderContent } from './touchBarBuilder';
+import { setReduxDevToolsMethods, updateSliderContent } from '../utils/touchBarBuilder';
 
 const unboundActions = {
   showNotification,
