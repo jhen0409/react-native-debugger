@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-const androidHome = process.env.ANDROID_HOME;
+const androidHome = process.env.ANDROID_HOME || '';
 let adbPath = path.join(androidHome, '/platform-tools/adb');
 if (!fs.existsSync(adbPath)) {
   adbPath = 'adb';
