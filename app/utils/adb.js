@@ -8,33 +8,34 @@ if (!fs.existsSync(adbPath)) {
   adbPath = 'adb';
 }
 
-const getDevices = () => {
-  let result = [];
+const tryCatch = (fn, arg) => {
   try {
-    result = execSync(`${adbPath} devices`, { encoding: 'utf-8' })
-      .trim()
-      .split(/\r?\n/)
-      .map(line => {
-        const [id, keyword] = line.split('\t').filter(w => w !== '');
-        if (keyword === 'device') {
-          return id;
-        }
-        return null;
-      })
-      .filter(item => !!item);
-  } catch(e) {}  // eslint-disable-line
+    return fn(arg);
+  } catch (err) {} // eslint-disable-line
+};
+
+const getDevices = () => {
+  const result = execSync(`${adbPath} devices`, { encoding: 'utf-8' })
+    .trim()
+    .split(/\r?\n/)
+    .map(line => {
+      const [id, keyword] = line.split('\t').filter(w => w !== '');
+      if (keyword === 'device') {
+        return id;
+      }
+      return null;
+    })
+    .filter(item => !!item);
   return result;
 };
 
 const reverse = (device, port) => {
-  try {
-    execSync(`${adbPath} -s ${device} reverse tcp:${port} tcp:${port}`);
-  } catch(e) {}  // eslint-disable-line
+  execSync(`${adbPath} -s ${device} reverse tcp:${port} tcp:${port}`);
 };
 
-export const tryADBReverse = port => {
+const reverseAllDevices = port => {
   const devices = getDevices();
-  devices.forEach(device => {
-    reverse(device, port);
-  });
+  devices.forEach(device => reverse(device, port));
 };
+
+export const tryADBReverse = port => tryCatch(reverseAllDevices, port);
