@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.1/rn-debugger-macos-x64.zip",
-  "name": "v0.6.1",
-  "notes": "1. [Fix] Check __DEV__ for require NativeModules\n2. [Fix] Remove Blob in debugger worker"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.2/rn-debugger-macos-x64.zip",
+  "name": "v0.6.2",
+  "notes": "1. Add adb util for reverse 8097 port for Android real device, it's only for debug via USB\n2. Fix callback params for node-watch@v0.5.1\n3. Fix checkAvailableDevMenuMethods for support RN ^0.43, use DevSettings instead of DevMenu if it exists"
 }
