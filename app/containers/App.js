@@ -96,10 +96,12 @@ export default class App extends Component {
   background =
     <div style={styles.wrapBackground}>
       <div style={styles.text}>
-        <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd> to toggle Redux DevTools
+        <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd>
+        {' to toggle Redux DevTools'}
       </div>
       <div style={styles.text}>
-        <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd> to toggle React DevTools
+        <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd>
+        {' to toggle React DevTools'}
       </div>
     </div>;
 
