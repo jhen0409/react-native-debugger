@@ -91,7 +91,8 @@ export default class ReduxDevTools extends Component {
           lib={options.lib}
         />
         <Notification />
-        {sliderIsOpen && options.connectionId &&
+        {
+          sliderIsOpen && options.connectionId &&
           <SliderMonitor
             monitor="SliderMonitor"
             liftedState={liftedState}
