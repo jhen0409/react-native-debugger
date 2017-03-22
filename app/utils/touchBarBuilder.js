@@ -6,6 +6,7 @@ const currentWindow = remote.getCurrentWindow();
 let worker;
 const leftBar = {
   reload: null,
+  toggleElementInspector: null,
   networkInspect: null,
 };
 
@@ -37,12 +38,22 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
   worker = wkr;
 
   leftBar.reload = null;
+  leftBar.toggleElementInspector = null;
   leftBar.networkInspect = null;
   if (list.includes('reload')) {
     leftBar.reload = new TouchBarButton({
       label: 'Reload JS',
       click: () => {
         invokeDevMenuMethod({ name: 'reload' });
+      },
+    });
+  }
+
+  if (list.includes('toggleElementInspector')) {
+    leftBar.toggleElementInspector = new TouchBarButton({
+      label: 'Inspector',
+      click: () => {
+        invokeDevMenuMethod({ name: 'toggleElementInspector' });
       },
     });
   }

@@ -51,14 +51,11 @@ export const checkAvailableDevMenuMethods = async (networkInspect = false) => {
   // RN 0.43 use DevSettings, DevMenu is deprecated
   const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
 
-  let result = ['networkInspect'];
   const methods = {
+    ...DevSettings,
     networkInspect: toggleNetworkInspect,
   };
-  if (DevSettings && DevSettings.reload) {
-    methods.reload = DevSettings.reload;
-    result = ['reload', ...result];
-  }
+  const result = Object.keys(methods).filter(key => !!methods[key]);
   window[methodsGlobalName] = methods;
 
   toggleNetworkInspect(networkInspect);
