@@ -6,7 +6,7 @@ const currentWindow = remote.getCurrentWindow();
 let worker;
 const leftBar = {
   reload: null,
-  enableNetworkInspect: null,
+  networkInspect: null,
 };
 
 let sliderEnabled;
@@ -37,7 +37,7 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
   worker = wkr;
 
   leftBar.reload = null;
-  leftBar.enableNetworkInspect = null;
+  leftBar.networkInspect = null;
   if (list.includes('reload')) {
     leftBar.reload = new TouchBarButton({
       label: 'Reload JS',
@@ -47,17 +47,18 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
     });
   }
 
-  if (list.includes('enableNetworkInspect')) {
-    const enabled = () => localStorage.enableNetworkInspect === 'enabled';
-    const getLabel = () => (enabled() ? 'Disable Network Inspect' : 'Enable Network Inspect');
+  if (list.includes('networkInspect')) {
+    const enabled = () => localStorage.networkInspect === 'enabled';
+    const getColor = () => (enabled() ? '#7A7A7A' : '#363636');
     const toggle = () => (enabled() ? 'disabled' : 'enabled');
-    leftBar.enableNetworkInspect = new TouchBarButton({
-      label: getLabel(),
+    leftBar.networkInspect = new TouchBarButton({
+      label: 'Network Inspect',
+      backgroundColor: getColor(),
       click: () => {
-        localStorage.enableNetworkInspect = toggle();
-        leftBar.enableNetworkInspect.label = getLabel();
+        localStorage.networkInspect = toggle();
+        leftBar.networkInspect.backgroundColor = getColor();
         invokeDevMenuMethod({
-          name: 'enableNetworkInspect',
+          name: 'networkInspect',
           args: [enabled()],
         });
       },
