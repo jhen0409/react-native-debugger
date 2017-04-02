@@ -15,6 +15,7 @@ import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint
 import * as debuggerActions from '../actions/debugger';
 import { setAvailableDevMenuMethods } from '../utils/touchBarBuilder';
 import { tryADBReverse } from '../utils/adb';
+import keepPriority from '../utils/keepPriority';
 
 const { SET_DEBUGGER_LOCATION } = debuggerActions;
 
@@ -49,6 +50,7 @@ const createJSRuntime = id => {
     'connected',
     `Debugger session #${id} active.`
   );
+  keepPriority(true);
 };
 
 const shutdownJSRuntime = (status, statusMessage) => {
@@ -59,6 +61,7 @@ const shutdownJSRuntime = (status, statusMessage) => {
   }
   worker = null;
   setDebuggerWorker(null, status, statusMessage);
+  keepPriority(false);
 };
 
 const connectToDebuggerProxy = () => {

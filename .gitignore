@@ -1,11 +1,8 @@
 node_modules
 npm-debug.log
 .DS_Store
-dist/**
-!dist/css
-!dist/package.json
-!dist/app.html
-!dist/logo.png
+dist/js
+dist/main.js*
 release/
 *.bundle.js
 tmp/
