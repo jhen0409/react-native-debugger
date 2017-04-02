@@ -4,7 +4,7 @@ import baseConfig from './base.babel';
 
 export default {
   ...baseConfig,
-  devtool: 'source-map',
+  devtool: 'hidden-source-map',
   entry: './app/index',
   output: {
     ...baseConfig.output,

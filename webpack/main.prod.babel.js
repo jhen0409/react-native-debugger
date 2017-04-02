@@ -5,7 +5,7 @@ import baseConfig from './base.babel';
 
 export default {
   ...baseConfig,
-  devtool: 'source-map',
+  devtool: 'hidden-source-map',
   entry: './electron/main',
   output: {
     ...baseConfig.output,
