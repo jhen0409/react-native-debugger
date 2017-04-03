@@ -6,9 +6,8 @@
     "rndebugger-open": "bin/rndebugger-open.js"
   },
   "scripts": {
-    "lint": "../node_modules/.bin/eslint .",
-    "build": "babel src --out-dir lib --ignore *.tmpl.js && cp src/*.tmpl.js lib/",
-    "prepublish": "npm run lint && npm run build"
+    "build": "babel src --out-dir lib --ignore *.tmpl.js",
+    "prepublish": "npm run build"
   },
   "files": [
     "bin",
