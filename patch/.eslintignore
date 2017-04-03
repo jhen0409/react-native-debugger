@@ -1,1 +1,2 @@
-lib/*.tmpl.js
+lib
+src/*.tmpl.js
