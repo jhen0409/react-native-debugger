@@ -26,18 +26,20 @@ function __connectToRND(rndPath, log, cb) {
       pass = data === 'success';
       __c.end();
     });
-    __c.on('end', () => {
-      log && console.log(
-        '\n[RNDebugger] Try to set port of React Native server failed.\n'
-      );
-      cb(pass);
-    });
-    setTimeout(() => {
+    const __timeoutId = setTimeout(() => {
       log && console.log(
         '\n[RNDebugger] Cannot connect to port ' + __port + '.\n'
       );
       __c.end();
     }, 1000);
+    __c.on('end', () => {
+      clearTimeout(__timeoutId);
+      log && console.log(
+        '\n[RNDebugger] Try to set port of React Native server failed.\n'
+      );
+      cb(pass);
+    });
+
   });
 }
 
