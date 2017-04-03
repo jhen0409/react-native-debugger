@@ -1,3 +1,4 @@
+patch/lib/
 *.tmpl.js
 dist/
 release/
