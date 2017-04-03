@@ -9,14 +9,14 @@ const argv = require('minimist')(process.argv.slice(2), {
   },
 });
 
-let module;
+let moduleName;
 argv.port = Number(argv.port);
 if (argv.open && argv.port) {
-  module = '../lib/open';
+  moduleName = '../lib/open';
 } else {
-  module = '../lib/main';
+  moduleName = '../lib/main';
 }
 
-require(module)(argv, (pass, dontError) => {
+require(moduleName).default(argv, (pass, dontError) => {
   if (!pass && !dontError) process.exit(1);
 });

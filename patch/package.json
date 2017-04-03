@@ -5,6 +5,11 @@
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
   },
+  "scripts": {
+    "lint": "../node_modules/.bin/eslint .",
+    "build": "babel src --out-dir lib --ignore *.tmpl.js && cp src/*.tmpl.js lib/",
+    "prepublish": "npm run lint && npm run build"
+  },
   "files": [
     "bin",
     "lib"
@@ -26,5 +31,10 @@
     "es6-template": "^1.0.4",
     "minimist": "^1.2.0",
     "opn": "^4.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.24.0",
+    "babel-preset-es2015-node4": "^2.1.1"
   }
 }
