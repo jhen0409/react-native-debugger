@@ -14,8 +14,8 @@ function connectToRND(rndPath, log, cb) {
     if (log) {
       console.log(
         '\n[RNDebugger] The port file `$HOME/.rndebugger_port` not found\n' +
-        'Maybe the React Native Debugger (^0.3) is not open?\n' +
-        '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n'
+          'Maybe the React Native Debugger (^0.3) is not open?\n' +
+          '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n',
       );
     }
     return cb(false);
@@ -28,27 +28,26 @@ function connectToRND(rndPath, log, cb) {
       pass = data === 'success';
       connection.end();
     });
-    const timeoutId = setTimeout(() => {
-      if (log) {
-        console.log(
-          `\n[RNDebugger] Cannot connect to port ${port}.\n`
-        );
-      }
-      connection.end();
-    }, 1000);
+    const timeoutId = setTimeout(
+      () => {
+        if (log) {
+          console.log(`\n[RNDebugger] Cannot connect to port ${port}.\n`);
+        }
+        connection.end();
+      },
+      1000,
+    );
     connection.on('end', () => {
       clearTimeout(timeoutId);
       if (log) {
-        console.log(
-          '\n[RNDebugger] Try to set port of React Native server failed.\n'
-        );
+        console.log('\n[RNDebugger] Try to set port of React Native server failed.\n');
       }
       cb(pass);
     });
   });
 }
 
-export default (port, cb) => {
+export default ({ port }, cb) => {
   const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${port}`;
 
   if (process.platform === 'darwin') {
@@ -58,8 +57,8 @@ export default (port, cb) => {
           if (!pass) {
             console.log(
               '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
-              '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
-              'Or it\'s never started. (Not registered URI Scheme)\n'
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
+                "Or it's never started. (Not registered URI Scheme)\n",
             );
           }
           cb(pass, true);

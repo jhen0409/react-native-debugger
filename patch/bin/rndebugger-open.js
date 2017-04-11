@@ -1,16 +1,29 @@
 #! /usr/bin/env node
 
+const defaultPort = 8081;
+const expoDefaultPort = 19000;
+
 const argv = require('minimist')(process.argv.slice(2), {
-  boolean: ['inject', 'revert', 'desktop', 'macos', 'open'],
+  boolean: [
+    // Inject / Revert code from react-native packager
+    'inject',
+    'revert',
+    // Inject to react-native-desktop / react-native-macos package
+    'desktop',
+    'macos',
+    // Open directly instead of Inject code
+    'open',
+    // Use expo default port (19000) instead of RN packager default port (8081)
+    'expo',
+  ],
   string: ['port'],
   default: {
     inject: true,
-    port: '8081',
   },
 });
 
 let moduleName;
-argv.port = Number(argv.port);
+argv.port = Number(argv.port) || (argv.expo ? expoDefaultPort : defaultPort);
 if (argv.open && argv.port) {
   moduleName = '../lib/open';
 } else {
