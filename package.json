@@ -40,7 +40,7 @@
     "babili-webpack-plugin": "^0.0.11",
     "cross-env": "^4.0.0",
     "devtron": "^1.2.0",
-    "electron": "^1.6.3",
+    "electron": "^1.6.6",
     "electron-debug": "^1.0.0",
     "electron-devtools-installer": "^2.1.0",
     "electron-packager": "^8.2.0",
