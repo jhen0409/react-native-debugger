@@ -1,10 +1,18 @@
-import { SET_DEBUGGER_STATUS, SET_DEBUGGER_WORKER } from '../actions/debugger';
+import {
+  SET_DEBUGGER_STATUS,
+  SET_DEBUGGER_WORKER,
+  SET_DEBUGGER_LOCATION,
+} from '../actions/debugger';
 
 const refreshShortcut = process.platform === 'darwin' ? '⌘R' : 'Ctrl+R';
 const initialState = {
   worker: null,
   status: 'waiting',
   statusMessage: `Waiting, press ${refreshShortcut} in simulator to reload and connect.`,
+  location: {
+    host: 'localhost',
+    port: 8081,
+  },
 };
 
 function setStatusToTitle(message) {
@@ -31,6 +39,13 @@ const actionsMap = {
     setStatusToTitle(newState.statusMessage);
     return newState;
   },
+  [SET_DEBUGGER_LOCATION]: (state, action) => ({
+    ...state,
+    location: {
+      ...state.location,
+      ...action.loc,
+    },
+  }),
 };
 
 export default (state = initialState, action) => {

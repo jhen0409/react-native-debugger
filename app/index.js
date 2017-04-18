@@ -15,9 +15,16 @@ webFrame.setZoomLevelLimits(1, 1);
 
 const store = configureStore();
 
+window.checkWorkerRunning = () => {
+  const debuggerState = store.getState().debugger;
+  const isRunning = !!debuggerState.worker;
+  const location = debuggerState.location;
+  return { isRunning, location };
+};
+
 render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
