@@ -9,7 +9,7 @@ import { Application } from 'spectron';
 import { delay } from '../utils/e2e.js';
 
 describe('Application launch', function spec() {
-  this.timeout(6E4);
+  this.timeout(6e4);
 
   before(async () => {
     await new Promise(resolve =>
@@ -18,7 +18,7 @@ describe('Application launch', function spec() {
         output: {
           filename: './test/e2e/fixture/app.bundle.js',
         },
-      }).run(resolve)
+      }).run(resolve),
     );
     this.app = new Application({
       path: electronPath,
@@ -49,17 +49,11 @@ describe('Application launch', function spec() {
     await client.waitUntilWindowLoaded();
     await delay(2000);
     const title = await browserWindow.getTitle();
-    expect(title).toBe(
-      'React Native Debugger - Disconnected from proxy. ' +
-      'Attempting reconnection. Is node server running?',
-    );
+    expect(title).toBe('React Native Debugger - disconnected - port: 8081');
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
-    const portFile = path.join(
-      process.env.USERPROFILE || process.env.HOME,
-      '.rndebugger_port'
-    );
+    const portFile = path.join(process.env.USERPROFILE || process.env.HOME, '.rndebugger_port');
 
     expect(fs.existsSync(portFile)).toBe(true);
     fs.unlinkSync(portFile);
@@ -74,27 +68,23 @@ describe('Application launch', function spec() {
     expect(expected).toBe(true);
   });
 
-  it('should contain Inspector monitor\'s component on Redux DevTools', async () => {
+  it("should contain Inspector monitor's component on Redux DevTools", async () => {
     const { client } = this.app;
 
-    const val = await client.element('//div[contains(@class, "inspector-")]')
-      .getText();
+    const val = await client.element('//div[contains(@class, "inspector-")]').getText();
     expect(val).toExist();
   });
 
   it('should contain an empty actions list on Redux DevTools', async () => {
     const { client } = this.app;
 
-    const val = await client.element('//div[contains(@class, "actionListRows-")]')
-      .getText();
+    const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
     expect(val).toBe('');
   });
 
   it('should show waiting message on React DevTools', async () => {
     const { client } = this.app;
-    const exist = await client.isExisting(
-      '//h2[text()="Waiting for React to connect…"]'
-    );
+    const exist = await client.isExisting('//h2[text()="Waiting for React to connect…"]');
     expect(exist).toBe(true);
   });
 
@@ -151,12 +141,14 @@ describe('Application launch', function spec() {
             const data = JSON.parse(message);
             switch (data.replyID) {
               case 'createJSRuntime':
-                socket.send(JSON.stringify({
-                  id: 'sendFakeScript',
-                  method: 'executeApplicationScript',
-                  inject: [],
-                  url: '../../test/e2e/fixture/app.bundle.js',
-                }));
+                socket.send(
+                  JSON.stringify({
+                    id: 'sendFakeScript',
+                    method: 'executeApplicationScript',
+                    inject: [],
+                    url: '../../test/e2e/fixture/app.bundle.js',
+                  }),
+                );
                 break;
               case 'sendFakeScript':
                 return resolve();
@@ -164,29 +156,28 @@ describe('Application launch', function spec() {
                 console.error(`Unexperted id ${data.replyID}`);
             }
           });
-          socket.send(JSON.stringify({
-            id: 'createJSRuntime',
-            method: 'prepareJSRuntime',
-          }));
+          socket.send(
+            JSON.stringify({
+              id: 'createJSRuntime',
+              method: 'prepareJSRuntime',
+            }),
+          );
         });
       });
     });
 
     it('should have @@INIT action on Redux DevTools', async () => {
       const { client } = this.app;
-      const val = await client.element('//div[contains(@class, "actionListRows-")]')
-        .getText();
-      expect(val).toMatch(/@@redux\/INIT/);  // Last store is `RemoteDev store instance 1`
+      const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
+      expect(val).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
     });
 
-    let currentInstance = 'Autoselect instances';  // Default instance
+    let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
     const selectInstance = async (client, instance) => {
-      await client.element(`//div[text()="${currentInstance}"]`)
-        .click().then(wait);
+      await client.element(`//div[text()="${currentInstance}"]`).click().then(wait);
       currentInstance = instance;
-      return client.element(`//div[text()="${instance}"]`)
-        .click().then(wait);
+      return client.element(`//div[text()="${instance}"]`).click().then(wait);
     };
 
     const expectActions = {
@@ -198,7 +189,8 @@ describe('Application launch', function spec() {
         expt: [/@@INIT/, /TEST_PASS_FOR_REDUX_STORE_2/],
         notExpt: [
           /TEST_PASS_FOR_REDUX_STORE_1/,
-          /NOT_SHOW_1_FOR_REDUX_STORE_2/, /NOT_SHOW_1_FOR_REDUX_STORE_2/,
+          /NOT_SHOW_1_FOR_REDUX_STORE_2/,
+          /NOT_SHOW_1_FOR_REDUX_STORE_2/,
         ],
       },
       'MobX store instance 1': {
@@ -230,8 +222,7 @@ describe('Application launch', function spec() {
       const { client } = this.app;
 
       await selectInstance(client, name);
-      const val = await client.element('//div[contains(@class, "actionListRows-")]')
-        .getText();
+      const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
       runExpectActions(name, val);
     };
 
@@ -249,7 +240,7 @@ describe('Application launch', function spec() {
       await checkInstance('RemoteDev store instance 1');
     });
 
-    it('should haven\'t any logs in console of main window', async () => {
+    it("should haven't any logs in console of main window", async () => {
       const { client } = this.app;
       const logs = await client.getRenderProcessLogs();
       // Print renderer process logs
