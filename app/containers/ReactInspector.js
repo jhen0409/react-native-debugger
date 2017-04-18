@@ -53,7 +53,7 @@ export default class ReactInspector extends Component {
     }
   }
 
-  startServer(port = 8097) {
+  startServer(port = window.reactDevToolsPort) {
     return ReactServer
       .setContentDOMNode(document.getElementById(containerId))
       .startServer(port);

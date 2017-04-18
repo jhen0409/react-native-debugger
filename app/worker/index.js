@@ -33,6 +33,8 @@ self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
+    self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+
     Object.keys(message.inject).forEach(key => {
       self[key] = JSON.parse(message.inject[key]);
     });

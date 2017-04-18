@@ -1,4 +1,5 @@
 import { remote, webFrame } from 'electron';
+import getPort from 'get-port';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -22,9 +23,12 @@ window.checkWorkerRunning = () => {
   return { isRunning, location };
 };
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'),
-);
+getPort().then(port => {
+  window.reactDevToolsPort = port;
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root'),
+  );
+});
