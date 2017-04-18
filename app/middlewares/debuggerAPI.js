@@ -38,7 +38,7 @@ const workerOnMessage = message => {
   socket.send(JSON.stringify(data));
 };
 
-const createJSRuntime = id => {
+const createJSRuntime = () => {
   // This worker will run the application javascript code,
   // making sure that it's run in an environment without a global
   // document, to make it consistent with the JSC executor environment.
@@ -48,19 +48,18 @@ const createJSRuntime = id => {
   actions.setDebuggerWorker(
     worker,
     'connected',
-    `Debugger session #${id} active.`
   );
   keepPriority(true);
 };
 
-const shutdownJSRuntime = (status, statusMessage) => {
+const shutdownJSRuntime = (status) => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
     setAvailableDevMenuMethods([]);
   }
   worker = null;
-  setDebuggerWorker(null, status, statusMessage);
+  setDebuggerWorker(null, status);
   keepPriority(false);
 };
 
@@ -90,7 +89,7 @@ const connectToDebuggerProxy = () => {
       if (process.env.NODE_ENV !== 'development') {
         console.clear();
       }
-      createJSRuntime(object.id);
+      createJSRuntime();
       ws.send(JSON.stringify({ replyID: object.id }));
 
       // [Android] reserve React Inspector port for debug via USB on Android real device
@@ -109,10 +108,7 @@ const connectToDebuggerProxy = () => {
 
   ws.onerror = () => {};
   ws.onclose = e => {
-    shutdownJSRuntime(
-      'disconnected',
-      'Disconnected from proxy. Attempting reconnection. Is node server running?'
-    );
+    shutdownJSRuntime('disconnected');
     if (e.reason) {
       console.warn(e.reason);
     }

@@ -8,17 +8,15 @@ export const setDebuggerLocation = loc =>
     loc,
   });
 
-export const setDebuggerStatus = (status, statusMessage) =>
+export const setDebuggerStatus = (status) =>
   ({
     type: SET_DEBUGGER_STATUS,
     status,
-    statusMessage,
   });
 
-export const setDebuggerWorker = (worker, status, statusMessage) =>
+export const setDebuggerWorker = (worker, status) =>
   ({
     type: SET_DEBUGGER_WORKER,
     worker,
     status,
-    statusMessage,
   });

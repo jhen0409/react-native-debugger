@@ -15,8 +15,8 @@ const initialState = {
   },
 };
 
-function setStatusToTitle(message) {
-  document.title = `React Native Debugger - ${message}`;
+function setStatusToTitle(message, port) {
+  document.title = `React Native Debugger - ${message} - port: ${port}`;
 }
 
 const actionsMap = {
@@ -24,9 +24,8 @@ const actionsMap = {
     const newState = {
       ...state,
       status: action.status || initialState.status,
-      statusMessage: action.statusMessage || initialState.statusMessage,
     };
-    setStatusToTitle(newState.statusMessage);
+    setStatusToTitle(newState.status, newState.location.port);
     return newState;
   },
   [SET_DEBUGGER_WORKER]: (state, action) => {
@@ -34,18 +33,21 @@ const actionsMap = {
       ...state,
       worker: action.worker,
       status: action.status || initialState.status,
-      statusMessage: action.statusMessage || initialState.statusMessage,
     };
-    setStatusToTitle(newState.statusMessage);
+    setStatusToTitle(newState.status, newState.location.port);
     return newState;
   },
-  [SET_DEBUGGER_LOCATION]: (state, action) => ({
-    ...state,
-    location: {
-      ...state.location,
-      ...action.loc,
-    },
-  }),
+  [SET_DEBUGGER_LOCATION]: (state, action) => {
+    const newState = {
+      ...state,
+      location: {
+        ...state.location,
+        ...action.loc,
+      },
+    };
+    setStatusToTitle(newState.status, newState.location.port);
+    return newState;
+  },
 };
 
 export default (state = initialState, action) => {
