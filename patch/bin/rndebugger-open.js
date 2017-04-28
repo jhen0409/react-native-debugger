@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const defaultPort = 8081;
-const expoDefaultPort = 19000;
+const expoDefaultPort = 19001;
 
 const argv = require('minimist')(process.argv.slice(2), {
   boolean: [
