@@ -59,10 +59,10 @@ If you're enabled `Debug JS remotely` with React Native Debugger, the following 
 
 See [usage of redux-devtools-extension](https://github.com/zalmoxisus/redux-devtools-extension#usage) for more information.
 
-#### Examples
+## Examples
 
-* [`Redux counter`](https://github.com/jhen0409/react-native-debugger-redux-example)
-* [`MobX counter`](https://github.com/jhen0409/react-native-debugger-mobx-example) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
+* [`Redux counter`](examples/counter-with-redux)
+* [`MobX counter`](examples/counter-with-mobx) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
 
 ## Debugging tips
 
