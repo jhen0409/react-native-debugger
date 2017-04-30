@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "jest-expo": "^0.4.0",
-    "react-native-debugger-open": "^0.3.5",
+    "react-native-debugger-open": "^0.3.7",
     "react-native-scripts": "0.0.29",
     "react-test-renderer": "16.0.0-alpha.6"
   },

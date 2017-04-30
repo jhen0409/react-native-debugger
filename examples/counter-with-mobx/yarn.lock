@@ -1558,13 +1558,9 @@ commoner@~0.10.3:
     q "^1.1.2"
     recast "^0.11.17"
 
-component-emitter@1.2.0:
+component-emitter@1.2.0, component-emitter@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.0.tgz#ccd113a86388d06482d03de3fc7df98526ba8efe"
-
-component-emitter@^1.2.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
 
 component-type@^1.2.1:
   version "1.2.1"
@@ -4389,9 +4385,9 @@ react-devtools-core@^2.0.8:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-debugger-open@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/react-native-debugger-open/-/react-native-debugger-open-0.3.5.tgz#782d1de4bf1f8d4a038be5bdada29e1d95a8f251"
+react-native-debugger-open@^0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/react-native-debugger-open/-/react-native-debugger-open-0.3.7.tgz#06a77d544711998c3c02a74dd662acc3e63ed062"
   dependencies:
     chalk "^1.1.3"
     es6-template "^1.0.4"
