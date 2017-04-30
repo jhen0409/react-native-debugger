@@ -50,6 +50,10 @@ ${replaceFuncFlag}
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
   if (process.platform === 'darwin' && !skipRNDebugger) {
+    // This env is specified from Expo (and CRNA),
+    // we need avoid it included in rndebugger
+    var __electronRunAsNode = process.env.ELECTRON_RUN_AS_NODE;
+    delete process.env.ELECTRON_RUN_AS_NODE;
     __opn(__rnd_path, { wait: false }, err => {
       if (err) {
         __connectToRND(__rnd_path, false, pass => {
@@ -67,6 +71,7 @@ ${replaceFuncFlag}
         __rndebuggerIsOpening = false;
       }
     });
+    process.env.ELECTRON_RUN_AS_NODE = __electronRunAsNode;
     return;
   } else if (!skipRNDebugger) {
     __connectToRND(__rnd_path, true, pass => {

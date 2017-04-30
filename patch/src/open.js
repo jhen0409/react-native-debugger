@@ -15,7 +15,7 @@ function connectToRND(rndPath, log, cb) {
       console.log(
         '\n[RNDebugger] The port file `$HOME/.rndebugger_port` not found\n' +
           'Maybe the React Native Debugger (^0.3) is not open?\n' +
-          '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n',
+          '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n'
       );
     }
     return cb(false);
@@ -28,15 +28,12 @@ function connectToRND(rndPath, log, cb) {
       pass = data === 'success';
       connection.end();
     });
-    const timeoutId = setTimeout(
-      () => {
-        if (log) {
-          console.log(`\n[RNDebugger] Cannot connect to port ${port}.\n`);
-        }
-        connection.end();
-      },
-      1000,
-    );
+    const timeoutId = setTimeout(() => {
+      if (log) {
+        console.log(`\n[RNDebugger] Cannot connect to port ${port}.\n`);
+      }
+      connection.end();
+    }, 1000);
     connection.on('end', () => {
       clearTimeout(timeoutId);
       if (log) {
@@ -51,6 +48,9 @@ export default ({ port }, cb) => {
   const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${port}`;
 
   if (process.platform === 'darwin') {
+    // We need avoid ELECTRON_RUN_AS_NODE env included in rndebugger
+    const electronRunAsNode = process.env.ELECTRON_RUN_AS_NODE;
+    delete process.env.ELECTRON_RUN_AS_NODE;
     opn(rndPath, { wait: false }, err => {
       if (err) {
         connectToRND(rndPath, false, pass => {
@@ -58,7 +58,7 @@ export default ({ port }, cb) => {
             console.log(
               '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
                 '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
-                "Or it's never started. (Not registered URI Scheme)\n",
+                "Or it's never started. (Not registered URI Scheme)\n"
             );
           }
           cb(pass, true);
@@ -67,6 +67,7 @@ export default ({ port }, cb) => {
         cb(true);
       }
     });
+    process.env.ELECTRON_RUN_AS_NODE = electronRunAsNode;
   } else {
     connectToRND(rndPath, true, pass => {
       cb(pass, true);
