@@ -4,7 +4,7 @@ The Debugger part is referenced from [react-native](https://github.com/facebook/
 
 ## Developer menu integration (macOS)
 
-RNDebugger have developer menu of React Native integration:
+RNDebugger have [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) of React Native integration:
 
 <img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
 
@@ -28,6 +28,14 @@ You need to switch worker thread for console, open `Console` tab on Chrome DevTo
 
 ![2016-11-05 6 56 45](https://cloud.githubusercontent.com/assets/3001525/20025024/7edce770-a325-11e6-9e77-618c7ba04123.png)
 
+#### Use `require('<providesModule>')` in the console
+
+In the console, you can use `require` for module of specified [`@providesModule`](https://github.com/facebook/react-native/search?l=JavaScript&q=providesModule&type=&utf8=✓) words in React Native, this is example for use `AsyncStorage`:
+
+<img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">
+
+Make sure you're changed to `RNDebuggerWorker.js` context, the same as the previous tip.
+
 #### Inpsect network requests by `Network` tab of Chrome DevTools (See also [#15](https://github.com/jhen0409/react-native-debugger/issues/15))
 
 We can do:
@@ -43,9 +51,9 @@ global.FormData = global.originalFormData ?
   global.FormData;
 ```
 
-Just requires attention:
+Warning:
 
 * It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
 * It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` or `XHR`.
 
-If you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
+Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.

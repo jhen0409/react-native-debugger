@@ -17,7 +17,7 @@ It's support Atom, Subline, VSCode for macOS.
 
 <img width="276" alt="tt" src="https://cloud.githubusercontent.com/assets/3001525/25572822/a83fdafa-2e71-11e7-8093-cce3f7db98c0.png">
 
-You need include [`babel-plugin-transform-react-jsx-source`](https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source) in your project for enable this feature, see also [this section](https://github.com/facebook/react-devtools#displaying-element-souce) of `react-devtools`.
+If you want to enable this feature, you need include [`babel-plugin-transform-react-jsx-source`](https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source) in `.babelrc` of your project, see also [this section](https://github.com/facebook/react-devtools#displaying-element-souce) of `react-devtools`.
 
 ## How to use it with real device?
 
