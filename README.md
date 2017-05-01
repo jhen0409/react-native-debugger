@@ -2,7 +2,12 @@
 
 [![Build Status](https://travis-ci.org/jhen0409/react-native-debugger.svg?branch=master)](https://travis-ci.org/jhen0409/react-native-debugger) [![Build status Windows](https://ci.appveyor.com/api/projects/status/botj7b3pj4hth6tn?svg=true)](https://ci.appveyor.com/project/jhen0409/react-native-debugger) [![Dependency Status](https://david-dm.org/jhen0409/react-native-debugger.svg)](https://david-dm.org/jhen0409/react-native-debugger) [![devDependency Status](https://david-dm.org/jhen0409/react-native-debugger/dev-status.svg)](https://david-dm.org/jhen0409/react-native-debugger?type=dev)
 
-![React Native Debugger](https://cloud.githubusercontent.com/assets/3001525/15636231/9e47d322-262a-11e6-8326-9a05fc73adec.png)
+<p align="left">
+  <img width="625" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25577078/2fb085b0-2e96-11e7-9b72-9be2c001d480.png">
+  <img width="240" alt="t2" src="https://cloud.githubusercontent.com/assets/3001525/25577090/3d5f8bb6-2e96-11e7-888d-1c7f59f1ef46.png">
+</p>
+
+> Run the redux example of [react-navigation](https://github.com/react-community/react-navigation/tree/master/examples/ReduxExample)
 
 This is a standalone app for debugging React Native apps, it's based on the official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), and includes React Inspector / Redux DevTools.
 
