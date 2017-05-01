@@ -2,18 +2,18 @@
 
 The Debugger part is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
 
-## Dev menu integration (macOS)
+## Developer menu integration (macOS)
 
-RNDebugger have Dev menu of React Native integration:
+RNDebugger have developer menu of React Native integration:
 
 <img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
 
-Just includes two dev menu features (iOS only):
+Just includes two developer menu features (iOS only):
 
 * Reload JS
 * Inspector (Toogle Elements Inspector) (RN ^0.43 support)
 
-These would be useful for real device, instead of open Dev menu in iOS device manually.
+These would be useful for real device, instead of open developer menu in iOS device manually.
 
 * Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
 * Redux Slider (If you're using [`Redux API`](redux-devtools-integration.md))
