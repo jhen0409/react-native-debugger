@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.3/rn-debugger-macos-x64.zip",
-  "name": "v0.6.3",
-  "notes": "1. Maintain priority even if app invisible\n2. Make toggle network inspect button color change\n3. Add `Inspector` touchbar button for toggle the built-in inspector"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.4/rn-debugger-macos-x64.zip",
+  "name": "v0.6.4",
+  "notes": "This version updated `react-devtools-core` to v2.1.3, includes layout inspector, show component in source, Immutable support and more better UI improvements."
 }

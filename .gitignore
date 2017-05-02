@@ -6,4 +6,3 @@ dist/main.js*
 release/
 *.bundle.js
 tmp/
-app/react-devtools

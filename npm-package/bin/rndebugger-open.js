@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const defaultPort = 8081;
-const expoDefaultPort = 19000;
+const expoDefaultPort = 19001;
 
 const argv = require('minimist')(process.argv.slice(2), {
   boolean: [
@@ -13,7 +13,7 @@ const argv = require('minimist')(process.argv.slice(2), {
     'macos',
     // Open directly instead of Inject code
     'open',
-    // Use expo default port (19000) instead of RN packager default port (8081)
+    // Use expo default port (19001) instead of RN packager default port (8081)
     'expo',
   ],
   string: ['port'],

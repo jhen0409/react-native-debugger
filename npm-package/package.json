@@ -1,10 +1,11 @@
 {
   "name": "react-native-debugger-open",
-  "version": "0.3.5",
+  "version": "0.3.8",
   "description": "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
   },
+  "main": "lib/open.js",
   "scripts": {
     "build": "babel src --out-dir lib --ignore *.tmpl.js",
     "prepublish": "npm run build"
@@ -14,7 +15,7 @@
     "lib"
   ],
   "homepage": "https://github.com/jhen0409/react-native-debugger",
-  "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/patch",
+  "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/npm-package",
   "keywords": [
     "react",
     "react-native",

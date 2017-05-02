@@ -15,7 +15,7 @@ node --version
 npm --version
 
 npm install
-cd patch && npm install && cd ..
+cd npm-package && npm install && cd ..
 npm run lint
 npm run build
 npm test
