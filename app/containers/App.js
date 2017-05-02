@@ -8,6 +8,8 @@ import * as settingActions from '../actions/setting';
 import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
 
+import FormInput from '../components/FormInput';
+
 const styles = {
   wrapReactPanel: {
     display: 'flex',
@@ -26,6 +28,7 @@ const styles = {
     height: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     color: '#ccc',
     fontSize: '25px',
     WebkitUserSelect: 'none',
@@ -61,6 +64,7 @@ const shortcutPrefix = process.platform === 'darwin' ? '⌥⌘' : 'Ctrl+Alt+';
 export default class App extends Component {
   static propTypes = {
     setting: PropTypes.object.isRequired,
+    debugger: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -74,9 +78,11 @@ export default class App extends Component {
     ipcRenderer.on('set-debugger-loc', (e, payload) => {
       setDebuggerLocation(JSON.parse(payload));
     });
-    setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
-
     window.onbeforeunload = this.removeAllListeners;
+
+    if (!this.props.debugger.isPortSettingRequired) {
+      setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
+    }
   }
 
   componentWillUnmount() {
@@ -93,7 +99,7 @@ export default class App extends Component {
     ipcRenderer.removeAllListeners('set-debugger-loc');
   }
 
-  background =
+  background = (
     <div style={styles.wrapBackground}>
       <div style={styles.text}>
         <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd>
@@ -103,7 +109,33 @@ export default class App extends Component {
         <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd>
         {' to toggle React DevTools'}
       </div>
-    </div>;
+    </div>
+  );
+
+  handlePortOnSubmit = (evt, port) => {
+    const { setDebuggerLocation } = this.props.actions.debugger;
+    setDebuggerLocation({
+      ...JSON.parse(process.env.DEBUGGER_SETTING || '{}'),
+      port,
+    });
+  };
+
+  renderPortSetting() {
+    return (
+      <div style={styles.wrapBackground}>
+        <FormInput
+          title={'Type an another React Native packager port'}
+          button="Confirm"
+          inputProps={{
+            type: 'input',
+            value: 19001,
+          }}
+          onInputChange={value => Number(value.replace(/\D/g, '').substr(0, 5)) || ''}
+          onSubmit={this.handlePortOnSubmit}
+        />
+      </div>
+    );
+  }
 
   renderReduxDevTools() {
     const { redux, react } = this.props.setting;
@@ -133,9 +165,7 @@ export default class App extends Component {
     if (!react) {
       wrapStyle.display = 'none';
     } else {
-      wrapStyle.height = redux ?
-        `${(1 - size) * 100}%` :
-        '100%';
+      wrapStyle.height = redux ? `${(1 - size) * 100}%` : '100%';
     }
     return (
       <div style={wrapStyle}>
@@ -146,6 +176,10 @@ export default class App extends Component {
 
   render() {
     const { redux, react } = this.props.setting;
+    const { isPortSettingRequired } = this.props.debugger;
+    if (isPortSettingRequired) {
+      return this.renderPortSetting();
+    }
     return (
       <div>
         {this.renderReduxDevTools()}

@@ -1,9 +1,10 @@
 import { shell, BrowserWindow } from 'electron';
+import { createWindow } from '../window';
 import { menu, item, separator, n, showAboutDialog, toggleDevTools } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 
-export default iconPath => [
+export default ({ iconPath, windowList }) => [
   menu('RND', [
     item('About', n, () => showAboutDialog(iconPath)),
     item('Check for Updates...', n, () => {
@@ -15,6 +16,11 @@ export default iconPath => [
       type: 'checkbox',
       checked: false,
     }),
+  ]),
+  menu('Debugger', [
+    item('New Window', 'Ctrl+T', () =>
+      createWindow({ iconPath, windowList, isPortSettingRequired: true })
+    ),
     separator,
     item('Close', 'Ctrl+W', () => getWin().close()),
   ]),
@@ -39,10 +45,10 @@ export default iconPath => [
   ]),
   menu('Help', [
     item('Documentation', n, () =>
-      shell.openExternal('https://github.com/jhen0409/react-native-debugger#usage'),
+      shell.openExternal('https://github.com/jhen0409/react-native-debugger#usage')
     ),
     item('Issues', n, () =>
-      shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues'),
+      shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues')
     ),
   ]),
 ];
