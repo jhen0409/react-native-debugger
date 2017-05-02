@@ -5,6 +5,7 @@
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
   },
+  "main": "lib/open.js",
   "scripts": {
     "build": "babel src --out-dir lib --ignore *.tmpl.js",
     "prepublish": "npm run build"
