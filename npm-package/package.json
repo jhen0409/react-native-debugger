@@ -14,7 +14,7 @@
     "lib"
   ],
   "homepage": "https://github.com/jhen0409/react-native-debugger",
-  "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/patch",
+  "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/npm-package",
   "keywords": [
     "react",
     "react-native",
