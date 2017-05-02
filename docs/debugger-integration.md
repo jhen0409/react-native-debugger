@@ -8,12 +8,12 @@ RNDebugger have [developer menu](https://facebook.github.io/react-native/docs/de
 
 <img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
 
-Just includes two developer menu features (iOS only):
+Just includes two developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
 
 * Reload JS
 * Inspector (Toogle Elements Inspector) (RN ^0.43 support)
 
-These would be useful for real device, instead of open developer menu in iOS device manually.
+Other features:
 
 * Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
 * Redux Slider (If you're using [`Redux API`](redux-devtools-integration.md))
@@ -54,6 +54,6 @@ global.FormData = global.originalFormData ?
 Warning:
 
 * It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
-* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` or `XHR`.
+* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
 
 Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
