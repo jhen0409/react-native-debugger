@@ -19,6 +19,10 @@ It's support Atom, Subline, VSCode for macOS.
 
 If you want to enable this feature, you need include [`babel-plugin-transform-react-jsx-source`](https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source) in `.babelrc` of your project, see also [this section](https://github.com/facebook/react-devtools#displaying-element-souce) of `react-devtools`.
 
+## Inspect elements
+
+See the section [`Integration with React Native Inspector`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools#integration-with-react-native-inspector) from `react-devtools` for more information.
+
 ## How to use it with real device?
 
 * If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native, change `'localhost'` to your machine IP.
