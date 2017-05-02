@@ -35,7 +35,7 @@ export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) =>
   win.webContents.on('did-finish-load', () => {
     win.show();
     win.focus();
-    if (process.env.OPEN_DEVTOOLS !== '0') {
+    if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
     }
     win.checkUpdate = autoUpdate;

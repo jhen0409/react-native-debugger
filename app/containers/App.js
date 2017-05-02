@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,8 +7,9 @@ import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
 import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
-
 import FormInput from '../components/FormInput';
+
+const currentWindow = remote.getCurrentWindow();
 
 const styles = {
   wrapReactPanel: {
@@ -118,6 +119,7 @@ export default class App extends Component {
       ...JSON.parse(process.env.DEBUGGER_SETTING || '{}'),
       port,
     });
+    currentWindow.openDevTools();
   };
 
   renderPortSetting() {
