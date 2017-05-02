@@ -45,11 +45,7 @@ const createJSRuntime = id => {
   worker = new Worker();
   worker.addEventListener('message', workerOnMessage);
 
-  actions.setDebuggerWorker(
-    worker,
-    'connected',
-    `Debugger session #${id} active.`
-  );
+  actions.setDebuggerWorker(worker, 'connected', `Debugger session #${id} active.`);
   keepPriority(true);
 };
 
@@ -63,6 +59,8 @@ const shutdownJSRuntime = (status, statusMessage) => {
   setDebuggerWorker(null, status, statusMessage);
   keepPriority(false);
 };
+
+const isScriptBuildForAndroid = url => url && url.indexOf('platform=android') > -1;
 
 const connectToDebuggerProxy = () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
@@ -92,9 +90,6 @@ const connectToDebuggerProxy = () => {
       }
       createJSRuntime(object.id);
       ws.send(JSON.stringify({ replyID: object.id }));
-
-      // [Android] reserve React Inspector port for debug via USB on Android real device
-      tryADBReverse(8097).catch(() => {});
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
     } else {
@@ -102,6 +97,10 @@ const connectToDebuggerProxy = () => {
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
         object.enableNetworkInspect = localStorage.enableNetworkInspect === 'enabled';
+        if (isScriptBuildForAndroid(object.url)) {
+          // Reserve React Inspector port for debug via USB on Android real device
+          tryADBReverse(8097).catch(() => {});
+        }
       }
       worker.postMessage(object);
     }
