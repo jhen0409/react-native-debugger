@@ -11,10 +11,17 @@ export const checkWorkerRunning = win =>
   );
 
 export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) => {
+  const winBounds = config.get('winBounds');
   const win = new BrowserWindow({
     width: 1024,
     height: 750,
-    ...config.get('winBounds'),
+    ...winBounds,
+    ...(windowList.length && winBounds.x && winBounds.y
+      ? {
+        x: winBounds.x + 10,
+        y: winBounds.y + 10,
+      }
+      : {}),
     show: false,
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
