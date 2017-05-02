@@ -1,11 +1,9 @@
-# react-native-debugger-open
+# react-native-debugger-open [![NPM version](http://img.shields.io/npm/v/react-native-debugger-open.svg?style=flat)](https://www.npmjs.com/package/react-native-debugger-open)
 
 > Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager
 
 __[macOS]__ If you opened the app before (registered URI scheme), you can use this patch open the app automatically.
 __[Linux / Windows]__ Currently it cannot open the app automatically, it just send `set-debugger-loc` request, so you need open the app yourself.
-
-__*NOTE*__ This patch is only work with React Native Debugger ^0.2.0. __Linux / Windows__ version work with ^0.3.0.
 
 ## Screenshot
 
@@ -62,8 +60,11 @@ You can also use following commands instead of this patch:
 ```bash
 # macOS
 $ open "rndebugger://set-debugger-loc?port=8082"
+
 # macOS with `REACT_DEBUGGER` env
 $ REACT_DEBUGGER="open 'rndebugger://set-debugger-loc?port=8082' ||" npm start
+# If you're use Expo
+$ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open 'rndebugger://set-debugger-loc?port=8082' ||" npm start
 ```
 
 ## LICENSE
