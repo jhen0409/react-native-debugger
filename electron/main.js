@@ -21,7 +21,18 @@ startListeningHandleURL(async (host, port) => {
   return null;
 });
 
-app.on('window-all-closed', () => app.quit());
+app.on('activate', () => {
+  if (windowList.length !== 0) return;
+  createWindow(defaultOptions);
+});
+
+app.on('window-all-closed', () => {
+  windowList.splice(0, windowList.length);
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
 app.on('ready', async () => {
   await installExtensions();
 

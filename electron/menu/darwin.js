@@ -1,6 +1,16 @@
 import { app, shell, BrowserWindow } from 'electron';
 import { createWindow } from '../window';
-import { menu, item, separator, n, showAboutDialog, toggleDevTools } from './util';
+import {
+  menu,
+  item,
+  separator,
+  n,
+  showAboutDialog,
+  toggleDevTools,
+  toggleFullscreen,
+  setAlwaysOnTop,
+  reload,
+} from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 
@@ -20,14 +30,14 @@ export default ({ iconPath, windowList }) => [
   ]),
   menu('Debugger', [
     item('New Window', 'Command+T', () =>
-      createWindow({ iconPath, windowList, isPortSettingRequired: true })
+      createWindow({ iconPath, windowList, isPortSettingRequired: !!windowList.length })
     ),
     separator,
     item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
     item('Close', 'Command+W', n, { selector: 'performClose:' }),
     separator,
     item('Bring All to Front', n, n, { selector: 'arrangeInFront:' }),
-    item('Stay in Front', n, ({ checked }) => getWin().setAlwaysOnTop(checked), {
+    item('Stay in Front', n, ({ checked }) => setAlwaysOnTop(getWin(), checked), {
       type: 'checkbox',
       checked: false,
     }),
@@ -42,12 +52,9 @@ export default ({ iconPath, windowList }) => [
     item('Select All', 'Command+A', n, { selector: 'selectAll:' }),
   ]),
   menu('View', [
-    item('Reload', 'Command+R', () => getWin().webContents.reload()),
-    item('Toggle Full Screen', 'F11', () => {
-      const win = getWin();
-      win.setFullScreen(!win.isFullScreen());
-    }),
-    item('Toggle Developer Tools', 'Alt+Command+I', () => getWin().toggleDevTools()),
+    item('Reload', 'Command+R', () => reload(getWin())),
+    item('Toggle Full Screen', 'F11', () => toggleFullscreen(getWin())),
+    item('Toggle Developer Tools', 'Alt+Command+I', () => toggleDevTools(getWin(), 'chrome')),
     item('Toggle React DevTools', 'Alt+Command+J', () => toggleDevTools(getWin(), 'react')),
     item('Toggle Redux DevTools', 'Alt+Command+K', () => toggleDevTools(getWin(), 'redux')),
   ]),

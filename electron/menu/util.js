@@ -21,12 +21,26 @@ export const showAboutDialog = iconPath =>
     buttons: [],
   });
 
-export const toggleDevTools = (win, type) =>
+export const toggleDevTools = (win, type) => {
+  if (!win || !type) return;
+  if (type === 'chrome') {
+    win.toggleDevTools();
+    return;
+  }
   win.webContents.send('toggle-devtools', type);
+};
+
+export const toggleFullscreen = win => win && win.setFullScreen(!win.isFullScreen());
+export const setAlwaysOnTop = (win, checked) => win && win.setAlwaysOnTop(checked);
+export const reload = win => win && win.webContents.reload();
+export const close = win => win && win.close();
 
 export const menu = (label, submenu) => ({ label, submenu });
 export const item = (label, accelerator, click, rest) => ({
-  label, accelerator, click, ...rest,
+  label,
+  accelerator,
+  click,
+  ...rest,
 });
 export const separator = { type: 'separator' };
 export const n = undefined;
