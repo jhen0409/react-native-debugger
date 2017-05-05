@@ -32,16 +32,17 @@ export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) =>
     url += '?isPortSettingRequired=1';
   }
   win.loadURL(url);
+  const index = windowList.push(win) - 1;
   win.webContents.on('did-finish-load', () => {
     win.show();
     win.focus();
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
     }
-    win.checkUpdate = autoUpdate;
-    autoUpdate(win, iconPath);
+    if (index === 0) {
+      autoUpdate(iconPath);
+    }
   });
-  const index = windowList.push(win) - 1;
   win.on('close', () => {
     config.set('winBounds', win.getBounds());
     windowList.splice(index, 1);

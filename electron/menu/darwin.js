@@ -1,5 +1,6 @@
 import { app, shell, BrowserWindow } from 'electron';
 import { createWindow } from '../window';
+import checkUpdate from '../update';
 import {
   menu,
   item,
@@ -17,10 +18,7 @@ const getWin = () => BrowserWindow.getFocusedWindow();
 export default ({ iconPath, windowList }) => [
   menu('React Native Debugger', [
     item('About', n, () => showAboutDialog(iconPath)),
-    item('Check for Updates...', n, () => {
-      const win = getWin();
-      win.checkUpdate(win, iconPath, true);
-    }),
+    item('Check for Updates...', n, () => checkUpdate(iconPath, true)),
     separator,
     item('Hide', 'Command+H', n, { selector: 'hide:' }),
     item('Hide Others', 'Command+Shift+H', n, { selector: 'hideOtherApplications:' }),

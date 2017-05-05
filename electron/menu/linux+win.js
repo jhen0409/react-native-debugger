@@ -1,5 +1,6 @@
 import { shell, BrowserWindow } from 'electron';
 import { createWindow } from '../window';
+import checkUpdate from '../update';
 import {
   menu,
   item,
@@ -18,10 +19,7 @@ const getWin = () => BrowserWindow.getFocusedWindow();
 export default ({ iconPath, windowList }) => [
   menu('RND', [
     item('About', n, () => showAboutDialog(iconPath)),
-    item('Check for Updates...', n, () => {
-      const win = getWin();
-      win.checkUpdate(win, iconPath, true);
-    }),
+    item('Check for Updates...', n, () => checkUpdate(iconPath, true)),
     separator,
     item('Stay in Front', n, ({ checked }) => setAlwaysOnTop(getWin(), checked), {
       type: 'checkbox',

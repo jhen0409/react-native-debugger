@@ -3,7 +3,7 @@ import GhReleases from 'electron-gh-releases';
 
 let checking = false;
 
-export default (mainWindow, icon, notify) => {
+export default (icon, notify) => {
   if (checking) {
     console.log('[Updater] Already checking...');
     return;
@@ -16,15 +16,12 @@ export default (mainWindow, icon, notify) => {
   });
 
   updater.check((err, status) => {
-    if (
-      process.platform === 'linux' &&
-      err.message === 'This platform is not supported.'
-    ) {
+    if (process.platform === 'linux' && err.message === 'This platform is not supported.') {
       err = null; // eslint-disable-line
       status = true; // eslint-disable-line
     }
     if (notify && err) {
-      dialog.showMessageBox(mainWindow, {
+      dialog.showMessageBox({
         type: 'info',
         buttons: ['OK'],
         title: 'React Native Debugger',
@@ -41,7 +38,7 @@ export default (mainWindow, icon, notify) => {
       return;
     }
     if (notify) {
-      const index = dialog.showMessageBox(mainWindow, {
+      const index = dialog.showMessageBox({
         type: 'info',
         buttons: ['Download', 'Later'],
         title: 'React Native Debugger',
@@ -63,7 +60,7 @@ export default (mainWindow, icon, notify) => {
 
   updater.on('update-downloaded', ([, releaseNotes, releaseName]) => {
     console.log('[Updater] Downloaded.');
-    const index = dialog.showMessageBox(mainWindow, {
+    const index = dialog.showMessageBox({
       type: 'info',
       buttons: ['Restart', 'Later'],
       title: 'React Native Debugger',
