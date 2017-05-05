@@ -10,7 +10,6 @@
   ],
   "env": {
     "production": {
-      "presets": ["react-optimize"],
       "plugins": ["closure-elimination"]
     }
   }

@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './base.babel';
+import buildBabiliPreset from './buildBabiliPreset';
 
 export default {
   ...baseConfig,
@@ -24,8 +25,9 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
     }),
-    new BabiliPlugin({
+    new BabiliPlugin(undefined, {
       comments: false,
+      babili: buildBabiliPreset,
     }),
   ],
   resolve: {
