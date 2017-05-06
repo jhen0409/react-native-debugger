@@ -17,11 +17,12 @@ webFrame.setZoomLevelLimits(1, 1);
 
 const store = configureStore();
 
-window.checkWorkerRunning = () => {
+window.checkWindowInfo = () => {
   const debuggerState = store.getState().debugger;
-  const isRunning = !!debuggerState.worker;
+  const isWorkerRunning = !!debuggerState.worker;
   const location = debuggerState.location;
-  return { isRunning, location };
+  const isPortSettingRequired = debuggerState.isPortSettingRequired;
+  return { isWorkerRunning, isPortSettingRequired, location };
 };
 
 getPort().then(port => {

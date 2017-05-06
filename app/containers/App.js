@@ -114,12 +114,19 @@ export default class App extends Component {
   );
 
   handlePortOnSubmit = (evt, port) => {
-    const { setDebuggerLocation } = this.props.actions.debugger;
-    setDebuggerLocation({
-      ...JSON.parse(process.env.DEBUGGER_SETTING || '{}'),
-      port,
+    ipcRenderer.once('check-port-available-reply', (event, available) => {
+      if (!available) {
+        alert(`The port ${port} is not available because another window used.`);
+        return;
+      }
+      const { setDebuggerLocation } = this.props.actions.debugger;
+      setDebuggerLocation({
+        ...JSON.parse(process.env.DEBUGGER_SETTING || '{}'),
+        port,
+      });
+      currentWindow.openDevTools();
     });
-    currentWindow.openDevTools();
+    ipcRenderer.send('check-port-available', port);
   };
 
   renderPortSetting() {

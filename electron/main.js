@@ -1,7 +1,7 @@
 import path from 'path';
-import { app, Menu } from 'electron';
+import { app, ipcMain, Menu } from 'electron';
 import installExtensions from './extensions';
-import { checkWorkerRunning, createWindow } from './window';
+import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createContextMenu, createMenuTemplate } from './menu';
 
@@ -12,13 +12,27 @@ const defaultOptions = { iconPath, windowList };
 startListeningHandleURL(async (host, port) => {
   if (windowList.length === 0) return null;
   for (const win of windowList) {
-    const { isRunning, location } = await checkWorkerRunning(win);
-    if (!isRunning || location.port === port) {
+    const { isWorkerRunning, isPortSettingRequired, location } = await checkWindowInfo(win);
+    if ((!isWorkerRunning || location.port === port) && !isPortSettingRequired) {
       return win;
     }
   }
   createWindow(defaultOptions);
   return null;
+});
+
+ipcMain.on('check-port-available', async (event, arg) => {
+  const port = Number(arg);
+  for (const win of windowList) {
+    if (win.webContents !== event.sender) {
+      const { isPortSettingRequired, location } = await checkWindowInfo(win);
+      if (!isPortSettingRequired && location.port === port) {
+        event.sender.send('check-port-available-reply', false);
+        return;
+      }
+    }
+  }
+  event.sender.send('check-port-available-reply', true);
 });
 
 app.on('activate', () => {
