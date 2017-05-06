@@ -26,7 +26,7 @@ ipcMain.on('check-port-available', async (event, arg) => {
   for (const win of windowList) {
     if (win.webContents !== event.sender) {
       const { isPortSettingRequired, location } = await checkWindowInfo(win);
-      if (!isPortSettingRequired && location.port === port) {
+      if (location.port === port && !isPortSettingRequired) {
         event.sender.send('check-port-available-reply', false);
         return;
       }

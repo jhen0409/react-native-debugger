@@ -116,7 +116,7 @@ export default class App extends Component {
   handlePortOnSubmit = (evt, port) => {
     ipcRenderer.once('check-port-available-reply', (event, available) => {
       if (!available) {
-        alert(`The port ${port} is not available because another window used.`);
+        alert(`The port ${port} is already used by another window.`);
         return;
       }
       const { setDebuggerLocation } = this.props.actions.debugger;

@@ -19,10 +19,11 @@ const store = configureStore();
 
 window.checkWindowInfo = () => {
   const debuggerState = store.getState().debugger;
-  const isWorkerRunning = !!debuggerState.worker;
-  const location = debuggerState.location;
-  const isPortSettingRequired = debuggerState.isPortSettingRequired;
-  return { isWorkerRunning, isPortSettingRequired, location };
+  return {
+    isWorkerRunning: !!debuggerState.worker,
+    location: debuggerState.location,
+    isPortSettingRequired: debuggerState.isPortSettingRequired,
+  };
 };
 
 getPort().then(port => {
@@ -31,6 +32,6 @@ getPort().then(port => {
     <Provider store={store}>
       <App />
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById('root')
   );
 });
