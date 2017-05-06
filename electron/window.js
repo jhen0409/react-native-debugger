@@ -5,9 +5,9 @@ import autoUpdate from './update';
 
 const config = new Config();
 
-export const checkWorkerRunning = win =>
+export const checkWindowInfo = win =>
   new Promise(resolve =>
-    win.webContents.executeJavaScript('window.checkWorkerRunning()', result => resolve(result))
+    win.webContents.executeJavaScript('window.checkWindowInfo()', result => resolve(result))
   );
 
 export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) => {
@@ -45,7 +45,10 @@ export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) =>
   });
   win.on('close', () => {
     config.set('winBounds', win.getBounds());
-    windowList.splice(index, 1);
+    const currentIndex = windowList.indexOf(win);
+    if (currentIndex > -1) {
+      windowList.splice(currentIndex, 1);
+    }
   });
   return win;
 };
