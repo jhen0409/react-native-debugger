@@ -9,15 +9,13 @@ It usually on Android, maybe the problem is related to `requestIdleCallback` API
 ```js
 // ......
 // const {PlatformConstants} = require('NativeModules');
-let connectToDevTools
-
 const bakRIC = window.requestIdleCallback;
 const bakCIC = window.cancelIdleCallback;
 
 // To ensure react-devtools-core use polyfill instead of requestIdleCallback
 window.requestIdleCallback = null;
 window.cancelIdleCallback = null;
-connectToDevTools = require('react-devtools-core').connectToDevTools; // Line 17
+const connectToDevTools = require('react-devtools-core').connectToDevTools; // Line 17
 window.requestIdleCallback = bakRIC;
 window.cancelIdleCallback = bakCIC;
 ```
