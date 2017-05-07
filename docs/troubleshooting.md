@@ -15,7 +15,7 @@ const bakCIC = window.cancelIdleCallback;
 // To ensure react-devtools-core use polyfill instead of requestIdleCallback
 window.requestIdleCallback = null;
 window.cancelIdleCallback = null;
-const connectToDevTools = require('react-devtools-core').connectToDevTools; // Line 17
+const {connectToDevTools} = require('react-devtools-core'); // Line 17
 window.requestIdleCallback = bakRIC;
 window.cancelIdleCallback = bakCIC;
 ```
