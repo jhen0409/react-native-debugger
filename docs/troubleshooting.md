@@ -11,16 +11,15 @@ It usually on Android, maybe the problem is related to `requestIdleCallback` API
 // const {PlatformConstants} = require('NativeModules');
 let connectToDevTools
 
-if (__DEV__) {
-  const bakRIC = window.requestIdleCallback;
-  const bakCIC = window.cancelIdleCallback;
-  // To ensure react-devtools-core use polyfill instead of requestIdleCallback
-  window.requestIdleCallback = null;
-  window.cancelIdleCallback = null;
-  connectToDevTools = require('react-devtools-core').connectToDevTools; // Line 17
-  window.requestIdleCallback = bakRIC;
-  window.cancelIdleCallback = bakCIC;
-}
+const bakRIC = window.requestIdleCallback;
+const bakCIC = window.cancelIdleCallback;
+
+// To ensure react-devtools-core use polyfill instead of requestIdleCallback
+window.requestIdleCallback = null;
+window.cancelIdleCallback = null;
+connectToDevTools = require('react-devtools-core').connectToDevTools; // Line 17
+window.requestIdleCallback = bakRIC;
+window.cancelIdleCallback = bakCIC;
 ```
 
 [facebook/react-native#13116](https://github.com/facebook/react-native/pull/13116) can solved this issue, you can just waiting for the PR merged or use the patch.
