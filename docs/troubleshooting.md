@@ -8,7 +8,7 @@ It usually on Android, maybe the problem is related to `requestIdleCallback` API
 
 ```js
 // ......
-const {PlatformConstants} = require('NativeModules');
+// const {PlatformConstants} = require('NativeModules');
 let connectToDevTools
 
 if (__DEV__) {
