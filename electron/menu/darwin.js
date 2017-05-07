@@ -11,11 +11,12 @@ import {
   toggleFullscreen,
   setAlwaysOnTop,
   reload,
+  haveOpenedWindow,
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 
-export default ({ iconPath, windowList }) => [
+export default ({ iconPath }) => [
   menu('React Native Debugger', [
     item('About', n, () => showAboutDialog(iconPath)),
     item('Check for Updates...', n, () => checkUpdate(iconPath, true)),
@@ -28,7 +29,7 @@ export default ({ iconPath, windowList }) => [
   ]),
   menu('Debugger', [
     item('New Window', 'Command+T', () =>
-      createWindow({ iconPath, windowList, isPortSettingRequired: !!windowList.length })
+      createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
     ),
     separator,
     item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),

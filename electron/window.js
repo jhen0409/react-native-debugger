@@ -10,13 +10,13 @@ export const checkWindowInfo = win =>
     win.webContents.executeJavaScript('window.checkWindowInfo()', result => resolve(result))
   );
 
-export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) => {
+export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   const winBounds = config.get('winBounds');
   const win = new BrowserWindow({
     width: 1024,
     height: 750,
     ...winBounds,
-    ...(windowList.length && winBounds.x && winBounds.y
+    ...(BrowserWindow.getAllWindows().length && winBounds.x && winBounds.y
       ? {
         x: winBounds.x + 10,
         y: winBounds.y + 10,
@@ -32,23 +32,16 @@ export const createWindow = ({ iconPath, windowList, isPortSettingRequired }) =>
     url += '?isPortSettingRequired=1';
   }
   win.loadURL(url);
-  const index = windowList.push(win) - 1;
   win.webContents.on('did-finish-load', () => {
     win.show();
     win.focus();
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
     }
-    if (index === 0) {
+    if (BrowserWindow.getAllWindows().length === 1) {
       autoUpdate(iconPath);
     }
   });
-  win.on('close', () => {
-    config.set('winBounds', win.getBounds());
-    const currentIndex = windowList.indexOf(win);
-    if (currentIndex > -1) {
-      windowList.splice(currentIndex, 1);
-    }
-  });
+  win.on('close', () => config.set('winBounds', win.getBounds()));
   return win;
 };

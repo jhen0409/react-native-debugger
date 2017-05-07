@@ -1,17 +1,17 @@
 import path from 'path';
-import { app, ipcMain, Menu } from 'electron';
+import { app, ipcMain, BrowserWindow, Menu } from 'electron';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createContextMenu, createMenuTemplate } from './menu';
 
 const iconPath = path.resolve(__dirname, 'logo.png');
-const windowList = [];
-const defaultOptions = { iconPath, windowList };
+const defaultOptions = { iconPath };
 
 startListeningHandleURL(async (host, port) => {
-  if (windowList.length === 0) return null;
-  for (const win of windowList) {
+  const wins = BrowserWindow.getAllWindows();
+  if (wins.length === 0) return null;
+  for (const win of wins) {
     const { isWorkerRunning, isPortSettingRequired, location } = await checkWindowInfo(win);
     if ((!isWorkerRunning || location.port === port) && !isPortSettingRequired) {
       return win;
@@ -23,7 +23,7 @@ startListeningHandleURL(async (host, port) => {
 
 ipcMain.on('check-port-available', async (event, arg) => {
   const port = Number(arg);
-  for (const win of windowList) {
+  for (const win of BrowserWindow.getAllWindows()) {
     if (win.webContents !== event.sender) {
       const { isPortSettingRequired, location } = await checkWindowInfo(win);
       if (location.port === port && !isPortSettingRequired) {
@@ -36,7 +36,7 @@ ipcMain.on('check-port-available', async (event, arg) => {
 });
 
 app.on('activate', () => {
-  if (windowList.length !== 0) return;
+  if (BrowserWindow.getAllWindows().length !== 0) return;
   createWindow(defaultOptions);
 });
 

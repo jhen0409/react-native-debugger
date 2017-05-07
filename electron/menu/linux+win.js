@@ -12,11 +12,12 @@ import {
   setAlwaysOnTop,
   reload,
   close,
+  haveOpenedWindow,
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 
-export default ({ iconPath, windowList }) => [
+export default ({ iconPath }) => [
   menu('RND', [
     item('About', n, () => showAboutDialog(iconPath)),
     item('Check for Updates...', n, () => checkUpdate(iconPath, true)),
@@ -28,7 +29,7 @@ export default ({ iconPath, windowList }) => [
   ]),
   menu('Debugger', [
     item('New Window', 'Ctrl+T', () =>
-      createWindow({ iconPath, windowList, isPortSettingRequired: !!windowList.length })
+      createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
     ),
     separator,
     item('Close', 'Ctrl+W', () => close(getWin())),
