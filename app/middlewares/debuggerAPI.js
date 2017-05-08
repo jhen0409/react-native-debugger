@@ -45,7 +45,7 @@ const createJSRuntime = () => {
   worker = new Worker();
   worker.addEventListener('message', workerOnMessage);
 
-  actions.setDebuggerWorker(worker, 'connected', `Debugger session #${id} active.`);
+  actions.setDebuggerWorker(worker, 'connected');
   keepPriority(true);
 };
 
