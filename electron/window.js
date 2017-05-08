@@ -22,7 +22,6 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
         y: winBounds.y + 10,
       }
       : {}),
-    show: false,
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
   });
@@ -33,7 +32,6 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   }
   win.loadURL(url);
   win.webContents.on('did-finish-load', () => {
-    win.show();
     win.focus();
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
