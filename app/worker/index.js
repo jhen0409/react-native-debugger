@@ -12,6 +12,7 @@
 
 /* eslint-disable no-underscore-dangle */
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
+import { setDefaultReactDevToolsPortIfNeeded } from './reactDevTools';
 
 // WebWorker not have `global`
 self.global = self;
@@ -31,6 +32,8 @@ self.devToolsExtension = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
 
+self.setDefaultReactDevToolsPortIfNeeded = setDefaultReactDevToolsPortIfNeeded;
+
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
     self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
@@ -48,7 +51,7 @@ const messageHandlers = {
     // Because the worker message not have notify the remote JS runtime (for Electron?)
     // we need to regularly update JS runtime
     if (!self.__RND_INTERVAL__) {
-      self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
+      self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
     }
 
     checkAvailableDevMenuMethods(message.enableNetworkInspect);
