@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import './setup';
 import App from './containers/App';
 import configureStore from './store/configureStore';
+import { client, tryADBReverse } from './utils/adb';
 
 if (process.platform === 'darwin') {
   // Reset TouchBar when reload the app
@@ -16,6 +17,11 @@ webFrame.setZoomFactor(1);
 webFrame.setZoomLevelLimits(1, 1);
 
 const store = configureStore();
+
+// Provide for user
+window.adb = client;
+window.adb.reverseAll = tryADBReverse;
+// TODO: provide adb function for reverse RN packager port
 
 window.checkWindowInfo = () => {
   const debuggerState = store.getState().debugger;
