@@ -60,7 +60,8 @@ const shutdownJSRuntime = (status, statusMessage) => {
   keepPriority(false);
 };
 
-const isScriptBuildForAndroid = url => url && url.indexOf('platform=android') > -1;
+const isScriptBuildForAndroid = url =>
+  url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
 const connectToDebuggerProxy = () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
