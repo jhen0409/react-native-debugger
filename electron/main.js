@@ -4,7 +4,7 @@ import Config from 'electron-config';
 import autoUpdate from './update';
 import installExtensions from './extensions';
 import { startListeningHandleURL } from './url-handle';
-import { createContextMenu, createMenuTemplate } from './menu';
+import { createMenuTemplate } from './menu';
 
 const config = new Config();
 const iconPath = resolve(__dirname, 'logo.png');
@@ -23,7 +23,6 @@ app.on('ready', async () => {
     show: false,
     backgroundColor: '#272c37',
   });
-  createContextMenu(mainWindow);
 
   mainWindow.loadURL(`file://${resolve(__dirname)}/app.html`);
 

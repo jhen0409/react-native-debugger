@@ -1,9 +1,12 @@
 import { remote } from 'electron';
+import contextMenu from 'electron-context-menu';
+import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
 
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
 
 let worker;
+
 const leftBar = {
   reload: null,
   toggleElementInspector: null,
@@ -21,10 +24,9 @@ const rightBar = {
 const resetTouchBar = () => {
   const touchBar = [
     ...Object.keys(leftBar).filter(key => !!leftBar[key]).map(key => leftBar[key]),
-    ...(sliderEnabled ?
-      Object.keys(rightBar).filter(key => !!rightBar[key]).map(key => rightBar[key]) :
-      []
-    ),
+    ...(sliderEnabled
+      ? Object.keys(rightBar).filter(key => !!rightBar[key]).map(key => rightBar[key])
+      : []),
   ];
   currentWindow.setTouchBar(touchBar);
 };
@@ -32,10 +34,27 @@ const resetTouchBar = () => {
 const invokeDevMenuMethod = ({ name, args }) =>
   worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
-export const setAvailableDevMenuMethods = (list, wkr) => {
-  if (process.platform !== 'darwin') return;
+const enabledNetworkInspect = () => localStorage.networkInspect === 'enabled';
+const getColorForNetworkInspect = () => (enabledNetworkInspect() ? '#7A7A7A' : '#363636');
+const toggleNetworkInspect = () => (enabledNetworkInspect() ? 'disabled' : 'enabled');
 
-  worker = wkr;
+const availableDevMenuMethods = {
+  reload: () => invokeDevMenuMethod({ name: 'reload' }),
+  toggleElementInspector: () => invokeDevMenuMethod({ name: 'toggleElementInspector' }),
+  networkInspect: () => {
+    localStorage.networkInspect = toggleNetworkInspect();
+    if (leftBar.networkInspect) {
+      leftBar.networkInspect.backgroundColor = getColorForNetworkInspect();
+    }
+    invokeDevMenuMethod({
+      name: 'networkInspect',
+      args: [enabledNetworkInspect()],
+    });
+  },
+};
+
+const setAvailableDevMenuMethodsForTouchBar = list => {
+  if (process.platform !== 'darwin') return;
 
   leftBar.reload = null;
   leftBar.toggleElementInspector = null;
@@ -43,40 +62,58 @@ export const setAvailableDevMenuMethods = (list, wkr) => {
   if (list.includes('reload')) {
     leftBar.reload = new TouchBarButton({
       label: 'Reload JS',
-      click: () => {
-        invokeDevMenuMethod({ name: 'reload' });
-      },
+      click: availableDevMenuMethods.reload,
     });
   }
 
   if (list.includes('toggleElementInspector')) {
     leftBar.toggleElementInspector = new TouchBarButton({
       label: 'Inspector',
-      click: () => {
-        invokeDevMenuMethod({ name: 'toggleElementInspector' });
-      },
+      click: availableDevMenuMethods.toggleElementInspector,
     });
   }
 
   if (list.includes('networkInspect')) {
-    const enabled = () => localStorage.networkInspect === 'enabled';
-    const getColor = () => (enabled() ? '#7A7A7A' : '#363636');
-    const toggle = () => (enabled() ? 'disabled' : 'enabled');
     leftBar.networkInspect = new TouchBarButton({
       label: 'Network Inspect',
-      backgroundColor: getColor(),
-      click: () => {
-        localStorage.networkInspect = toggle();
-        leftBar.networkInspect.backgroundColor = getColor();
-        invokeDevMenuMethod({
-          name: 'networkInspect',
-          args: [enabled()],
-        });
-      },
+      backgroundColor: getColorForNetworkInspect(),
+      click: availableDevMenuMethods.networkInspect,
     });
   }
 
   resetTouchBar();
+};
+
+const defaultContextMenuItems = [
+  item('Toggle React DevTools', n, () => toggleDevTools(currentWindow, 'react')),
+  item('Toggle Redux DevTools', n, () => toggleDevTools(currentWindow, 'redux')),
+];
+let contextMenuItems = [];
+
+contextMenu({
+  window: currentWindow,
+  showInspectElement: process.env.NODE_ENV === 'development',
+  prepend: () => contextMenuItems.concat(defaultContextMenuItems),
+});
+
+const setAvailableDevMenuMethodsForContextMenu = list => {
+  contextMenuItems = [
+    item('Reload JS', n, availableDevMenuMethods.reload, { name: 'reload' }),
+    item('Toggle Element Inspector', n, availableDevMenuMethods.toggleElementInspector, {
+      name: 'toggleElementInspector',
+    }),
+    item('Toggle Network Inspect', n, availableDevMenuMethods.networkInspect, {
+      name: 'networkInspect',
+    }),
+    separator,
+  ].filter(({ name }) => list.includes(name) || !name);
+};
+
+export const setAvailableDevMenuMethods = (list, wkr) => {
+  worker = wkr;
+
+  setAvailableDevMenuMethodsForTouchBar(list);
+  setAvailableDevMenuMethodsForContextMenu(list);
 };
 
 export const setReduxDevToolsMethods = (enabled, dispatch) => {

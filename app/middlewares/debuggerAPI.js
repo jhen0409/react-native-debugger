@@ -13,7 +13,7 @@ import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
 import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
-import { setAvailableDevMenuMethods } from '../utils/touchBarBuilder';
+import { setAvailableDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import keepPriority from '../utils/keepPriority';
 
