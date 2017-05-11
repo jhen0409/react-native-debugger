@@ -37,6 +37,9 @@ const invokeDevMenuMethod = ({ name, args }) =>
 const enabledNetworkInspect = () => localStorage.networkInspect === 'enabled';
 const getColorForNetworkInspect = () => (enabledNetworkInspect() ? '#7A7A7A' : '#363636');
 const toggleNetworkInspect = () => (enabledNetworkInspect() ? 'disabled' : 'enabled');
+const getNetworkInspectLabel = enabledNetworkInspect()
+  ? 'Disable Network Inspect'
+  : 'Enable Network Inspect';
 
 const availableDevMenuMethods = {
   reload: () => invokeDevMenuMethod({ name: 'reload' }),
@@ -102,7 +105,7 @@ const setAvailableDevMenuMethodsForContextMenu = list => {
     item('Toggle Element Inspector', n, availableDevMenuMethods.toggleElementInspector, {
       name: 'toggleElementInspector',
     }),
-    item('Toggle Network Inspect', n, availableDevMenuMethods.networkInspect, {
+    item(getNetworkInspectLabel(), n, availableDevMenuMethods.networkInspect, {
       name: 'networkInspect',
     }),
     separator,
