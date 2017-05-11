@@ -6,8 +6,9 @@ const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
 
 let worker;
+let availableMethods = [];
 
-const leftBar = {
+let leftBar = {
   reload: null,
   toggleElementInspector: null,
   networkInspect: null,
@@ -15,108 +16,97 @@ const leftBar = {
 
 let sliderEnabled;
 let storeLiftedState;
-const rightBar = {
+let rightBar = {
   slider: null,
   prev: null,
   next: null,
 };
 
-const resetTouchBar = () => {
-  const touchBar = [
-    ...Object.keys(leftBar).filter(key => !!leftBar[key]).map(key => leftBar[key]),
-    ...(sliderEnabled
-      ? Object.keys(rightBar).filter(key => !!rightBar[key]).map(key => rightBar[key])
-      : []),
-  ];
-  currentWindow.setTouchBar(touchBar);
-};
+const getBarItems = bar => Object.keys(bar).map(key => bar[key]).filter(barItem => !!barItem);
+const setTouchBar = () =>
+  currentWindow.setTouchBar([
+    ...getBarItems(leftBar),
+    ...(sliderEnabled ? getBarItems(rightBar) : []),
+  ]);
+
+if (process.platform === 'darwin') {
+  // Reset TouchBar when reload the app
+  setTouchBar();
+}
 
 const invokeDevMenuMethod = ({ name, args }) =>
   worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
-const enabledNetworkInspect = () => localStorage.networkInspect === 'enabled';
-const getColorForNetworkInspect = () => (enabledNetworkInspect() ? '#7A7A7A' : '#363636');
-const toggleNetworkInspect = () => (enabledNetworkInspect() ? 'disabled' : 'enabled');
-const getNetworkInspectLabel = enabledNetworkInspect()
-  ? 'Disable Network Inspect'
-  : 'Enable Network Inspect';
+const networkInspect = {
+  isEnabled: () => localStorage.networkInspect === 'enabled',
+  getHighlightColor: () => (networkInspect.isEnabled() ? '#7A7A7A' : '#363636'),
+  toggle() {
+    localStorage.networkInspect = networkInspect.isEnabled() ? 'disabled' : 'enabled';
+  },
+  label: () => (networkInspect.isEnabled() ? 'Disable Network Inspect' : 'Enable Network Inspect'),
+};
 
-const availableDevMenuMethods = {
+const devMenuMethods = {
   reload: () => invokeDevMenuMethod({ name: 'reload' }),
   toggleElementInspector: () => invokeDevMenuMethod({ name: 'toggleElementInspector' }),
   networkInspect: () => {
-    localStorage.networkInspect = toggleNetworkInspect();
+    networkInspect.toggle();
     if (leftBar.networkInspect) {
-      leftBar.networkInspect.backgroundColor = getColorForNetworkInspect();
+      leftBar.networkInspect.backgroundColor = networkInspect.getHighlightColor();
     }
     invokeDevMenuMethod({
       name: 'networkInspect',
-      args: [enabledNetworkInspect()],
+      args: [networkInspect.isEnabled()],
     });
   },
-};
-
-const setAvailableDevMenuMethodsForTouchBar = list => {
-  if (process.platform !== 'darwin') return;
-
-  leftBar.reload = null;
-  leftBar.toggleElementInspector = null;
-  leftBar.networkInspect = null;
-  if (list.includes('reload')) {
-    leftBar.reload = new TouchBarButton({
-      label: 'Reload JS',
-      click: availableDevMenuMethods.reload,
-    });
-  }
-
-  if (list.includes('toggleElementInspector')) {
-    leftBar.toggleElementInspector = new TouchBarButton({
-      label: 'Inspector',
-      click: availableDevMenuMethods.toggleElementInspector,
-    });
-  }
-
-  if (list.includes('networkInspect')) {
-    leftBar.networkInspect = new TouchBarButton({
-      label: 'Network Inspect',
-      backgroundColor: getColorForNetworkInspect(),
-      click: availableDevMenuMethods.networkInspect,
-    });
-  }
-
-  resetTouchBar();
 };
 
 const defaultContextMenuItems = [
   item('Toggle React DevTools', n, () => toggleDevTools(currentWindow, 'react')),
   item('Toggle Redux DevTools', n, () => toggleDevTools(currentWindow, 'redux')),
 ];
-let contextMenuItems = [];
 
 contextMenu({
   window: currentWindow,
   showInspectElement: process.env.NODE_ENV === 'development',
-  prepend: () => contextMenuItems.concat(defaultContextMenuItems),
+  prepend: () =>
+    [
+      item('Reload JS', n, devMenuMethods.reload, { name: 'reload' }),
+      item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector, {
+        name: 'toggleElementInspector',
+      }),
+      item(networkInspect.label(), n, devMenuMethods.networkInspect, {
+        name: 'networkInspect',
+      }),
+      separator,
+    ]
+      .filter(({ name }) => availableMethods.includes(name) || !name)
+      .concat(defaultContextMenuItems),
 });
 
-const setAvailableDevMenuMethodsForContextMenu = list => {
-  contextMenuItems = [
-    item('Reload JS', n, availableDevMenuMethods.reload, { name: 'reload' }),
-    item('Toggle Element Inspector', n, availableDevMenuMethods.toggleElementInspector, {
-      name: 'toggleElementInspector',
-    }),
-    item(getNetworkInspectLabel(), n, availableDevMenuMethods.networkInspect, {
-      name: 'networkInspect',
-    }),
-    separator,
-  ].filter(({ name }) => list.includes(name) || !name);
+const setDevMenuMethodsForTouchBar = list => {
+  if (process.platform !== 'darwin') return;
+
+  leftBar = {
+    reload: list.includes('reload') &&
+      new TouchBarButton(item('Reload JS', n, devMenuMethods.reload)),
+    toggleElementInspector: list.includes('toggleElementInspector') &&
+      new TouchBarButton(item('Inspector', n, devMenuMethods.toggleElementInspector)),
+    networkInspect: list.includes('networkInspect') &&
+      new TouchBarButton(
+        item('Network Inspect', n, devMenuMethods.networkInspect, {
+          backgroundColor: networkInspect.getHighlightColor(),
+        })
+      ),
+  };
+  setTouchBar();
 };
 
-export const setAvailableDevMenuMethods = (list, wkr) => {
+export const setDevMenuMethods = (list, wkr) => {
   worker = wkr;
+  availableMethods = list;
 
-  setAvailableDevMenuMethodsForTouchBar(list);
-  setAvailableDevMenuMethodsForContextMenu(list);
+  setDevMenuMethodsForTouchBar(list);
 };
 
 export const setReduxDevToolsMethods = (enabled, dispatch) => {
@@ -133,39 +123,43 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       dontUpdateTouchBarSlider,
     });
 
-  rightBar.slider = new TouchBarSlider({
-    value: 0,
-    minValue: 0,
-    maxValue: 0,
-    change(nextIndex) {
-      if (nextIndex !== storeLiftedState.currentStateIndex) {
-        handleSliderChange(nextIndex, true);
-      }
-    },
-  });
-  rightBar.prev = new TouchBarButton({
-    label: 'Prev',
-    click() {
-      const nextIndex = storeLiftedState.currentStateIndex - 1;
-      if (nextIndex >= 0) {
-        handleSliderChange(nextIndex);
-      }
-    },
-  });
-  rightBar.next = new TouchBarButton({
-    label: 'Next',
-    click() {
-      const nextIndex = storeLiftedState.currentStateIndex + 1;
-      if (nextIndex < storeLiftedState.computedStates.length) {
-        handleSliderChange(nextIndex);
-      }
-    },
-  });
+  rightBar = {
+    slider: new TouchBarSlider({
+      value: 0,
+      minValue: 0,
+      maxValue: 0,
+      change(nextIndex) {
+        if (nextIndex !== storeLiftedState.currentStateIndex) {
+          handleSliderChange(nextIndex, true);
+        }
+      },
+    }),
+    prev: new TouchBarButton({
+      label: 'Prev',
+      click() {
+        const nextIndex = storeLiftedState.currentStateIndex - 1;
+        if (nextIndex >= 0) {
+          handleSliderChange(nextIndex);
+        }
+      },
+    }),
+    next: new TouchBarButton({
+      label: 'Next',
+      click() {
+        const nextIndex = storeLiftedState.currentStateIndex + 1;
+        if (nextIndex < storeLiftedState.computedStates.length) {
+          handleSliderChange(nextIndex);
+        }
+      },
+    }),
+  };
   sliderEnabled = enabled;
-  resetTouchBar();
+  setTouchBar();
 };
 
 export const updateSliderContent = (liftedState, dontUpdateTouchBarSlider) => {
+  if (process.platform !== 'darwin') return;
+
   storeLiftedState = liftedState;
   if (sliderEnabled && !dontUpdateTouchBarSlider) {
     const { currentStateIndex, computedStates } = liftedState;

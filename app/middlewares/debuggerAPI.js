@@ -13,7 +13,7 @@ import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
 import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
-import { setAvailableDevMenuMethods } from '../utils/devMenu';
+import { setDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import keepPriority from '../utils/keepPriority';
 
@@ -32,7 +32,7 @@ const workerOnMessage = message => {
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
   if (list) {
-    setAvailableDevMenuMethods(list, worker);
+    setDevMenuMethods(list, worker);
     return false;
   }
   socket.send(JSON.stringify(data));
@@ -53,7 +53,7 @@ const shutdownJSRuntime = (status, statusMessage) => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
-    setAvailableDevMenuMethods([]);
+    setDevMenuMethods([]);
   }
   worker = null;
   setDebuggerWorker(null, status, statusMessage);
