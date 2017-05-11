@@ -11,9 +11,9 @@ RNDebugger have [developer menu](https://facebook.github.io/react-native/docs/de
 Just includes two developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
 
 * Reload JS
-* Inspector (Toogle Elements Inspector) (RN ^0.43 support)
+* Toogle Elements Inspector (RN ^0.43 support)
 
-Other features (Cross platform):
+Other features (cross-platform):
 
 * Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
 
@@ -21,7 +21,7 @@ They are also in Touch Bar:
 
 <img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
 
-It have Redux slider on the right (If you're using [`Redux API`](redux-devtools-integration.md))
+It have Redux slider on the right. (If you're using [`Redux API`](redux-devtools-integration.md))
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
 
