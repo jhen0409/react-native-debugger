@@ -97,7 +97,7 @@ const connectToDebuggerProxy = () => {
       // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        object.enableNetworkInspect = localStorage.enableNetworkInspect === 'enabled';
+        object.networkInspect = localStorage.networkInspect === 'enabled';
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
           tryADBReverse(8097).catch(() => {});
