@@ -9,17 +9,20 @@ if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
 }
 
 // Avoid warning of use `window.require` on dev mode
-const avoidWarnForRequire = (moduleName = 'NativeModules') => new Promise(resolve =>
-  setTimeout(() => {
-    // It's replaced console.warn of react-native
-    const originalWarn = console.warn;
-    console.warn = (...args) => {
-      if (args[0] && args[0].indexOf(`Requiring module '${moduleName}' by name`) > -1) return;
-      return originalWarn(...args);
-    };
-    resolve(() => { console.warn = originalWarn; });
-  })
-);
+const avoidWarnForRequire = (moduleName = 'NativeModules') =>
+  new Promise(resolve =>
+    setTimeout(() => {
+      // It's replaced console.warn of react-native
+      const originalWarn = console.warn;
+      console.warn = (...args) => {
+        if (args[0] && args[0].indexOf(`Requiring module '${moduleName}' by name`) > -1) return;
+        return originalWarn(...args);
+      };
+      resolve(() => {
+        console.warn = originalWarn;
+      });
+    })
+  );
 
 const toggleNetworkInspect = enabled => {
   if (!enabled && window.__NETWORK_INSPECT__) {
@@ -33,12 +36,16 @@ const toggleNetworkInspect = enabled => {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
   };
-  window.XMLHttpRequest = window.originalXMLHttpRequest ?
-    window.originalXMLHttpRequest :
-    window.XMLHttpRequest;
-  window.FormData = window.originalFormData ?
-    window.originalFormData :
-    window.FormData;
+  window.XMLHttpRequest = window.originalXMLHttpRequest
+    ? window.originalXMLHttpRequest
+    : window.XMLHttpRequest;
+  window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
+
+  console.log(
+    '[RNDebugger]',
+    'Network Inspect is enabled,',
+    'you can open `Network` tab to inspect requests of `fetch` and `XMLHttpRequest`.'
+  );
 };
 
 const methodsGlobalName = '__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__';
