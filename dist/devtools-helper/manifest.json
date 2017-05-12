@@ -1,0 +1,6 @@
+{
+  "manifest_version": 2,
+  "name": "RNDebugger devtools helper",
+  "version": "0.0.1",
+  "devtools_page": "main.html"
+}
