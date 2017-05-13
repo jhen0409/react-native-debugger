@@ -24,9 +24,12 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
     }),
-    new BabiliPlugin({
-      comments: false,
-    }),
+    new BabiliPlugin(
+      {},
+      {
+        comments: false,
+      }
+    ),
   ],
   resolve: {
     ...baseConfig.resolve,

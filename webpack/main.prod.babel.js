@@ -21,9 +21,12 @@ export default {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    new BabiliPlugin({
-      comments: false,
-    }),
+    new BabiliPlugin(
+      {},
+      {
+        comments: false,
+      }
+    ),
   ],
   target: 'electron-main',
   node: {
