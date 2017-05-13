@@ -2,15 +2,15 @@
 
 import { avoidWarnForRequire } from './utils';
 
-const methodGlobalName = '__RESET_REACT_DEVTOOLS_PORT__';
+const methodGlobalName = '__REPORT_REACT_DEVTOOLS_PORT__';
 
-const resetReactDevToolsPort = (port, platform) =>
+const reportReactDevToolsPort = (port, platform) =>
   postMessage({
     [methodGlobalName]: port,
     platform,
   });
 
-export const setDefaultReactDevToolsPortIfNeeded = async () => {
+export const reportDefaultReactDevToolsPort = async () => {
   const done = await avoidWarnForRequire('setupDevtools', 'Platform');
   const setupDevtools = window.__DEV__ ? window.require('setupDevtools') : undefined;
   const Platform = window.__DEV__ ? window.require('Platform') : {};
@@ -22,6 +22,11 @@ export const setDefaultReactDevToolsPortIfNeeded = async () => {
     typeof setupDevtools === 'function' &&
     setupDevtools.toString().indexOf('window.__REACT_DEVTOOLS_PORT__') === -1
   ) {
-    resetReactDevToolsPort(8097, Platform.OS);
+    reportReactDevToolsPort(8097, Platform.OS);
+  } else {
+    // React Inspector will keep the last reported port even if reload JS,
+    // because we don't want to icrease the user waiting time for reload JS.
+    // We need back to use the random port if we don't need fallback
+    reportReactDevToolsPort(window.__REACT_DEVTOOLS_PORT__, Platform.OS);
   }
 };

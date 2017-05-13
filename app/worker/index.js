@@ -12,7 +12,7 @@
 
 /* eslint-disable no-underscore-dangle */
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
-import { setDefaultReactDevToolsPortIfNeeded } from './reactDevTools';
+import { reportDefaultReactDevToolsPort } from './reactDevTools';
 
 // WebWorker not have `global`
 self.global = self;
@@ -31,8 +31,6 @@ self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
 self.devToolsExtension = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
-
-self.setDefaultReactDevToolsPortIfNeeded = setDefaultReactDevToolsPortIfNeeded;
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
@@ -55,6 +53,7 @@ const messageHandlers = {
     }
 
     checkAvailableDevMenuMethods(message.enableNetworkInspect);
+    reportDefaultReactDevToolsPort();
   },
 };
 

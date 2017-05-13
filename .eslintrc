@@ -21,7 +21,7 @@
           "__IS_REDUX_NATIVE_MESSAGE__",
           "__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__",
           "__PLATFORM__",
-          "__RESET_REACT_DEVTOOLS_PORT__"
+          "__REPORT_REACT_DEVTOOLS_PORT__"
         ]
       }
     ],

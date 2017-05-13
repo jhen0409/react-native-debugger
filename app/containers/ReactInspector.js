@@ -15,6 +15,15 @@ const styles = {
   },
 };
 
+// Avoid errors
+const originErr = console.error;
+console.error = (...args) => {
+  if (args[0] === '[React DevTools]') {
+    return;
+  }
+  return originErr(...args);
+};
+
 @connect(
   state => ({
     debugger: state.debugger,
@@ -54,36 +63,50 @@ export default class ReactInspector extends Component {
     this.closeServerIfExists();
   }
 
+  listeningPort = window.reactDevToolsPort;
+  loggedWarn = false;
+
   workerOnMessage = message => {
     const { data } = message;
-    if (!data || !data.__RESET_REACT_DEVTOOLS_PORT__) return;
+    if (!data || !data.__REPORT_REACT_DEVTOOLS_PORT__) return;
 
-    const port = Number(data.__RESET_REACT_DEVTOOLS_PORT__);
+    const port = Number(data.__REPORT_REACT_DEVTOOLS_PORT__);
     const platform = data.platform;
     if (port && port !== this.listeningPort) {
+      this.listeningPort = port;
       this.closeServerIfExists();
       this.server = this.startServer(port);
       if (platform === 'android') tryADBReverse(port).catch(() => {});
     }
   };
 
-  startServer(port = window.reactDevToolsPort) {
-    this.listeningPort = port;
-    return ReactServer.setContentDOMNode(document.getElementById(containerId)).startServer(port);
+  startServer(port = this.listeningPort) {
+    return ReactServer.setStatusListener(status => {
+      if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
+        console.warn(
+          '[RNDebugger]',
+          'Failed to start React DevTools server with port `8097`,',
+          'because another instance of DevTools is listening,',
+          'we recommended to upgrade React Native version to 0.39 or more for random port support.'
+        );
+        this.loggedWarn = true;
+      }
+    })
+      .setContentDOMNode(document.getElementById(containerId))
+      .startServer(port);
   }
 
   closeServerIfExists = () => {
     if (this.server) {
       this.server.close();
       this.server = null;
-      this.listeningPort = null;
     }
   };
 
   render() {
     return (
       <div id={containerId} style={styles.container}>
-        <div id="waiting"><h2>Waiting for React to connect…</h2></div>
+        <div id="waiting"><h2>{'Waiting for React to connect…'}</h2></div>
       </div>
     );
   }
