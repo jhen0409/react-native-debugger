@@ -11,7 +11,6 @@
 
 import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
-import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
 import { setAvailableDevMenuMethods } from '../utils/touchBarBuilder';
 import { tryADBReverse } from '../utils/adb';
@@ -42,7 +41,8 @@ const createJSRuntime = id => {
   // This worker will run the application javascript code,
   // making sure that it's run in an environment without a global
   // document, to make it consistent with the JSC executor environment.
-  worker = new Worker();
+  // eslint-disable-next-line
+  worker = new Worker(`${__webpack_public_path__}RNDebuggerWorker.js`);
   worker.addEventListener('message', workerOnMessage);
 
   actions.setDebuggerWorker(worker, 'connected', `Debugger session #${id} active.`);
