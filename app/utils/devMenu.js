@@ -8,34 +8,23 @@ const currentWindow = remote.getCurrentWindow();
 let worker;
 let availableMethods = [];
 
-let leftBar = {
-  reload: null,
-  toggleElementInspector: null,
-  networkInspect: null,
-};
+/* reload, toggleElementInspector, networkInspect */
+let leftBar = {};
 
-let sliderEnabled;
+let isSliderEnabled;
 let storeLiftedState;
-let rightBar = {
-  slider: null,
-  prev: null,
-  next: null,
-};
+/* slider, prev, next */
+let rightBar = {};
 
 const getBarItems = bar => Object.keys(bar).map(key => bar[key]).filter(barItem => !!barItem);
 const setTouchBar = () =>
   currentWindow.setTouchBar([
     ...getBarItems(leftBar),
-    ...(sliderEnabled ? getBarItems(rightBar) : []),
+    ...(isSliderEnabled ? getBarItems(rightBar) : []),
   ]);
 
-if (process.platform === 'darwin') {
-  // Reset TouchBar when reload the app
-  setTouchBar();
-}
-
 const invokeDevMenuMethod = ({ name, args }) =>
-  worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
+  worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
 const networkInspect = {
   isEnabled: () => localStorage.networkInspect === 'enabled',
@@ -71,49 +60,51 @@ contextMenu({
   showInspectElement: process.env.NODE_ENV === 'development',
   prepend: () =>
     [
-      item('Reload JS', n, devMenuMethods.reload, { name: 'reload' }),
-      item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector, {
-        name: 'toggleElementInspector',
-      }),
+      availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
+      availableMethods.includes('toggleElementInspector') &&
+        item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
       item(networkInspect.label(), n, devMenuMethods.networkInspect, {
         name: 'networkInspect',
       }),
       separator,
     ]
-      .filter(({ name }) => availableMethods.includes(name) || !name)
+      .filter(menuItem => !!menuItem)
       .concat(defaultContextMenuItems),
 });
 
-const setDevMenuMethodsForTouchBar = list => {
+const setDevMenuMethodsForTouchBar = () => {
   if (process.platform !== 'darwin') return;
 
   leftBar = {
-    reload: list.includes('reload') &&
+    reload: availableMethods.includes('reload') &&
       new TouchBarButton(item('Reload JS', n, devMenuMethods.reload)),
-    toggleElementInspector: list.includes('toggleElementInspector') &&
+    toggleElementInspector: availableMethods.includes('toggleElementInspector') &&
       new TouchBarButton(item('Inspector', n, devMenuMethods.toggleElementInspector)),
-    networkInspect: list.includes('networkInspect') &&
-      new TouchBarButton(
-        item('Network Inspect', n, devMenuMethods.networkInspect, {
-          backgroundColor: networkInspect.getHighlightColor(),
-        })
-      ),
+    // Default items
+    networkInspect: new TouchBarButton(
+      item('Network Inspect', n, devMenuMethods.networkInspect, {
+        backgroundColor: networkInspect.getHighlightColor(),
+      })
+    ),
   };
   setTouchBar();
 };
+
+// Reset TouchBar when reload the app
+setDevMenuMethodsForTouchBar([]);
 
 export const setDevMenuMethods = (list, wkr) => {
   worker = wkr;
   availableMethods = list;
 
-  setDevMenuMethodsForTouchBar(list);
+  setDevMenuMethodsForTouchBar();
 };
 
 export const setReduxDevToolsMethods = (enabled, dispatch) => {
   if (process.platform !== 'darwin') return;
 
   // Already setup
-  if (enabled && sliderEnabled) return;
+  if (enabled && isSliderEnabled) return;
 
   const handleSliderChange = (nextIndex, dontUpdateTouchBarSlider = false) =>
     dispatch({
@@ -130,6 +121,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       maxValue: 0,
       change(nextIndex) {
         if (nextIndex !== storeLiftedState.currentStateIndex) {
+          // Set `dontUpdateTouchBarSlider` true for keep slide experience
           handleSliderChange(nextIndex, true);
         }
       },
@@ -153,7 +145,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       },
     }),
   };
-  sliderEnabled = enabled;
+  isSliderEnabled = enabled;
   setTouchBar();
 };
 
@@ -161,7 +153,7 @@ export const updateSliderContent = (liftedState, dontUpdateTouchBarSlider) => {
   if (process.platform !== 'darwin') return;
 
   storeLiftedState = liftedState;
-  if (sliderEnabled && !dontUpdateTouchBarSlider) {
+  if (isSliderEnabled && !dontUpdateTouchBarSlider) {
     const { currentStateIndex, computedStates } = liftedState;
     rightBar.slider.maxValue = computedStates.length - 1;
     rightBar.slider.value = currentStateIndex;
