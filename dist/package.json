@@ -13,7 +13,6 @@
   "dependencies": {
     "adbkit": "^2.9.2",
     "electron-config": "^1.0.0",
-    "react-devtools-core": "^2.1.7",
-    "source-map-support": "^0.4.1"
+    "react-devtools-core": "^2.1.7"
   }
 }
