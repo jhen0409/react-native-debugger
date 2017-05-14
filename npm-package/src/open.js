@@ -51,7 +51,7 @@ export default ({ port }, cb) => {
     // We need avoid ELECTRON_RUN_AS_NODE env included in rndebugger
     const electronRunAsNode = process.env.ELECTRON_RUN_AS_NODE;
     delete process.env.ELECTRON_RUN_AS_NODE;
-    opn(rndPath, { wait: false }, err => {
+    opn(rndPath, { wait: false, app: ['React Native Debugger', '-g'] }, err => {
       if (err) {
         connectToRND(rndPath, false, pass => {
           if (!pass) {

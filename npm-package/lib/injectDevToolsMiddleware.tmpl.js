@@ -54,7 +54,7 @@ ${replaceFuncFlag}
     // we need avoid it included in rndebugger
     var __electronRunAsNode = process.env.ELECTRON_RUN_AS_NODE;
     delete process.env.ELECTRON_RUN_AS_NODE;
-    __opn(__rnd_path, { wait: false }, err => {
+    __opn(__rnd_path, { wait: false, app: ['React Native Debugger', '-g'] }, err => {
       if (err) {
         __connectToRND(__rnd_path, false, pass => {
           if (!pass) {
