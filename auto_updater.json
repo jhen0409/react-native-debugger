@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.4/rn-debugger-macos-x64.zip",
-  "name": "v0.6.4",
-  "notes": "This version updated `react-devtools-core` to v2.1.3, includes layout inspector, show component in source, Immutable support and more better UI improvements."
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.5/rn-debugger-macos-x64.zip",
+  "name": "v0.6.5",
+  "notes": "1. Update `react-devtools-core` to v2.1.8\n2. Use adbkit instead of current adb util for reverse `react-devtools` server port for Android"
 }

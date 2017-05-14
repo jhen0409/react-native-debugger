@@ -52,7 +52,7 @@ const messageHandlers = {
       self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
     }
 
-    checkAvailableDevMenuMethods(message.enableNetworkInspect);
+    checkAvailableDevMenuMethods(message.networkInspect);
     reportDefaultReactDevToolsPort();
   },
 };

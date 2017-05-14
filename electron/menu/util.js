@@ -1,7 +1,7 @@
-import { app, dialog, BrowserWindow } from 'electron';
+import { remote, app, dialog, BrowserWindow } from 'electron';
 import multiline from 'multiline-template';
 
-const appName = app.getName();
+const appName = (remote ? remote.app : app).getName();
 const detail = multiline`
   | Created by Jhen-Jie Hong
   | (https://github.com/jhen0409)
@@ -13,7 +13,7 @@ const detail = multiline`
 `;
 
 export const showAboutDialog = iconPath =>
-  dialog.showMessageBox({
+  (remote ? remote.dialog : dialog).showMessageBox({
     title: 'About',
     message: `${appName} ${app.getVersion()}`,
     detail,

@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "productName": "React Native Debugger",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "main.js",
@@ -13,7 +13,6 @@
   "dependencies": {
     "adbkit": "^2.9.2",
     "electron-config": "^1.0.0",
-    "react-devtools-core": "^2.1.7",
-    "source-map-support": "^0.4.1"
+    "react-devtools-core": "^2.1.7"
   }
 }

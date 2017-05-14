@@ -141,8 +141,8 @@ pkg-up@^1.0.0:
     find-up "^1.0.0"
 
 react-devtools-core@^2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.1.7.tgz#7ec9521fcf846c345830125132596f22fdbaaee6"
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.1.8.tgz#49b802eb23ffa405f6cbab9ec04ef0fcdd887ce7"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"

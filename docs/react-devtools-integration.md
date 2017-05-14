@@ -30,7 +30,6 @@ See the section [`Integration with React Native Inspector`](https://github.com/f
   - `>= 0.31` - [Add `hostname = 'your IP'` to next line of `Libraries/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/46417dd26a4ab247d59ad147fdfe1655cb23edf9/Libraries/Devtools/setupDevtools.js#L20-L23)
   - `>= 0.37` - [The same as above, but the path is changed to `Libraries/Core/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/292cc82d0ebc437a6f1cdd2e972b3917b7ee05a4/Libraries/Core/Devtools/setupDevtools.js#L20-L23)
   - `>= 0.43` - [Change `host` of `Libraries/Core/Devtools/setupDevtools.js#L28-L30`](https://github.com/facebook/react-native/blob/0.43-stable/Libraries/Core/Devtools/setupDevtools.js)
-* [Android] If you're debugging via USB, you can just run `adb reverse tcp:8097 tcp:8097` on your terminal.
 
 ## Get `$r` global variable of React Native runtime in the console
 

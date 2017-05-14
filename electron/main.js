@@ -3,7 +3,7 @@ import { app, ipcMain, BrowserWindow, Menu } from 'electron';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
-import { createContextMenu, createMenuTemplate } from './menu';
+import { createMenuTemplate } from './menu';
 
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };
@@ -50,7 +50,6 @@ app.on('ready', async () => {
   await installExtensions();
 
   createWindow(defaultOptions);
-  createContextMenu();
 
   const menuTemplate = createMenuTemplate(defaultOptions);
   const menu = Menu.buildFromTemplate(menuTemplate);

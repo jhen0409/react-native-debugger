@@ -22,12 +22,16 @@ const toggleNetworkInspect = enabled => {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
   };
-  window.XMLHttpRequest = window.originalXMLHttpRequest ?
-    window.originalXMLHttpRequest :
-    window.XMLHttpRequest;
-  window.FormData = window.originalFormData ?
-    window.originalFormData :
-    window.FormData;
+  window.XMLHttpRequest = window.originalXMLHttpRequest
+    ? window.originalXMLHttpRequest
+    : window.XMLHttpRequest;
+  window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
+
+  console.log(
+    '[RNDebugger]',
+    'Network Inspect is enabled,',
+    'you can open `Network` tab to inspect requests of `fetch` and `XMLHttpRequest`.'
+  );
 };
 
 const methodsGlobalName = '__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__';

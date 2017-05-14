@@ -11,9 +11,8 @@
 
 import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
-import Worker from 'worker-loader?name=RNDebuggerWorker.js!../worker'; // eslint-disable-line
 import * as debuggerActions from '../actions/debugger';
-import { setAvailableDevMenuMethods } from '../utils/touchBarBuilder';
+import { setDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import keepPriority from '../utils/keepPriority';
 
@@ -32,7 +31,7 @@ const workerOnMessage = message => {
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
   if (list) {
-    setAvailableDevMenuMethods(list, worker);
+    setDevMenuMethods(list, worker);
     return false;
   }
   socket.send(JSON.stringify(data));
@@ -42,25 +41,27 @@ const createJSRuntime = () => {
   // This worker will run the application javascript code,
   // making sure that it's run in an environment without a global
   // document, to make it consistent with the JSC executor environment.
-  worker = new Worker();
+  // eslint-disable-next-line
+  worker = new Worker(`${__webpack_public_path__}RNDebuggerWorker.js`);
   worker.addEventListener('message', workerOnMessage);
 
   actions.setDebuggerWorker(worker, 'connected');
   keepPriority(true);
 };
 
-const shutdownJSRuntime = (status) => {
+const shutdownJSRuntime = status => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
-    setAvailableDevMenuMethods([]);
+    setDevMenuMethods([]);
   }
   worker = null;
   setDebuggerWorker(null, status);
   keepPriority(false);
 };
 
-const isScriptBuildForAndroid = url => url && url.indexOf('platform=android') > -1;
+const isScriptBuildForAndroid = url =>
+  url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
 const connectToDebuggerProxy = () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
@@ -96,7 +97,7 @@ const connectToDebuggerProxy = () => {
       // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        object.enableNetworkInspect = localStorage.enableNetworkInspect === 'enabled';
+        object.networkInspect = localStorage.networkInspect === 'enabled';
         object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
