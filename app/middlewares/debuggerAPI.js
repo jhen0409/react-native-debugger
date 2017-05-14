@@ -12,7 +12,7 @@
 import WebSocket from 'ws';
 import { bindActionCreators } from 'redux';
 import * as debuggerActions from '../actions/debugger';
-import { setAvailableDevMenuMethods } from '../utils/touchBarBuilder';
+import { setDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import keepPriority from '../utils/keepPriority';
 
@@ -31,7 +31,7 @@ const workerOnMessage = message => {
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
   if (list) {
-    setAvailableDevMenuMethods(list, worker);
+    setDevMenuMethods(list, worker);
     return false;
   }
   socket.send(JSON.stringify(data));
@@ -53,7 +53,7 @@ const shutdownJSRuntime = (status, statusMessage) => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
-    setAvailableDevMenuMethods([]);
+    setDevMenuMethods([]);
   }
   worker = null;
   setDebuggerWorker(null, status, statusMessage);
@@ -97,7 +97,7 @@ const connectToDebuggerProxy = () => {
       // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        object.enableNetworkInspect = localStorage.enableNetworkInspect === 'enabled';
+        object.networkInspect = localStorage.networkInspect === 'enabled';
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
           tryADBReverse(8097).catch(() => {});

@@ -2,21 +2,26 @@
 
 The Debugger part is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
 
-## Developer menu integration (macOS)
+## Developer menu integration
 
 RNDebugger have [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) of React Native integration:
 
-<img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
+![Dev menu](https://cloud.githubusercontent.com/assets/3001525/25920996/5c488966-3606-11e7-8d0c-cb564671067b.gif)
 
 Just includes two developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
 
 * Reload JS
-* Inspector (Toogle Elements Inspector) (RN ^0.43 support)
+* Toogle Elements Inspector (RN ^0.43 support)
 
-Other features:
+Other features (cross-platform):
 
 * Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
-* Redux Slider (If you're using [`Redux API`](redux-devtools-integration.md))
+
+They are also in Touch Bar:
+
+<img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
+
+It have Redux slider on the right. (If you're using [`Redux API`](redux-devtools-integration.md))
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
 
