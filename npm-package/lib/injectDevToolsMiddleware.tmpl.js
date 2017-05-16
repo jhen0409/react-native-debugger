@@ -3,6 +3,7 @@ var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
+var __childProcess = require('child_process');
 var __home_env = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
 var __port_file = __path.join(process.env[__home_env], '.rndebugger_port');
 
@@ -50,28 +51,28 @@ ${replaceFuncFlag}
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
   if (process.platform === 'darwin' && !skipRNDebugger) {
-    // This env is specified from Expo (and CRNA),
-    // we need avoid it included in rndebugger
-    var __electronRunAsNode = process.env.ELECTRON_RUN_AS_NODE;
-    delete process.env.ELECTRON_RUN_AS_NODE;
-    __opn(__rnd_path, { wait: false, app: ['React Native Debugger', '-g'] }, err => {
-      if (err) {
-        __connectToRND(__rnd_path, false, pass => {
-          if (!pass) {
-            console.log(
-              '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
-              '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
-              'Or it\'s never started. (Not registered URI Scheme)\n'
-            );
-          }
+    var __env = Object.assign({}, process.env);
+    // This env is specified from Expo (and CRNA), we need avoid it included in rndebugger
+    delete __env.ELECTRON_RUN_AS_NODE;
+    __childProcess
+      .spawn('open', ['-g', '-a', 'React Native Debugger', __rnd_path], { env: __env })
+      .once('close', code => {
+        if (code > 0) {
+          __connectToRND(__rnd_path, false, pass => {
+            if (!pass) {
+              console.log(
+                '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
+                'Or it\'s never started. (Not registered URI Scheme)\n'
+              );
+            }
+            __rndebuggerIsOpening = false;
+            !pass && ${keyFunc}(port, true);
+          });
+        } else {
           __rndebuggerIsOpening = false;
-          !pass && ${keyFunc}(port, true);
-        });
-      } else {
-        __rndebuggerIsOpening = false;
-      }
-    });
-    process.env.ELECTRON_RUN_AS_NODE = __electronRunAsNode;
+        }
+      })
     return;
   } else if (!skipRNDebugger) {
     __connectToRND(__rnd_path, true, pass => {

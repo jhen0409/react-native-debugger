@@ -1,7 +1,7 @@
-import opn from 'opn';
 import fs from 'fs';
 import path from 'path';
 import net from 'net';
+import childProcess from 'child_process';
 
 const homeEnv = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
 const portFile = path.join(process.env[homeEnv], '.rndebugger_port');
@@ -48,26 +48,27 @@ export default ({ port }, cb) => {
   const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${port}`;
 
   if (process.platform === 'darwin') {
-    // We need avoid ELECTRON_RUN_AS_NODE env included in rndebugger
-    const electronRunAsNode = process.env.ELECTRON_RUN_AS_NODE;
-    delete process.env.ELECTRON_RUN_AS_NODE;
-    opn(rndPath, { wait: false, app: ['React Native Debugger', '-g'] }, err => {
-      if (err) {
-        connectToRND(rndPath, false, pass => {
-          if (!pass) {
-            console.log(
-              '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
-                "Or it's never started. (Not registered URI Scheme)\n"
-            );
-          }
-          cb(pass, true);
-        });
-      } else {
-        cb(true);
-      }
-    });
-    process.env.ELECTRON_RUN_AS_NODE = electronRunAsNode;
+    const env = Object.assign({}, process.env);
+    // This env is specified from Expo (and CRNA), we need avoid it included in rndebugger
+    delete env.ELECTRON_RUN_AS_NODE;
+    childProcess
+      .spawn('open', ['-g', '-a', 'React Native Debugger', rndPath], { env })
+      .once('close', code => {
+        if (code > 0) {
+          connectToRND(rndPath, false, pass => {
+            if (!pass) {
+              console.log(
+                '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
+                  '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
+                  "Or it's never started. (Not registered URI Scheme)\n"
+              );
+            }
+            cb(pass, true);
+          });
+        } else {
+          cb(true);
+        }
+      });
   } else {
     connectToRND(rndPath, true, pass => {
       cb(pass, true);
