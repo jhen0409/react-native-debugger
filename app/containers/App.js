@@ -17,7 +17,6 @@ const styles = {
     width: '100%',
     left: 0,
     bottom: 0,
-    backgroundColor: 'white',
   },
   wrapBackground: {
     display: 'flex',
@@ -77,10 +76,12 @@ export default class App extends Component {
     setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
 
     window.onbeforeunload = this.removeAllListeners;
+    window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
   }
 
   componentWillUnmount() {
     this.removeAllListeners();
+    window.notifyDevToolsThemeChange = null;
   }
 
   onReduxDockResize = size => {
@@ -88,12 +89,23 @@ export default class App extends Component {
     setting.resizeDevTools(size);
   };
 
+  getReactBackgroundColor = themeName => {
+    switch (themeName) {
+      case 'dark':
+        return '#242424';
+      case 'default':
+        return 'white';
+      default:
+        return 'transparent';
+    }
+  };
+
   removeAllListeners() {
     ipcRenderer.removeAllListeners('toggle-devtools');
     ipcRenderer.removeAllListeners('set-debugger-loc');
   }
 
-  background =
+  background = (
     <div style={styles.wrapBackground}>
       <div style={styles.text}>
         <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd>
@@ -103,7 +115,8 @@ export default class App extends Component {
         <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd>
         {' to toggle React DevTools'}
       </div>
-    </div>;
+    </div>
+  );
 
   renderReduxDevTools() {
     const { redux, react } = this.props.setting;
@@ -128,18 +141,20 @@ export default class App extends Component {
   }
 
   renderReactInspector() {
-    const wrapStyle = Object.assign({}, styles.wrapReactPanel);
-    const { redux, react, size } = this.props.setting;
+    const { redux, react, size, themeName } = this.props.setting;
+    const wrapStyle = {
+      ...styles.wrapReactPanel,
+      backgroundColor: this.getReactBackgroundColor(themeName),
+    };
+
     if (!react) {
       wrapStyle.display = 'none';
     } else {
-      wrapStyle.height = redux ?
-        `${(1 - size) * 100}%` :
-        '100%';
+      wrapStyle.height = redux ? `${(1 - size) * 100}%` : '100%';
     }
     return (
       <div style={wrapStyle}>
-        <ReactInspector />
+        <ReactInspector themeName={themeName} />
       </div>
     );
   }
