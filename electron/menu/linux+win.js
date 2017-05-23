@@ -52,7 +52,7 @@ export default ({ iconPath }) => [
   ]),
   menu('Help', [
     item('Documentation', n, () =>
-      shell.openExternal('https://github.com/jhen0409/react-native-debugger#usage')
+      shell.openExternal('https://github.com/jhen0409/react-native-debugger/tree/master/docs')
     ),
     item('Issues', n, () =>
       shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues')

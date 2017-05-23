@@ -20,4 +20,4 @@ cd release/React\ Native\ Debugger-darwin-x64
 zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app
 
 echo sha256: `shasum -a 256 ../rn-debugger-macos-x64.zip`
-echo "After release run: `brew cask _appcast_checkpoint --calculate \"https://github.com/jhen0409/react-native-debugger/releases.atom\"`"
+echo "After release run: \`brew cask _appcast_checkpoint --calculate \"https://github.com/jhen0409/react-native-debugger/releases.atom\"\`"

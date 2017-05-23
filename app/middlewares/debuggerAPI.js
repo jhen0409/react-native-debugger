@@ -14,7 +14,6 @@ import { bindActionCreators } from 'redux';
 import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
-import keepPriority from '../utils/keepPriority';
 
 const { SET_DEBUGGER_LOCATION } = debuggerActions;
 
@@ -46,7 +45,6 @@ const createJSRuntime = () => {
   worker.addEventListener('message', workerOnMessage);
 
   actions.setDebuggerWorker(worker, 'connected');
-  keepPriority(true);
 };
 
 const shutdownJSRuntime = status => {
@@ -57,7 +55,6 @@ const shutdownJSRuntime = status => {
   }
   worker = null;
   setDebuggerWorker(null, status);
-  keepPriority(false);
 };
 
 const isScriptBuildForAndroid = url =>

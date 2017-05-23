@@ -56,6 +56,8 @@ global.FormData = global.originalFormData ?
   global.FormData;
 ```
 
+See also - [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53).
+
 Warning:
 
 * It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
