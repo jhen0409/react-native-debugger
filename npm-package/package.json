@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger-open",
-  "version": "0.3.8",
+  "version": "0.3.11",
   "description": "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
@@ -29,8 +29,7 @@
   "dependencies": {
     "chalk": "^1.1.3",
     "es6-template": "^1.0.4",
-    "minimist": "^1.2.0",
-    "opn": "^4.0.2"
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

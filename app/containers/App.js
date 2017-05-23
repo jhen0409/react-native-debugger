@@ -95,7 +95,8 @@ export default class App extends Component {
     setting.resizeDevTools(size);
   };
 
-  getReactBackgroundColor = themeName => {
+  getReactBackgroundColor = () => {
+    const { themeName } = this.props.setting;
     switch (themeName) {
       case 'dark':
         return '#242424';
@@ -105,6 +106,17 @@ export default class App extends Component {
         return 'transparent';
     }
   };
+
+  getDevToolsSize() {
+    const { redux, react, size } = this.props.setting;
+    if (!redux || !react) {
+      return {
+        redux: redux ? 1 : 0,
+        react: react ? 1 : 0,
+      };
+    }
+    return { redux: size, react: 1 - size };
+  }
 
   removeAllListeners() {
     ipcRenderer.removeAllListeners('toggle-devtools');
@@ -124,14 +136,7 @@ export default class App extends Component {
     </div>
   );
 
-  renderReduxDevTools() {
-    const { redux, react } = this.props.setting;
-    let { size } = this.props.setting;
-    if (!redux) {
-      size = 0;
-    } else if (!react) {
-      size = 1;
-    }
+  renderReduxDevTools(size) {
     return (
       <Dock
         isVisible
@@ -146,18 +151,13 @@ export default class App extends Component {
     );
   }
 
-  renderReactInspector() {
-    const { redux, react, size, themeName } = this.props.setting;
+  renderReactInspector(size) {
     const wrapStyle = {
       ...styles.wrapReactPanel,
-      backgroundColor: this.getReactBackgroundColor(themeName),
+      height: `${size * 100}%`,
+      display: size ? 'inline' : 'none',
+      backgroundColor: this.getReactBackgroundColor(),
     };
-
-    if (!react) {
-      wrapStyle.display = 'none';
-    } else {
-      wrapStyle.height = redux ? `${(1 - size) * 100}%` : '100%';
-    }
     return (
       <div style={wrapStyle}>
         <ReactInspector />
@@ -166,11 +166,11 @@ export default class App extends Component {
   }
 
   render() {
-    const { redux, react } = this.props.setting;
+    const { redux, react } = this.getDevToolsSize();
     return (
       <div>
-        {this.renderReduxDevTools()}
-        {this.renderReactInspector()}
+        {this.renderReduxDevTools(redux)}
+        {this.renderReactInspector(react)}
         {!react && !redux && this.background}
       </div>
     );
