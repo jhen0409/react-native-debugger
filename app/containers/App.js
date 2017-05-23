@@ -79,6 +79,12 @@ export default class App extends Component {
     window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.setting.themeName !== nextProps.setting.themeName) {
+      ReactInspector.setDefaultThemeName(nextProps.setting.themeName);
+    }
+  }
+
   componentWillUnmount() {
     this.removeAllListeners();
     window.notifyDevToolsThemeChange = null;
@@ -154,7 +160,7 @@ export default class App extends Component {
     }
     return (
       <div style={wrapStyle}>
-        <ReactInspector themeName={themeName} />
+        <ReactInspector />
       </div>
     );
   }
