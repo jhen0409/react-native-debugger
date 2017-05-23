@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const babelConfig = JSON.parse(fs.readFileSync(join(__dirname, '../.babelrc'), 'utf-8'));
 // Webpack 2 have native import / export support
-babelConfig.presets = [['env', { targets: { node: 7.6 }, modules: false }], 'react'];
+babelConfig.presets = [['env', { targets: { electron: '1.6' }, modules: false }], 'react'];
 babelConfig.babelrc = false;
 
 export default {

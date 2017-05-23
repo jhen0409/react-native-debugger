@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+'use strict';
 const defaultPort = 8081;
 const expoDefaultPort = 19001;
 

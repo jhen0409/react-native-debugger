@@ -46,10 +46,10 @@ const messageHandlers = {
     // Because the worker message not have notify the remote JS runtime (for Electron?)
     // we need to regularly update JS runtime
     if (!self.__RND_INTERVAL__) {
-      self.__RND_INTERVAL__ = setInterval(function(){}, 100); // eslint-disable-line
+      self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
     }
 
-    checkAvailableDevMenuMethods(message.enableNetworkInspect);
+    checkAvailableDevMenuMethods(message.networkInspect);
   },
 };
 

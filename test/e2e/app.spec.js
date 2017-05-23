@@ -101,8 +101,8 @@ describe('Application launch', function spec() {
   const customRNServerPort = 8088;
   const getURLFromConnection = server =>
     new Promise(resolve => {
-      server.on('connection', socket => {
-        resolve(socket.upgradeReq.url);
+      server.on('connection', (socket, req) => {
+        resolve(req.url);
         server.close();
       });
     });

@@ -4,9 +4,8 @@ import baseConfig from './base.babel';
 const host = 'localhost';
 const port = 3000;
 
-export default {
+const baseDevConfig = {
   ...baseConfig,
-  entry: './app/index',
   devtool: 'inline-source-map',
   devServer: { host, port },
   output: {
@@ -28,9 +27,29 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
-  resolve: {
-    ...baseConfig.resolve,
-    aliasFields: ['browser'],
-  },
-  target: 'electron-renderer',
 };
+
+const buildDevConfig = config => ({
+  ...baseDevConfig,
+  ...config,
+});
+
+export default [
+  buildDevConfig({
+    entry: './app/index',
+    target: 'electron-renderer',
+  }),
+  buildDevConfig({
+    entry: './app/worker/index.js',
+    resolve: {
+      ...baseDevConfig.resolve,
+      aliasFields: ['browser'],
+    },
+    output: {
+      ...baseDevConfig.output,
+      filename: 'RNDebuggerWorker.js',
+      libraryTarget: undefined,
+    },
+    target: 'webworker',
+  }),
+];

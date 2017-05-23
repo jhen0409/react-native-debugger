@@ -62,9 +62,9 @@ You can also use following commands instead of this patch:
 $ open "rndebugger://set-debugger-loc?port=8082"
 
 # macOS with `REACT_DEBUGGER` env
-$ REACT_DEBUGGER="open 'rndebugger://set-debugger-loc?port=8082' ||" npm start
+$ REACT_DEBUGGER="open -g 'rndebugger://set-debugger-loc?port=8082' ||" npm start
 # If you're use Expo
-$ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open 'rndebugger://set-debugger-loc?port=8082' ||" npm start
+$ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open -g 'rndebugger://set-debugger-loc?port=8082' ||" npm start
 ```
 
 ## LICENSE

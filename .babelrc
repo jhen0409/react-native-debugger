@@ -1,6 +1,6 @@
 {
   "presets": [
-    ["env", { "targets": { "node": 7.6 } }],
+    ["env", { "targets": { "node": "7.6" } }],
     "react"
   ],
   "plugins": [

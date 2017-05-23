@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.5/rn-debugger-macos-x64.zip",
-  "name": "v0.6.5",
-  "notes": "1. Update `react-devtools-core` to v2.1.8\n2. Use adbkit instead of current adb util for reverse `react-devtools` server port for Android"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.6/rn-debugger-macos-x64.zip",
+  "name": "v0.6.6",
+  "notes": "1. Update `react-devtools-core` to v2.1.9\n2. Add developer menu features (Reload JS, Toggle Inspector) to context menu"
 }
