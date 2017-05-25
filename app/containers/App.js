@@ -147,12 +147,6 @@ export default class App extends Component {
     ipcRenderer.send('check-port-available', port);
   };
 
-  handleLinkOnClick = () => {
-    const docsPath = 'docs/getting-started.md#how-to-start-an-another-packager';
-    remote.shell
-      .openExternal(`https://github.com/jhen0409/react-native-debugger/blob/master/${docsPath}`);
-  };
-
   renderPortSetting() {
     return (
       <div style={styles.wrapBackground}>
@@ -166,9 +160,6 @@ export default class App extends Component {
           onInputChange={value => Number(value.replace(/\D/g, '').substr(0, 5)) || ''}
           onSubmit={this.handlePortOnSubmit}
         />
-        <div onClick={this.handleLinkOnClick} style={styles.link}>
-          {'How to start an another packager?'}
-        </div>
       </div>
     );
   }

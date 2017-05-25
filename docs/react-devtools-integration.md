@@ -1,6 +1,10 @@
 # React DevTools integration
 
-The React DevTools is used [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with [`Nuclide`](https://github.com/facebook/nuclide), it will open a WebSocket server (port: `8097`) to waiting React Native connection.
+The React DevTools used [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector), it will open a WebSocket server to waiting React Native connection.
+
+__*NOTE*__ The server will listen a random port and inject `window.__REACT_DEVTOOLS_PORT__` global variable in debugger worker, the port is only works with React Native version ^0.39, it will fallback to `8097` (default port) if you're using React Native version under 0.39.
+
+For Android, we have the built-in `adb` util and it will reverse the port automatically.
 
 ## Specified features for React Native
 
