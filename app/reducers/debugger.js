@@ -8,11 +8,36 @@ import {
 
 const { isPortSettingRequired } = qs.parse(url.parse(location.href).query);
 
-const refreshShortcut = process.platform === 'darwin' ? '⌘R' : 'Ctrl+R';
+function getStatusMessage(status, port) {
+  let message;
+  switch (status) {
+    case 'new':
+      message = 'New Window';
+      break;
+    case 'waiting':
+      message = 'Waiting for client connection';
+      break;
+    case 'connected':
+      message = 'Connected';
+      break;
+    case 'disconnected':
+    default:
+      message = 'Attempting reconnection';
+  }
+  if (status !== 'new') {
+    message += ` (port ${port})`;
+  }
+  const title = `React Native Debugger - ${message}`;
+  if (title !== document.title) {
+    document.title = title;
+  }
+  return message;
+}
+
 const initialState = {
   worker: null,
-  status: 'waiting',
-  statusMessage: `Waiting, press ${refreshShortcut} in simulator to reload and connect.`,
+  status: 'disconnected',
+  statusMessage: getStatusMessage(isPortSettingRequired ? 'new' : 'disconnected', 8081),
   location: {
     host: 'localhost',
     port: 8081,
@@ -20,38 +45,34 @@ const initialState = {
   isPortSettingRequired,
 };
 
-function setStatusToTitle(message, port) {
-  document.title = `React Native Debugger - ${message} - port: ${port}`;
-}
-
 const actionsMap = {
   [SET_DEBUGGER_STATUS]: (state, action) => {
+    const status = action.status || initialState.status;
     const newState = {
       ...state,
-      status: action.status || initialState.status,
+      status,
+      statusMessage: getStatusMessage(status, state.location.port),
     };
-    setStatusToTitle(newState.status, newState.location.port);
     return newState;
   },
   [SET_DEBUGGER_WORKER]: (state, action) => {
+    const status = action.status || initialState.status;
     const newState = {
       ...state,
       worker: action.worker,
-      status: action.status || initialState.status,
+      status,
+      statusMessage: getStatusMessage(status, state.location.port),
     };
-    setStatusToTitle(newState.status, newState.location.port);
     return newState;
   },
   [SET_DEBUGGER_LOCATION]: (state, action) => {
+    const location = { ...state.location, ...action.loc };
     const newState = {
       ...state,
-      location: {
-        ...state.location,
-        ...action.loc,
-      },
+      location,
+      statusMessage: getStatusMessage(state.status, location.port),
       isPortSettingRequired: false,
     };
-    setStatusToTitle(newState.status, newState.location.port);
     return newState;
   },
 };

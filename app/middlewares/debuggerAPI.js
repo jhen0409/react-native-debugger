@@ -47,14 +47,14 @@ const createJSRuntime = () => {
   actions.setDebuggerWorker(worker, 'connected');
 };
 
-const shutdownJSRuntime = status => {
+const shutdownJSRuntime = () => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
     setDevMenuMethods([]);
   }
   worker = null;
-  setDebuggerWorker(null, status);
+  setDebuggerWorker(null, 'disconnected');
 };
 
 const isScriptBuildForAndroid = url =>
@@ -64,7 +64,7 @@ const connectToDebuggerProxy = () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
-  ws.onopen = () => setDebuggerStatus();
+  ws.onopen = () => setDebuggerStatus('waiting');
   ws.onmessage = message => {
     if (!message.data) {
       return;
@@ -107,7 +107,7 @@ const connectToDebuggerProxy = () => {
 
   ws.onerror = () => {};
   ws.onclose = e => {
-    shutdownJSRuntime('disconnected');
+    shutdownJSRuntime();
     if (e.reason) {
       console.warn(e.reason);
     }
