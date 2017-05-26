@@ -18,7 +18,7 @@ describe('Application launch', function spec() {
         output: {
           filename: './test/e2e/fixture/app.bundle.js',
         },
-      }).run(resolve),
+      }).run(resolve)
     );
     this.app = new Application({
       path: electronPath,
@@ -49,7 +49,7 @@ describe('Application launch', function spec() {
     await client.waitUntilWindowLoaded();
     await delay(2000);
     const title = await browserWindow.getTitle();
-    expect(title).toBe('React Native Debugger - disconnected - port: 8081');
+    expect(title).toBe('React Native Debugger - Attempting reconnection (port 8081)');
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
@@ -93,7 +93,6 @@ describe('Application launch', function spec() {
     new Promise(resolve => {
       server.on('connection', (socket, req) => {
         resolve(req.url);
-        server.close();
       });
     });
 
@@ -102,6 +101,10 @@ describe('Application launch', function spec() {
 
     const url = await getURLFromConnection(server);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
+
+    const title = await this.app.browserWindow.getTitle();
+    expect(title).toBe('React Native Debugger - Waiting for client connection (port 8081)');
+    server.close();
   });
 
   it('should connect to fake RN server (port 8088) with send set-debugger-loc after', async () => {
@@ -129,13 +132,19 @@ describe('Application launch', function spec() {
 
     const url = await getURLFromConnection(server);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
+
+    const title = await this.app.browserWindow.getTitle();
+    expect(title).toBe(
+      `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`
+    );
+    server.close();
   });
 
   describe('Import fake script after', () => {
-    before(() => {
+    before(async () => {
       const server = new WebSocketServer({ port: customRNServerPort });
 
-      return new Promise(resolve => {
+      await new Promise(resolve => {
         server.on('connection', socket => {
           socket.on('message', message => {
             const data = JSON.parse(message);
@@ -147,23 +156,25 @@ describe('Application launch', function spec() {
                     method: 'executeApplicationScript',
                     inject: [],
                     url: '../../test/e2e/fixture/app.bundle.js',
-                  }),
+                  })
                 );
                 break;
               case 'sendFakeScript':
                 return resolve();
               default:
-                console.error(`Unexperted id ${data.replyID}`);
+                console.error(`Unexperted id ${data.replyID}, data:`, data);
             }
           });
           socket.send(
             JSON.stringify({
               id: 'createJSRuntime',
               method: 'prepareJSRuntime',
-            }),
+            })
           );
         });
       });
+      const title = await this.app.browserWindow.getTitle();
+      expect(title).toBe(`React Native Debugger - Connected (port ${customRNServerPort})`);
     });
 
     it('should have @@INIT action on Redux DevTools', async () => {
