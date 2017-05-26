@@ -25,7 +25,7 @@ let socket;
 
 const workerOnMessage = message => {
   const { data } = message;
-  if (data && data.__IS_REDUX_NATIVE_MESSAGE__) {
+  if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
     return true;
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
