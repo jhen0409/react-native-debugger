@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.6.6/rn-debugger-macos-x64.zip",
-  "name": "v0.6.6",
-  "notes": "1. Update `react-devtools-core` to v2.1.9\n2. Add developer menu features (Reload JS, Toggle Inspector) to context menu"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.0/rn-debugger-macos-x64.zip",
+  "name": "v0.7.0",
+  "notes": "1. Update react-devtools-core to v2.2.1, and change React Inspector default theme by detecting devtools theme\n2. Update electron to v1.7 (Chrome 56 -> 58)\n3. Add multiple debugger window support\n4. Add loading message on app startup"
 }
