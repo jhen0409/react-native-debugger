@@ -13,7 +13,7 @@ For Android, we have the built-in `adb` util and it will reverse the port automa
 * Native styler
 * Layout inspect (RN ^0.43 support)
 
-<img width="311" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25572751/f8477afe-2e70-11e7-9a17-17a4f48436aa.png">
+<img width="288" alt="2017-05-27 12 00 36" src="https://cloud.githubusercontent.com/assets/3001525/26518163/0dc24ea6-42dd-11e7-91aa-52da5c4d347d.png">
 
 #### Show component source in editor
 
