@@ -1,5 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
+import { avoidWarnForRequire } from './utils';
+
 /*
  * Currently Blob is not supported for RN,
  * we should remove it in WebWorker because it will used for `whatwg-fetch`
@@ -7,22 +9,6 @@
 if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
   delete self.Blob;
 }
-
-// Avoid warning of use `window.require` on dev mode
-const avoidWarnForRequire = (moduleName = 'NativeModules') =>
-  new Promise(resolve =>
-    setTimeout(() => {
-      // It's replaced console.warn of react-native
-      const originalWarn = console.warn;
-      console.warn = (...args) => {
-        if (args[0] && args[0].indexOf(`Requiring module '${moduleName}' by name`) > -1) return;
-        return originalWarn(...args);
-      };
-      resolve(() => {
-        console.warn = originalWarn;
-      });
-    })
-  );
 
 const toggleNetworkInspect = enabled => {
   if (!enabled && window.__NETWORK_INSPECT__) {

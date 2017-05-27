@@ -1,3 +1,4 @@
+import getPort from 'get-port';
 import { webFrame } from 'electron';
 import React from 'react';
 import { render } from 'react-dom';
@@ -16,9 +17,21 @@ window.adb = client;
 window.adb.reverseAll = tryADBReverse;
 // TODO: provide adb function for reverse RN packager port
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
+window.checkWindowInfo = () => {
+  const debuggerState = store.getState().debugger;
+  return {
+    isWorkerRunning: !!debuggerState.worker,
+    location: debuggerState.location,
+    isPortSettingRequired: debuggerState.isPortSettingRequired,
+  };
+};
+
+getPort().then(port => {
+  window.reactDevToolsPort = port;
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  );
+});

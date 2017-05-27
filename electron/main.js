@@ -1,46 +1,57 @@
-import { resolve } from 'path';
-import { app, BrowserWindow, Menu } from 'electron';
-import Config from 'electron-config';
-import autoUpdate from './update';
+import path from 'path';
+import { app, ipcMain, BrowserWindow, Menu } from 'electron';
 import installExtensions from './extensions';
+import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createMenuTemplate } from './menu';
 
-const config = new Config();
-const iconPath = resolve(__dirname, 'logo.png');
-let mainWindow = null;
+const iconPath = path.resolve(__dirname, 'logo.png');
+const defaultOptions = { iconPath };
 
-startListeningHandleURL(() => mainWindow);
+startListeningHandleURL(async (host, port) => {
+  const wins = BrowserWindow.getAllWindows();
+  if (wins.length === 0) return null;
+  for (const win of wins) {
+    const { isWorkerRunning, isPortSettingRequired, location } = await checkWindowInfo(win);
+    if ((!isWorkerRunning || location.port === port) && !isPortSettingRequired) {
+      return win;
+    }
+  }
+  createWindow(defaultOptions);
+  return null;
+});
 
-app.on('window-all-closed', () => app.quit());
+ipcMain.on('check-port-available', async (event, arg) => {
+  const port = Number(arg);
+  for (const win of BrowserWindow.getAllWindows()) {
+    if (win.webContents !== event.sender) {
+      const { isPortSettingRequired, location } = await checkWindowInfo(win);
+      if (location.port === port && !isPortSettingRequired) {
+        event.sender.send('check-port-available-reply', false);
+        return;
+      }
+    }
+  }
+  event.sender.send('check-port-available-reply', true);
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length !== 0) return;
+  createWindow(defaultOptions);
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
 app.on('ready', async () => {
   await installExtensions();
 
-  mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 750,
-    ...config.get('winBounds'),
-    show: false,
-    backgroundColor: '#272c37',
-  });
+  createWindow(defaultOptions);
 
-  mainWindow.loadURL(`file://${resolve(__dirname)}/app.html`);
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.show();
-    mainWindow.focus();
-    if (process.env.OPEN_DEVTOOLS !== '0') {
-      mainWindow.openDevTools();
-    }
-    mainWindow.checkUpdate = autoUpdate;
-    autoUpdate(mainWindow, iconPath);
-  });
-  mainWindow.on('close', () => {
-    config.set('winBounds', mainWindow.getBounds());
-    mainWindow = null;
-  });
-
-  const menuTemplate = createMenuTemplate(mainWindow, iconPath);
+  const menuTemplate = createMenuTemplate(defaultOptions);
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 });

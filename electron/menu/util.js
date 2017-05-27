@@ -1,4 +1,4 @@
-import { remote, app, dialog } from 'electron';
+import { remote, app, dialog, BrowserWindow } from 'electron';
 import multiline from 'multiline-template';
 
 const appName = (remote ? remote.app : app).getName();
@@ -21,7 +21,20 @@ export const showAboutDialog = iconPath =>
     buttons: [],
   });
 
-export const toggleDevTools = (win, type) => win.webContents.send('toggle-devtools', type);
+export const toggleDevTools = (win, type) => {
+  if (!win || !type) return;
+  if (type === 'chrome') {
+    win.toggleDevTools();
+    return;
+  }
+  win.webContents.send('toggle-devtools', type);
+};
+
+export const toggleFullscreen = win => win && win.setFullScreen(!win.isFullScreen());
+export const setAlwaysOnTop = (win, checked) => win && win.setAlwaysOnTop(checked);
+export const reload = win => win && win.webContents.reload();
+export const close = win => win && win.close();
+export const haveOpenedWindow = () => !!BrowserWindow.getAllWindows().length;
 
 export const menu = (label, submenu) => ({ label, submenu });
 export const item = (label, accelerator, click, rest) => ({

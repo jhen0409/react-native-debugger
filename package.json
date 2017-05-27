@@ -63,6 +63,7 @@
     "electron-config": "^1.0.0",
     "electron-context-menu": "^0.9.0",
     "electron-gh-releases": "^2.0.4",
+    "get-port": "^3.1.0",
     "jsan": "^3.1.9",
     "multiline-template": "^0.1.1",
     "node-watch": "^0.5.1",

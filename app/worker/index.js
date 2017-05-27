@@ -12,6 +12,7 @@
 
 /* eslint-disable no-underscore-dangle */
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
+import { reportDefaultReactDevToolsPort } from './reactDevTools';
 
 // WebWorker not have `global`
 self.global = self;
@@ -33,6 +34,8 @@ self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
+    self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+
     Object.keys(message.inject).forEach(key => {
       self[key] = JSON.parse(message.inject[key]);
     });
@@ -50,6 +53,7 @@ const messageHandlers = {
     }
 
     checkAvailableDevMenuMethods(message.networkInspect);
+    reportDefaultReactDevToolsPort();
   },
 };
 

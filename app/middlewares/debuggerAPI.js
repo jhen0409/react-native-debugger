@@ -25,7 +25,7 @@ let socket;
 
 const workerOnMessage = message => {
   const { data } = message;
-  if (data && data.__IS_REDUX_NATIVE_MESSAGE__) {
+  if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
     return true;
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
@@ -36,7 +36,7 @@ const workerOnMessage = message => {
   socket.send(JSON.stringify(data));
 };
 
-const createJSRuntime = id => {
+const createJSRuntime = () => {
   // This worker will run the application javascript code,
   // making sure that it's run in an environment without a global
   // document, to make it consistent with the JSC executor environment.
@@ -44,17 +44,17 @@ const createJSRuntime = id => {
   worker = new Worker(`${__webpack_public_path__}RNDebuggerWorker.js`);
   worker.addEventListener('message', workerOnMessage);
 
-  actions.setDebuggerWorker(worker, 'connected', `Debugger session #${id} active.`);
+  actions.setDebuggerWorker(worker, 'connected');
 };
 
-const shutdownJSRuntime = (status, statusMessage) => {
+const shutdownJSRuntime = () => {
   const { setDebuggerWorker } = actions;
   if (worker) {
     worker.terminate();
     setDevMenuMethods([]);
   }
   worker = null;
-  setDebuggerWorker(null, status, statusMessage);
+  setDebuggerWorker(null, 'disconnected');
 };
 
 const isScriptBuildForAndroid = url =>
@@ -64,7 +64,7 @@ const connectToDebuggerProxy = () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
-  ws.onopen = () => setDebuggerStatus();
+  ws.onopen = () => setDebuggerStatus('waiting');
   ws.onmessage = message => {
     if (!message.data) {
       return;
@@ -86,7 +86,7 @@ const connectToDebuggerProxy = () => {
       if (process.env.NODE_ENV !== 'development') {
         console.clear();
       }
-      createJSRuntime(object.id);
+      createJSRuntime();
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
@@ -95,9 +95,10 @@ const connectToDebuggerProxy = () => {
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
         object.networkInspect = localStorage.networkInspect === 'enabled';
+        object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
-          tryADBReverse(8097).catch(() => {});
+          tryADBReverse(window.reactDevToolsPort).catch(() => {});
         }
       }
       worker.postMessage(object);
@@ -106,10 +107,7 @@ const connectToDebuggerProxy = () => {
 
   ws.onerror = () => {};
   ws.onclose = e => {
-    shutdownJSRuntime(
-      'disconnected',
-      'Disconnected from proxy. Attempting reconnection. Is node server running?'
-    );
+    shutdownJSRuntime();
     if (e.reason) {
       console.warn(e.reason);
     }

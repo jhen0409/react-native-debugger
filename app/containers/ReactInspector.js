@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 import React, { Component, PropTypes } from 'react';
 import ReactServer from 'react-devtools-core/standalone';
+import { tryADBReverse } from '../utils/adb';
 
 const containerId = 'react-devtools-container';
 
@@ -14,11 +15,20 @@ const styles = {
   },
 };
 
+// Avoid errors
+const originErr = console.error;
+console.error = (...args) => {
+  if (args[0] === '[React DevTools]') {
+    return;
+  }
+  return originErr(...args);
+};
+
 @connect(
   state => ({
     debugger: state.debugger,
   }),
-  dispatch => ({ dispatch }),
+  dispatch => ({ dispatch })
 )
 export default class ReactInspector extends Component {
   static propTypes = {
@@ -30,8 +40,10 @@ export default class ReactInspector extends Component {
   }
 
   componentDidMount() {
-    if (this.props.debugger.worker) {
+    const { worker } = this.props.debugger;
+    if (worker) {
       this.server = this.startServer();
+      worker.addEventListener('message', this.workerOnMessage);
     }
   }
 
@@ -39,10 +51,11 @@ export default class ReactInspector extends Component {
     const { prevWorker } = this.props.debugger;
     const { worker } = nextProps.debugger;
     if (worker && prevWorker !== worker) {
-      if (this.server) this.server.close();
+      this.closeServerIfExists();
       this.server = this.startServer();
+      worker.addEventListener('message', this.workerOnMessage);
     } else if (!worker) {
-      if (this.server) this.server.close();
+      this.closeServerIfExists();
     }
   }
 
@@ -51,25 +64,53 @@ export default class ReactInspector extends Component {
   }
 
   componentWillUnmount() {
-    if (this.server) {
-      this.server.close();
-      this.server = null;
-    }
+    this.closeServerIfExists();
   }
 
-  startServer(port = 8097) {
-    return ReactServer
+  listeningPort = window.reactDevToolsPort;
+  loggedWarn = false;
+
+  workerOnMessage = message => {
+    const { data } = message;
+    if (!data || !data.__REPORT_REACT_DEVTOOLS_PORT__) return;
+
+    const port = Number(data.__REPORT_REACT_DEVTOOLS_PORT__);
+    const platform = data.platform;
+    if (port && port !== this.listeningPort) {
+      this.listeningPort = port;
+      this.closeServerIfExists();
+      this.server = this.startServer(port);
+      if (platform === 'android') tryADBReverse(port).catch(() => {});
+    }
+  };
+
+  startServer(port = this.listeningPort) {
+    return ReactServer.setStatusListener(status => {
+      if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
+        console.warn(
+          '[RNDebugger]',
+          'Failed to start React DevTools server with port `8097`,',
+          'because another instance of DevTools is listening,',
+          'we recommended to upgrade React Native version to 0.39 or more for random port support.'
+        );
+        this.loggedWarn = true;
+      }
+    })
       .setContentDOMNode(document.getElementById(containerId))
       .startServer(port);
   }
 
+  closeServerIfExists = () => {
+    if (this.server) {
+      this.server.close();
+      this.server = null;
+    }
+  };
+
   render() {
     return (
-      <div
-        id={containerId}
-        style={styles.container}
-      >
-        <div id="waiting"><h2>Waiting for React to connect…</h2></div>
+      <div id={containerId} style={styles.container}>
+        <div id="waiting"><h2>{'Waiting for React to connect…'}</h2></div>
       </div>
     );
   }

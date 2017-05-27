@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,6 +7,9 @@ import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
 import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
+import FormInput from '../components/FormInput';
+
+const currentWindow = remote.getCurrentWindow();
 
 const styles = {
   wrapReactPanel: {
@@ -25,6 +28,7 @@ const styles = {
     height: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     color: '#ccc',
     fontSize: '25px',
     WebkitUserSelect: 'none',
@@ -32,6 +36,13 @@ const styles = {
   text: {
     textAlign: 'center',
     margin: '7px',
+  },
+  link: {
+    textAlign: 'center',
+    margin: '7px',
+    fontSize: '12px',
+    cursor: 'pointer',
+    color: '#aaa',
   },
   shortcut: {
     fontFamily: 'Monaco, monospace',
@@ -60,6 +71,7 @@ const shortcutPrefix = process.platform === 'darwin' ? '⌥⌘' : 'Ctrl+Alt+';
 export default class App extends Component {
   static propTypes = {
     setting: PropTypes.object.isRequired,
+    debugger: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -73,8 +85,9 @@ export default class App extends Component {
     ipcRenderer.on('set-debugger-loc', (e, payload) => {
       setDebuggerLocation(JSON.parse(payload));
     });
-    setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
-
+    if (!this.props.debugger.isPortSettingRequired) {
+      setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
+    }
     window.onbeforeunload = this.removeAllListeners;
     window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
   }
@@ -136,6 +149,39 @@ export default class App extends Component {
     </div>
   );
 
+  handlePortOnSubmit = (evt, port) => {
+    ipcRenderer.once('check-port-available-reply', (event, available) => {
+      if (!available) {
+        alert(`The port ${port} is already used by another window.`);
+        return;
+      }
+      const { setDebuggerLocation } = this.props.actions.debugger;
+      setDebuggerLocation({
+        ...JSON.parse(process.env.DEBUGGER_SETTING || '{}'),
+        port,
+      });
+      currentWindow.openDevTools();
+    });
+    ipcRenderer.send('check-port-available', port);
+  };
+
+  renderPortSetting() {
+    return (
+      <div style={styles.wrapBackground}>
+        <FormInput
+          title={'Type an another React Native packager port'}
+          button="Confirm"
+          inputProps={{
+            type: 'input',
+            value: 19001,
+          }}
+          onInputChange={value => Number(value.replace(/\D/g, '').substr(0, 5)) || ''}
+          onSubmit={this.handlePortOnSubmit}
+        />
+      </div>
+    );
+  }
+
   renderReduxDevTools(size) {
     return (
       <Dock
@@ -150,7 +196,6 @@ export default class App extends Component {
       </Dock>
     );
   }
-
   renderReactInspector(size) {
     const wrapStyle = {
       ...styles.wrapReactPanel,
@@ -166,6 +211,10 @@ export default class App extends Component {
   }
 
   render() {
+    const { isPortSettingRequired } = this.props.debugger;
+    if (isPortSettingRequired) {
+      return this.renderPortSetting();
+    }
     const { redux, react } = this.getDevToolsSize();
     return (
       <div>
