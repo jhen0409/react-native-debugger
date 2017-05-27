@@ -35,6 +35,10 @@ export default class ReactInspector extends Component {
     debugger: PropTypes.object,
   };
 
+  static setDefaultThemeName(themeName) {
+    ReactServer.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
+  }
+
   componentDidMount() {
     const { worker } = this.props.debugger;
     if (worker) {

@@ -20,7 +20,6 @@ const styles = {
     width: '100%',
     left: 0,
     bottom: 0,
-    backgroundColor: 'white',
   },
   wrapBackground: {
     display: 'flex',
@@ -86,20 +85,39 @@ export default class App extends Component {
     ipcRenderer.on('set-debugger-loc', (e, payload) => {
       setDebuggerLocation(JSON.parse(payload));
     });
-    window.onbeforeunload = this.removeAllListeners;
-
     if (!this.props.debugger.isPortSettingRequired) {
       setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
+    }
+    window.onbeforeunload = this.removeAllListeners;
+    window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.setting.themeName !== nextProps.setting.themeName) {
+      ReactInspector.setDefaultThemeName(nextProps.setting.themeName);
     }
   }
 
   componentWillUnmount() {
     this.removeAllListeners();
+    window.notifyDevToolsThemeChange = null;
   }
 
   onReduxDockResize = size => {
     const { setting } = this.props.actions;
     setting.resizeDevTools(size);
+  };
+
+  getReactBackgroundColor = () => {
+    const { themeName } = this.props.setting;
+    switch (themeName) {
+      case 'dark':
+        return '#242424';
+      case 'default':
+        return 'white';
+      default:
+        return 'transparent';
+    }
   };
 
   getDevToolsSize() {
@@ -183,6 +201,7 @@ export default class App extends Component {
       ...styles.wrapReactPanel,
       height: `${size * 100}%`,
       display: size ? 'inline' : 'none',
+      backgroundColor: this.getReactBackgroundColor(),
     };
     return (
       <div style={wrapStyle}>
