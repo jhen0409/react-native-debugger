@@ -17,7 +17,6 @@ const styles = {
     width: '100%',
     left: 0,
     bottom: 0,
-    backgroundColor: 'white',
   },
   wrapBackground: {
     display: 'flex',
@@ -77,15 +76,35 @@ export default class App extends Component {
     setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
 
     window.onbeforeunload = this.removeAllListeners;
+    window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.setting.themeName !== nextProps.setting.themeName) {
+      ReactInspector.setDefaultThemeName(nextProps.setting.themeName);
+    }
   }
 
   componentWillUnmount() {
     this.removeAllListeners();
+    window.notifyDevToolsThemeChange = null;
   }
 
   onReduxDockResize = size => {
     const { setting } = this.props.actions;
     setting.resizeDevTools(size);
+  };
+
+  getReactBackgroundColor = () => {
+    const { themeName } = this.props.setting;
+    switch (themeName) {
+      case 'dark':
+        return '#242424';
+      case 'default':
+        return 'white';
+      default:
+        return 'transparent';
+    }
   };
 
   getDevToolsSize() {
@@ -104,7 +123,7 @@ export default class App extends Component {
     ipcRenderer.removeAllListeners('set-debugger-loc');
   }
 
-  background =
+  background = (
     <div style={styles.wrapBackground}>
       <div style={styles.text}>
         <kbd style={styles.shortcut}>{`${shortcutPrefix}K`}</kbd>
@@ -114,7 +133,8 @@ export default class App extends Component {
         <kbd style={styles.shortcut}>{`${shortcutPrefix}J`}</kbd>
         {' to toggle React DevTools'}
       </div>
-    </div>;
+    </div>
+  );
 
   renderReduxDevTools(size) {
     return (
@@ -136,6 +156,7 @@ export default class App extends Component {
       ...styles.wrapReactPanel,
       height: `${size * 100}%`,
       display: size ? 'inline' : 'none',
+      backgroundColor: this.getReactBackgroundColor(),
     };
     return (
       <div style={wrapStyle}>

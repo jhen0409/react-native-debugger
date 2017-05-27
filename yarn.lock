@@ -4701,9 +4701,9 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-devtools-core@^2.1.9:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.1.9.tgz#825e0582b7f8587cbf56bb5ef1ea94d8b158543e"
+react-devtools-core@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.2.1.tgz#3e9cfca76e08333226f365bcf870f77dfbd542cd"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
