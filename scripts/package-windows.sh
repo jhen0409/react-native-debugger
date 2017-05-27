@@ -9,7 +9,7 @@ electron-packager dist/ \
   --asar \
   --prune \
   --out release \
-  --electron-version $(npm info electron version) \
+  --electron-version $(node -e "console.log(require('electron/package').version)") \
   --app-version $npm_package_version \
   --icon electron/logo.ico
 

@@ -11,7 +11,7 @@ electron-packager dist/ \
   --out release \
   --protocol-name "React Native Debugger" \
   --protocol "rndebugger" \
-  --electron-version $(npm info electron version) \
+  --electron-version $(node -e "console.log(require('electron/package').version)") \
   --app-version $npm_package_version \
   --osx-sign='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
   --icon electron/logo.icns
