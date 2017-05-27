@@ -2,8 +2,8 @@ os:
   - linux
   - osx
 osx_image: xcode8.3
-env:
-  - NODE_VERSION="7"
+node_js:
+  - '7'
 cache:
   directories:
     - node_modules
