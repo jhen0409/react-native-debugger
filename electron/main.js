@@ -10,7 +10,6 @@ const defaultOptions = { iconPath };
 
 startListeningHandleURL(async (host, port) => {
   const wins = BrowserWindow.getAllWindows();
-  if (wins.length === 0) return null;
   for (const win of wins) {
     const { isWorkerRunning, isPortSettingRequired, location } = await checkWindowInfo(win);
     if ((!isWorkerRunning || location.port === port) && !isPortSettingRequired) {
