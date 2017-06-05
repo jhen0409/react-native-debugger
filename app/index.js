@@ -26,6 +26,14 @@ window.checkWindowInfo = () => {
   };
 };
 
+// For security, we should disable nodeIntegration when user use this open a website
+const originWindowOpen = window.open;
+window.open = (url, frameName, features = '') => {
+  const featureList = features.split(',');
+  featureList.push('nodeIntegration=0');
+  return originWindowOpen.call(window, url, frameName, featureList.join(','));
+};
+
 getPort().then(port => {
   window.reactDevToolsPort = port;
   render(
