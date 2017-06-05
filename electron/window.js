@@ -1,9 +1,9 @@
 import path from 'path';
 import { BrowserWindow } from 'electron';
-import Config from 'electron-config';
+import Store from 'electron-store';
 import autoUpdate from './update';
 
-const config = new Config();
+const store = new Store();
 
 export const checkWindowInfo = win =>
   new Promise(resolve =>
@@ -11,7 +11,7 @@ export const checkWindowInfo = win =>
   );
 
 export const createWindow = ({ iconPath, isPortSettingRequired }) => {
-  const winBounds = config.get('winBounds');
+  const winBounds = store.get('winBounds');
   const win = new BrowserWindow({
     width: 1024,
     height: 750,
@@ -40,6 +40,6 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
       autoUpdate(iconPath);
     }
   });
-  win.on('close', () => config.set('winBounds', win.getBounds()));
+  win.on('close', () => store.set('winBounds', win.getBounds()));
   return win;
 };

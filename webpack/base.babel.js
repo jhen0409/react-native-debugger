@@ -37,7 +37,7 @@ export default {
     'utf-8-validate',
     'bufferutil',
     // https://github.com/sindresorhus/conf/blob/master/index.js#L13
-    'electron-config',
+    'electron-store',
     'adbkit',
   ],
 };

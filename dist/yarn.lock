@@ -71,9 +71,9 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-electron-config@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/electron-config/-/electron-config-1.0.0.tgz#069d044cc794f04784ae72f12916725d3c8c39af"
+electron-store@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-1.1.0.tgz#3a06fbdc8c64ca14163dea054470f7561a7906aa"
   dependencies:
     conf "^1.0.0"
 
@@ -144,9 +144,9 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-react-devtools-core@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.2.1.tgz#3e9cfca76e08333226f365bcf870f77dfbd542cd"
+react-devtools-core@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.3.0.tgz#412b73bcb33cca758d82af2f1ba7178bce57b51d"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
