@@ -2,29 +2,21 @@ import { ipcRenderer, remote } from 'electron';
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Dock from 'react-dock';
 import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
 import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
 import FormInput from '../components/FormInput';
+import Draggable from '../components/Draggable';
 
 const currentWindow = remote.getCurrentWindow();
 
 const styles = {
-  wrapReactPanel: {
-    display: 'flex',
-    position: 'fixed',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: '100%',
-    left: 0,
-    bottom: 0,
+  container: {
+    height: '100%',
   },
   wrapBackground: {
     display: 'flex',
-    position: 'fixed',
-    width: '100%',
     height: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -36,13 +28,6 @@ const styles = {
   text: {
     textAlign: 'center',
     margin: '7px',
-  },
-  link: {
-    textAlign: 'center',
-    margin: '7px',
-    fontSize: '12px',
-    cursor: 'pointer',
-    color: '#aaa',
   },
   shortcut: {
     fontFamily: 'Monaco, monospace',
@@ -77,9 +62,7 @@ export default class App extends Component {
 
   componentDidMount() {
     const { toggleDevTools } = this.props.actions.setting;
-    ipcRenderer.on('toggle-devtools', (e, name) => {
-      toggleDevTools(name);
-    });
+    ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
 
     const { setDebuggerLocation } = this.props.actions.debugger;
     ipcRenderer.on('set-debugger-loc', (e, payload) => {
@@ -103,10 +86,7 @@ export default class App extends Component {
     window.notifyDevToolsThemeChange = null;
   }
 
-  onReduxDockResize = size => {
-    const { setting } = this.props.actions;
-    setting.resizeDevTools(size);
-  };
+  onResize = (x, y) => this.props.actions.setting.resizeDevTools(y / window.innerHeight);
 
   getReactBackgroundColor = () => {
     const { themeName } = this.props.setting;
@@ -119,6 +99,13 @@ export default class App extends Component {
         return 'transparent';
     }
   };
+
+  getLayoutStyle = size => ({
+    width: '100%',
+    height: `${size * 100}%`,
+    display: size ? 'inline-block' : 'none',
+    backgroundColor: this.getReactBackgroundColor(),
+  });
 
   getDevToolsSize() {
     const { redux, react, size } = this.props.setting;
@@ -184,27 +171,16 @@ export default class App extends Component {
 
   renderReduxDevTools(size) {
     return (
-      <Dock
-        isVisible
-        zIndex={500}
-        position="top"
-        size={size}
-        dimMode="none"
-        onSizeChange={this.onReduxDockResize}
-      >
+      <div style={this.getLayoutStyle(size)}>
         <ReduxDevTools />
-      </Dock>
+        <Draggable onMove={this.onResize} />
+      </div>
     );
   }
+
   renderReactInspector(size) {
-    const wrapStyle = {
-      ...styles.wrapReactPanel,
-      height: `${size * 100}%`,
-      display: size ? 'inline' : 'none',
-      backgroundColor: this.getReactBackgroundColor(),
-    };
     return (
-      <div style={wrapStyle}>
+      <div style={this.getLayoutStyle(size)}>
         <ReactInspector />
       </div>
     );
@@ -217,7 +193,7 @@ export default class App extends Component {
     }
     const { redux, react } = this.getDevToolsSize();
     return (
-      <div>
+      <div style={styles.container}>
         {this.renderReduxDevTools(redux)}
         {this.renderReactInspector(react)}
         {!react && !redux && this.background}

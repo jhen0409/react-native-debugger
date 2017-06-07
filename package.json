@@ -69,7 +69,6 @@
     "node-watch": "^0.5.1",
     "react": "^15.4.0",
     "react-devtools-core": "^2.3.0",
-    "react-dock": "^0.2.3",
     "react-dom": "^15.4.0",
     "react-redux": "^5.0.2",
     "redux": "^3.5.2",
