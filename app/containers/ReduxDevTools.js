@@ -1,6 +1,7 @@
 import 'remotedev-monitor-components/lib/presets';
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -50,7 +51,7 @@ const sliderStyle = {
   dispatch => ({
     liftedDispatch: bindActionCreators(liftedDispatchAction, dispatch),
     dispatch,
-  }),
+  })
 )
 export default class ReduxDevTools extends Component {
   static propTypes = {
@@ -68,17 +69,18 @@ export default class ReduxDevTools extends Component {
 
   render() {
     const {
-      selected, monitor,
-      dispatcherIsOpen, sliderIsOpen,
-      liftedState, liftedDispatch, monitorState,
+      selected,
+      monitor,
+      dispatcherIsOpen,
+      sliderIsOpen,
+      liftedState,
+      liftedDispatch,
+      monitorState,
       options,
     } = this.props;
     const isRedux = options.lib === 'redux';
     return (
-      <div
-        className="redux-container"
-        style={styles.container}
-      >
+      <div className="redux-container" style={styles.container}>
         <div style={styles.buttonBar}>
           <MonitorSelector selected={monitor} />
           <Instances selected={selected} />
@@ -91,8 +93,8 @@ export default class ReduxDevTools extends Component {
           lib={options.lib}
         />
         <Notification />
-        {
-          sliderIsOpen && options.connectionId &&
+        {sliderIsOpen &&
+          options.connectionId &&
           <SliderMonitor
             monitor="SliderMonitor"
             liftedState={liftedState}
@@ -100,21 +102,11 @@ export default class ReduxDevTools extends Component {
             showActions={monitor === 'ChartMonitor'}
             style={sliderStyle}
             fillColor="rgb(120, 144, 156)"
-          />
-        }
-        {dispatcherIsOpen && options.connectionId &&
-          <Dispatcher options={options} />
-        }
-        <div
-          className="redux-buttonbar"
-          style={styles.buttonBar}
-        >
-          {isRedux &&
-            <RecordButton paused={liftedState.isPaused} />
-          }
-          {isRedux &&
-            <LockButton locked={liftedState.isLocked} />
-          }
+          />}
+        {dispatcherIsOpen && options.connectionId && <Dispatcher options={options} />}
+        <div className="redux-buttonbar" style={styles.buttonBar}>
+          {isRedux && <RecordButton paused={liftedState.isPaused} />}
+          {isRedux && <LockButton locked={liftedState.isLocked} />}
           <DispatcherButton dispatcherIsOpen={dispatcherIsOpen} />
           <SliderButton isOpen={sliderIsOpen} />
           <ImportButton />

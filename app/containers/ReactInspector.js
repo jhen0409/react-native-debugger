@@ -1,7 +1,8 @@
 /* eslint import/no-extraneous-dependencies: 0 import/no-unresolved: 0 */
 
 import { connect } from 'react-redux';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactServer from 'react-devtools-core/standalone';
 import { tryADBReverse } from '../utils/adb';
 

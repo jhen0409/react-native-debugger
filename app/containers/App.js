@@ -1,5 +1,6 @@
 import { ipcRenderer, remote } from 'electron';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as debuggerActions from '../actions/debugger';
