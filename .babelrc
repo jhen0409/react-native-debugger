@@ -10,8 +10,12 @@
   ],
   "env": {
     "production": {
-      "presets": ["react-optimize"],
-      "plugins": ["closure-elimination"]
+      "plugins": [
+        "transform-react-inline-elements",
+        "transform-react-remove-prop-types",
+        "transform-react-constant-elements",
+        "closure-elimination"
+      ]
     }
   }
 }

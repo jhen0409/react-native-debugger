@@ -51,8 +51,8 @@ commander@^2.3.0:
     graceful-readlink ">= 1.0.0"
 
 conf@^1.0.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/conf/-/conf-1.1.1.tgz#238d0a3090ac4916ed2d40c7e81d7a11667bc7ba"
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/conf/-/conf-1.1.2.tgz#a164003022dd1643cd5abd9653071bd3b0a19f50"
   dependencies:
     dot-prop "^4.1.0"
     env-paths "^1.0.0"
@@ -145,8 +145,8 @@ pkg-up@^2.0.0:
     find-up "^2.1.0"
 
 react-devtools-core@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.3.0.tgz#412b73bcb33cca758d82af2f1ba7178bce57b51d"
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.3.1.tgz#dc83aba85735effe5e1dc386a1614cb5e8d0047d"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
