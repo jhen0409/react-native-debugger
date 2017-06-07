@@ -1,11 +1,9 @@
-** Please ensure:
+<!-- Before submitting the issue, please ensure you're using the latest version of react-native-debugger, and you have read the documentation. -->
 
-- [ ] I'm using the latest version of react-native-debugger
-- [ ] I have read [README.md](https://github.com/jhen0409/react-native-debugger/blob/master/README.md)
+<!-- Please provide the following information if you found some bugs or have question, you can removed it if you just want to submit a feature request: -->
 
-** Please provide the following information if you found some bugs or have question:
-
+React Native Debugger version: [FILL THIS OUT]
 React Native version: [FILL THIS OUT]
 Platform: [FILL THIS OUT: iOS, Android, ...]
 Is real device of platform: [Yes or No]
-Operating System: [FILL THIS OUT: macOS, Linux, or Windows?]
+Operating System: [FILL THIS OUT: macOS, Linux, Windows]
