@@ -13,6 +13,6 @@
   "dependencies": {
     "adbkit": "^2.9.2",
     "electron-store": "^1.1.0",
-    "react-devtools-core": "^2.3.0"
+    "react-devtools-core": "^2.3.3"
   }
 }

@@ -86,17 +86,18 @@ export default class ReactInspector extends Component {
   };
 
   startServer(port = this.listeningPort) {
-    return ReactServer.setStatusListener(status => {
-      if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
-        console.warn(
-          '[RNDebugger]',
-          'Failed to start React DevTools server with port `8097`,',
-          'because another instance of DevTools is listening,',
-          'we recommended to upgrade React Native version to 0.39 or more for random port support.'
-        );
-        this.loggedWarn = true;
-      }
-    })
+    return ReactServer.setBrowserName('RNDebugger DevTools')
+      .setStatusListener(status => {
+        if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
+          console.warn(
+            '[RNDebugger]',
+            'Failed to start React DevTools server with port `8097`,',
+            'because another instance of DevTools is listening,',
+            'we recommended to upgrade React Native version to 0.39+ for random port support.'
+          );
+          this.loggedWarn = true;
+        }
+      })
       .setContentDOMNode(document.getElementById(containerId))
       .startServer(port);
   }
