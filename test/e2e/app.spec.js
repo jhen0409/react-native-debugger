@@ -50,6 +50,9 @@ describe('Application launch', function spec() {
     await delay(2000);
     const title = await browserWindow.getTitle();
     expect(title).toBe('React Native Debugger - Attempting reconnection (port 8081)');
+
+    // Avoid RND clear logs
+    await this.app.webContents.executeJavaScript('console.clear = noop => noop');
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
