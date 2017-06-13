@@ -1,7 +1,7 @@
 npm-package/lib/
 *.tmpl.js
+*.bundle.js
 dist/
 release/
 node_modules/
-test/e2e/fixture/
 app/react-devtools

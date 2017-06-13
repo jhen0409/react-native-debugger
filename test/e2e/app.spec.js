@@ -12,6 +12,8 @@ describe('Application launch', function spec() {
   this.timeout(6e4);
 
   before(async () => {
+    // Build a bundle for simulate RNDebugger worker run react-native bundle,
+    // it included redux, mobx, remotedev tests
     await new Promise(resolve =>
       webpack({
         entry: './test/e2e/fixture/app',

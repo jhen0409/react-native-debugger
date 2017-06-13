@@ -1,5 +1,6 @@
-const { createStore } = require('redux');
-const connectViaExtension = window.__REMOTEDEV__.connect;
+import { createStore } from 'redux';
+
+const connectViaExtension = window.devToolsExtension.connect;
 
 const logReducer = reducer => {
   const remotedev = connectViaExtension({
@@ -12,13 +13,10 @@ const logReducer = reducer => {
   };
 };
 
-const logRemotely = next =>
-  (reducer, initialState) =>
-    next(logReducer(reducer), initialState);
+const logRemotely = next => (reducer, initialState) => next(logReducer(reducer), initialState);
 
-const store = logRemotely(createStore)(
-  state => state,
-  { value: 0 }
-);
+export default function run() {
+  const store = logRemotely(createStore)(state => state, { value: 0 });
 
-store.dispatch({ type: 'TEST_PASS_FOR_REMOTEDEV_STORE_1' });
+  store.dispatch({ type: 'TEST_PASS_FOR_REMOTEDEV_STORE_1' });
+}
