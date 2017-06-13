@@ -65,12 +65,11 @@ export default class App extends Component {
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
 
-    const { setDebuggerLocation } = this.props.actions.debugger;
-    ipcRenderer.on('set-debugger-loc', (e, payload) => {
-      setDebuggerLocation(JSON.parse(payload));
-    });
+    ipcRenderer.on('set-debugger-loc', (e, payload) =>
+      this.setDebuggerLocation(JSON.parse(payload))
+    );
     if (!this.props.debugger.isPortSettingRequired) {
-      setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
+      this.setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
     }
     window.onbeforeunload = this.removeAllListeners;
     window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
@@ -88,6 +87,13 @@ export default class App extends Component {
   }
 
   onResize = (x, y) => this.props.actions.setting.resizeDevTools(y / window.innerHeight);
+
+  setDebuggerLocation({ projectRoots, ...location }) {
+    this.props.actions.debugger.setDebuggerLocation(location);
+    if (projectRoots) {
+      ReactInspector.setProjectRoots(projectRoots);
+    }
+  }
 
   getReactBackgroundColor = () => {
     const { themeName } = this.props.setting;

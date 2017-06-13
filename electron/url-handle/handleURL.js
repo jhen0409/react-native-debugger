@@ -2,17 +2,27 @@ import { app } from 'electron';
 import net from 'net';
 import url from 'url';
 import qs from 'querystring';
+import fs from 'fs';
 import * as portfile from './port';
+
+const filterPaths = list => {
+  const filteredList = list.filter(dir => fs.lstatSync(dir).isDirectory());
+  if (!filteredList.length) {
+    return;
+  }
+  return filteredList;
+};
 
 const handleURL = async (getWindow, path) => {
   const route = url.parse(path);
 
   if (route.host !== 'set-debugger-loc') return;
 
-  const { host, port } = qs.parse(route.query);
+  const { host, port, projectRoots } = qs.parse(route.query);
   const query = {
     host: host || 'localhost',
     port: Number(port) || 8081,
+    projectRoots: filterPaths((projectRoots || '').split(',')),
   };
   const payload = JSON.stringify(query);
   process.env.DEBUGGER_SETTING = payload;

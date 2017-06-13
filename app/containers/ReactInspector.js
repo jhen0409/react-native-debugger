@@ -40,6 +40,10 @@ export default class ReactInspector extends Component {
     ReactServer.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
   }
 
+  static setProjectRoots(projectRoots) {
+    ReactServer.setProjectRoots(projectRoots);
+  }
+
   componentDidMount() {
     const { worker } = this.props.debugger;
     if (worker) {
