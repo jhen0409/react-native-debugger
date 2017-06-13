@@ -6,7 +6,13 @@ import fs from 'fs';
 import * as portfile from './port';
 
 const filterPaths = list => {
-  const filteredList = list.filter(dir => fs.lstatSync(dir).isDirectory());
+  const filteredList = list.filter(dir => {
+    try {
+      return fs.lstatSync(dir).isDirectory();
+    } catch (e) {
+      return false;
+    }
+  });
   if (!filteredList.length) {
     return;
   }
@@ -22,11 +28,14 @@ const handleURL = async (getWindow, path) => {
   const query = {
     host: host || 'localhost',
     port: Number(port) || 8081,
-    projectRoots: filterPaths((projectRoots || '').split(',')),
+    projectRoots: Array.isArray(projectRoots) ? filterPaths(projectRoots.split(',')) : undefined,
   };
   const payload = JSON.stringify(query);
+
+  // This env will be get by new debugger window
   process.env.DEBUGGER_SETTING = payload;
   const win = await getWindow(query.host, query.port);
+  // if we can get the exists window, it will send the IPC event
   if (win) {
     win.webContents.send('set-debugger-loc', payload);
   }
