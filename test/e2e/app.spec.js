@@ -18,6 +18,9 @@ describe('Application launch', function spec() {
         output: {
           filename: './test/e2e/fixture/app.bundle.js',
         },
+        resolve: {
+          mainFields: ['main', 'browser'],
+        },
       }).run(resolve)
     );
     this.app = new Application({
