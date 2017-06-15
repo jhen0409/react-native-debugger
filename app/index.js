@@ -34,6 +34,17 @@ window.open = (url, frameName, features = '') => {
   return originWindowOpen.call(window, url, frameName, featureList.join(','));
 };
 
+// Package will missing /usr/local/bin,
+// we need fix it for ensure child process work
+// (like launchEditor of react-devtools)
+if (
+  process.env.NODE_ENV === 'production' &&
+  process.platform === 'darwin' &&
+  process.env.PATH.indexOf('/usr/local/bin') === -1
+) {
+  process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
+}
+
 getPort().then(port => {
   window.reactDevToolsPort = port;
   render(
