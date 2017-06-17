@@ -13,6 +13,7 @@
 /* eslint-disable no-underscore-dangle */
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
+import { waitingUntilWindowRequireAvailable } from './utils';
 
 // WebWorker not have `global`
 self.global = self;
@@ -52,8 +53,17 @@ const messageHandlers = {
       self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
     }
 
-    checkAvailableDevMenuMethods(message.networkInspect);
-    reportDefaultReactDevToolsPort();
+    waitingUntilWindowRequireAvailable().then(available => {
+      if (!available) {
+        console.warn(
+          '[RNDebugger] `window` or `window.require` is not found on',
+          'current React Native environment.'
+        );
+        return;
+      }
+      checkAvailableDevMenuMethods(message.networkInspect);
+      reportDefaultReactDevToolsPort();
+    });
   },
 };
 
