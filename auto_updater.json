@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.0/rn-debugger-macos-x64.zip",
-  "name": "v0.7.0",
-  "notes": "1. Update react-devtools-core to v2.2.1, and change React Inspector default theme by detecting devtools theme\n2. Update electron to v1.7 (Chrome 56 -> 58)\n3. Add multiple debugger window support\n4. Add loading message on app startup"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.1/rn-debugger-macos-x64.zip",
+  "name": "v0.7.1",
+  "notes": "1. Fix rndebugger-open can't automatically open window if app is running and no opened window\n2. Fix launchEditor of react-devtools doesn't work\n3. Upgrade react-devtools-core to v2.3.3"
 }
