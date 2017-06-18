@@ -14,8 +14,9 @@ fi
 node --version
 npm --version
 
-npm install
-cd npm-package && npm install && cd ..
-npm run lint
-npm run build
-npm test
+yarn
+cd npm-package && yarn && cd ..
+cd dist && yarn && cd ..
+yarn lint
+yarn build
+yarn test
