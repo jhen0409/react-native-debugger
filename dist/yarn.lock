@@ -13,8 +13,8 @@ adbkit-monkey@~1.0.1:
     async "~0.2.9"
 
 adbkit@^2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.9.2.tgz#22c29fef9e40d041f1c22b014d599c0a9f83106c"
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.10.0.tgz#ba2d46c290fc70e70b2422164268f82306303570"
   dependencies:
     adbkit-logcat "^1.1.0"
     adbkit-monkey "~1.0.1"

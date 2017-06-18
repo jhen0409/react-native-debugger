@@ -59,9 +59,9 @@ adbkit-monkey@~1.0.1:
   dependencies:
     async "~0.2.9"
 
-adbkit@^2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.9.2.tgz#22c29fef9e40d041f1c22b014d599c0a9f83106c"
+adbkit@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.10.0.tgz#ba2d46c290fc70e70b2422164268f82306303570"
   dependencies:
     adbkit-logcat "^1.1.0"
     adbkit-monkey "~1.0.1"
@@ -322,7 +322,7 @@ babel-code-frame@^6.16.0, babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@^6.24.1, babel-core@^6.9.0:
+babel-core@^6.24.1, babel-core@^6.25.0:
   version "6.25.0"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.25.0.tgz#7dd42b0463c742e9d5296deb3ec67a9322dad729"
   dependencies:
@@ -346,7 +346,7 @@ babel-core@^6.24.1, babel-core@^6.9.0:
     slash "^1.0.0"
     source-map "^0.5.0"
 
-babel-eslint@^7.1.0:
+babel-eslint@^7.2.3:
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-7.2.3.tgz#b2fe2d80126470f5c19442dc757253a897710827"
   dependencies:
@@ -525,7 +525,7 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-closure-elimination@^1.1.11:
+babel-plugin-closure-elimination@^1.1.16:
   version "1.1.16"
   resolved "https://registry.yarnpkg.com/babel-plugin-closure-elimination/-/babel-plugin-closure-elimination-1.1.16.tgz#e9cf755a7209f8c434eb2a784a2055b2bff35ac9"
   dependencies:
@@ -635,7 +635,7 @@ babel-plugin-transform-async-to-generator@^6.22.0:
     babel-plugin-syntax-async-functions "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-class-properties@^6.23.0:
+babel-plugin-transform-class-properties@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-class-properties/-/babel-plugin-transform-class-properties-6.24.1.tgz#6a79763ea61d33d36f37b611aa9def81a81b46ac"
   dependencies:
@@ -902,7 +902,7 @@ babel-plugin-transform-react-jsx@^6.24.1:
     babel-plugin-syntax-jsx "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-react-remove-prop-types@^0.4.5:
+babel-plugin-transform-react-remove-prop-types@^0.4.6:
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-remove-prop-types/-/babel-plugin-transform-react-remove-prop-types-0.4.6.tgz#c3d20ff4e97fb08fa63e86a97b2daab6ad365a19"
   dependencies:
@@ -987,7 +987,7 @@ babel-preset-babili@^0.1.1:
     babel-plugin-transform-undefined-to-void "^6.8.2"
     lodash.isplainobject "^4.0.6"
 
-babel-preset-env@^1.2.1:
+babel-preset-env@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.5.2.tgz#cd4ae90a6e94b709f97374b33e5f8b983556adef"
   dependencies:
@@ -1028,7 +1028,7 @@ babel-preset-flow@^6.23.0:
   dependencies:
     babel-plugin-transform-flow-strip-types "^6.22.0"
 
-babel-preset-react@^6.5.0:
+babel-preset-react@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-preset-react/-/babel-preset-react-6.24.1.tgz#ba69dfaea45fc3ec639b6a4ecea6e17702c91380"
   dependencies:
@@ -1648,15 +1648,15 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.1, create-react-class@^15.5.3:
-  version "15.5.4"
-  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.5.4.tgz#188875cb15e2fbe4ca595b6f43eb0e4a1f00fe50"
+create-react-class@^15.5.1, create-react-class@^15.5.3, create-react-class@^15.6.0:
+  version "15.6.0"
+  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.0.tgz#ab448497c26566e1e29413e883207d57cfe7bed4"
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-cross-env@^5.0.0:
+cross-env@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.0.1.tgz#ff4e72ea43b47da2486b43a7f2043b2609e44913"
   dependencies:
@@ -1919,7 +1919,7 @@ dev-null@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dev-null/-/dev-null-0.1.1.tgz#5a205ce3c2b2ef77b6238d6ba179eb74c6a0e818"
 
-devtron@^1.2.0:
+devtron@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/devtron/-/devtron-1.4.0.tgz#b5e748bd6e95bbe70bfcc68aae6fe696119441e1"
   dependencies:
@@ -1994,28 +1994,28 @@ ejs@~2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.6.tgz#479636bfa3fe3b1debd52087f0acb204b4f19c88"
 
-electron-chromedriver@~1.7.0:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/electron-chromedriver/-/electron-chromedriver-1.7.1.tgz#008c97976007aa4eb18491ee095e94d17ee47610"
+electron-chromedriver@~1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/electron-chromedriver/-/electron-chromedriver-1.6.0.tgz#6eabdaa5cf9c75e43501e2593b528e8cfd97d7c7"
   dependencies:
-    electron-download "^4.1.0"
-    extract-zip "^1.6.5"
+    electron-download "^3.1.0"
+    extract-zip "^1.6.0"
 
-electron-context-menu@^0.9.0:
+electron-context-menu@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.9.1.tgz#ed4df20c080491c3c996abfcb363159946a38058"
   dependencies:
     electron-dl "^1.2.0"
     electron-is-dev "^0.1.1"
 
-electron-debug@^1.0.0:
+electron-debug@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-1.1.0.tgz#050a9c3f906fffc2492510cf8ac31d0f32a579e1"
   dependencies:
     electron-is-dev "^0.1.0"
     electron-localshortcut "^0.6.0"
 
-electron-devtools-installer@^2.1.0:
+electron-devtools-installer@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-2.2.0.tgz#9813e6811afcd69ddca3cae5416db72ea7ecfb6a"
   dependencies:
@@ -2031,7 +2031,7 @@ electron-dl@^1.2.0:
     pupa "^1.0.0"
     unused-filename "^0.1.0"
 
-electron-download@^3.0.1:
+electron-download@^3.0.1, electron-download@^3.1.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/electron-download/-/electron-download-3.3.0.tgz#2cfd54d6966c019c4d49ad65fbe65cc9cdef68c8"
   dependencies:
@@ -2045,7 +2045,7 @@ electron-download@^3.0.1:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
-electron-download@^4.0.0, electron-download@^4.1.0:
+electron-download@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/electron-download/-/electron-download-4.1.0.tgz#bf932c746f2f87ffcc09d1dd472f2ff6b9187845"
   dependencies:
@@ -2086,7 +2086,7 @@ electron-osx-sign@^0.4.1:
     plist "^2.0.1"
     tempfile "^1.1.1"
 
-electron-packager@^8.2.0:
+electron-packager@^8.7.1:
   version "8.7.1"
   resolved "https://registry.yarnpkg.com/electron-packager/-/electron-packager-8.7.1.tgz#22607a44116cb4c1bce72246783990cae4fcf903"
   dependencies:
@@ -2115,7 +2115,7 @@ electron-to-chromium@^1.3.11:
   version "1.3.14"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.14.tgz#64af0f9efd3c3c6acd57d71f83b49ca7ee9c4b43"
 
-electron@^1.7.1:
+electron@^1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.3.tgz#839cab0a0598835a100dceede215988ba99c325b"
   dependencies:
@@ -2532,7 +2532,7 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extract-zip@^1.0.3, extract-zip@^1.6.5:
+extract-zip@^1.0.3, extract-zip@^1.6.0:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-1.6.5.tgz#99a06735b6ea20ea9b705d779acffcc87cff0440"
   dependencies:
@@ -3970,7 +3970,7 @@ mksnapshot@^0.3.0:
     fs-extra "0.26.7"
     request "^2.79.0"
 
-mobx-remotedev@^0.2.5:
+mobx-remotedev@^0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/mobx-remotedev/-/mobx-remotedev-0.2.7.tgz#aad8757ae9bd8293ba6fb871512d23f29b35c1c2"
   dependencies:
@@ -3978,11 +3978,11 @@ mobx-remotedev@^0.2.5:
     remotedev "^0.2.7"
     remotedev-utils "^0.1.4"
 
-mobx@^3.1.7:
+mobx@^3.1.15:
   version "3.1.15"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.1.15.tgz#b2c8831725de2f6f1b8d136e589b674b5b75c35d"
 
-mocha@^3.0.1:
+mocha@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-3.4.2.tgz#d0ef4d332126dbf18d0d640c9b382dd48be97594"
   dependencies:
@@ -4109,7 +4109,7 @@ node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
 
-node-watch@^0.5.1:
+node-watch@^0.5.4:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/node-watch/-/node-watch-0.5.4.tgz#bdad41b23d23444e895c797d73ad5d49e3833309"
 
@@ -4528,7 +4528,7 @@ prop-types@15.5.8:
   dependencies:
     fbjs "^0.8.9"
 
-prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@~15.5.7:
+prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -4690,14 +4690,14 @@ react-devtools-core@^2.3.3:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-dom@^15.4.0:
-  version "15.5.4"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.5.4.tgz#ba0c28786fd52ed7e4f2135fe0288d462aef93da"
+react-dom@^15.6.1:
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
-    prop-types "~15.5.7"
+    prop-types "^15.5.10"
 
 react-dragula@^1.1.17:
   version "1.1.17"
@@ -4759,7 +4759,7 @@ react-redux@^4.0.6:
     loose-envify "^1.1.0"
     prop-types "^15.5.4"
 
-react-redux@^5.0.2:
+react-redux@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.5.tgz#f8e8c7b239422576e52d6b7db06439469be9846a"
   dependencies:
@@ -4781,14 +4781,15 @@ react-tap-event-plugin@^2.0.1:
   dependencies:
     fbjs "^0.8.6"
 
-react@^15.1.0, react@^15.4.0:
-  version "15.5.4"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.5.4.tgz#fa83eb01506ab237cdc1c8c3b1cea8de012bf047"
+react@^15.1.0, react@^15.6.1:
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:
+    create-react-class "^15.6.0"
     fbjs "^0.8.9"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
-    prop-types "^15.5.7"
+    prop-types "^15.5.10"
 
 read-all-stream@^3.0.0:
   version "3.1.0"
@@ -4903,7 +4904,7 @@ redux-devtools-chart-monitor@^1.6.1:
     react-pure-render "^1.0.2"
     redux-devtools-themes "^1.0.0"
 
-redux-devtools-instrument@^1.0.1:
+redux-devtools-instrument@^1.0.1, redux-devtools-instrument@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.8.2.tgz#5e91cfe402e790dae3fd2f0d235f7b7d84b09ffe"
   dependencies:
@@ -4946,7 +4947,7 @@ redux-devtools@^3.0.0:
     prop-types "^15.5.7"
     redux-devtools-instrument "^1.0.1"
 
-redux-persist@^4.3.1:
+redux-persist@^4.8.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-4.8.0.tgz#17fd998949bdeef9275e4cf60ad5bbe1c73675fc"
   dependencies:
@@ -5011,7 +5012,7 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.7:
+remotedev-app@^0.10.8:
   version "0.10.8"
   resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.8.tgz#7cca9be39674993b81dd400fc094ff85c361c64e"
   dependencies:
@@ -5058,16 +5059,16 @@ remotedev-inspector-monitor@^0.10.2:
     react-pure-render "^1.0.2"
     redux-devtools-themes "^1.0.0"
 
-remotedev-monitor-components@0.0.5, remotedev-monitor-components@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.5.tgz#3a8142a0795f4893d665e42e1d4825fe7536104d"
+remotedev-monitor-components@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.2.tgz#96c1e14f7b7fd25d8fc0fd954e2311d00cbb7b56"
   dependencies:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
 
-remotedev-monitor-components@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.2.tgz#96c1e14f7b7fd25d8fc0fd954e2311d00cbb7b56"
+remotedev-monitor-components@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/remotedev-monitor-components/-/remotedev-monitor-components-0.0.5.tgz#3a8142a0795f4893d665e42e1d4825fe7536104d"
   dependencies:
     codemirror "^5.21.0"
     styled-components "^1.1.1"
@@ -5078,7 +5079,7 @@ remotedev-serialize@^0.1.0:
   dependencies:
     jsan "^3.1.0"
 
-remotedev-slider@1.1.3, remotedev-slider@^1.1.1:
+remotedev-slider@1.1.3, remotedev-slider@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/remotedev-slider/-/remotedev-slider-1.1.3.tgz#3ecb14ad9afb8ac5b7b7a0b86825a3a08ba19d46"
   dependencies:
@@ -5541,12 +5542,12 @@ spdy@^3.4.1:
     select-hose "^2.0.0"
     spdy-transport "^2.0.18"
 
-spectron@^3.2.4:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/spectron/-/spectron-3.7.1.tgz#818f68584732187d757da1d7a352adfc89ba136b"
+spectron@^3.6.4:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/spectron/-/spectron-3.6.4.tgz#56f42ab5c48154791d8db2f3b531b258e7205aa0"
   dependencies:
     dev-null "^0.1.1"
-    electron-chromedriver "~1.7.0"
+    electron-chromedriver "~1.6.0"
     request "^2.65.0"
     split "^1.0.0"
     webdriverio "^4.0.4"
@@ -5667,7 +5668,7 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-style-loader@^0.18.1:
+style-loader@^0.18.2:
   version "0.18.2"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.18.2.tgz#cc31459afbcd6d80b7220ee54b291a9fd66ff5eb"
   dependencies:
@@ -6110,7 +6111,7 @@ webpack-dev-middleware@^1.10.2:
     path-is-absolute "^1.0.0"
     range-parser "^1.0.3"
 
-webpack-dev-server@^2.4.1:
+webpack-dev-server@^2.4.5:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.4.5.tgz#31384ce81136be1080b4b4cde0eb9b90e54ee6cf"
   dependencies:
@@ -6139,7 +6140,7 @@ webpack-sources@^0.2.3:
     source-list-map "^1.1.1"
     source-map "~0.5.3"
 
-webpack@^2.2.1:
+webpack@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.6.1.tgz#2e0457f0abb1ac5df3ab106c69c672f236785f07"
   dependencies:
