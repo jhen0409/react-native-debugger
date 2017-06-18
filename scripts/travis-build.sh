@@ -5,6 +5,9 @@ source /tmp/.nvm/nvm.sh
 nvm install "$NODE_VERSION"
 nvm use --delete-prefix "$NODE_VERSION"
 
+# osx_image target haven't built-in yarn
+npm install -g yarn
+
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   export DISPLAY=:99.0
   sh -e /etc/init.d/xvfb start
@@ -14,8 +17,9 @@ fi
 node --version
 npm --version
 
-npm install
-cd npm-package && npm install && cd ..
-npm run lint
-npm run build
-npm test
+yarn
+cd npm-package && yarn && cd ..
+cd dist && yarn && cd ..
+yarn lint
+yarn build
+yarn test
