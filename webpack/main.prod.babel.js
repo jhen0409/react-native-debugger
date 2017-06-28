@@ -22,6 +22,7 @@ export default {
         comments: false,
       }
     ),
+    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   target: 'electron-main',
   node: {

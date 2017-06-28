@@ -30,6 +30,7 @@ const baseProdConfig = {
         comments: false,
       }
     ),
+    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
 };
 
