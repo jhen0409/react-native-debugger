@@ -1,5 +1,5 @@
 import path from 'path';
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, Menu } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 
@@ -9,6 +9,21 @@ export const checkWindowInfo = win =>
   new Promise(resolve =>
     win.webContents.executeJavaScript('window.checkWindowInfo()', result => resolve(result))
   );
+
+const changeMenuItems = menus => {
+  const rootMenuItems = Menu.getApplicationMenu().items;
+  Object.entries(menus).forEach(([key, subMenu]) => {
+    const rootMenuItem = rootMenuItems.find(item => item.label === key);
+    if (!rootMenuItem || !rootMenuItem.submenu) return;
+
+    Object.entries(subMenu).forEach(([subKey, menuSet]) => {
+      const menuItem = rootMenuItem.submenu.items.find(item => item.label === subKey);
+      if (!menuItem) return;
+
+      Object.assign(menuItem, menuSet);
+    });
+  });
+};
 
 export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   const winBounds = store.get('winBounds');
@@ -40,6 +55,15 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
       autoUpdate(iconPath);
     }
   });
+  win.on('focus', () =>
+    changeMenuItems({
+      Debugger: {
+        'Stay in Front': {
+          checked: win.isAlwaysOnTop(),
+        },
+      },
+    })
+  );
   win.on('close', () => store.set('winBounds', win.getBounds()));
   return win;
 };
