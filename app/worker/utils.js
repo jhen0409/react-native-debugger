@@ -20,18 +20,3 @@ export const avoidWarnForRequire = (...moduleNames) => {
     })
   );
 };
-
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
-const isWindowRequireAvailable = () => typeof window !== 'undefined' && window.require;
-
-export const waitingUntilWindowRequireAvailable = async () => {
-  if (isWindowRequireAvailable()) return true;
-
-  let attempts = 10;
-  while (attempts > 0) {
-    await delay(100);
-    if (isWindowRequireAvailable()) return true;
-    attempts--;
-  }
-  return false;
-};

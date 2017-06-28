@@ -10,17 +10,16 @@
 
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debuggerWorker.js
 
-/* eslint-disable no-underscore-dangle */
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
-import { waitingUntilWindowRequireAvailable } from './utils';
 
-// WebWorker not have `global`
+// Add the missing `global` for WebWorker
 self.global = self;
 
-// redux store enhancer
+// Redux store enhancer
 const devTools = require('./reduxAPI');
 
+/* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = require('./remotedev');
 
 devTools.default.send = self.__REMOTEDEV__.send;
@@ -32,6 +31,16 @@ self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
 self.devToolsExtension = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default;
 self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
+
+const setupRNDebugger = message => {
+  // We need to regularly update JS runtime
+  // because the changes of worker message (Redux DevTools, DevMenu)
+  // doesn't notify to the remote JS runtime
+  self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
+
+  checkAvailableDevMenuMethods(message.networkInspect);
+  reportDefaultReactDevToolsPort();
+};
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
@@ -47,23 +56,9 @@ const messageHandlers = {
       error = JSON.stringify(err);
     }
     sendReply(null /* result */, error);
-    // Because the worker message not have notify the remote JS runtime (for Electron?)
-    // we need to regularly update JS runtime
-    if (!self.__RND_INTERVAL__) {
-      self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
+    if (!error) {
+      setupRNDebugger(message);
     }
-
-    waitingUntilWindowRequireAvailable().then(available => {
-      if (!available) {
-        console.warn(
-          '[RNDebugger] `window` or `window.require` is not found on',
-          'current React Native environment.'
-        );
-        return;
-      }
-      checkAvailableDevMenuMethods(message.networkInspect);
-      reportDefaultReactDevToolsPort();
-    });
   },
 };
 
