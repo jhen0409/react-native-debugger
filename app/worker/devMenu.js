@@ -2,14 +2,6 @@
 
 import { avoidWarnForRequire } from './utils';
 
-/*
- * Currently Blob is not supported for RN,
- * we should remove it in WebWorker because it will used for `whatwg-fetch`
- */
-if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
-  delete self.Blob;
-}
-
 const toggleNetworkInspect = enabled => {
   if (!enabled && window.__NETWORK_INSPECT__) {
     window.XMLHttpRequest = window.__NETWORK_INSPECT__.XMLHttpRequest;

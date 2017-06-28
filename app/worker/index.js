@@ -10,27 +10,25 @@
 
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debuggerWorker.js
 
+import './setup';
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
-
-// Add the missing `global` for WebWorker
-self.global = self;
-
-// Redux store enhancer
-const devTools = require('./reduxAPI');
+import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
+import * as RemoteDev from './remotedev';
 
 /* eslint-disable no-underscore-dangle */
-self.__REMOTEDEV__ = require('./remotedev');
+self.__REMOTEDEV__ = RemoteDev;
 
-devTools.default.send = self.__REMOTEDEV__.send;
-devTools.default.connect = self.__REMOTEDEV__.connect;
+devToolsEnhancer.send = RemoteDev.send;
+devToolsEnhancer.connect = RemoteDev.connect;
 
-self.reduxNativeDevTools = devTools.default;
-self.reduxNativeDevToolsCompose = devTools.composeWithDevTools;
+// Deprecated API, these may removed when redux-devtools-extension 3.0 release
+self.devToolsExtension = devToolsEnhancer;
+self.reduxNativeDevTools = devToolsEnhancer;
+self.reduxNativeDevToolsCompose = composeWithDevTools;
 
-self.devToolsExtension = devTools.default;
-self.__REDUX_DEVTOOLS_EXTENSION__ = devTools.default;
-self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devTools.composeWithDevTools;
+self.__REDUX_DEVTOOLS_EXTENSION__ = devToolsEnhancer;
+self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = composeWithDevTools;
 
 const setupRNDebugger = message => {
   // We need to regularly update JS runtime
