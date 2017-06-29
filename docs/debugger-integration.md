@@ -69,6 +69,7 @@ See also - [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L
 Warning:
 
 * It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
+* It have some limitations from Chrome (like you cannot set some headers), you need pay attention to this.
 * It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
 
 Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
