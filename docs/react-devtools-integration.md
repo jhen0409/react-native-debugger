@@ -1,6 +1,6 @@
-# React DevTools integration
+# React DevTools Integration
 
-The React DevTools used [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector), it will open a WebSocket server to waiting React Native connection.
+The React DevTools is built by [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector), it will open a WebSocket server to waiting React Native connection.
 
 __*NOTE*__ The server will listen a random port and inject `window.__REACT_DEVTOOLS_PORT__` global variable in debugger worker, the port is only works with React Native version ^0.39, it will fallback to `8097` (default port) if you're using React Native version under 0.39.
 
@@ -21,11 +21,9 @@ It's support Atom, Subline, VSCode for macOS.
 
 <img width="276" alt="tt" src="https://cloud.githubusercontent.com/assets/3001525/25572822/a83fdafa-2e71-11e7-8093-cce3f7db98c0.png">
 
-If you want to enable this feature, you need include [`babel-plugin-transform-react-jsx-source`](https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source) in `.babelrc` of your project, see also [this section](https://github.com/facebook/react-devtools#displaying-element-souce) of `react-devtools`.
-
 ## Inspect elements
 
-See the section [`Integration with React Native Inspector`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools#integration-with-react-native-inspector) from `react-devtools` for more information.
+You can read the section [`Integration with React Native Inspector`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools#integration-with-react-native-inspector) from README of `react-devtools`, we have the same usage with the package.
 
 ## How to use it with real device?
 
