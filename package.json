@@ -5,7 +5,7 @@
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
   "scripts": {
-    "prepack": "./scripts/prepackage.sh",
+    "prepack": "./scripts/prebuild.sh && npm run build",
     "pack-macos": "npm run prepack && ./scripts/package-macos.sh",
     "pack-linux": "npm run prepack && ./scripts/package-linux.sh",
     "pack-windows": "npm run prepack && ./scripts/package-windows.sh",
@@ -17,7 +17,8 @@
     "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.babel.js",
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
-    "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js"
+    "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js",
+    "postinstall": "./scripts/prebuild.sh"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "electron-debug": "^1.2.0",
     "electron-devtools-installer": "^2.2.0",
     "electron-packager": "^8.7.1",
+    "electron-rebuild": "^1.5.11",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-plugin-import": "^1.12.0",
@@ -64,6 +66,7 @@
     "adbkit": "^2.10.0",
     "electron-context-menu": "^0.9.1",
     "electron-gh-releases": "^2.0.4",
+    "electron-named-image": "^1.0.0",
     "electron-store": "^1.1.0",
     "get-port": "^3.1.0",
     "jsan": "^3.1.9",

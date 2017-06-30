@@ -71,6 +71,12 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
+electron-named-image@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/electron-named-image/-/electron-named-image-1.0.0.tgz#d0bfc6dd318e4b220e8f7a62ef638c0e847c0000"
+  dependencies:
+    nan "^2.6.2"
+
 electron-store@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-1.1.0.tgz#3a06fbdc8c64ca14163dea054470f7561a7906aa"
@@ -115,6 +121,10 @@ make-dir@^1.0.0:
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+
+nan@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
 node-forge@^0.6.12:
   version "0.6.49"

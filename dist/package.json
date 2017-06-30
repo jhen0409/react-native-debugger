@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "adbkit": "^2.9.2",
+    "electron-named-image": "^1.0.0",
     "electron-store": "^1.1.0",
     "react-devtools-core": "^2.3.3"
   }
