@@ -40,7 +40,7 @@ export default ({ iconPath }) => [
       type: 'checkbox',
       checked: false,
     }),
-  ]),
+  ], 'window'),
   menu('Edit', [
     item('Undo', 'Command+Z', n, { selector: 'undo:' }),
     item('Redo', 'Shift+Command+Z', n, { selector: 'redo:' }),

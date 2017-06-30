@@ -36,7 +36,7 @@ export const reload = win => win && win.webContents.reload();
 export const close = win => win && win.close();
 export const haveOpenedWindow = () => !!BrowserWindow.getAllWindows().length;
 
-export const menu = (label, submenu) => ({ label, submenu });
+export const menu = (label, submenu, role) => ({ label, submenu, role });
 export const item = (label, accelerator, click, rest) => ({
   label,
   accelerator,

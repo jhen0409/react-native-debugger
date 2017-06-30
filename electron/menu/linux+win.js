@@ -33,7 +33,7 @@ export default ({ iconPath }) => [
     ),
     separator,
     item('Close', 'Ctrl+W', () => close(getWin())),
-  ]),
+  ], 'window'),
   menu('Edit', [
     item('Undo', 'Ctrl+Z', n, { selector: 'undo:' }),
     item('Redo', 'Shift+Ctrl+Z', n, { selector: 'redo:' }),
