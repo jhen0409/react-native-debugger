@@ -1,11 +1,12 @@
 import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
-import namedImage from 'electron-named-image';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
 
 const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
+
+const namedImage = process.platform === 'darwin' ? require('electron-named-image') : {};
 
 let worker;
 let availableMethods = [];
