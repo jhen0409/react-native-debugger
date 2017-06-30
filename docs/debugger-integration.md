@@ -27,7 +27,7 @@ Other features (cross-platform):
 
 They are also in Touch Bar:
 
-<img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
+<img alt="touch-bar" src="https://user-images.githubusercontent.com/3001525/27730359-8565810a-5dbb-11e7-9052-9fd4feb72181.png">
 
 It have Redux slider on the right. (If you're using [`Redux API`](redux-devtools-integration.md))
 
