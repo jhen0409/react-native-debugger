@@ -86,6 +86,6 @@
     "ws": "^3.0.0"
   },
   "optionalDependencies": {
-    "electron-named-image": "^1.0.0"
+    "electron-named-image": "^1.0.1"
   }
 }
