@@ -39,5 +39,6 @@ export default {
     // https://github.com/sindresorhus/conf/blob/master/index.js#L13
     'electron-store',
     'adbkit',
+    'electron-named-image',
   ],
 };
