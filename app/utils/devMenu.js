@@ -51,6 +51,7 @@ const devMenuMethods = {
 };
 
 const defaultContextMenuItems = [
+  item('Toggle Developer Tools', n, () => toggleDevTools(currentWindow, 'chrome')),
   item('Toggle React DevTools', n, () => toggleDevTools(currentWindow, 'react')),
   item('Toggle Redux DevTools', n, () => toggleDevTools(currentWindow, 'redux')),
 ];
