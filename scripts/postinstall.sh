@@ -1,15 +1,18 @@
 #!/bin/bash
 
+platform=`uname`
+
 function rebuild {
   # electron-named-image is only for macOS
-  electron-rebuild -f -w electron-named-image
+  if [[ "$platform" == 'Darwin' ]]; then
+    electron-rebuild -f -w electron-named-image
+  fi
 }
 
 rebuild
 cd dist
 yarn
 rebuild
-electron-rebuild -f -w electron-named-image
 rm -rf node_modules/*/{example,examples,test,tests,*.md,*.markdown,CHANGELOG*,.*,Makefile}
 cd -
 
