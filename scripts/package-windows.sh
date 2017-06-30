@@ -7,7 +7,7 @@ electron-packager dist/ \
   --platform win32 \
   --arch ia32 \
   --asar \
-  --prune \
+  --no-prune \
   --out release \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
   --app-version $npm_package_version \

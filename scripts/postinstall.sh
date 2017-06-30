@@ -5,7 +5,7 @@ platform=`uname`
 function rebuild {
   # electron-named-image is only for macOS
   if [[ "$platform" == 'Darwin' ]]; then
-    electron-rebuild -f -w electron-named-image
+    electron-rebuild -f -w electron-named-image -t prod,optional
   fi
 }
 

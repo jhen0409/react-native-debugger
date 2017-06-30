@@ -15,7 +15,7 @@
     "electron-store": "^1.1.0",
     "react-devtools-core": "^2.3.3"
   },
-  "optionalDependencies":{
+  "optionalDependencies": {
     "electron-named-image": "^1.0.0"
   }
 }
