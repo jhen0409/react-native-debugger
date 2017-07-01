@@ -1,3 +1,4 @@
+import os from 'os';
 import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
@@ -73,8 +74,11 @@ contextMenu({
       .concat(defaultContextMenuItems),
 });
 
+const getMainVersionOfRelease = () => (
+  process.platform === 'darwin' ? Number(os.release().split('.')[0]) : 0);
+
 const setDevMenuMethodsForTouchBar = () => {
-  if (process.platform !== 'darwin') return;
+  if (getMainVersionOfRelease() < 16) return;
 
   leftBar = {
     reload: availableMethods.includes('reload') &&
@@ -102,7 +106,7 @@ export const setDevMenuMethods = (list, wkr) => {
 };
 
 export const setReduxDevToolsMethods = (enabled, dispatch) => {
-  if (process.platform !== 'darwin') return;
+  if (getMainVersionOfRelease() < 16) return;
 
   // Already setup
   if (enabled && isSliderEnabled) return;
@@ -151,7 +155,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
 };
 
 export const updateSliderContent = (liftedState, dontUpdateTouchBarSlider) => {
-  if (process.platform !== 'darwin') return;
+  if (getMainVersionOfRelease() < 16) return;
 
   storeLiftedState = liftedState;
   if (isSliderEnabled && !dontUpdateTouchBarSlider) {
