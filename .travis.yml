@@ -5,6 +5,8 @@ matrix:
   include:
     - os: osx
       osx_image: xcode8.3
+    - os: osx
+      osx_image: xcode6.4
 
 env:
   - NODE_VERSION="7"
