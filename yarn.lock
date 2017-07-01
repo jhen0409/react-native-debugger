@@ -2148,9 +2148,9 @@ electron-localshortcut@^2.0.0:
     debug "^2.6.8"
     electron-is-accelerator "^0.1.0"
 
-electron-named-image@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/electron-named-image/-/electron-named-image-1.0.1.tgz#d044c88eacd224ee3d042a12276806baa0c88c04"
+electron-named-image@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/electron-named-image/-/electron-named-image-1.0.2.tgz#8b49841169d8240500f5cabe4f07bcf6bceb5554"
   dependencies:
     nan "^2.6.2"
 

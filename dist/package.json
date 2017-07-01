@@ -16,6 +16,6 @@
     "react-devtools-core": "^2.3.3"
   },
   "optionalDependencies": {
-    "electron-named-image": "^1.0.1"
+    "electron-named-image": "^1.0.2"
   }
 }
