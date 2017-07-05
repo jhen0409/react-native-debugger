@@ -79,25 +79,38 @@ contextMenu({
 
 const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
 
+let namedImages;
+const initNamedImages = () => {
+  if (process.platform !== 'darwin' || namedImages) return;
+  namedImages = {
+    reload: icon('NSTouchBarRefreshTemplate'),
+    toggleElementInspector: icon('NSTouchBarQuickLookTemplate'),
+    networkInspect: icon('NSTouchBarRecordStartTemplate'),
+    prev: icon('NSTouchBarGoBackTemplate'),
+    next: icon('NSTouchBarGoForwardTemplate'),
+  };
+};
+
 const setDevMenuMethodsForTouchBar = () => {
   if (process.platform !== 'darwin') return;
+  initNamedImages();
 
   leftBar = {
     reload:
       availableMethods.includes('reload') &&
       new TouchBarButton({
-        icon: icon('NSTouchBarRefreshTemplate'),
+        icon: namedImages.reload,
         click: devMenuMethods.reload,
       }),
     toggleElementInspector:
       availableMethods.includes('toggleElementInspector') &&
       new TouchBarButton({
-        icon: icon('NSTouchBarQuickLookTemplate'),
+        icon: namedImages.toggleElementInspector,
         click: devMenuMethods.toggleElementInspector,
       }),
     // Default items
     networkInspect: new TouchBarButton({
-      icon: icon('NSTouchBarRecordStartTemplate'),
+      icon: namedImages.networkInspect,
       click: devMenuMethods.networkInspect,
       backgroundColor: networkInspect.getHighlightColor(),
     }),
@@ -117,6 +130,7 @@ export const setDevMenuMethods = (list, wkr) => {
 
 export const setReduxDevToolsMethods = (enabled, dispatch) => {
   if (process.platform !== 'darwin') return;
+  initNamedImages();
 
   // Already setup
   if (enabled && isSliderEnabled) return;
@@ -142,7 +156,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       },
     }),
     prev: new TouchBarButton({
-      icon: icon('NSTouchBarGoBackTemplate'),
+      icon: namedImages.prev,
       click() {
         const nextIndex = storeLiftedState.currentStateIndex - 1;
         if (nextIndex >= 0) {
@@ -151,7 +165,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       },
     }),
     next: new TouchBarButton({
-      icon: icon('NSTouchBarGoForwardTemplate'),
+      icon: namedImages.next,
       click() {
         const nextIndex = storeLiftedState.currentStateIndex + 1;
         if (nextIndex < storeLiftedState.computedStates.length) {
