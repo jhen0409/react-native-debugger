@@ -49,11 +49,7 @@ const devMenuMethods = {
     });
   },
   clearAsyncStorage: () => {
-    if (
-      confirm(
-        'Are you sure you want to call `AsyncStorage.clear()` in current React Native session?'
-      )
-    ) {
+    if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
       invokeDevMenuMethod({ name: 'clearAsyncStorage' });
     }
   },
