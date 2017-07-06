@@ -19,7 +19,6 @@ npm --version
 
 yarn
 cd npm-package && yarn && cd ..
-cd dist && yarn && cd ..
 yarn lint
 yarn build
 yarn test
