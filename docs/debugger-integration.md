@@ -23,13 +23,14 @@ Just includes two developer menu features for iOS, these would be useful for rea
 
 Other features (cross-platform):
 
+* Clear AsyncStorage
 * Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
 
-They are also in Touch Bar:
+#### macOS Touch Bar support
 
 <img width="1085" alt="touch-bar" src="https://cloud.githubusercontent.com/assets/3001525/25571883/38d4da3a-2e67-11e7-9386-f52bb62572b3.png">
 
-It have Redux slider on the right. (If you're using [`Redux API`](redux-devtools-integration.md))
+The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devtools-integration.md),
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
 

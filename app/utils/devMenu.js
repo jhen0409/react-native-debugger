@@ -48,6 +48,11 @@ const devMenuMethods = {
       args: [networkInspect.isEnabled()],
     });
   },
+  clearAsyncStorage: () => {
+    if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
+      invokeDevMenuMethod({ name: 'clearAsyncStorage' });
+    }
+  },
 };
 
 const defaultContextMenuItems = [
@@ -64,9 +69,9 @@ contextMenu({
       availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
       availableMethods.includes('toggleElementInspector') &&
         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
-      item(networkInspect.label(), n, devMenuMethods.networkInspect, {
-        name: 'networkInspect',
-      }),
+      item(networkInspect.label(), n, devMenuMethods.networkInspect),
+      availableMethods.includes('clearAsyncStorage') &&
+        item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
       separator,
     ]
       .filter(menuItem => !!menuItem)
@@ -77,9 +82,11 @@ const setDevMenuMethodsForTouchBar = () => {
   if (process.platform !== 'darwin') return;
 
   leftBar = {
-    reload: availableMethods.includes('reload') &&
+    reload:
+      availableMethods.includes('reload') &&
       new TouchBarButton(item('Reload JS', n, devMenuMethods.reload)),
-    toggleElementInspector: availableMethods.includes('toggleElementInspector') &&
+    toggleElementInspector:
+      availableMethods.includes('toggleElementInspector') &&
       new TouchBarButton(item('Inspector', n, devMenuMethods.toggleElementInspector)),
     // Default items
     networkInspect: new TouchBarButton(
