@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import BabiliPlugin from 'babili-webpack-plugin';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import baseConfig from './base.babel';
 
 const baseProdConfig = {
@@ -24,13 +24,10 @@ const baseProdConfig = {
       'process.env.NODE_ENV': JSON.stringify('production'),
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
     }),
-    new BabiliPlugin(
-      {},
-      {
-        comments: false,
-      }
-    ),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new UglifyJSPlugin({
+      uglifyOptions: { output: { comments: false } },
+    }),
   ],
 };
 
