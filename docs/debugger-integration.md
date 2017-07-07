@@ -2,7 +2,7 @@
 
 The Debugger worker is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
 
-## Multiple React Native pakcager (custom port) support
+## Multiple React Native packager (custom port) support
 
 We can use [`react-native-debugger-open`](../npm-package) package to detect RN packager port, it will open an another window automatically if another debugger workers are running.
 
