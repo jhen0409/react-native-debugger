@@ -1,3 +1,7 @@
+# Simple RN debugger example for use MobX
+
+Run `yarn` and `yarn ios` or `yarn android`, RN debugger should open automatically if [React Native Debugger](https://github.com/jhen0409/react-native-debugger/releases) installed.
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).

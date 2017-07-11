@@ -4,4 +4,3 @@ npm-package/lib/
 dist/
 release/
 node_modules/
-app/react-devtools
