@@ -29,8 +29,9 @@ const toggleNetworkInspect = enabled => {
 const methodsGlobalName = '__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__';
 
 export const checkAvailableDevMenuMethods = async (networkInspect = false) => {
-  const done = await avoidWarnForRequire();
+  const done = await avoidWarnForRequire('NativeModules', 'AsyncStorage');
   const NativeModules = window.__DEV__ ? window.require('NativeModules') : {};
+  const AsyncStorage = window.__DEV__ ? window.require('AsyncStorage') : {};
   done();
 
   // RN 0.43 use DevSettings, DevMenu is deprecated
@@ -39,6 +40,7 @@ export const checkAvailableDevMenuMethods = async (networkInspect = false) => {
   const methods = {
     ...DevSettings,
     networkInspect: toggleNetworkInspect,
+    clearAsyncStorage: AsyncStorage.clear,
   };
   const result = Object.keys(methods).filter(key => !!methods[key]);
   window[methodsGlobalName] = methods;

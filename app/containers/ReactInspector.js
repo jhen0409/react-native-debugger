@@ -3,9 +3,16 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactServer from 'react-devtools-core/standalone';
 import { tryADBReverse } from '../utils/adb';
 
+let ReactServer;
+const getReactInspector = () => {
+  if (ReactServer) return ReactServer;
+  // eslint-disable-next-line
+  ReactServer = ReactServer || require('react-devtools-core/standalone');
+
+  return ReactServer;
+};
 const containerId = 'react-devtools-container';
 
 const styles = {
@@ -37,11 +44,11 @@ export default class ReactInspector extends Component {
   };
 
   static setDefaultThemeName(themeName) {
-    ReactServer.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
+    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
   }
 
   static setProjectRoots(projectRoots) {
-    ReactServer.setProjectRoots(projectRoots);
+    getReactInspector().setProjectRoots(projectRoots);
   }
 
   componentDidMount() {
@@ -90,7 +97,8 @@ export default class ReactInspector extends Component {
   };
 
   startServer(port = this.listeningPort) {
-    return ReactServer.setBrowserName('RNDebugger DevTools')
+    return getReactInspector()
+      .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
         if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
           console.warn(
@@ -116,7 +124,11 @@ export default class ReactInspector extends Component {
   render() {
     return (
       <div id={containerId} style={styles.container}>
-        <div id="waiting"><h2>{'Waiting for React to connect…'}</h2></div>
+        <div id="waiting">
+          <h2>
+            {'Waiting for React to connect…'}
+          </h2>
+        </div>
       </div>
     );
   }

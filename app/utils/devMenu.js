@@ -2,8 +2,12 @@ import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
 
+const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
+
+// eslint-disable-next-line import/no-unresolved
+const namedImage = process.platform === 'darwin' ? require('electron-named-image') : {};
 
 let worker;
 let availableMethods = [];
@@ -48,6 +52,11 @@ const devMenuMethods = {
       args: [networkInspect.isEnabled()],
     });
   },
+  clearAsyncStorage: () => {
+    if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
+      invokeDevMenuMethod({ name: 'clearAsyncStorage' });
+    }
+  },
 };
 
 const defaultContextMenuItems = [
@@ -64,29 +73,52 @@ contextMenu({
       availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
       availableMethods.includes('toggleElementInspector') &&
         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
-      item(networkInspect.label(), n, devMenuMethods.networkInspect, {
-        name: 'networkInspect',
-      }),
+      item(networkInspect.label(), n, devMenuMethods.networkInspect),
+      availableMethods.includes('clearAsyncStorage') &&
+        item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
       separator,
     ]
       .filter(menuItem => !!menuItem)
       .concat(defaultContextMenuItems),
 });
 
+const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
+
+let namedImages;
+const initNamedImages = () => {
+  if (process.platform !== 'darwin' || namedImages) return;
+  namedImages = {
+    reload: icon('NSTouchBarRefreshTemplate'),
+    toggleElementInspector: icon('NSTouchBarQuickLookTemplate'),
+    networkInspect: icon('NSTouchBarRecordStartTemplate'),
+    prev: icon('NSTouchBarGoBackTemplate'),
+    next: icon('NSTouchBarGoForwardTemplate'),
+  };
+};
+
 const setDevMenuMethodsForTouchBar = () => {
   if (process.platform !== 'darwin') return;
+  initNamedImages();
 
   leftBar = {
-    reload: availableMethods.includes('reload') &&
-      new TouchBarButton(item('Reload JS', n, devMenuMethods.reload)),
-    toggleElementInspector: availableMethods.includes('toggleElementInspector') &&
-      new TouchBarButton(item('Inspector', n, devMenuMethods.toggleElementInspector)),
+    reload:
+      availableMethods.includes('reload') &&
+      new TouchBarButton({
+        icon: namedImages.reload,
+        click: devMenuMethods.reload,
+      }),
+    toggleElementInspector:
+      availableMethods.includes('toggleElementInspector') &&
+      new TouchBarButton({
+        icon: namedImages.toggleElementInspector,
+        click: devMenuMethods.toggleElementInspector,
+      }),
     // Default items
-    networkInspect: new TouchBarButton(
-      item('Network Inspect', n, devMenuMethods.networkInspect, {
-        backgroundColor: networkInspect.getHighlightColor(),
-      })
-    ),
+    networkInspect: new TouchBarButton({
+      icon: namedImages.networkInspect,
+      click: devMenuMethods.networkInspect,
+      backgroundColor: networkInspect.getHighlightColor(),
+    }),
   };
   setTouchBar();
 };
@@ -103,6 +135,7 @@ export const setDevMenuMethods = (list, wkr) => {
 
 export const setReduxDevToolsMethods = (enabled, dispatch) => {
   if (process.platform !== 'darwin') return;
+  initNamedImages();
 
   // Already setup
   if (enabled && isSliderEnabled) return;
@@ -128,7 +161,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       },
     }),
     prev: new TouchBarButton({
-      label: 'Prev',
+      icon: namedImages.prev,
       click() {
         const nextIndex = storeLiftedState.currentStateIndex - 1;
         if (nextIndex >= 0) {
@@ -137,7 +170,7 @@ export const setReduxDevToolsMethods = (enabled, dispatch) => {
       },
     }),
     next: new TouchBarButton({
-      label: 'Next',
+      icon: namedImages.next,
       click() {
         const nextIndex = storeLiftedState.currentStateIndex + 1;
         if (nextIndex < storeLiftedState.computedStates.length) {

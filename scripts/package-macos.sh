@@ -7,7 +7,7 @@ electron-packager dist/ \
   --platform darwin \
   --arch x64 \
   --asar \
-  --prune \
+  --no-prune \
   --out release \
   --protocol-name "React Native Debugger" \
   --protocol "rndebugger" \

@@ -6,6 +6,7 @@ const requiredModules = {
   NativeModules: {},
   Platform: {},
   setupDevtools: undefined,
+  AsyncStorage: {},
 };
 // Simulate React Native's window.require polyfill
 window.require = moduleName => {
