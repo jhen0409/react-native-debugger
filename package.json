@@ -39,7 +39,6 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.6",
     "babel-preset-env": "^1.5.2",
     "babel-preset-react": "^6.24.1",
-    "babili-webpack-plugin": "^0.1.1",
     "cross-env": "^5.0.1",
     "devtron": "^1.4.0",
     "electron": "^1.7.3",
@@ -59,6 +58,7 @@
     "raw-loader": "^0.5.1",
     "spectron": "^3.6.4",
     "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0"
   },
