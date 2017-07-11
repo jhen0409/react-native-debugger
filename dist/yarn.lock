@@ -45,10 +45,8 @@ bluebird@~2.9.24:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.9.34.tgz#2f7b4ec80216328a9fddebdf69c8d4942feff7d8"
 
 commander@^2.3.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.10.0.tgz#e1f5d3245de246d1a5ca04702fa1ad1bd7e405fe"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
 conf@^1.0.0:
   version "1.1.2"
@@ -78,8 +76,8 @@ electron-named-image@^1.0.2:
     nan "^2.6.2"
 
 electron-store@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-1.1.0.tgz#3a06fbdc8c64ca14163dea054470f7561a7906aa"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-1.2.0.tgz#96f708f0188c7708907e9f9b7cba790bed6b989f"
   dependencies:
     conf "^1.0.0"
 
@@ -92,10 +90,6 @@ find-up@^2.1.0:
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
   dependencies:
     locate-path "^2.0.0"
-
-"graceful-readlink@>= 1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
 is-obj@^1.0.0:
   version "1.0.1"
