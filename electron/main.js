@@ -39,6 +39,10 @@ app.on('activate', () => {
   createWindow(defaultOptions);
 });
 
+app.on('new-window-for-tab', () =>
+  createWindow({ ...defaultOptions, isPortSettingRequired: true })
+);
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
