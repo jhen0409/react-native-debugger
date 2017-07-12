@@ -40,7 +40,7 @@ export const checkAvailableDevMenuMethods = async (networkInspect = false) => {
   const methods = {
     ...DevSettings,
     networkInspect: toggleNetworkInspect,
-    clearAsyncStorage: AsyncStorage.clear,
+    clearAsyncStorage: () => AsyncStorage.clear().catch(f => f),
   };
   const result = Object.keys(methods).filter(key => !!methods[key]);
   window[methodsGlobalName] = methods;
