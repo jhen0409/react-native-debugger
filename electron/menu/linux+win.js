@@ -27,13 +27,17 @@ export default ({ iconPath }) => [
       checked: false,
     }),
   ]),
-  menu('Debugger', [
-    item('New Window', 'Ctrl+T', () =>
-      createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
-    ),
-    separator,
-    item('Close', 'Ctrl+W', () => close(getWin())),
-  ], 'window'),
+  menu(
+    'Debugger',
+    [
+      item('New Window', 'Ctrl+T', () =>
+        createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
+      ),
+      separator,
+      item('Close', 'Ctrl+W', () => close(getWin())),
+    ],
+    'window'
+  ),
   menu('Edit', [
     item('Undo', 'Ctrl+Z', n, { selector: 'undo:' }),
     item('Redo', 'Shift+Ctrl+Z', n, { selector: 'redo:' }),
@@ -47,8 +51,8 @@ export default ({ iconPath }) => [
     item('Reload', 'Ctrl+R', () => reload(getWin())),
     item('Toggle Full Screen', 'F11', () => toggleFullscreen(getWin())),
     item('Toggle Developer Tools', 'Alt+Ctrl+I', () => toggleDevTools(getWin(), 'chrome')),
-    item('Toggle React DevTools', 'Alt+Command+J', () => toggleDevTools(getWin(), 'react')),
-    item('Toggle Redux DevTools', 'Alt+Command+K', () => toggleDevTools(getWin(), 'redux')),
+    item('Toggle React DevTools', 'Alt+Ctrl+J', () => toggleDevTools(getWin(), 'react')),
+    item('Toggle Redux DevTools', 'Alt+Ctrl+K', () => toggleDevTools(getWin(), 'redux')),
   ]),
   menu('Help', [
     item('Documentation', n, () =>
