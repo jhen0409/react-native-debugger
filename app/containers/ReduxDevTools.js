@@ -32,6 +32,10 @@ const sliderStyle = {
   backgroundColor: 'rgb(53, 59, 70)',
   color: 'white',
 };
+const containerStyle = {
+  ...styles.container,
+  fontSize: 12,
+};
 
 @enhance
 @connect(
@@ -80,7 +84,7 @@ export default class ReduxDevTools extends Component {
     } = this.props;
     const isRedux = options.lib === 'redux';
     return (
-      <div className="redux-container" style={styles.container}>
+      <div className="redux-container" style={containerStyle}>
         <div style={styles.buttonBar}>
           <MonitorSelector selected={monitor} />
           <Instances selected={selected} />
