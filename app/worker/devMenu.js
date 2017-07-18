@@ -2,15 +2,17 @@
 
 import { avoidWarnForRequire } from './utils';
 
+let networkInspect;
+
 const toggleNetworkInspect = enabled => {
-  if (!enabled && window.__NETWORK_INSPECT__) {
-    window.XMLHttpRequest = window.__NETWORK_INSPECT__.XMLHttpRequest;
-    window.FormData = window.__NETWORK_INSPECT__.FormData;
-    delete window.__NETWORK_INSPECT__;
+  if (!enabled && networkInspect) {
+    window.XMLHttpRequest = networkInspect.XMLHttpRequest;
+    window.FormData = networkInspect.FormData;
+    networkInspect = null;
     return;
   }
   if (!enabled) return;
-  window.__NETWORK_INSPECT__ = {
+  networkInspect = {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
   };
@@ -26,9 +28,9 @@ const toggleNetworkInspect = enabled => {
   );
 };
 
-const methodsGlobalName = '__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__';
+let availableDevMenuMethods = {};
 
-export const checkAvailableDevMenuMethods = async (networkInspect = false) => {
+export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false) => {
   const done = await avoidWarnForRequire('NativeModules', 'AsyncStorage');
   const NativeModules = window.__DEV__ ? window.require('NativeModules') : {};
   const AsyncStorage = window.__DEV__ ? window.require('AsyncStorage') : {};
@@ -43,13 +45,13 @@ export const checkAvailableDevMenuMethods = async (networkInspect = false) => {
     clearAsyncStorage: () => AsyncStorage.clear().catch(f => f),
   };
   const result = Object.keys(methods).filter(key => !!methods[key]);
-  window[methodsGlobalName] = methods;
+  availableDevMenuMethods = methods;
 
-  toggleNetworkInspect(networkInspect);
-  postMessage({ [methodsGlobalName]: result });
+  toggleNetworkInspect(enableNetworkInspect);
+  postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
 
 export const invokeDevMenuMethod = (name, args = []) => {
-  const method = window[methodsGlobalName][name];
+  const method = availableDevMenuMethods[name];
   if (method) method(...args);
 };
