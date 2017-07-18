@@ -12,7 +12,7 @@ adbkit-monkey@~1.0.1:
   dependencies:
     async "~0.2.9"
 
-adbkit@^2.9.2:
+adbkit@^2.10.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.10.0.tgz#ba2d46c290fc70e70b2422164268f82306303570"
   dependencies:
@@ -75,7 +75,7 @@ electron-named-image@^1.0.2:
   dependencies:
     nan "^2.6.2"
 
-electron-store@^1.1.0:
+electron-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-1.2.0.tgz#96f708f0188c7708907e9f9b7cba790bed6b989f"
   dependencies:
@@ -148,9 +148,9 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-react-devtools-core@^2.3.3:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.4.0.tgz#8f261b2fcfb02ecef1f15e17d75ee1b521f02029"
+react-devtools-core@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-2.5.0.tgz#5ad179f88f22d205940721e38e4ecc3a2d35bf03"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
