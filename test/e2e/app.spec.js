@@ -7,6 +7,7 @@ import expect from 'expect';
 import electronPath from 'electron';
 import { Application } from 'spectron';
 import { delay } from '../utils/e2e.js';
+import autoUpdateFeed from '../../auto_updater.json';
 
 describe('Application launch', function spec() {
   this.timeout(6e4);
@@ -43,9 +44,19 @@ describe('Application launch', function spec() {
   });
 
   it(`should be v${process.env.npm_package_version}`, async () => {
+    // Check the App version (dist/package.json) is same with package.json
     const { electron } = this.app;
     const version = await electron.remote.app.getVersion();
+
+    // Check auto update feed is expected
     expect(version).toBe(process.env.npm_package_version);
+    expect(autoUpdateFeed.url).toBe(
+      `https://github.com/jhen0409/react-native-debugger/releases/download/v${version}/rn-debugger-macos-x64.zip`
+    );
+    expect(autoUpdateFeed.name).toBe(`v${version}`);
+    expect(typeof autoUpdateFeed.notes).toBe('string');
+
+    console.log(`\nAuto update notes:\n\n${autoUpdateFeed.notes}\n`);
   });
 
   it('should show an initial window', async () => {
