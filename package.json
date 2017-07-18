@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "productName": "React Native Debugger",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
@@ -41,7 +41,7 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.0.1",
     "devtron": "^1.4.0",
-    "electron": "^1.7.3",
+    "electron": "^1.7.5",
     "electron-debug": "^1.2.0",
     "electron-devtools-installer": "^2.2.0",
     "electron-packager": "^8.7.2",

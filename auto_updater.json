@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.2/rn-debugger-macos-x64.zip",
-  "name": "v0.7.2",
-  "notes": "1. Fix problem of checked value of `Stay in Front` doesn't depends on the window\n2. Fix problem of window list doesn't show on dock menu\n3. Add `Toggle Developer Tools` item to context menu\n4. Add `Clear AsyncStorage` item in context menu\n5. Handle fatal errors thrown by the Chrome debugger (from RN upstream)\n6. [macOS] Use icon instead of text for Touch Bar\n7. Upgrade react-devtools-core to v2.4.0"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.3/rn-debugger-macos-x64.zip",
+  "name": "v0.7.3",
+  "notes": "1. Fix `Toggle DevTools` menu item accelerator for Linux / Windows\n2. Handle `new-window-for-tab` event for macOS\n3. Catch clearAsyncStorage error, avoid warning if storage is empty\n4. Change font size of redux-devtools container\n5. Add `Zoom` application menu items, and persist zoom level of window\n6. Update dependencies, includes electron 1.7.4 -> 1.7.5 and react-devtools-core 2.4.0 -> 2.5.0"
 }
