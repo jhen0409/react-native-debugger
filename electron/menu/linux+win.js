@@ -12,6 +12,8 @@ import {
   setAlwaysOnTop,
   reload,
   close,
+  zoom,
+  resetZoom,
   haveOpenedWindow,
 } from './util';
 
@@ -53,6 +55,10 @@ export default ({ iconPath }) => [
     item('Toggle Developer Tools', 'Alt+Ctrl+I', () => toggleDevTools(getWin(), 'chrome')),
     item('Toggle React DevTools', 'Alt+Ctrl+J', () => toggleDevTools(getWin(), 'react')),
     item('Toggle Redux DevTools', 'Alt+Ctrl+K', () => toggleDevTools(getWin(), 'redux')),
+    separator,
+    item('Zoom In', 'Ctrl+=', () => zoom(getWin(), 1)),
+    item('Zoom Out', 'Ctrl+-', () => zoom(getWin(), -1)),
+    item('Reset Zoom', 'Ctrl+0', () => resetZoom(getWin())),
   ]),
   menu('Help', [
     item('Documentation', n, () =>

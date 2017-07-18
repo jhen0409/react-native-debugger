@@ -11,6 +11,8 @@ import {
   toggleFullscreen,
   setAlwaysOnTop,
   reload,
+  zoom,
+  resetZoom,
   haveOpenedWindow,
 } from './util';
 
@@ -27,20 +29,24 @@ export default ({ iconPath }) => [
     separator,
     item('Quit', 'Command+Q', () => app.quit()),
   ]),
-  menu('Debugger', [
-    item('New Window', 'Command+T', () =>
-      createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
-    ),
-    separator,
-    item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
-    item('Close', 'Command+W', n, { selector: 'performClose:' }),
-    separator,
-    item('Bring All to Front', n, n, { selector: 'arrangeInFront:' }),
-    item('Stay in Front', n, ({ checked }) => setAlwaysOnTop(getWin(), checked), {
-      type: 'checkbox',
-      checked: false,
-    }),
-  ], 'window'),
+  menu(
+    'Debugger',
+    [
+      item('New Window', 'Command+T', () =>
+        createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
+      ),
+      separator,
+      item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
+      item('Close', 'Command+W', n, { selector: 'performClose:' }),
+      separator,
+      item('Bring All to Front', n, n, { selector: 'arrangeInFront:' }),
+      item('Stay in Front', n, ({ checked }) => setAlwaysOnTop(getWin(), checked), {
+        type: 'checkbox',
+        checked: false,
+      }),
+    ],
+    'window'
+  ),
   menu('Edit', [
     item('Undo', 'Command+Z', n, { selector: 'undo:' }),
     item('Redo', 'Shift+Command+Z', n, { selector: 'redo:' }),
@@ -56,6 +62,10 @@ export default ({ iconPath }) => [
     item('Toggle Developer Tools', 'Alt+Command+I', () => toggleDevTools(getWin(), 'chrome')),
     item('Toggle React DevTools', 'Alt+Command+J', () => toggleDevTools(getWin(), 'react')),
     item('Toggle Redux DevTools', 'Alt+Command+K', () => toggleDevTools(getWin(), 'redux')),
+    separator,
+    item('Zoom In', 'Command+=', () => zoom(getWin(), 1)),
+    item('Zoom Out', 'Command+-', () => zoom(getWin(), -1)),
+    item('Reset Zoom', 'Command+0', () => resetZoom(getWin())),
   ]),
   menu('Help', [
     item('Documentation', n, () =>

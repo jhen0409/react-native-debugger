@@ -47,6 +47,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   }
   win.loadURL(url);
   win.webContents.on('did-finish-load', () => {
+    win.webContents.setZoomLevel(store.get('zoomLevel', 0));
     win.focus();
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
@@ -64,6 +65,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
       },
     })
   );
-  win.on('close', () => store.set('winBounds', win.getBounds()));
+  win.on('close', () => {
+    store.set('winBounds', win.getBounds());
+    win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
+  });
   return win;
 };

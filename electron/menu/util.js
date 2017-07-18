@@ -34,6 +34,12 @@ export const toggleFullscreen = win => win && win.setFullScreen(!win.isFullScree
 export const setAlwaysOnTop = (win, checked) => win && win.setAlwaysOnTop(checked);
 export const reload = win => win && win.webContents.reload();
 export const close = win => win && win.close();
+export const zoom = (win, val) => {
+  if (!win) return;
+  const contents = win.webContents;
+  contents.getZoomLevel(level => contents.setZoomLevel(level + val));
+};
+export const resetZoom = win => win && win.webContents.setZoomLevel(0);
 export const haveOpenedWindow = () => !!BrowserWindow.getAllWindows().length;
 
 export const menu = (label, submenu, role) => ({ label, submenu, role });
