@@ -14,6 +14,6 @@ See also:
 * [API Reference](http://extension.remotedev.io/docs/API/)
 * [Integrations](http://extension.remotedev.io/docs/Integrations.html)
   - [MobX](https://github.com/mobxjs/mobx)
-    - [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) - see [`the counter example`](../examples/counter-with-mobx)
+    - [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) (see [`the counter example`](../examples/counter-with-mobx))
     - [`mobx-state-tree`](https://github.com/mobxjs/mobx-state-tree)
-* [Troubleshooting](http://extension.remotedev.io/docs/Troubleshooting.html)
+* [Troubleshooting](http://extension.remotedev.io/docs/Troubleshooting.html) (you can ignore the browser extension specified problems)

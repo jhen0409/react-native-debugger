@@ -32,6 +32,8 @@ See [`Redux DevTools Integration`](redux-devtools-integration.md) section for mo
 * [`Redux counter`](../examples/counter-with-redux)
 * [`MobX counter`](../examples/counter-with-mobx) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
 
+The examples was bootstrapped with [`create-react-native-app`](https://github.com/react-community/create-react-native-app).
+
 ## Auto-update RNDebugger app (Supported v0.5.0 after)
 
 Currently auto-update is only supported for macOS, for Linux / Windows will show dialog of new version available for download.
