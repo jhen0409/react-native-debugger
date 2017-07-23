@@ -36,7 +36,7 @@ function connectToRND(rndPath, log, cb) {
     }, 1000);
     connection.on('end', () => {
       clearTimeout(timeoutId);
-      if (log) {
+      if (!pass && log) {
         console.log('\n[RNDebugger] Try to set port of React Native server failed.\n');
       }
       cb(pass);
