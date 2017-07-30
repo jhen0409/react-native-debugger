@@ -18,6 +18,7 @@ export default {
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new UglifyJSPlugin({
+      sourceMap: true,
       uglifyOptions: { output: { comments: false } },
     }),
   ],
