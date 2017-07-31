@@ -20,6 +20,7 @@ Just includes two developer menu features for iOS, these would be useful for rea
 
 * Reload JS
 * Toogle Elements Inspector (RN ^0.43 support)
+* Show Developer Menu
 
 Other features (cross-platform):
 

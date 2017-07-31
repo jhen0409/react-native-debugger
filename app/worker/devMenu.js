@@ -36,11 +36,15 @@ export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false)
   const AsyncStorage = window.__DEV__ ? window.require('AsyncStorage') : {};
   done();
 
-  // RN 0.43 use DevSettings, DevMenu is deprecated
+  // RN 0.43 use DevSettings, DevMenu will be deprecated
   const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
+  // Currently `show dev menu` is only on DevMenu
+  const showDevMenu =
+    DevSettings.show || NativeModules.DevMenu ? NativeModules.DevMenu.show : undefined;
 
   const methods = {
     ...DevSettings,
+    show: showDevMenu,
     networkInspect: toggleNetworkInspect,
     clearAsyncStorage: () => AsyncStorage.clear().catch(f => f),
   };

@@ -42,6 +42,7 @@ const networkInspect = {
 const devMenuMethods = {
   reload: () => invokeDevMenuMethod({ name: 'reload' }),
   toggleElementInspector: () => invokeDevMenuMethod({ name: 'toggleElementInspector' }),
+  show: () => invokeDevMenuMethod({ name: 'show' }),
   networkInspect: () => {
     networkInspect.toggle();
     if (leftBar.networkInspect) {
@@ -73,6 +74,7 @@ contextMenu({
       availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
       availableMethods.includes('toggleElementInspector') &&
         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
+      availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
       item(networkInspect.label(), n, devMenuMethods.networkInspect),
       availableMethods.includes('clearAsyncStorage') &&
         item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
