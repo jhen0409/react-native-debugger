@@ -75,3 +75,20 @@ Warning:
 * It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
 
 Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
+
+#### [iOS only] Force your app on debug mode
+
+For enable `Debug Remotely` in real device, you may fatigued to shake device to show developer menu, you can use the built-in `DevSettings` native module on iOS:
+
+```js
+import { NativeModules } from 'react-native'
+
+if (__DEV__) {
+  NativeModules.DevSettings.setIsDebuggingRemotely(true)
+}
+
+// For RN < 0.43
+if (__DEV__) {
+  NativeModules.DevMenu.debugRemotely(true)
+}
+```
