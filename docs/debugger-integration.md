@@ -51,7 +51,7 @@ In the console, you can use `require` for module of specified [`@providesModule`
 
 Make sure you're changed to `RNDebuggerWorker.js` context, the same as the previous tip.
 
-#### Inpsect network requests by `Network` tab of Chrome DevTools (See also [#15](https://github.com/jhen0409/react-native-debugger/issues/15))
+#### Inspect network requests by `Network` tab of Chrome DevTools (See also [#15](https://github.com/jhen0409/react-native-debugger/issues/15))
 
 We can do:
 
