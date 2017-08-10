@@ -58,7 +58,7 @@ app.on('ready', async () => {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 
-  const replaceHeaderPrefix = '__RN_DEBUGGER_SET_ORIGIN_REQUEST_';
+  const replaceHeaderPrefix = '__RN_DEBUGGER_SET_HEADER_REQUEST_';
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     Object.entries(details.requestHeaders).forEach(([header, value]) => {
       if (header.startsWith(replaceHeaderPrefix)) {
