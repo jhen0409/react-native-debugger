@@ -62,12 +62,21 @@ export default class App extends Component {
     actions: PropTypes.object.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      syncDevices: true
+    };
+    console.warn('Syncing connected devices');
+  };
+
   componentDidMount() {
     ipcRenderer.send('window-opened');
 
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
-    ipcRenderer.on('sync-state', (event, arg) => this.props.syncState(arg));
+    ipcRenderer.on('sync-state', (event, arg) => this.state.syncDevices && this.props.syncState(arg));
+    ipcRenderer.on('toggle-sync', (event, arg) => this.toggleSync());
 
     ipcRenderer.on('set-debugger-loc', (e, payload) =>
       this.setDebuggerLocation(JSON.parse(payload))
@@ -88,6 +97,13 @@ export default class App extends Component {
   componentWillUnmount() {
     this.removeAllListeners();
     window.notifyDevToolsThemeChange = null;
+  }
+
+  toggleSync() {
+    console.warn('Syncing devices: ' + !this.state.syncDevices);
+    this.setState({
+      syncDevices: !this.state.syncDevices
+    });
   }
 
   onResize = (x, y) => this.props.actions.setting.resizeDevTools(y / window.innerHeight);

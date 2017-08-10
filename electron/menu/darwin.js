@@ -14,6 +14,7 @@ import {
   zoom,
   resetZoom,
   haveOpenedWindow,
+  toggleDeviceSync
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
@@ -35,6 +36,7 @@ export default ({ iconPath }) => [
       item('New Window', 'Command+T', () =>
         createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
       ),
+      item('Toggle Device Sync', n, () => toggleDeviceSync()),
       separator,
       item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
       item('Close', 'Command+W', n, { selector: 'performClose:' }),
