@@ -64,12 +64,12 @@ const isForbiddenHeaderName = header =>
 
 export const replaceForbiddenHeadersForOriginalRequest = () => {
   if (!window.originalXMLHttpRequest) return;
-  const originalSetRequestHeader = window.originalXMLHttpRequest.setRequestHeader;
-  window.originalXMLHttpRequest.setRequestHeader = (header, value) => {
+  const originalSetRequestHeader = window.originalXMLHttpRequest.prototype.setRequestHeader;
+  window.originalXMLHttpRequest.prototype.setRequestHeader = function (header, value) {
     let replacedHeader = header;
     if (isForbiddenHeaderName(header)) {
       replacedHeader = `__RN_DEBUGGER_SET_HEADER_REQUEST_${header}`;
     }
-    return originalSetRequestHeader(replacedHeader, value);
+    return originalSetRequestHeader.call(this, replacedHeader, value);
   };
 };
