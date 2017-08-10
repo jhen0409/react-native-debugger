@@ -11,6 +11,7 @@
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debuggerWorker.js
 
 import './setup';
+import { replaceOriginHeaderForOriginalRequest } from './networkInspect';
 import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
 import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
@@ -36,6 +37,7 @@ const setupRNDebugger = message => {
   // doesn't notify to the remote JS runtime
   self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
 
+  replaceOriginHeaderForOriginalRequest();
   checkAvailableDevMenuMethods(message.networkInspect);
   reportDefaultReactDevToolsPort();
 };
