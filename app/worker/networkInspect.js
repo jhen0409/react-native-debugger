@@ -63,6 +63,7 @@ const isForbiddenHeaderName = header =>
   header.startsWith('sec-');
 
 export const replaceOriginHeaderForOriginalRequest = () => {
+  if (!window.originalXMLHttpRequest) return;
   const originSetRequestHeader = window.originalXMLHttpRequest.setRequestHeader;
   window.originalXMLHttpRequest.setRequestHeader = (header, value) => {
     let replacedHeader = header;
