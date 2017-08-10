@@ -72,13 +72,13 @@ Warning:
 
 The `originalXMLHttpRequest` is from WebWorker of Chrome, so it have some limitations:
 
-* It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
+* [iOS] It will passed `NSExceptionDomains` check, if you forget to set domain name, the requests will break in production, so we should be clear about the difference.
 * React Native `FormData` support `uri` property you can use file from `CameraRoll`, but `originalFormData` doesn't supported.
 * It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
 
 We have been fixed [`Forbidden header name`](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name) problem, so you can set headers like `Origin`, `User-Agent`.
 
-Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
+Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Charles](https://www.charlesproxy.com) or [Stetho](https://facebook.github.io/stetho) will be better.
 
 #### [iOS only] Force your app on debug mode
 
