@@ -52,6 +52,7 @@ const shortcutPrefix = process.platform === 'darwin' ? '⌥⌘' : 'Ctrl+Alt+';
       debugger: bindActionCreators(debuggerActions, dispatch),
       setting: bindActionCreators(settingActions, dispatch),
     },
+    syncState: (state) => dispatch(debuggerActions.syncState(state))
   })
 )
 export default class App extends Component {
@@ -62,8 +63,11 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    ipcRenderer.send('window-opened');
+
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
+    ipcRenderer.on('sync-state', (event, arg) => this.props.syncState(arg));
 
     ipcRenderer.on('set-debugger-loc', (e, payload) =>
       this.setDebuggerLocation(JSON.parse(payload))
@@ -128,6 +132,8 @@ export default class App extends Component {
   removeAllListeners() {
     ipcRenderer.removeAllListeners('toggle-devtools');
     ipcRenderer.removeAllListeners('set-debugger-loc');
+    ipcRenderer.removeAllListeners('sync-state');
+    ipcRenderer.send('window-closed');
   }
 
   background = (
