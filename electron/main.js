@@ -7,7 +7,6 @@ import { createMenuTemplate } from './menu';
 
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };
-let activeWindows = {};
 
 startListeningHandleURL(async (host, port) => {
   const wins = BrowserWindow.getAllWindows();
@@ -35,19 +34,11 @@ ipcMain.on('check-port-available', async (event, arg) => {
   event.sender.send('check-port-available-reply', true);
 });
 
-ipcMain.on('window-opened', async (event, arg) => {
-  activeWindows[event.sender.id] = event.sender;
-});
-
-ipcMain.on('window-closed', async (event, arg) => {
-  delete activeWindows[event.sender.id];
-});
-
 ipcMain.on('sync-state', async (event, arg) => {
-  Object.keys(activeWindows)
-    .filter(key => Number(key) !== event.sender.id)
-    .forEach(key => {
-      activeWindows[key].send('sync-state', arg);
+  BrowserWindow.getAllWindows()
+    .filter(win => Number(win.webContents.id) !== event.sender.id)
+    .forEach(win => {
+      win.webContents.send('sync-state', arg);
     });
 });
 

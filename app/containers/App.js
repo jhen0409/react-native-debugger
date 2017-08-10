@@ -71,8 +71,6 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    ipcRenderer.send('window-opened');
-
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
     ipcRenderer.on('sync-state', (event, arg) => this.state.syncDevices && this.props.syncState(arg));
@@ -149,7 +147,6 @@ export default class App extends Component {
     ipcRenderer.removeAllListeners('toggle-devtools');
     ipcRenderer.removeAllListeners('set-debugger-loc');
     ipcRenderer.removeAllListeners('sync-state');
-    ipcRenderer.send('window-closed');
   }
 
   background = (
