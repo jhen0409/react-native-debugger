@@ -70,17 +70,13 @@ See also - [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L
 
 Warning:
 
+The `originalXMLHttpRequest` is from WebWorker of Chrome, so it have some limitations:
+
 * It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
-* It have some limitations from Chrome (like you cannot set some headers), you need pay attention to this. For `Origin`, you can do in the console (`top` context):
-```js
-require('electron').remote.session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-  if (details.url === '__url_req_that_need_to_set_origin__') {
-    details.requestHeaders['Origin'] = '__your_origin_here__';
-  }
-  callback({ cancel: false, requestHeaders: details.requestHeaders });
-});
-```
+* React Native `FormData` support `uri` property you can use file from `CameraRoll`, but `originalFormData` doesn't supported.
 * It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
+
+We have been fixed [`Forbidden header name`](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name) problem, so you can set headers like `Origin`, `User-Agent`.
 
 Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
 
