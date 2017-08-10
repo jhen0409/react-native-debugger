@@ -52,7 +52,6 @@ const shortcutPrefix = process.platform === 'darwin' ? '⌥⌘' : 'Ctrl+Alt+';
       debugger: bindActionCreators(debuggerActions, dispatch),
       setting: bindActionCreators(settingActions, dispatch),
     },
-    syncState: (state) => dispatch(debuggerActions.syncState(state))
   })
 )
 export default class App extends Component {
@@ -65,16 +64,16 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      syncDevices: true
+      syncDevices: true,
     };
-    console.warn('Syncing connected devices');
-  };
+  }
 
   componentDidMount() {
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
-    ipcRenderer.on('sync-state', (event, arg) => this.state.syncDevices && this.props.syncState(arg));
-    ipcRenderer.on('toggle-sync', (event, arg) => this.toggleSync());
+    ipcRenderer.on('sync-state',
+      (event, arg) => this.state.syncDevices && this.props.debugger.syncState(arg));
+    ipcRenderer.on('toggle-sync', () => this.toggleSync());
 
     ipcRenderer.on('set-debugger-loc', (e, payload) =>
       this.setDebuggerLocation(JSON.parse(payload))
@@ -95,13 +94,6 @@ export default class App extends Component {
   componentWillUnmount() {
     this.removeAllListeners();
     window.notifyDevToolsThemeChange = null;
-  }
-
-  toggleSync() {
-    console.warn('Syncing devices: ' + !this.state.syncDevices);
-    this.setState({
-      syncDevices: !this.state.syncDevices
-    });
   }
 
   onResize = (x, y) => this.props.actions.setting.resizeDevTools(y / window.innerHeight);
@@ -141,6 +133,13 @@ export default class App extends Component {
       };
     }
     return { redux: size, react: 1 - size };
+  }
+
+  toggleSync() {
+    console.warn(`Syncing devices: ${!this.state.syncDevices}`);
+    this.setState({
+      syncDevices: !this.state.syncDevices,
+    });
   }
 
   removeAllListeners() {

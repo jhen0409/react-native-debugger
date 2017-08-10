@@ -25,5 +25,5 @@ export const setDebuggerWorker = (worker, status) =>
 export const syncState = (payload) =>
   ({
     type: SYNC_STATE,
-    payload
+    payload,
   });

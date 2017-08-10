@@ -1,4 +1,5 @@
 import { bindActionCreators } from 'redux';
+import { ipcRenderer } from 'electron';
 import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { DISCONNECTED } from 'remotedev-app/lib/constants/socketActionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
@@ -6,8 +7,6 @@ import { showNotification, liftedDispatch } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
 import { SET_DEBUGGER_WORKER, SYNC_STATE } from '../actions/debugger';
 import { setReduxDevToolsMethods, updateSliderContent } from '../utils/devMenu';
-import { ipcRenderer } from 'electron';
-import importState from 'remotedev-utils/lib/importState';
 
 const unboundActions = {
   showNotification,
@@ -52,7 +51,7 @@ const postImportMessage = (state) => {
       type: 'IMPORT',
       state,
       instanceId,
-      id
+      id,
     },
   });
 };
@@ -80,18 +79,14 @@ const removeWorker = () => {
 };
 
 const syncLiftedState = (liftedState) => {
-  const serialized = JSON.stringify({payload: preprocessState(liftedState)});
-  ipcRenderer.send('sync-state', serialized);
-}
-
-const preprocessState = (state) => {
-  const actionsById = state.actionsById;
+  const actionsById = liftedState.actionsById;
   const payload = [];
-  state.stagedActionIds.slice(1).forEach(id => {
+  liftedState.stagedActionIds.slice(1).forEach(id => {
     payload.push(actionsById[id].action);
   });
-  return JSON.stringify(payload);
-}
+  const serialized = JSON.stringify({ payload: JSON.stringify(payload) });
+  ipcRenderer.send('sync-state', serialized);
+};
 
 export default inStore => {
   store = inStore;
@@ -109,7 +104,9 @@ export default inStore => {
     if (action.type === LIFTED_ACTION) {
       toWorker(action);
     }
-    if (action.type === UPDATE_STATE || action.type === LIFTED_ACTION || action.type === SYNC_STATE) {
+    if (
+      action.type === UPDATE_STATE || action.type === LIFTED_ACTION || action.type === SYNC_STATE
+    ) {
       next(action);
       const state = store.getState();
       const instances = state.instances;

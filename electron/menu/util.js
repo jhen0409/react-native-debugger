@@ -16,7 +16,7 @@ export const toggleDeviceSync = () => {
   BrowserWindow.getAllWindows().forEach(window => {
     window.webContents.send('toggle-sync');
   });
-}
+};
 
 export const showAboutDialog = iconPath =>
   (remote ? remote.dialog : dialog).showMessageBox({

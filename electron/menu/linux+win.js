@@ -15,7 +15,7 @@ import {
   zoom,
   resetZoom,
   haveOpenedWindow,
-  toggleDeviceSync
+  toggleDeviceSync,
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
