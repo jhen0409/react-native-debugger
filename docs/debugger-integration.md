@@ -35,6 +35,34 @@ The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devto
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
 
+### How `Network Inspect` works?
+
+See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53), it used `XMLHttpRequest` from WebWorker of Chrome:
+
+```js
+global.XMLHttpRequest = global.originalXMLHttpRequest ?
+  global.originalXMLHttpRequest :
+  global.XMLHttpRequest;
+global.FormData = global.originalFormData ?
+  global.originalFormData :
+  global.FormData;
+```
+
+So you can open `Network` tab in devtools to inspect requests of `fetch` and `XMLHttpRequest`.
+
+Even you can do this on official remote debugger, but it have two different:
+
+* RNDebugger is based on [Electron](https://github.com/electron/electron) so it haven't CORS problem
+* We supported to set [`Forbidden header name`](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name), so you can use header like `Origin` and `User-Agent`.
+
+It have some limitations you need pay attention:
+
+* [iOS] It will passed `NSExceptionDomains` check, if you forget to set domain name, the requests will break in production, so we should be clear about the difference.
+* React Native `FormData` support `uri` property you can use file from `CameraRoll`, but `originalFormData` doesn't supported.
+* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
+
+Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Charles](https://www.charlesproxy.com) or [Stetho](https://facebook.github.io/stetho) will be better.
+
 ## Debugging tips
 
 #### Get global variables of React Native runtime in the console
@@ -50,35 +78,6 @@ In the console, you can use `require` for module of specified [`@providesModule`
 <img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">
 
 Make sure you're changed to `RNDebuggerWorker.js` context, the same as the previous tip.
-
-#### Inspect network requests by `Network` tab of Chrome DevTools (See also [#15](https://github.com/jhen0409/react-native-debugger/issues/15))
-
-We can do:
-
-```js
-// const bakXHR = global.XMLHttpRequest;
-// const bakFormData = global.FormData;
-global.XMLHttpRequest = global.originalXMLHttpRequest ?
-  global.originalXMLHttpRequest :
-  global.XMLHttpRequest;
-global.FormData = global.originalFormData ?
-  global.originalFormData :
-  global.FormData;
-```
-
-See also - [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53).
-
-Warning:
-
-The `originalXMLHttpRequest` is from WebWorker of Chrome, so it have some limitations:
-
-* [iOS] It will passed `NSExceptionDomains` check, if you forget to set domain name, the requests will break in production, so we should be clear about the difference.
-* React Native `FormData` support `uri` property you can use file from `CameraRoll`, but `originalFormData` doesn't supported.
-* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
-
-We have been fixed [`Forbidden header name`](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name) problem, so you can set headers like `Origin`, `User-Agent`.
-
-Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Charles](https://www.charlesproxy.com) or [Stetho](https://facebook.github.io/stetho) will be better.
 
 #### [iOS only] Force your app on debug mode
 
