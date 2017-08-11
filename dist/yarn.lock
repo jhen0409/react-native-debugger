@@ -13,15 +13,15 @@ adbkit-monkey@~1.0.1:
     async "~0.2.9"
 
 adbkit@^2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.10.0.tgz#ba2d46c290fc70e70b2422164268f82306303570"
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/adbkit/-/adbkit-2.11.0.tgz#9a8da51e62790f8bae5296b1c52614f69e4c2684"
   dependencies:
     adbkit-logcat "^1.1.0"
     adbkit-monkey "~1.0.1"
     bluebird "~2.9.24"
     commander "^2.3.0"
     debug "~2.6.3"
-    node-forge "^0.6.12"
+    node-forge "^0.7.1"
     split "~0.3.3"
 
 array-filter@~0.0.0:
@@ -64,8 +64,8 @@ debug@~2.6.3:
     ms "2.0.0"
 
 dot-prop@^4.1.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.1.1.tgz#a8493f0b7b5eeec82525b5c7587fa7de7ca859c1"
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.2.0.tgz#1f19e0c2e1aa0e32797c49799f2837ac6af69c57"
   dependencies:
     is-obj "^1.0.0"
 
@@ -120,9 +120,9 @@ nan@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
-node-forge@^0.6.12:
-  version "0.6.49"
-  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.6.49.tgz#f1ee95d5d74623938fe19d698aa5a26d54d2f60f"
+node-forge@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.1.tgz#9da611ea08982f4b94206b3beb4cc9665f20c300"
 
 p-limit@^1.1.0:
   version "1.1.0"
