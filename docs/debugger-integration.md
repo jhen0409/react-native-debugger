@@ -16,7 +16,7 @@ We have [developer menu](https://facebook.github.io/react-native/docs/debugging.
 
 ![Dev menu](https://cloud.githubusercontent.com/assets/3001525/25920996/5c488966-3606-11e7-8d0c-cb564671067b.gif)
 
-Just includes two developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
+Just includes three developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
 
 * Reload JS
 * Toogle Elements Inspector (RN ^0.43 support)
@@ -25,7 +25,7 @@ Just includes two developer menu features for iOS, these would be useful for rea
 Other features (cross-platform):
 
 * Clear AsyncStorage
-* Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
+* Enable / Disable [Network Inspect](#how-network-inspect-works)
 
 #### macOS Touch Bar support
 
