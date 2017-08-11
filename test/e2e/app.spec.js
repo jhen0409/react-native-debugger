@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import net from 'net';
+import http from 'http';
 import webpack from 'webpack';
 import { Server as WebSocketServer } from 'ws';
 import expect from 'expect';
@@ -160,8 +161,22 @@ describe('Application launch', function spec() {
   });
 
   describe('Import fake script after', () => {
+    const getOneRequestHeaders = port =>
+      new Promise(resolve => {
+        const server = http.createServer((req, res) => {
+          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.end('');
+          resolve(req.headers);
+          server.close();
+        });
+        server.listen(port);
+      });
+
+    let headersPromise;
     before(async () => {
       const server = new WebSocketServer({ port: customRNServerPort });
+
+      headersPromise = getOneRequestHeaders(8099);
 
       await new Promise(resolve => {
         server.on('connection', socket => {
@@ -194,6 +209,13 @@ describe('Application launch', function spec() {
       });
       const title = await this.app.browserWindow.getTitle();
       expect(title).toBe(`React Native Debugger - Connected (port ${customRNServerPort})`);
+    });
+
+    it('should received forbidden header names from xhr-test', async () => {
+      const headers = await headersPromise;
+
+      expect(headers.origin).toBe('custom_origin_here');
+      expect(headers['user-agent']).toBe('react-native');
     });
 
     it('should have @@INIT action on Redux DevTools', async () => {

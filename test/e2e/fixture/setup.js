@@ -2,6 +2,9 @@
 
 self.window = global;
 
+// Remove native fetch as react-native use whatwg-fetch polyfill
+self.fetch = undefined;
+
 const requiredModules = {
   NativeModules: {},
   Platform: {},

@@ -62,10 +62,10 @@ const isForbiddenHeaderName = header =>
   header.startsWith('Sec-') ||
   header.startsWith('sec-');
 
-export const replaceForbiddenHeadersForOriginalRequest = () => {
-  if (!window.originalXMLHttpRequest) return;
-  const originalSetRequestHeader = window.originalXMLHttpRequest.prototype.setRequestHeader;
-  window.originalXMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+export const replaceForbiddenHeadersForWorkerXHR = () => {
+  if (String(self.XMLHttpRequest).indexOf('[native code]') === -1) return;
+  const originalSetRequestHeader = self.XMLHttpRequest.prototype.setRequestHeader;
+  self.XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
     let replacedHeader = header;
     if (isForbiddenHeaderName(header)) {
       replacedHeader = `__RN_DEBUGGER_SET_HEADER_REQUEST_${header}`;
