@@ -1,5 +1,5 @@
 import path from 'path';
-import { app, ipcMain, BrowserWindow, Menu } from 'electron';
+import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
@@ -57,4 +57,16 @@ app.on('ready', async () => {
   const menuTemplate = createMenuTemplate(defaultOptions);
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
+
+  const replaceHeaderPrefix = '__RN_DEBUGGER_SET_HEADER_REQUEST_';
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    Object.entries(details.requestHeaders).forEach(([header, value]) => {
+      if (header.startsWith(replaceHeaderPrefix)) {
+        const originalHeader = header.replace(replaceHeaderPrefix, '');
+        details.requestHeaders[originalHeader] = value;
+        delete details.requestHeaders[header];
+      }
+    });
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
 });

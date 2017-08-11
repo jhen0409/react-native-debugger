@@ -16,7 +16,7 @@ We have [developer menu](https://facebook.github.io/react-native/docs/debugging.
 
 ![Dev menu](https://cloud.githubusercontent.com/assets/3001525/25920996/5c488966-3606-11e7-8d0c-cb564671067b.gif)
 
-Just includes two developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
+Just includes three developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
 
 * Reload JS
 * Toogle Elements Inspector (RN ^0.43 support)
@@ -25,7 +25,7 @@ Just includes two developer menu features for iOS, these would be useful for rea
 Other features (cross-platform):
 
 * Clear AsyncStorage
-* Network Inspect (Enable / Disable [this tip](#inpsect-network-requests-by-network-tab-of-chrome-devtools-see-also-15))
+* Enable / Disable [Network Inspect](#how-network-inspect-works)
 
 #### macOS Touch Bar support
 
@@ -34,6 +34,34 @@ Other features (cross-platform):
 The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devtools-integration.md),
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
+
+### How `Network Inspect` works?
+
+See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53), it used `XMLHttpRequest` from WebWorker of Chrome:
+
+```js
+global.XMLHttpRequest = global.originalXMLHttpRequest ?
+  global.originalXMLHttpRequest :
+  global.XMLHttpRequest;
+global.FormData = global.originalFormData ?
+  global.originalFormData :
+  global.FormData;
+```
+
+So you can open `Network` tab in devtools to inspect requests of `fetch` and `XMLHttpRequest`.
+
+Even you can do this on official remote debugger, but it have two different:
+
+* RNDebugger is based on [Electron](https://github.com/electron/electron) so it haven't CORS problem
+* We supported to set [`Forbidden header name`](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name), so you can use header like `Origin` and `User-Agent`.
+
+It have some limitations you need pay attention:
+
+* [iOS] It will passed `NSExceptionDomains` check, if you forget to set domain name, the requests will break in production, so we should be clear about the difference.
+* React Native `FormData` support `uri` property you can use file from `CameraRoll`, but `originalFormData` doesn't supported.
+* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
+
+Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Charles](https://www.charlesproxy.com) or [Stetho](https://facebook.github.io/stetho) will be better.
 
 ## Debugging tips
 
@@ -50,39 +78,6 @@ In the console, you can use `require` for module of specified [`@providesModule`
 <img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">
 
 Make sure you're changed to `RNDebuggerWorker.js` context, the same as the previous tip.
-
-#### Inspect network requests by `Network` tab of Chrome DevTools (See also [#15](https://github.com/jhen0409/react-native-debugger/issues/15))
-
-We can do:
-
-```js
-// const bakXHR = global.XMLHttpRequest;
-// const bakFormData = global.FormData;
-global.XMLHttpRequest = global.originalXMLHttpRequest ?
-  global.originalXMLHttpRequest :
-  global.XMLHttpRequest;
-global.FormData = global.originalFormData ?
-  global.originalFormData :
-  global.FormData;
-```
-
-See also - [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53).
-
-Warning:
-
-* It will break `NSExceptionDomains` for iOS, because `originalXMLHttpRequest` is from debugger worker (it will replace native request), so we should be clear about the difference in debug mode.
-* It have some limitations from Chrome (like you cannot set some headers), you need pay attention to this. For `Origin`, you can do in the console (`top` context):
-```js
-require('electron').remote.session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-  if (details.url === '__url_req_that_need_to_set_origin__') {
-    details.requestHeaders['Origin'] = '__your_origin_here__';
-  }
-  callback({ cancel: false, requestHeaders: details.requestHeaders });
-});
-```
-* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
-
-Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Stetho](https://facebook.github.io/stetho) will be better.
 
 #### [iOS only] Force your app on debug mode
 

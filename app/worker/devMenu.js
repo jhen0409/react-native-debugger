@@ -1,32 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 import { avoidWarnForRequire } from './utils';
-
-let networkInspect;
-
-const toggleNetworkInspect = enabled => {
-  if (!enabled && networkInspect) {
-    window.XMLHttpRequest = networkInspect.XMLHttpRequest;
-    window.FormData = networkInspect.FormData;
-    networkInspect = null;
-    return;
-  }
-  if (!enabled) return;
-  networkInspect = {
-    XMLHttpRequest: window.XMLHttpRequest,
-    FormData: window.FormData,
-  };
-  window.XMLHttpRequest = window.originalXMLHttpRequest
-    ? window.originalXMLHttpRequest
-    : window.XMLHttpRequest;
-  window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
-
-  console.log(
-    '[RNDebugger]',
-    'Network Inspect is enabled,',
-    'you can open `Network` tab to inspect requests of `fetch` and `XMLHttpRequest`.'
-  );
-};
+import { toggleNetworkInspect } from './networkInspect';
 
 let availableDevMenuMethods = {};
 

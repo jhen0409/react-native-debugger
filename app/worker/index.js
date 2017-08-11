@@ -30,6 +30,10 @@ self.reduxNativeDevToolsCompose = composeWithDevTools;
 self.__REDUX_DEVTOOLS_EXTENSION__ = devToolsEnhancer;
 self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = composeWithDevTools;
 
+const setupRNDebuggerBeforeImportScript = message => {
+  self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+};
+
 const setupRNDebugger = message => {
   // We need to regularly update JS runtime
   // because the changes of worker message (Redux DevTools, DevMenu)
@@ -42,7 +46,7 @@ const setupRNDebugger = message => {
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
-    self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+    setupRNDebuggerBeforeImportScript(message);
 
     Object.keys(message.inject).forEach(key => {
       self[key] = JSON.parse(message.inject[key]);
@@ -54,6 +58,7 @@ const messageHandlers = {
       error = err.message;
     }
     sendReply(null /* result */, error);
+
     if (!error) {
       setupRNDebugger(message);
     }
