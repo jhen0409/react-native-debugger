@@ -16,4 +16,4 @@ rebuild
 rm -rf node_modules/*/{example,examples,test,tests,*.md,*.markdown,CHANGELOG*,.*,Makefile}
 cd -
 
-./scripts/patch-react-devtools.sh
+./scripts/patch-modules.sh
