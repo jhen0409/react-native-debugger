@@ -39,7 +39,10 @@ window.open = (url, frameName, features = '') => {
 };
 
 window.openInEditor = (file, lineNumber) => launchEditor(file, lineNumber);
-window.toggleOpenInEditor = () => toggleOpenInEditor(currentWindow);
+window.toggleOpenInEditor = () => {
+  const { host, port } = store.getState().debugger.location;
+  return toggleOpenInEditor(currentWindow, host, port);
+};
 window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow);
 
 // Package will missing /usr/local/bin,
