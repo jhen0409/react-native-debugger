@@ -11,12 +11,14 @@ chrome.devtools.inspectedWindow.eval(`
 
 window.addEventListener('message', ({ data }) => {
   if (data.type !== 'open-in-editor') {
-    console.log(data.type, data);
     return;
   }
+  const arr = data.source.split(':');
+  const lineNumber = arr.pop(-1);
+  const file = arr.join(':');
   chrome.devtools.inspectedWindow.eval(`
     if (window.openInEditor) {
-      window.openInEditor(data.source);
+      window.openInEditor('${file}', ${Number(lineNumber)});
     }
   `);
 });

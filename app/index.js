@@ -1,11 +1,13 @@
 import getPort from 'get-port';
-import { webFrame } from 'electron';
+import { webFrame, remote } from 'electron';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './containers/App';
 import configureStore from './store/configureStore';
 import { client, tryADBReverse } from './utils/adb';
+
+const { net } = remote;
 
 webFrame.setZoomFactor(1);
 webFrame.setZoomLevelLimits(1, 1);
@@ -34,10 +36,19 @@ window.open = (url, frameName, features = '') => {
   return originWindowOpen.call(window, url, frameName, featureList.join(','));
 };
 
-window.openInEditor = (/* source */) => {
-  // TODO:
-  // * Check if it have project roots setup
-  // * Call open in editor
+window.openInEditor = (file, lineNumber) => {
+  const { host, port } = store.getState().debugger.location;
+  if (!host || !port) return;
+
+  // Use net.request for avoid network log show in Network tab
+  const request = net.request({
+    hostname: host,
+    port,
+    path: '/open-stack-frame',
+    method: 'POST',
+  });
+  request.write(JSON.stringify({ file, lineNumber }));
+  request.end();
 };
 
 // Package will missing /usr/local/bin,
