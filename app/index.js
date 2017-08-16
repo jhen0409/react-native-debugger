@@ -34,6 +34,12 @@ window.open = (url, frameName, features = '') => {
   return originWindowOpen.call(window, url, frameName, featureList.join(','));
 };
 
+window.openInEditor = (/* source */) => {
+  // TODO:
+  // * Check if it have project roots setup
+  // * Call open in editor
+};
+
 // Package will missing /usr/local/bin,
 // we need fix it for ensure child process work
 // (like launchEditor of react-devtools)
