@@ -9,6 +9,7 @@ import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
 import FormInput from '../components/FormInput';
 import Draggable from '../components/Draggable';
+import { catchConsoleLogLink } from '../../electron/devtools';
 
 const currentWindow = remote.getCurrentWindow();
 
@@ -65,9 +66,11 @@ export default class App extends Component {
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
 
-    ipcRenderer.on('set-debugger-loc', (e, payload) =>
-      this.setDebuggerLocation(JSON.parse(payload))
-    );
+    ipcRenderer.on('set-debugger-loc', (e, payload) => {
+      const location = JSON.parse(payload);
+      this.setDebuggerLocation(location);
+      catchConsoleLogLink(currentWindow, location.host || 'localhost', location.port);
+    });
     if (!this.props.debugger.isPortSettingRequired) {
       this.setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
     }
