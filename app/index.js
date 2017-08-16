@@ -3,12 +3,12 @@ import { webFrame, remote } from 'electron';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import launchEditor from 'react-dev-utils/launchEditor';
 import App from './containers/App';
 import configureStore from './store/configureStore';
 import { client, tryADBReverse } from './utils/adb';
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
-const { net } = remote;
 const currentWindow = remote.getCurrentWindow();
 
 webFrame.setZoomFactor(1);
@@ -38,20 +38,7 @@ window.open = (url, frameName, features = '') => {
   return originWindowOpen.call(window, url, frameName, featureList.join(','));
 };
 
-window.openInEditor = (file, lineNumber) => {
-  const { host, port } = store.getState().debugger.location;
-  if (!host || !port) return;
-
-  // Use net.request for avoid network log show in Network tab
-  const request = net.request({
-    hostname: host,
-    port,
-    path: '/open-stack-frame',
-    method: 'POST',
-  });
-  request.write(JSON.stringify({ file, lineNumber }));
-  request.end();
-};
+window.openInEditor = (file, lineNumber) => launchEditor(file, lineNumber);
 window.toggleOpenInEditor = () => toggleOpenInEditor(currentWindow);
 window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow);
 
