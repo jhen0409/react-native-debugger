@@ -4,6 +4,9 @@ export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
     const rndHelperQuery = "iframe[src*='chrome-extension://rndebugger-devtools-helper/main.html']";
     if (!window.__INJECT_OPEN_IN_EDITOR_SCRIPT__) {
       document.addEventListener('click', event => {
+        if (!window.__IS_OPEN_IN_EDITOR_ENABLED__) {
+          return;
+        }
         const { target } = event;
         if (target.className === 'devtools-link') {
           const source = target.title;
@@ -26,6 +29,6 @@ export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
     }
   `;
   if (win.devToolsWebContents) {
-    win.devToolsWebContents.executeJavaScript(injectScript).catch(console.log);
+    win.devToolsWebContents.executeJavaScript(injectScript);
   }
 };

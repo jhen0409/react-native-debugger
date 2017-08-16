@@ -15,6 +15,7 @@ import {
   zoom,
   resetZoom,
   haveOpenedWindow,
+  // toggleOpenInEditor,
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
@@ -35,6 +36,11 @@ export default ({ iconPath }) => [
       item('New Window', 'Ctrl+T', () =>
         createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
       ),
+      // TODO: Support window.openIdEditor in renderer for Linux / Windows
+      // item('Enable open in editor for console log', n, () => toggleOpenInEditor(getWin()), {
+      //   type: 'checkbox',
+      //   checked: false,
+      // }),
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),
     ],

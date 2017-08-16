@@ -6,8 +6,10 @@ import { Provider } from 'react-redux';
 import App from './containers/App';
 import configureStore from './store/configureStore';
 import { client, tryADBReverse } from './utils/adb';
+import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
 const { net } = remote;
+const currentWindow = remote.getCurrentWindow();
 
 webFrame.setZoomFactor(1);
 webFrame.setZoomLevelLimits(1, 1);
@@ -50,6 +52,8 @@ window.openInEditor = (file, lineNumber) => {
   request.write(JSON.stringify({ file, lineNumber }));
   request.end();
 };
+window.toggleOpenInEditor = () => toggleOpenInEditor(currentWindow);
+window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow);
 
 // Package will missing /usr/local/bin,
 // we need fix it for ensure child process work
