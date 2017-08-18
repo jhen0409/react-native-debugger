@@ -12,3 +12,16 @@ export const toggleOpenInEditor = (win, host, port) => {
 };
 
 export const isOpenInEditorEnabled = () => enabled;
+
+// It's works only if Network tab have been opened,
+// otherwise it can't found `UI.panels.network`
+export const clearNetworkLogs = win => {
+  if (win.devToolsWebContents) {
+    return win.devToolsWebContents.executeJavaScript(`(() => {
+      const { network } = UI.panels;
+      if (network && network._clearButton && network._clearButton._clicked) {
+        network._clearButton._clicked({ consume: f => f });
+      }
+    })()`);
+  }
+};

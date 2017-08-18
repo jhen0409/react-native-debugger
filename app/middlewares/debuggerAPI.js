@@ -10,11 +10,14 @@
 // Take from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debugger.html
 
 import WebSocket from 'ws';
+import { remote } from 'electron';
 import { bindActionCreators } from 'redux';
 import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
+import { clearNetworkLogs } from '../utils/devtools';
 
+const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION } = debuggerActions;
 
 let worker;
@@ -83,10 +86,11 @@ const connectToDebuggerProxy = () => {
     // Special message that asks for a new JS runtime
     if (object.method === 'prepareJSRuntime') {
       shutdownJSRuntime();
+      createJSRuntime();
       if (process.env.NODE_ENV !== 'development') {
         console.clear();
+        clearNetworkLogs(currentWindow);
       }
-      createJSRuntime();
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
