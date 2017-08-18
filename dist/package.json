@@ -11,7 +11,7 @@
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "dependencies": {
-    "adbkit": "^2.10.0",
+    "adbkit": "^2.11.0",
     "electron-store": "^1.2.0",
     "react-devtools-core": "^2.5.0"
   },
