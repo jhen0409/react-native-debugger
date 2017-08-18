@@ -43,7 +43,7 @@ export const removeUnecessaryTabs = win => {
     win.devToolsWebContents
   ) {
     return win.devToolsWebContents.executeJavaScript(`(() => {
-      const tabbedPane = UI.inspectorView._tabbedPane
+      const tabbedPane = UI.inspectorView._tabbedPane;
       if (tabbedPane) {
         tabbedPane.closeTab('elements');
         tabbedPane.closeTab('security');

@@ -8,7 +8,7 @@ Just these steps let you start RNDebugger out of box:
   * Detect react-native packager port then send to the app, if you launch packager with custom `--port`, this will very useful
 * Enable `Debug JS Remotely` of [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) on your app
 
-## Use Redux Devtools Extension API
+## Use Redux DevTools Extension API
 
 Use the same API as [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension#1-with-redux) is very simple:
 
