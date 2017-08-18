@@ -30,13 +30,15 @@ export const getCatchConsoleLogScript = (host, port) => `
 
 export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
   if (win.devToolsWebContents) {
-    win.devToolsWebContents.executeJavaScript(getCatchConsoleLogScript(host, port));
+    win.devToolsWebContents.executeJavaScript(`(() => {
+      ${getCatchConsoleLogScript(host, port)}
+    })()`);
   }
 };
 
 export const removeUnecessaryTabs = win => {
   if (!process.env.DEBUG_RNDEBUGGER && win.devToolsWebContents) {
-    return win.devToolsWebContents.executeJavaScript(`
+    return win.devToolsWebContents.executeJavaScript(`(() => {
       const tabbedPane = UI.inspectorView._tabbedPane
       if (tabbedPane) {
         tabbedPane.closeTab('elements');
@@ -47,6 +49,6 @@ export const removeUnecessaryTabs = win => {
 
         tabbedPane._leftToolbar._contentElement.remove();
       }
-    `);
+    })()`);
   }
 };
