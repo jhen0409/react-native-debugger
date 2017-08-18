@@ -2,7 +2,7 @@ import path from 'path';
 import { BrowserWindow, Menu } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
-import { catchConsoleLogLink } from './devtools';
+import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
 
 const store = new Store();
 
@@ -75,6 +75,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   win.webContents.on('devtools-opened', async () => {
     const { location } = await checkWindowInfo(win);
     catchConsoleLogLink(win, location.host, location.port);
+    removeUnecessaryTabs(win);
   });
   win.on('focus', () => onFocus(win));
   win.on('close', () => {
