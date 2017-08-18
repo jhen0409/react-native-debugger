@@ -30,6 +30,29 @@ export const getCatchConsoleLogScript = (host, port) => `
 
 export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
   if (win.devToolsWebContents) {
-    win.devToolsWebContents.executeJavaScript(getCatchConsoleLogScript(host, port));
+    win.devToolsWebContents.executeJavaScript(`(() => {
+      ${getCatchConsoleLogScript(host, port)}
+    })()`);
+  }
+};
+
+export const removeUnecessaryTabs = win => {
+  if (
+    process.env.NODE_ENV === 'production' &&
+    !process.env.DEBUG_RNDEBUGGER &&
+    win.devToolsWebContents
+  ) {
+    return win.devToolsWebContents.executeJavaScript(`(() => {
+      const tabbedPane = UI.inspectorView._tabbedPane
+      if (tabbedPane) {
+        tabbedPane.closeTab('elements');
+        tabbedPane.closeTab('security');
+        tabbedPane.closeTab('timeline'); // Performance
+        tabbedPane.closeTab('audits');
+        tabbedPane.closeTab('resources'); // Application
+
+        tabbedPane._leftToolbar._contentElement.remove();
+      }
+    })()`);
   }
 };
