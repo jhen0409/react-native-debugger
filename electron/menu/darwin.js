@@ -14,6 +14,7 @@ import {
   zoom,
   resetZoom,
   haveOpenedWindow,
+  toggleOpenInEditor,
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
@@ -35,6 +36,10 @@ export default ({ iconPath }) => [
       item('New Window', 'Command+T', () =>
         createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
       ),
+      item('Enable open in editor for console log', n, () => toggleOpenInEditor(getWin()), {
+        type: 'checkbox',
+        checked: false,
+      }),
       separator,
       item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
       item('Close', 'Command+W', n, { selector: 'performClose:' }),

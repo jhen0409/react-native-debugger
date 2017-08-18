@@ -74,6 +74,7 @@
     "node-watch": "^0.5.5",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-dev-utils": "^3.1.1",
     "react-devtools-core": "^2.5.0",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",

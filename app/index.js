@@ -1,11 +1,15 @@
 import getPort from 'get-port';
-import { webFrame } from 'electron';
+import { webFrame, remote } from 'electron';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import launchEditor from 'react-dev-utils/launchEditor';
 import App from './containers/App';
 import configureStore from './store/configureStore';
 import { client, tryADBReverse } from './utils/adb';
+import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
+
+const currentWindow = remote.getCurrentWindow();
 
 webFrame.setZoomFactor(1);
 webFrame.setZoomLevelLimits(1, 1);
@@ -33,6 +37,13 @@ window.open = (url, frameName, features = '') => {
   featureList.push('nodeIntegration=0');
   return originWindowOpen.call(window, url, frameName, featureList.join(','));
 };
+
+window.openInEditor = (file, lineNumber) => launchEditor(file, lineNumber);
+window.toggleOpenInEditor = () => {
+  const { host, port } = store.getState().debugger.location;
+  return toggleOpenInEditor(currentWindow, host, port);
+};
+window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow);
 
 // Package will missing /usr/local/bin,
 // we need fix it for ensure child process work

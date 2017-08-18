@@ -35,7 +35,17 @@ The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devto
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
 
-### How `Network Inspect` works?
+## Enable open in editor for console log
+
+You can toggle the application menu item:
+
+<img width="386" alt="2017-08-16 10 44 41" src="https://user-images.githubusercontent.com/3001525/29369913-91f2e584-8269-11e7-8ebb-10d881aa5f0a.png">
+
+Then you can click source link in console to open file in editor.
+
+Currently we used the [`launchEditor` util from Create React App](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/launchEditor.js), it can auto-detect editors, but only for macOS / Windows, for Linux, you can set `REACR_EDITOR` or `EDITOR` env in RNDebugger console, or just contribute to CRA. :)
+
+## How `Network Inspect` works?
 
 See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53), it used `XMLHttpRequest` from WebWorker of Chrome:
 
