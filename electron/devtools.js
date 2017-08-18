@@ -37,7 +37,11 @@ export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
 };
 
 export const removeUnecessaryTabs = win => {
-  if (!process.env.DEBUG_RNDEBUGGER && win.devToolsWebContents) {
+  if (
+    process.env.NODE_ENV === 'production' &&
+    !process.env.DEBUG_RNDEBUGGER &&
+    win.devToolsWebContents
+  ) {
     return win.devToolsWebContents.executeJavaScript(`(() => {
       const tabbedPane = UI.inspectorView._tabbedPane
       if (tabbedPane) {
