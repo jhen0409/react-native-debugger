@@ -15,7 +15,7 @@ import { bindActionCreators } from 'redux';
 import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
-import { clearNetworkLogs } from '../utils/devtools';
+import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
 
 const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION } = debuggerActions;
@@ -91,6 +91,7 @@ const connectToDebuggerProxy = () => {
         console.clear();
         clearNetworkLogs(currentWindow);
       }
+      selectRNDebuggerWorkerContext(currentWindow);
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();

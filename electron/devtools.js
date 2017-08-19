@@ -30,7 +30,7 @@ export const getCatchConsoleLogScript = (host, port) => `
 
 export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
   if (win.devToolsWebContents) {
-    win.devToolsWebContents.executeJavaScript(`(() => {
+    return win.devToolsWebContents.executeJavaScript(`(() => {
       ${getCatchConsoleLogScript(host, port)}
     })()`);
   }
