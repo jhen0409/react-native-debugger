@@ -29,9 +29,9 @@ You can read the section [`Integration with React Native Inspector`](https://git
 
 You can change Chrome DevTools theme (Default / Dark), the theme of React DevTools will be changed together if you have no selected another theme for React DevTools:
 
-![2017-08-23 12_25_36](https://user-images.githubusercontent.com/3001525/29598842-4335ec16-8791-11e7-8f11-55acf96d554a.gif)
+![2017-08-23 13_20_17](https://user-images.githubusercontent.com/3001525/29600011-f0782798-8798-11e7-88cf-98f50e24199d.gif)
 
-The `RNDebugger DevTools` option is meaning to match Chrome DevTools.
+The `RNDebugger DevTools` option is by default to match Chrome DevTools.
 
 __*NOTE*__ Currently Chrome DevTools (Electron) doesn't reload automatically, we need to `Toggle Developer Tools` twice (Application menu or `⌥+⌘+I` (`Ctrl+Alt+I`)), subscribe [#87](https://github.com/jhen0409/react-native-debugger/issues/87) for tracking the issue.
 
