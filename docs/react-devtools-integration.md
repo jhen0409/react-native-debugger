@@ -25,6 +25,16 @@ It's support Atom, Subline, VSCode for macOS.
 
 You can read the section [`Integration with React Native Inspector`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools#integration-with-react-native-inspector) from README of `react-devtools`, we have the same usage with the package.
 
+## Change theme of Chrome DevTools with React DevTools together
+
+You can change Chrome DevTools theme (Default / Dark), the theme of React DevTools will be changed together if you have no selected another theme for React DevTools:
+
+![2017-08-23 12_25_36](https://user-images.githubusercontent.com/3001525/29598842-4335ec16-8791-11e7-8f11-55acf96d554a.gif)
+
+The `RNDebugger DevTools` option is meaning to match Chrome DevTools.
+
+__*NOTE*__ Currently Chrome DevTools (Electron) doesn't reload automatically, we need to `Toggle Developer Tools` twice (Application menu or `⌥+⌘+I` (`Ctrl+Alt+I`)), subscribe [#87](https://github.com/jhen0409/react-native-debugger/issues/87) for tracking the issue.
+
 ## How to use it with real device?
 
 * If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native, change `'localhost'` to your machine IP.
