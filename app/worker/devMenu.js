@@ -15,9 +15,9 @@ export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false)
   const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
   // Currently `show dev menu` is only on DevMenu
   const showDevMenu =
-    (DevSettings && DevSettings.show) || NativeModules.DevMenu
-      ? NativeModules.DevMenu.show
-      : undefined;
+    (DevSettings && DevSettings.show) ||
+    (NativeModules.DevMenu && NativeModules.DevMenu.show) ||
+    undefined;
 
   const methods = {
     ...DevSettings,
