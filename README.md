@@ -6,7 +6,11 @@
 
 > Run the redux example of [react-navigation](https://github.com/react-community/react-navigation/tree/master/examples/ReduxExample) with Redux DevTools setup
 
-This is a standalone app for debugging React Native apps, it's based on the official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), and includes React Inspector / Redux DevTools.
+This is a standalone app for debugging React Native apps:
+
+* Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide [more functionally](docs/debugger-integration.md).
+* Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core).
+* Includes Redux DevTools, made [the same API](docs/debugger-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
 
 ## Installation
 
