@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { shell } from 'electron';
 import { tryADBReverse } from '../utils/adb';
 
 let ReactServer;
@@ -20,6 +21,13 @@ const styles = {
     display: 'flex',
     height: '100%',
     justifyContent: 'center',
+  },
+  tip: {
+    lineHeight: 1.5,
+  },
+  link: {
+    cursor: 'pointer',
+    color: '#777',
   },
 };
 
@@ -121,6 +129,11 @@ export default class ReactInspector extends Component {
     }
   };
 
+  handleDocLinkClick = () =>
+    shell.openExternal(
+      'https://github.com/jhen0409/react-native-debugger/blob/master/docs/react-devtools-integration.md#how-to-use-it-with-real-device'
+    );
+
   render() {
     return (
       <div id={containerId} style={styles.container}>
@@ -128,6 +141,13 @@ export default class ReactInspector extends Component {
           <h2>
             {'Waiting for React to connect…'}
           </h2>
+          <h5 style={styles.tip}>
+            {"If you're using real device, to ensure you have read "}
+            <span style={styles.link} onClick={this.handleDocLinkClick}>
+              `How to use it with real device?`
+            </span>
+            {' section in documentation.'}
+          </h5>
         </div>
       </div>
     );
