@@ -43,12 +43,14 @@ console.error = (...args) => {
 @connect(
   state => ({
     debugger: state.debugger,
+    setting: state.setting,
   }),
   dispatch => ({ dispatch })
 )
 export default class ReactInspector extends Component {
   static propTypes = {
     debugger: PropTypes.object,
+    setting: PropTypes.object,
   };
 
   static setDefaultThemeName(themeName) {
@@ -76,6 +78,13 @@ export default class ReactInspector extends Component {
       worker.addEventListener('message', this.workerOnMessage);
     } else if (!worker) {
       this.closeServerIfExists();
+    }
+    // Open / Close server when react panel opened / hidden
+    if (this.props.setting.react && !nextProps.setting.react) {
+      this.closeServerIfExists();
+    } else if (!this.props.setting.react && nextProps.setting.react) {
+      this.closeServerIfExists();
+      this.server = this.startServer();
     }
   }
 
