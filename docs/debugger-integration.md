@@ -22,6 +22,13 @@ Just includes three developer menu features for iOS, these would be useful for r
 * Toogle Elements Inspector (RN ^0.43 support)
 * Show Developer Menu
 
+For Android, you could link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) in your project to enable the features (Note that it only for regular RN project, doesn't support Expo):
+
+```bash
+$ npm install --save react-native-devsettings-android
+$ react-native link react-native-devsettings-android
+```
+
 Other features (cross-platform):
 
 * Clear AsyncStorage
