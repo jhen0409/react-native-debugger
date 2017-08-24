@@ -70,13 +70,13 @@ export default class ReactInspector extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { prevWorker } = this.props.debugger;
-    const { worker } = nextProps.debugger;
-    if (worker && prevWorker !== worker) {
+    const { worker } = this.props.debugger;
+    const { worker: nextWorker } = nextProps.debugger;
+    if (nextWorker && nextWorker !== worker) {
       this.closeServerIfExists();
       this.server = this.startServer();
-      worker.addEventListener('message', this.workerOnMessage);
-    } else if (!worker) {
+      nextWorker.addEventListener('message', this.workerOnMessage);
+    } else if (!nextWorker) {
       this.closeServerIfExists();
     }
     // Open / Close server when react panel opened / hidden
