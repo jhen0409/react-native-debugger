@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.5/rn-debugger-macos-x64.zip",
-  "name": "v0.7.5",
-  "notes": "1. Add support open file in editor by click source links of console log\n2. Remove unnecessary devtools tabs on devtools-opened\n3. Clear network logs on RN app reload\n4. Update dependencies"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.6/rn-debugger-macos-x64.zip",
+  "name": "v0.7.6",
+  "notes": "1. Fix get showDevMenu on worker\n2. Revert close `resources` tab (Application) of devtools\n3. Fix prev worker check on ReactInspector\n4. Select `RNDebuggerWorker.js` context on RN app load\n5. Show `How to use it with real device?` info on ReactInspector first render\n6. Open / Close server when react panel opened / hidden"
 }
