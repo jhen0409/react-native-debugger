@@ -40,6 +40,8 @@ console.error = (...args) => {
   return originErr(...args);
 };
 
+const isReactPanelOpen = props => props.setting.react;
+
 @connect(
   state => ({
     debugger: state.debugger,
@@ -74,15 +76,17 @@ export default class ReactInspector extends Component {
     const { worker: nextWorker } = nextProps.debugger;
     if (nextWorker && nextWorker !== worker) {
       this.closeServerIfExists();
-      this.server = this.startServer();
+      if (isReactPanelOpen(this.props)) {
+        this.server = this.startServer();
+      }
       nextWorker.addEventListener('message', this.workerOnMessage);
     } else if (!nextWorker) {
       this.closeServerIfExists();
     }
     // Open / Close server when react panel opened / hidden
-    if (this.props.setting.react && !nextProps.setting.react) {
+    if (isReactPanelOpen(this.props) && !isReactPanelOpen(nextProps)) {
       this.closeServerIfExists();
-    } else if (!this.props.setting.react && nextProps.setting.react) {
+    } else if (!isReactPanelOpen(this.props) && isReactPanelOpen(nextProps)) {
       this.closeServerIfExists();
       this.server = this.startServer();
     }
@@ -108,7 +112,9 @@ export default class ReactInspector extends Component {
     if (port && port !== this.listeningPort) {
       this.listeningPort = port;
       this.closeServerIfExists();
-      this.server = this.startServer(port);
+      if (isReactPanelOpen(this.props)) {
+        this.server = this.startServer(port);
+      }
       if (platform === 'android') tryADBReverse(port).catch(() => {});
     }
   };
