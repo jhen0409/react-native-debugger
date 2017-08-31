@@ -13,7 +13,7 @@ import WebSocket from 'ws';
 import { remote } from 'electron';
 import { bindActionCreators } from 'redux';
 import * as debuggerActions from '../actions/debugger';
-import { setDevMenuMethods } from '../utils/devMenu';
+import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
 
@@ -99,7 +99,7 @@ const connectToDebuggerProxy = () => {
       // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        object.networkInspect = localStorage.networkInspect === 'enabled';
+        object.networkInspect = networkInspect.isEnabled();
         object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
