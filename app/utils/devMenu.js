@@ -97,7 +97,6 @@ const invokeDevMethod = name => () => {
 const keyPrefix = process.platform === 'darwin' ? 'Command' : 'Ctrl';
 localShortcut.register(currentWindow, `${keyPrefix}+R`, invokeDevMethod('reload'));
 localShortcut.register(currentWindow, `${keyPrefix}+I`, invokeDevMethod('toggleElementInspector'));
-localShortcut.register(currentWindow, `${keyPrefix}+D`, invokeDevMethod('show'));
 
 const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
 

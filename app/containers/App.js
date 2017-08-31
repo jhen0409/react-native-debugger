@@ -11,7 +11,7 @@ import FormInput from '../components/FormInput';
 import Draggable from '../components/Draggable';
 import { catchConsoleLogLink } from '../../electron/devtools';
 
-const localshortcut = remote.require('electron-localshortcut');
+const localShortcut = remote.require('electron-localshortcut');
 const currentWindow = remote.getCurrentWindow();
 
 const styles = {
@@ -132,7 +132,7 @@ export default class App extends Component {
   removeAllListeners() {
     ipcRenderer.removeAllListeners('toggle-devtools');
     ipcRenderer.removeAllListeners('set-debugger-loc');
-    localshortcut.unregisterAll(currentWindow);
+    localShortcut.unregisterAll(currentWindow);
   }
 
   background = (
