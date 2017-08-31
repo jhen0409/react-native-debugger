@@ -57,7 +57,7 @@ conf@^1.0.0:
     make-dir "^1.0.0"
     pkg-up "^2.0.0"
 
-debug@~2.6.3:
+debug@^2.6.8, debug@~2.6.3:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
@@ -68,6 +68,17 @@ dot-prop@^4.1.0:
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.2.0.tgz#1f19e0c2e1aa0e32797c49799f2837ac6af69c57"
   dependencies:
     is-obj "^1.0.0"
+
+electron-is-accelerator@^0.1.0:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/electron-is-accelerator/-/electron-is-accelerator-0.1.2.tgz#509e510c26a56b55e17f863a4b04e111846ab27b"
+
+electron-localshortcut@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/electron-localshortcut/-/electron-localshortcut-2.0.2.tgz#6a1adcd6514c957328ec7912f5ccb5e1c10706db"
+  dependencies:
+    debug "^2.6.8"
+    electron-is-accelerator "^0.1.0"
 
 electron-named-image@^1.0.2:
   version "1.0.2"
