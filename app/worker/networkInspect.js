@@ -20,7 +20,7 @@ export const toggleNetworkInspect = enabled => {
   console.log(
     '[RNDebugger]',
     'Network Inspect is enabled,',
-    'you can open `Network` tab to inspect requests of `fetch` and `XMLHttpRequest`.'
+    'see the documentation (https://goo.gl/o3FvdC) for more information.'
   );
 };
 
