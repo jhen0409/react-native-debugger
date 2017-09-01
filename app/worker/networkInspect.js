@@ -1,6 +1,6 @@
-let networkInspect;
-
 const isNativeMethod = fn => String(fn).indexOf('[native code]') > -1;
+
+let networkInspect;
 
 export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
@@ -15,7 +15,7 @@ export const toggleNetworkInspect = enabled => {
       '[RNDebugger] ' +
         'I tried to enable Network Inspect but XHR ' +
         "have been replaced by worker's XHR. " +
-        'You can disable the feature (documentation: https://goo.gl/f4bjnH)' +
+        'You can disable Network Inspect (documentation: https://goo.gl/f4bjnH) ' +
         'or tracking your app code if you have called ' +
         '`global.XMLHttpRequest = global.originalXMLHttpRequest`.'
     );
