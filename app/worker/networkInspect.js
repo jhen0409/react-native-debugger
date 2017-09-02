@@ -1,4 +1,4 @@
-const isNativeMethod = fn => String(fn).indexOf('[native code]') > -1;
+const isWorkerMethod = fn => String(fn).indexOf('[native code]') > -1;
 
 let networkInspect;
 
@@ -10,7 +10,7 @@ export const toggleNetworkInspect = enabled => {
     return;
   }
   if (!enabled) return;
-  if (isNativeMethod(window.XMLHttpRequest) || isNativeMethod(window.FormData)) {
+  if (isWorkerMethod(window.XMLHttpRequest) || isWorkerMethod(window.FormData)) {
     console.warn(
       '[RNDebugger] ' +
         'I tried to enable Network Inspect but XHR ' +
@@ -76,7 +76,7 @@ const isForbiddenHeaderName = header =>
   header.startsWith('sec-');
 
 export const replaceForbiddenHeadersForWorkerXHR = () => {
-  if (!isNativeMethod(self.XMLHttpRequest)) return;
+  if (!isWorkerMethod(self.XMLHttpRequest)) return;
   const originalSetRequestHeader = self.XMLHttpRequest.prototype.setRequestHeader;
   self.XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
     let replacedHeader = header;
