@@ -1,4 +1,5 @@
 import { ipcRenderer, remote } from 'electron';
+import localShortcut from 'electron-localshortcut';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -11,7 +12,6 @@ import FormInput from '../components/FormInput';
 import Draggable from '../components/Draggable';
 import { catchConsoleLogLink } from '../../electron/devtools';
 
-const localShortcut = remote.require('electron-localshortcut');
 const currentWindow = remote.getCurrentWindow();
 
 const styles = {

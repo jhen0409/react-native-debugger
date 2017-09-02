@@ -1,8 +1,7 @@
 import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
+import localShortcut from 'electron-localshortcut';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
-
-const localShortcut = remote.require('electron-localshortcut');
 
 const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
