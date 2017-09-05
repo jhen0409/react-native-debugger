@@ -138,7 +138,7 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
     shutdownJSRuntime();
     socket.close();
   } else {
-    preconnect(connectToDebuggerProxy, true);
+    preconnect(connectToDebuggerProxy);
   }
 };
 
