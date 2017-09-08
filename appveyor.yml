@@ -8,6 +8,7 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - yarn --ignore-scripts
+  - cd node_modules/electron && yarn postinstall && cd ../..
   - cd dist && yarn && cd ..
   - cd npm-package && yarn && cd ..
 
