@@ -11,7 +11,7 @@ cache:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - yarn
+  - yarn --ignore-scripts
   - cd dist && yarn && cd ..
   - cd npm-package && yarn && cd ..
 
