@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './base.babel';
 
 const baseProdConfig = {
@@ -41,6 +42,10 @@ export default [
   buildProdConfig({
     entry: './app/index',
     target: 'electron-renderer',
+    plugins: [
+      ...baseProdConfig.plugins,
+      process.env.ANALYZE_BUNDLE ? new BundleAnalyzerPlugin() : null,
+    ].filter(p => p),
   }),
   buildProdConfig({
     entry: './app/worker/index.js',

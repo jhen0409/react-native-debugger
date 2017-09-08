@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 
 const babelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf-8'));
 // Webpack 2 have native import / export support
@@ -12,7 +13,9 @@ export default {
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
-  plugins: [],
+  plugins: [
+    new LodashModuleReplacementPlugin(),
+  ],
   resolve: {
     extensions: ['.js'],
     alias: {
