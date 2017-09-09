@@ -13,5 +13,5 @@ addons:
     packages:
       - yarn
 env:
-  - NODE_VERSION="7"
+  - NODE_VERSION="8"
 script: ./scripts/travis-build.sh

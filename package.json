@@ -18,7 +18,7 @@
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js",
-    "postinstall": "./scripts/postinstall.sh"
+    "postinstall": "node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -57,6 +57,7 @@
     "mobx-remotedev": "^0.2.8",
     "mocha": "^3.5.0",
     "raw-loader": "^0.5.1",
+    "shelljs": "^0.7.8",
     "spectron": "^3.7.2",
     "style-loader": "^0.18.2",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
@@ -83,6 +84,7 @@
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "redux-devtools": "^3.4.0",
     "redux-devtools-instrument": "^1.8.2",
     "redux-persist": "^4.8.3",
     "remotedev-app": "^0.10.8",
