@@ -63,9 +63,10 @@ const shutdownJSRuntime = () => {
 const isScriptBuildForAndroid = url =>
   url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
+let preconnectTimeout;
 const preconnect = async (fn, firstTimeout) => {
   if (firstTimeout || await checkPortStatus(port, host) !== 'open') {
-    setTimeout(() => preconnect(fn), 500);
+    preconnectTimeout = setTimeout(() => preconnect(fn), 500);
     return;
   }
   socket = await fn();
@@ -138,6 +139,8 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
     shutdownJSRuntime();
     socket.close();
   } else {
+    // Should ensure cleared timeout if called preconnect twice
+    clearTimeout(preconnectTimeout);
     preconnect(connectToDebuggerProxy);
   }
 };
