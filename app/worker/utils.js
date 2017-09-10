@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 // Avoid warning of use `window.require` on dev mode
-export const avoidWarnForRequire = (...moduleNames) => {
+const avoidWarnForRequire = moduleNames => {
   if (!moduleNames.length) moduleNames.push('NativeModules');
   return new Promise(resolve =>
     setTimeout(() => {
@@ -23,6 +23,21 @@ export const avoidWarnForRequire = (...moduleNames) => {
   );
 };
 
+const requiredModules = [
+  'MessageQueue',
+  'NativeModules',
+  'AsyncStorage',
+  'Platform',
+  'setupDevtools',
+];
+export const getRequiredModules = async () => {
+  const done = await avoidWarnForRequire(requiredModules);
+  const modules = {};
+  requiredModules.forEach(name => (modules[name] = window.__DEV__ ? window.require(name) : {}));
+  done();
+  return modules;
+};
+
 const TO_JS = 0;
 const isRNDInterval = info =>
   info.type === TO_JS &&
@@ -32,11 +47,7 @@ const isRNDInterval = info =>
   info.args[0] &&
   info.args[0][0] === self.__RND_INTERVAL__;
 
-export const ignoreRNDIntervalSpy = async () => {
-  const done = await avoidWarnForRequire('MessageQueue');
-  const MessageQueue = window.__DEV__ ? window.require('MessageQueue') : {};
-  done();
-
+export const ignoreRNDIntervalSpy = async ({ MessageQueue }) => {
   // Wrap spy function if it already set
   if (MessageQueue.prototype.__spy) {
     const originalSpyFn = MessageQueue.prototype.__spy;
