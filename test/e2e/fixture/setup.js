@@ -10,6 +10,10 @@ const requiredModules = {
   Platform: {},
   setupDevtools: undefined,
   AsyncStorage: {},
+  MessageQueue: {
+    spy: () => {},
+    prototype: { __spy: null },
+  },
 };
 // Simulate React Native's window.require polyfill
 window.require = moduleName => {
