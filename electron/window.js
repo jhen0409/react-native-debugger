@@ -82,5 +82,8 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     store.set('winBounds', win.getBounds());
     win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
   });
+  // Try to fix https://github.com/jhen0409/react-native-debugger/issues/81
+  // but really not sure because the method works fine on most machines
+  win._setEscapeTouchBarItem = () => {}; // eslint-disable-line
   return win;
 };

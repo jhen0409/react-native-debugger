@@ -101,7 +101,6 @@ export default class ReactInspector extends Component {
   }
 
   listeningPort = window.reactDevToolsPort;
-  loggedWarn = false;
 
   workerOnMessage = message => {
     const { data } = message;
@@ -120,17 +119,21 @@ export default class ReactInspector extends Component {
   };
 
   startServer(port = this.listeningPort) {
+    let loggedWarn = false;
     return getReactInspector()
       .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
-        if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
-          console.warn(
+        if (!loggedWarn && status === 'Failed to start the server.') {
+          const message = port !== 8097 ?
+            're-open the debugger window might be helpful.' :
+            'we recommended to upgrade React Native version to 0.39+ for random port support.';
+          console.error(
             '[RNDebugger]',
-            'Failed to start React DevTools server with port `8097`,',
-            'because another instance of DevTools is listening,',
-            'we recommended to upgrade React Native version to 0.39+ for random port support.'
+            `Failed to start React DevTools server with port \`${port}\`,`,
+            'because another server is listening,',
+            message
           );
-          this.loggedWarn = true;
+          loggedWarn = true;
         }
       })
       .setContentDOMNode(document.getElementById(containerId))

@@ -3,16 +3,11 @@ build: off
 os: unstable
 
 environment:
-  nodejs_version: '7'
-
-cache:
-  - "%LOCALAPPDATA%/Yarn"
-  - node_modules -> package.json
+  nodejs_version: '8'
 
 install:
   - ps: Install-Product node $env:nodejs_version
   - yarn
-  - cd dist && yarn && cd ..
   - cd npm-package && yarn && cd ..
 
 test_script:

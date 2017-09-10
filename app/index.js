@@ -1,4 +1,4 @@
-import getPort from 'get-port';
+import { findAPortNotInUse } from 'portscanner';
 import { webFrame, remote } from 'electron';
 import React from 'react';
 import { render } from 'react-dom';
@@ -56,7 +56,7 @@ if (
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
 }
 
-getPort().then(port => {
+findAPortNotInUse(19567).then(port => {
   window.reactDevToolsPort = port;
   render(
     <Provider store={store}>

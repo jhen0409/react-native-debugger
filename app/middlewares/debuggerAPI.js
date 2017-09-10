@@ -9,9 +9,9 @@
 
 // Take from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debugger.html
 
-import WebSocket from 'ws';
 import { remote } from 'electron';
 import { bindActionCreators } from 'redux';
+import { checkPortStatus } from 'portscanner';
 import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
@@ -63,7 +63,16 @@ const shutdownJSRuntime = () => {
 const isScriptBuildForAndroid = url =>
   url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
-const connectToDebuggerProxy = () => {
+let preconnectTimeout;
+const preconnect = async (fn, firstTimeout) => {
+  if (firstTimeout || await checkPortStatus(port, host) !== 'open') {
+    preconnectTimeout = setTimeout(() => preconnect(fn), 500);
+    return;
+  }
+  socket = await fn();
+};
+
+const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
@@ -116,9 +125,7 @@ const connectToDebuggerProxy = () => {
     if (e.reason) {
       console.warn(e.reason);
     }
-    setTimeout(() => {
-      socket = connectToDebuggerProxy();
-    }, 500);
+    preconnect(connectToDebuggerProxy, true);
   };
   return ws;
 };
@@ -132,7 +139,9 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
     shutdownJSRuntime();
     socket.close();
   } else {
-    socket = connectToDebuggerProxy();
+    // Should ensure cleared timeout if called preconnect twice
+    clearTimeout(preconnectTimeout);
+    preconnect(connectToDebuggerProxy);
   }
 };
 
