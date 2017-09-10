@@ -18,7 +18,7 @@
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js",
-    "postinstall": "./scripts/postinstall.sh"
+    "postinstall": "node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -52,16 +52,20 @@
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^6.0.0",
     "expect": "^1.20.2",
+    "lodash-webpack-plugin": "^0.11.4",
     "mobx": "^3.2.2",
     "mobx-remotedev": "^0.2.8",
     "mocha": "^3.5.0",
     "raw-loader": "^0.5.1",
+    "shelljs": "^0.7.8",
     "spectron": "^3.7.2",
     "style-loader": "^0.18.2",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
     "webpack": "^3.5.5",
+    "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.7.1",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "ws": "^3.1.0"
   },
   "dependencies": {
     "adbkit": "^2.11.0",
@@ -69,10 +73,10 @@
     "electron-gh-releases": "^2.0.4",
     "electron-localshortcut": "jhen0409/electron-localshortcut#fork",
     "electron-store": "^1.2.0",
-    "get-port": "^3.1.0",
     "jsan": "^3.1.9",
     "multiline-template": "^0.1.1",
     "node-watch": "^0.5.5",
+    "portscanner": "^2.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dev-utils": "^3.1.1",
@@ -80,13 +84,13 @@
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "redux-devtools": "^3.4.0",
     "redux-devtools-instrument": "^1.8.2",
     "redux-persist": "^4.8.3",
     "remotedev-app": "^0.10.8",
     "remotedev-monitor-components": "^0.0.5",
     "remotedev-slider": "^1.1.3",
-    "remotedev-utils": "^0.1.4",
-    "ws": "^3.1.0"
+    "remotedev-utils": "^0.1.4"
   },
   "optionalDependencies": {
     "electron-named-image": "^1.0.2"

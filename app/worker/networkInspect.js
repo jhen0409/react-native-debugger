@@ -1,3 +1,5 @@
+const isWorkerMethod = fn => String(fn).indexOf('[native code]') > -1;
+
 let networkInspect;
 
 export const toggleNetworkInspect = enabled => {
@@ -8,6 +10,17 @@ export const toggleNetworkInspect = enabled => {
     return;
   }
   if (!enabled) return;
+  if (isWorkerMethod(window.XMLHttpRequest) || isWorkerMethod(window.FormData)) {
+    console.warn(
+      '[RNDebugger] ' +
+        'I tried to enable Network Inspect but XHR ' +
+        "have been replaced by worker's XHR. " +
+        'You can disable Network Inspect (documentation: https://goo.gl/f4bjnH) ' +
+        'or tracking your app code if you have called ' +
+        '`global.XMLHttpRequest = global.originalXMLHttpRequest`.'
+    );
+    return;
+  }
   networkInspect = {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
@@ -20,7 +33,7 @@ export const toggleNetworkInspect = enabled => {
   console.log(
     '[RNDebugger]',
     'Network Inspect is enabled,',
-    'you can open `Network` tab to inspect requests of `fetch` and `XMLHttpRequest`.'
+    'see the documentation (https://goo.gl/o3FvdC) for more information.'
   );
 };
 
@@ -63,7 +76,7 @@ const isForbiddenHeaderName = header =>
   header.startsWith('sec-');
 
 export const replaceForbiddenHeadersForWorkerXHR = () => {
-  if (String(self.XMLHttpRequest).indexOf('[native code]') === -1) return;
+  if (!isWorkerMethod(self.XMLHttpRequest)) return;
   const originalSetRequestHeader = self.XMLHttpRequest.prototype.setRequestHeader;
   self.XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
     let replacedHeader = header;

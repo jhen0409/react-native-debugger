@@ -70,3 +70,9 @@ app.on('ready', async () => {
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 });
+
+// Pass all certificate errors in favor of Network Inspect feature
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  event.preventDefault();
+  callback(true);
+});

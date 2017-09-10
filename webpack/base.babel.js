@@ -1,20 +1,27 @@
 import fs from 'fs';
-import { join } from 'path';
+import path from 'path';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 
-const babelConfig = JSON.parse(fs.readFileSync(join(__dirname, '../.babelrc'), 'utf-8'));
+const babelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf-8'));
 // Webpack 2 have native import / export support
 babelConfig.presets = [['env', { targets: { electron: '1.6' }, modules: false }], 'react'];
 babelConfig.babelrc = false;
 
 export default {
   output: {
-    path: join(__dirname, '../dist/js'),
+    path: path.join(__dirname, '../dist/js'),
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
-  plugins: [],
+  plugins: [
+    new LodashModuleReplacementPlugin(),
+  ],
   resolve: {
     extensions: ['.js'],
+    alias: {
+      // From remotedev-app, but currently we don't need this
+      'socketcluster-client': path.resolve(__dirname, 'mock-socketcluster-client'),
+    },
   },
   module: {
     rules: [
@@ -32,10 +39,6 @@ export default {
   },
   externals: [
     'react-devtools-core/standalone',
-    // just avoid warning.
-    // this is not really used from ws. (it used fallback)
-    'utf-8-validate',
-    'bufferutil',
     // https://github.com/sindresorhus/conf/blob/master/index.js#L13
     'electron-store',
     'adbkit',
