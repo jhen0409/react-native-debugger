@@ -9,6 +9,7 @@ const reportReactDevToolsPort = (port, platform) =>
   });
 
 export const reportDefaultReactDevToolsPort = async ({ setupDevtools, Platform }) => {
+  if (Platform.__empty) return;
   /*
    * [Fallback] React Native version under 0.39 can't specified the port
    */

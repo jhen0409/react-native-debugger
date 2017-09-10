@@ -20,7 +20,7 @@ export const checkAvailableDevMenuMethods = async (
     ...DevSettings,
     show: showDevMenu,
     networkInspect: toggleNetworkInspect,
-    clearAsyncStorage: () => AsyncStorage.clear().catch(f => f),
+    clearAsyncStorage: AsyncStorage.clear ? () => AsyncStorage.clear().catch(f => f) : undefined,
   };
   const result = Object.keys(methods).filter(key => !!methods[key]);
   availableDevMenuMethods = methods;

@@ -33,7 +33,9 @@ const requiredModules = [
 export const getRequiredModules = async () => {
   const done = await avoidWarnForRequire(requiredModules);
   const modules = {};
-  requiredModules.forEach(name => (modules[name] = window.__DEV__ ? window.require(name) : {}));
+  requiredModules.forEach(
+    name => (modules[name] = window.__DEV__ ? window.require(name) : { __empty: true })
+  );
   done();
   return modules;
 };
@@ -48,6 +50,7 @@ const isRNDInterval = info =>
   info.args[0][0] === self.__RND_INTERVAL__;
 
 export const ignoreRNDIntervalSpy = async ({ MessageQueue }) => {
+  if (MessageQueue.__empty) return;
   // Wrap spy function if it already set
   if (MessageQueue.prototype.__spy) {
     const originalSpyFn = MessageQueue.prototype.__spy;
