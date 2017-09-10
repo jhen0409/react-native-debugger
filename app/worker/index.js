@@ -15,6 +15,7 @@ import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
 import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
 import * as RemoteDev from './remotedev';
+import { ignoreRNDIntervalSpy } from './utils';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -39,6 +40,7 @@ const setupRNDebugger = message => {
   // because the changes of worker message (Redux DevTools, DevMenu)
   // doesn't notify to the remote JS runtime
   self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
+  ignoreRNDIntervalSpy();
 
   checkAvailableDevMenuMethods(message.networkInspect);
   reportDefaultReactDevToolsPort();
