@@ -1,7 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 
-import { avoidWarnForRequire } from './utils';
-
 const methodGlobalName = '__REPORT_REACT_DEVTOOLS_PORT__';
 
 const reportReactDevToolsPort = (port, platform) =>
@@ -10,11 +8,8 @@ const reportReactDevToolsPort = (port, platform) =>
     platform,
   });
 
-export const reportDefaultReactDevToolsPort = async () => {
-  const done = await avoidWarnForRequire('setupDevtools', 'Platform');
-  const setupDevtools = window.__DEV__ ? window.require('setupDevtools') : undefined;
-  const Platform = window.__DEV__ ? window.require('Platform') : {};
-  done();
+export const reportDefaultReactDevToolsPort = async ({ setupDevtools, Platform }) => {
+  if (Platform.__empty) return;
   /*
    * [Fallback] React Native version under 0.39 can't specified the port
    */
