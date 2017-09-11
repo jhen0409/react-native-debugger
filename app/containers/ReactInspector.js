@@ -84,6 +84,7 @@ export default class ReactInspector extends Component {
       this.closeServerIfExists();
     }
     // Open / Close server when react panel opened / hidden
+    if (!worker && !nextWorker) return;
     if (isReactPanelOpen(this.props) && !isReactPanelOpen(nextProps)) {
       this.closeServerIfExists();
     } else if (!isReactPanelOpen(this.props) && isReactPanelOpen(nextProps)) {
@@ -124,9 +125,10 @@ export default class ReactInspector extends Component {
       .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
         if (!loggedWarn && status === 'Failed to start the server.') {
-          const message = port !== 8097 ?
-            're-open the debugger window might be helpful.' :
-            'we recommended to upgrade React Native version to 0.39+ for random port support.';
+          const message =
+            port !== 8097
+              ? 're-open the debugger window might be helpful.'
+              : 'we recommended to upgrade React Native version to 0.39+ for random port support.';
           console.error(
             '[RNDebugger]',
             `Failed to start React DevTools server with port \`${port}\`,`,
@@ -156,9 +158,7 @@ export default class ReactInspector extends Component {
     return (
       <div id={containerId} style={styles.container}>
         <div id="waiting">
-          <h2>
-            {'Waiting for React to connect…'}
-          </h2>
+          <h2>{'Waiting for React to connect…'}</h2>
           <h5 style={styles.tip}>
             {"If you're using real device, to ensure you have read "}
             <span style={styles.link} onClick={this.handleDocLinkClick}>
