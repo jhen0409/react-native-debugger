@@ -45,3 +45,11 @@ The examples was bootstrapped with [`create-react-native-app`](https://github.co
 Currently auto-update is only supported for macOS, for Linux / Windows will show dialog of new version available for download.
 
 You can also click `React Native Debugger` (`RND` for Linux / Windows) -> `Check for Updates...` in application menu.
+
+## Other documentations
+
+* [Debugger Integration](debugger-integration.md)
+* [React DevTools Integration](react-devtools-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Troubleshooting](troubleshooting.md)
+* [Contributing](contributing.md)

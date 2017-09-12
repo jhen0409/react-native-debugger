@@ -112,3 +112,11 @@ if (__DEV__) {
   NativeModules.DevMenu.debugRemotely(true)
 }
 ```
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [React DevTools Integration](react-devtools-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Troubleshooting](troubleshooting.md)
+* [Contributing](contributing.md)

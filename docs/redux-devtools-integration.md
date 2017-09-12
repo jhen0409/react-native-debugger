@@ -17,3 +17,11 @@ See also:
     - [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) (see [`the counter example`](../examples/counter-with-mobx))
     - [`mobx-state-tree`](https://github.com/mobxjs/mobx-state-tree)
 * [Troubleshooting](http://extension.remotedev.io/docs/Troubleshooting.html) (you can ignore the browser extension specified problems)
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [Debugger Integration](debugger-integration.md)
+* [React DevTools Integration](react-devtools-integration.md)
+* [Troubleshooting](troubleshooting.md)
+* [Contributing](contributing.md)

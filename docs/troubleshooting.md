@@ -25,3 +25,11 @@ If you're getting the following error:
 It may caused by [`xip.io`](http://xip.io) service (RN use it for debug on real device), it lead your machine IP doesn't resolved sometimes. It's [enabled by default](https://github.com/facebook/react-native/blob/ca9202f2385354b7a6b4d818ceb46bd96a037a7b/scripts/react-native-xcode.sh#L94), you can disable it in RN custom script on Xcode if you sure you don't need the service:
 
 <img width="839" alt="2017-07-31 1 19 34" src="https://user-images.githubusercontent.com/3001525/28763831-82811012-75f3-11e7-9675-d5ae515f4f38.png">
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [Debugger Integration](debugger-integration.md)
+* [React DevTools Integration](react-devtools-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Contributing](contributing.md)
