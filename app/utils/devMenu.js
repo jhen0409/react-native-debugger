@@ -57,6 +57,9 @@ const devMenuMethods = {
       args: [networkInspectEnabled],
     });
   },
+  showAsyncStorage: () => {
+    invokeDevMenuMethod({ name: 'showAsyncStorage' });
+  },
   clearAsyncStorage: () => {
     if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
       invokeDevMenuMethod({ name: 'clearAsyncStorage' });
@@ -80,6 +83,8 @@ contextMenu({
         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
       availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
       item(networkInspect.label(), n, devMenuMethods.networkInspect),
+      availableMethods.includes('showAsyncStorage') &&
+        item('Log AsyncStorage content', n, devMenuMethods.showAsyncStorage),
       availableMethods.includes('clearAsyncStorage') &&
         item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
       separator,

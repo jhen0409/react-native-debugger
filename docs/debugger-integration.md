@@ -31,8 +31,9 @@ $ react-native link react-native-devsettings-android
 
 Other features (cross-platform):
 
-* Clear AsyncStorage
 * Enable / Disable [Network Inspect](#how-network-inspect-works)
+* Log AsyncStorage content (`showAsyncStorageContentInDev()` in console)
+* Clear AsyncStorage
 
 #### macOS Touch Bar support
 
