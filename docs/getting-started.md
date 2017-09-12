@@ -2,11 +2,17 @@
 
 Just these steps let you start RNDebugger out of box:
 
-* All `http://localhost:<port>/debugger-ui` pages are closed
-* Make sure RNDebugger is open and wait state, or you can use [react-native-debugger-open](../npm-package) npm package instead, it can:
-  * Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
-  * Detect react-native packager port then send to the app, if you launch packager with custom `--port`, this will very useful
+* Make sure all debugger clients of React Native are closed, usually are `http://localhost:<port>/debugger-ui`
+* Make sure RNDebugger is open and wait state.
+* RNDebugger will try connect to debugger proxy, use port `8081` by default, you can new debugger window (macOS: `Command+T`, Linux/Windows: `Ctrl+T`) to specify the port if you want.
 * Enable `Debug JS Remotely` of [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) on your app
+
+## Use [`react-native-debugger-open`](../npm-package)
+
+If you don‘t care to add a dependency, you can use the package, it can help to:
+
+* Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
+* Detect react-native packager port then send to the app, if you launch packager with custom `--port` or use Expo, this will very useful
 
 ## Use Redux DevTools Extension API
 
