@@ -1,6 +1,6 @@
 # Debugger integration
 
-The Debugger worker is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui, so it's only working if you're enabled `Debug JS Remotely`, you can debug your app in Chrome Developer Tools, we keeping the following tabs:
+The Debugger worker is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui, so it's only working if you're enabled `Debug JS Remotely`, you can debug your app in Chrome Developer Tools, we keep the following tabs:
 
 * `Console`
 * `Sources`
@@ -121,3 +121,11 @@ if (__DEV__) {
 ## Other references
 
 * [Keyboard Shortcuts Reference of Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/shortcuts)
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [React DevTools Integration](react-devtools-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Troubleshooting](troubleshooting.md)
+* [Contributing](contributing.md)

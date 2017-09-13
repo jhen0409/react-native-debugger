@@ -51,3 +51,11 @@ $ yarn run pack # all
 ```
 
 If you want to build binaries yourself, please remove [../electron/update.js](electron/update.js) (and [electon/main.js usage](electon/main.js)), `osx-sign` in [../scripts/package-macos.sh](scripts/package-macos.sh).
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [Debugger Integration](debugger-integration.md)
+* [React DevTools Integration](react-devtools-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Troubleshooting](troubleshooting.md)

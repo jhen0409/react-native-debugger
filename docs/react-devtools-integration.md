@@ -46,3 +46,11 @@ __*NOTE*__ Currently Chrome DevTools (Electron) doesn't reload automatically, we
 ## Get `$r` global variable of React Native runtime in the console
 
 Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [Debugger Integration](debugger-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Troubleshooting](troubleshooting.md)
+* [Contributing](contributing.md)
