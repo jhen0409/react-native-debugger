@@ -31,7 +31,7 @@ See [`Redux DevTools Integration`](redux-devtools-integration.md) section for mo
 
 * [React Native](https://github.com/facebook/react-native) >= 0.21.0
 * [React Native for macOS](https://github.com/ptmt/react-native-desktop) (formerly react-native-desktop) >= 0.8.7
-* [React Native for Windows](https://github.com/ReactWindows/react-native-windows/blob/master/Libraries/Devtools/setupDevtools.windows.js) (need to remove [setupDevtools.windows.js](https://github.com/ReactWindows/react-native-windows/blob/master/Libraries/Devtools/setupDevtools.windows.js))
+* [React Native for Windows](https://github.com/Microsoft/react-native-windows)
 
 ## Examples for use RNDebugger
 
