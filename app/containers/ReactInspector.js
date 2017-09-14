@@ -55,10 +55,6 @@ export default class ReactInspector extends Component {
     setting: PropTypes.object,
   };
 
-  static setDefaultThemeName(themeName) {
-    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
-  }
-
   static setProjectRoots(projectRoots) {
     getReactInspector().setProjectRoots(projectRoots);
   }
@@ -78,10 +74,14 @@ export default class ReactInspector extends Component {
       this.closeServerIfExists();
       if (isReactPanelOpen(this.props)) {
         this.server = this.startServer();
+        this.setDefaultThemeName(nextProps.setting.themeName);
       }
       nextWorker.addEventListener('message', this.workerOnMessage);
     } else if (!nextWorker) {
       this.closeServerIfExists();
+    }
+    if (this.props.setting.themeName !== nextProps.setting.themeName) {
+      this.setDefaultThemeName(nextProps.setting.themeName);
     }
     // Open / Close server when react panel opened / hidden
     if (!worker && !nextWorker) return;
@@ -99,6 +99,10 @@ export default class ReactInspector extends Component {
 
   componentWillUnmount() {
     this.closeServerIfExists();
+  }
+
+  setDefaultThemeName(themeName) {
+    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
   }
 
   listeningPort = window.reactDevToolsPort;

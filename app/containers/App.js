@@ -78,12 +78,6 @@ export default class App extends Component {
     window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.setting.themeName !== nextProps.setting.themeName) {
-      ReactInspector.setDefaultThemeName(nextProps.setting.themeName);
-    }
-  }
-
   componentWillUnmount() {
     this.removeAllListeners();
     window.notifyDevToolsThemeChange = null;
