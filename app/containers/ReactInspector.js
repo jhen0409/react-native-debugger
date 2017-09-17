@@ -31,15 +31,6 @@ const styles = {
   },
 };
 
-// Avoid errors
-const originErr = console.error;
-console.error = (...args) => {
-  if (args[0] === '[React DevTools]') {
-    return;
-  }
-  return originErr(...args);
-};
-
 const isReactPanelOpen = props => props.setting.react;
 
 @connect(
