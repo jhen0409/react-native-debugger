@@ -9,7 +9,11 @@ export const getShowAsyncStorageFn = AsyncStorage => {
     const keys = await AsyncStorage.getAllKeys();
     const items = await Promise.all(keys.map(key => AsyncStorage.getItem(key)));
     const table = {};
-    keys.forEach((key, index) => (table[key] = { content: items[index] }));
-    console.table(table);
+    if (keys.length) {
+      keys.forEach((key, index) => (table[key] = { content: items[index] }));
+      console.table(table);
+    } else {
+      console.log('[RNDebugger] No AsyncStorage content.');
+    }
   };
 };
