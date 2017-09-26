@@ -52,6 +52,15 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('before-quit', async event => {
+  event.preventDefault();
+  for (const win of BrowserWindow.getAllWindows()) {
+    win.removeAllListeners('close');
+    await win.close();
+  }
+  process.exit();
+});
+
 app.on('ready', async () => {
   await installExtensions();
 
