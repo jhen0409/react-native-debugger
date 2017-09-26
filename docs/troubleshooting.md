@@ -16,6 +16,7 @@ Fortunately, the current versions of RNDebugger (Chromium 58) is better than Chr
 
 Before:  
 <img width="704" alt="2017-09-19 5 40 18 pm" src="https://user-images.githubusercontent.com/3001525/30586300-27e0df7e-9cf5-11e7-9614-07162e86680c.png">
+
 After:  
 <img width="704" alt="2017-09-19 5 41 27 pm" src="https://user-images.githubusercontent.com/3001525/30586302-29e0b268-9cf5-11e7-9206-e222bd753aa1.png">
 
