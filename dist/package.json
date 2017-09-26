@@ -14,9 +14,9 @@
   "dependencies": {
     "adbkit": "^2.11.0",
     "electron-store": "^1.2.0",
-    "react-devtools-core": "^2.5.0"
+    "react-devtools-core": "^2.5.2"
   },
   "optionalDependencies": {
-    "electron-named-image": "^1.0.2"
+    "electron-named-image": "^1.0.4"
   }
 }
