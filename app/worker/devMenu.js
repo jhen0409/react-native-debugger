@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 import { toggleNetworkInspect } from './networkInspect';
+import { getClearAsyncStorageFn, getShowAsyncStorageFn } from './asyncStorage';
 
 let availableDevMenuMethods = {};
 
@@ -20,8 +21,12 @@ export const checkAvailableDevMenuMethods = async (
     ...DevSettings,
     show: showDevMenu,
     networkInspect: toggleNetworkInspect,
-    clearAsyncStorage: AsyncStorage.clear ? () => AsyncStorage.clear().catch(f => f) : undefined,
+    showAsyncStorage: getShowAsyncStorageFn(AsyncStorage),
+    clearAsyncStorage: getClearAsyncStorageFn(AsyncStorage),
   };
+  if (methods.showAsyncStorage) {
+    window.showAsyncStorageContentInDev = methods.showAsyncStorage;
+  }
   const result = Object.keys(methods).filter(key => !!methods[key]);
   availableDevMenuMethods = methods;
 
