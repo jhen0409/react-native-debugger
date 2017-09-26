@@ -1,6 +1,11 @@
 # Debugger integration
 
-The Debugger worker is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui.
+The Debugger worker is referenced from [react-native](https://github.com/facebook/react-native/blob/master/local-cli/server/util/) debugger-ui, so it's only working if you're enabled `Debug JS Remotely`, you can debug your app in Chrome Developer Tools, we keep the following tabs:
+
+* `Console`
+* `Sources`
+* `Network` (Inspect Network requests if you are enabled [Network Inspect](#how-network-inspect-works))
+* `Memory`
 
 ## Multiple React Native packager (custom port) support
 
@@ -18,8 +23,8 @@ We have [developer menu](https://facebook.github.io/react-native/docs/debugging.
 
 Just includes three developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
 
-* Reload JS
-* Toogle Elements Inspector (RN ^0.43 support)
+* Reload JS (macOS: `Command+R`, Windows / Linux: `Ctrl+R`)
+* Toogle Elements Inspector (macOS: `Command+I`, Windows / Linux: `Ctrl+I`) (RN ^0.43 support)
 * Show Developer Menu
 
 For Android, you could link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) in your project to enable the features (Note that it only for regular RN project, doesn't support Expo):
@@ -85,7 +90,7 @@ Also, if you want to inspect deeper network requests (Like request of `Image`), 
 
 #### Get global variables of React Native runtime in the console
 
-You need to switch worker thread for console, open `Console` tab on Chrome DevTools, tap `top` context and change to `RNDebuggerWorker.js` context:
+You need to switch worker thread for console, open `Console` tab on Chrome DevTools, and make sure you are in `RNDebuggerWorker.js` context:
 
 ![2016-11-05 6 56 45](https://cloud.githubusercontent.com/assets/3001525/20025024/7edce770-a325-11e6-9e77-618c7ba04123.png)
 
@@ -95,7 +100,7 @@ In the console, you can use `require` for module of specified [`@providesModule`
 
 <img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">
 
-Make sure you're changed to `RNDebuggerWorker.js` context, the same as the previous tip.
+Make sure you are in `RNDebuggerWorker.js` context, the same as the previous tip.
 
 #### [iOS only] Force your app on debug mode
 
@@ -113,6 +118,10 @@ if (__DEV__) {
   NativeModules.DevMenu.debugRemotely(true)
 }
 ```
+
+## Other references
+
+* [Keyboard Shortcuts Reference of Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/shortcuts)
 
 ## Other documentations
 

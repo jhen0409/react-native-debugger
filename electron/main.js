@@ -1,9 +1,12 @@
 import path from 'path';
 import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
+import localShortcut from 'electron-localshortcut';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createMenuTemplate } from './menu';
+
+global.localShortcut = localShortcut;
 
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };

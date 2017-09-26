@@ -62,7 +62,7 @@ export default ({ iconPath }) => [
     item('Select All', 'Command+A', n, { selector: 'selectAll:' }),
   ]),
   menu('View', [
-    item('Reload', 'Command+R', () => reload(getWin())),
+    item('Reload Window', 'Alt+Command+R', () => reload(getWin())),
     item('Toggle Full Screen', 'F11', () => toggleFullscreen(getWin())),
     item('Toggle Developer Tools', 'Alt+Command+I', () => toggleDevTools(getWin(), 'chrome')),
     item('Toggle React DevTools', 'Alt+Command+J', () => toggleDevTools(getWin(), 'react')),
