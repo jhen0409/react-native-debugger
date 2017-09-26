@@ -46,6 +46,14 @@ const setupRNDebugger = async message => {
   reportDefaultReactDevToolsPort(modules);
 };
 
+const beforeTerminate = () => {
+  // Clean for notify native bridge
+  if (window.__RND_INTERVAL__) {
+    clearInterval(window.__RND_INTERVAL__);
+    window.__RND_INTERVAL__ = null;
+  }
+};
+
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
     setupRNDebuggerBeforeImportScript(message);
@@ -77,6 +85,11 @@ addEventListener('message', message => {
 
   if (object.method === 'invokeDevMenuMethod') {
     invokeDevMenuMethod(object.name, object.args);
+    return false;
+  }
+
+  if (object.method === 'beforeTerminate') {
+    beforeTerminate();
     return false;
   }
 

@@ -78,9 +78,13 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     removeUnecessaryTabs(win);
   });
   win.on('focus', () => onFocus(win));
-  win.on('close', () => {
+  win.on('close', event => {
+    event.preventDefault();
     store.set('winBounds', win.getBounds());
     win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
+    executeJavaScript(win, 'window.beforeWindowClose()').then(() => {
+      win.destroy();
+    });
   });
   // Try to fix https://github.com/jhen0409/react-native-debugger/issues/81
   // but really not sure because the method works fine on most machines
