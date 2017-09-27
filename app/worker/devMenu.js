@@ -34,7 +34,7 @@ export const checkAvailableDevMenuMethods = async (
   postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
 
-export const invokeDevMenuMethod = (name, args = []) => {
+export const invokeDevMenuMethodIfAvailable = (name, args = []) => {
   const method = availableDevMenuMethods[name];
   if (method) method(...args);
 };

@@ -31,6 +31,7 @@ const requiredModules = [
   'setupDevtools',
 ];
 export const getRequiredModules = async () => {
+  if (!window.__DEV__ || typeof window.require !== 'function') return;
   const done = await avoidWarnForRequire(requiredModules);
   const modules = {};
   requiredModules.forEach(
