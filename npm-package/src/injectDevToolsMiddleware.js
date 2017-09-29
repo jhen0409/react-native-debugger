@@ -30,7 +30,7 @@ export const inject = modulePath => {
   });
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
-  let start = middlewareCode.indexOf(startFlag);  // already injected ?
+  let start = middlewareCode.indexOf(startFlag); // already injected ?
   let end = middlewareCode.indexOf(endFlag) + endFlag.length;
   if (start === -1) {
     start = middlewareCode.indexOf(funcFlag);

@@ -31,15 +31,6 @@ const styles = {
   },
 };
 
-// Avoid errors
-const originErr = console.error;
-console.error = (...args) => {
-  if (args[0] === '[React DevTools]') {
-    return;
-  }
-  return originErr(...args);
-};
-
 const isReactPanelOpen = props => props.setting.react;
 
 @connect(
@@ -54,10 +45,6 @@ export default class ReactInspector extends Component {
     debugger: PropTypes.object,
     setting: PropTypes.object,
   };
-
-  static setDefaultThemeName(themeName) {
-    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
-  }
 
   static setProjectRoots(projectRoots) {
     getReactInspector().setProjectRoots(projectRoots);
@@ -78,12 +65,17 @@ export default class ReactInspector extends Component {
       this.closeServerIfExists();
       if (isReactPanelOpen(this.props)) {
         this.server = this.startServer();
+        this.setDefaultThemeName(nextProps.setting.themeName);
       }
       nextWorker.addEventListener('message', this.workerOnMessage);
     } else if (!nextWorker) {
       this.closeServerIfExists();
     }
+    if (this.props.setting.themeName !== nextProps.setting.themeName) {
+      this.setDefaultThemeName(nextProps.setting.themeName);
+    }
     // Open / Close server when react panel opened / hidden
+    if (!worker && !nextWorker) return;
     if (isReactPanelOpen(this.props) && !isReactPanelOpen(nextProps)) {
       this.closeServerIfExists();
     } else if (!isReactPanelOpen(this.props) && isReactPanelOpen(nextProps)) {
@@ -98,6 +90,10 @@ export default class ReactInspector extends Component {
 
   componentWillUnmount() {
     this.closeServerIfExists();
+  }
+
+  setDefaultThemeName(themeName) {
+    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
   }
 
   listeningPort = window.reactDevToolsPort;
@@ -124,9 +120,10 @@ export default class ReactInspector extends Component {
       .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
         if (!loggedWarn && status === 'Failed to start the server.') {
-          const message = port !== 8097 ?
-            're-open the debugger window might be helpful.' :
-            'we recommended to upgrade React Native version to 0.39+ for random port support.';
+          const message =
+            port !== 8097
+              ? 're-open the debugger window might be helpful.'
+              : 'we recommended to upgrade React Native version to 0.39+ for random port support.';
           console.error(
             '[RNDebugger]',
             `Failed to start React DevTools server with port \`${port}\`,`,
@@ -156,9 +153,7 @@ export default class ReactInspector extends Component {
     return (
       <div id={containerId} style={styles.container}>
         <div id="waiting">
-          <h2>
-            {'Waiting for React to connect…'}
-          </h2>
+          <h2>{'Waiting for React to connect…'}</h2>
           <h5 style={styles.tip}>
             {"If you're using real device, to ensure you have read "}
             <span style={styles.link} onClick={this.handleDocLinkClick}>

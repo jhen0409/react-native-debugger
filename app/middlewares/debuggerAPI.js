@@ -18,7 +18,7 @@ import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
 
 const currentWindow = remote.getCurrentWindow();
-const { SET_DEBUGGER_LOCATION } = debuggerActions;
+const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;
 let actions;
@@ -65,7 +65,7 @@ const isScriptBuildForAndroid = url =>
 
 let preconnectTimeout;
 const preconnect = async (fn, firstTimeout) => {
-  if (firstTimeout || await checkPortStatus(port, host) !== 'open') {
+  if (firstTimeout || (await checkPortStatus(port, host)) !== 'open') {
     preconnectTimeout = setTimeout(() => preconnect(fn), 500);
     return;
   }
@@ -151,6 +151,12 @@ export default ({ dispatch }) => {
   return next => action => {
     if (action.type === SET_DEBUGGER_LOCATION) {
       setDebuggerLoc(action.loc);
+    }
+    if (action.type === BEFORE_WINDOW_CLOSE) {
+      // Reture boolean instead of handle reducer
+      if (!worker) return false;
+      worker.postMessage({ method: 'beforeTerminate' });
+      return true;
     }
     return next(action);
   };

@@ -1,16 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 
-import { avoidWarnForRequire } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
+import { getClearAsyncStorageFn, getShowAsyncStorageFn } from './asyncStorage';
 
 let availableDevMenuMethods = {};
 
-export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false) => {
-  const done = await avoidWarnForRequire('NativeModules', 'AsyncStorage');
-  const NativeModules = window.__DEV__ ? window.require('NativeModules') : {};
-  const AsyncStorage = window.__DEV__ ? window.require('AsyncStorage') : {};
-  done();
-
+export const checkAvailableDevMenuMethods = async (
+  { NativeModules, AsyncStorage },
+  enableNetworkInspect = false
+) => {
   // RN 0.43 use DevSettings, DevMenu will be deprecated
   const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
   // Currently `show dev menu` is only on DevMenu
@@ -23,8 +21,12 @@ export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false)
     ...DevSettings,
     show: showDevMenu,
     networkInspect: toggleNetworkInspect,
-    clearAsyncStorage: () => AsyncStorage.clear().catch(f => f),
+    showAsyncStorage: getShowAsyncStorageFn(AsyncStorage),
+    clearAsyncStorage: getClearAsyncStorageFn(AsyncStorage),
   };
+  if (methods.showAsyncStorage) {
+    window.showAsyncStorageContentInDev = methods.showAsyncStorage;
+  }
   const result = Object.keys(methods).filter(key => !!methods[key]);
   availableDevMenuMethods = methods;
 
@@ -32,7 +34,7 @@ export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false)
   postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
 
-export const invokeDevMenuMethod = (name, args = []) => {
+export const invokeDevMenuMethodIfAvailable = (name, args = []) => {
   const method = availableDevMenuMethods[name];
   if (method) method(...args);
 };

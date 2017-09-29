@@ -2,6 +2,8 @@ import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
 
+const localShortcut = remote.getGlobal('localShortcut');
+
 const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
@@ -57,6 +59,9 @@ const devMenuMethods = {
       args: [networkInspectEnabled],
     });
   },
+  showAsyncStorage: () => {
+    invokeDevMenuMethod({ name: 'showAsyncStorage' });
+  },
   clearAsyncStorage: () => {
     if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
       invokeDevMenuMethod({ name: 'clearAsyncStorage' });
@@ -80,6 +85,8 @@ contextMenu({
         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
       availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
       item(networkInspect.label(), n, devMenuMethods.networkInspect),
+      availableMethods.includes('showAsyncStorage') &&
+        item('Log AsyncStorage content', n, devMenuMethods.showAsyncStorage),
       availableMethods.includes('clearAsyncStorage') &&
         item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
       separator,
@@ -87,6 +94,15 @@ contextMenu({
       .filter(menuItem => !!menuItem)
       .concat(defaultContextMenuItems),
 });
+
+const invokeDevMethod = name => () => {
+  if (availableMethods.includes(name)) {
+    return devMenuMethods[name]();
+  }
+};
+const keyPrefix = process.platform === 'darwin' ? 'Command' : 'Ctrl';
+localShortcut.register(currentWindow, `${keyPrefix}+R`, invokeDevMethod('reload'));
+localShortcut.register(currentWindow, `${keyPrefix}+I`, invokeDevMethod('toggleElementInspector'));
 
 const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
 

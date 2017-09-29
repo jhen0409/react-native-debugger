@@ -1,9 +1,22 @@
 import path from 'path';
 import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
+import localShortcut from 'electron-localshortcut';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createMenuTemplate } from './menu';
+
+const isSecondInstance = app.makeSingleInstance(() => {
+  const win = BrowserWindow.getAllWindows()[0];
+  if (win) {
+    win.focus();
+  }
+});
+if (isSecondInstance) {
+  app.quit();
+}
+
+global.localShortcut = localShortcut;
 
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };
@@ -47,6 +60,15 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('before-quit', async event => {
+  event.preventDefault();
+  for (const win of BrowserWindow.getAllWindows()) {
+    win.removeAllListeners('close');
+    await win.close();
+  }
+  process.exit();
 });
 
 app.on('ready', async () => {

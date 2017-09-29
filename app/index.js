@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import launchEditor from 'react-dev-utils/launchEditor';
 import App from './containers/App';
 import configureStore from './store/configureStore';
+import { beforeWindowClose } from './actions/debugger';
 import { client, tryADBReverse } from './utils/adb';
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
@@ -29,6 +30,11 @@ window.checkWindowInfo = () => {
     isPortSettingRequired: debuggerState.isPortSettingRequired,
   };
 };
+
+window.beforeWindowClose = () =>
+  new Promise(
+    resolve => (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
+  );
 
 // For security, we should disable nodeIntegration when user use this open a website
 const originWindowOpen = window.open;
