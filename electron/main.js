@@ -6,6 +6,16 @@ import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createMenuTemplate } from './menu';
 
+const isSecondInstance = app.makeSingleInstance(() => {
+  const win = BrowserWindow.getAllWindows()[0];
+  if (win) {
+    win.focus();
+  }
+});
+if (isSecondInstance) {
+  app.quit();
+}
+
 global.localShortcut = localShortcut;
 
 const iconPath = path.resolve(__dirname, 'logo.png');
