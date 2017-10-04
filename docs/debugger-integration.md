@@ -15,16 +15,6 @@ If you don't use [the npm package](../npm-package) and want to change port, clic
 
 For macOS (10.12+), it used native tabs feature, see [the support page](https://support.apple.com/en-us/HT206998) for known how to use and setting.
 
-## Enable open in editor for console log
-
-You can toggle the application menu item:
-
-<img width="386" alt="2017-08-16 10 44 41" src="https://user-images.githubusercontent.com/3001525/29369913-91f2e584-8269-11e7-8ebb-10d881aa5f0a.png">
-
-Then you can click source link in console to open file in editor.
-
-Currently we used the [`launchEditor` util from Create React App](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/launchEditor.js), it can auto-detect editors, but only for macOS / Windows, for Linux, you can set `REACR_EDITOR` or `EDITOR` env in RNDebugger console, or just contribute to CRA. :)
-
 ## Debugging tips
 
 #### Get global variables of React Native runtime in the console
@@ -65,5 +55,6 @@ if (__DEV__) {
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

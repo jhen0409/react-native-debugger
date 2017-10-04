@@ -41,5 +41,6 @@ Of course, if you want to inspect deeper network requests (Like request of `Imag
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

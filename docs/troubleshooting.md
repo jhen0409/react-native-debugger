@@ -56,4 +56,5 @@ If you're experiencing the issue like [this comment of #84](https://github.com/j
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
 * [Contributing](contributing.md)

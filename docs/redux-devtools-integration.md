@@ -27,5 +27,6 @@ You can ignore the browser extension specified things.
 * [React DevTools Integration](react-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)
