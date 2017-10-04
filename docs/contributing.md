@@ -58,4 +58,7 @@ If you want to build binaries yourself, please remove [../electron/update.js](el
 * [Debugger Integration](debugger-integration.md)
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
 * [Troubleshooting](troubleshooting.md)
