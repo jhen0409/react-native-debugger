@@ -15,39 +15,6 @@ If you don't use [the npm package](../npm-package) and want to change port, clic
 
 For macOS (10.12+), it used native tabs feature, see [the support page](https://support.apple.com/en-us/HT206998) for known how to use and setting.
 
-## Developer menu integration
-
-We have [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) of React Native integration:
-
-![Dev menu](https://cloud.githubusercontent.com/assets/3001525/25920996/5c488966-3606-11e7-8d0c-cb564671067b.gif)
-
-Just includes three developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually:
-
-* Reload JS (macOS: `Command+R`, Windows / Linux: `Ctrl+R`)
-* Toogle Elements Inspector (macOS: `Command+I`, Windows / Linux: `Ctrl+I`) (RN ^0.43 support)
-* Show Developer Menu
-
-For Android, you could link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) in your project to enable the features (Note that it only for regular RN project, doesn't support Expo):
-
-```bash
-$ npm install --save react-native-devsettings-android
-$ react-native link react-native-devsettings-android
-```
-
-Other features (cross-platform):
-
-* Enable / Disable [Network Inspect](#how-network-inspect-works)
-* Log AsyncStorage content (`showAsyncStorageContentInDev()` in console)
-* Clear AsyncStorage
-
-#### macOS Touch Bar support
-
-<img alt="touch-bar" src="https://user-images.githubusercontent.com/3001525/27730359-8565810a-5dbb-11e7-9052-9fd4feb72181.png">
-
-The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devtools-integration.md),
-
-If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
-
 ## Enable open in editor for console log
 
 You can toggle the application menu item:
@@ -119,14 +86,11 @@ if (__DEV__) {
 }
 ```
 
-## Other references
-
-* [Keyboard Shortcuts Reference of Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools/shortcuts)
-
 ## Other documentations
 
 * [Getting Started](getting-started.md)
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

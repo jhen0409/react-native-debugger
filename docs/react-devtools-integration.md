@@ -53,5 +53,6 @@ Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 * [Getting Started](getting-started.md)
 * [Debugger Integration](debugger-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

@@ -25,5 +25,6 @@ You can ignore the browser extension specified things.
 * [Getting Started](getting-started.md)
 * [Debugger Integration](debugger-integration.md)
 * [React DevTools Integration](react-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

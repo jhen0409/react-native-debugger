@@ -28,6 +28,7 @@ $ brew update && brew cask install react-native-debugger
 * [Debugger Integration](docs/debugger-integration.md)
 * [React DevTools Integration](docs/react-devtools-integration.md)
 * [Redux DevTools Integration](docs/redux-devtools-integration.md)
+* [Shortcut references](docs/shortcut-references.md)
 * [Troubleshooting](docs/troubleshooting.md)
 * [Contributing](docs/contributing.md)
 

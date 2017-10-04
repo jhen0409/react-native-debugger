@@ -54,4 +54,5 @@ If you're experiencing the issue like [this comment of #84](https://github.com/j
 * [Debugger Integration](debugger-integration.md)
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
 * [Contributing](contributing.md)

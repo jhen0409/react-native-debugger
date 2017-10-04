@@ -58,4 +58,5 @@ If you want to build binaries yourself, please remove [../electron/update.js](el
 * [Debugger Integration](debugger-integration.md)
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
 * [Troubleshooting](troubleshooting.md)
