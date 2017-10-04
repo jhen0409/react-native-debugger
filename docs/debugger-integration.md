@@ -17,19 +17,14 @@ For macOS (10.12+), it used native tabs feature, see [the support page](https://
 
 ## Debugging tips
 
-#### Get global variables of React Native runtime in the console
+#### Global variables in console
 
-You need to switch worker thread for console, open `Console` tab on Chrome DevTools, and make sure you are in `RNDebuggerWorker.js` context:
+When you enabled remote debugging, RNDebugger should switched context to `RNDebuggerWorker.js` automatically, so you can get global variables of React Native runtime in the console.
 
-![2016-11-05 6 56 45](https://cloud.githubusercontent.com/assets/3001525/20025024/7edce770-a325-11e6-9e77-618c7ba04123.png)
-
-#### Use `require('<providesModule>')` in the console
-
-In the console, you can use `require` for module of specified [`@providesModule`](https://github.com/facebook/react-native/search?l=JavaScript&q=providesModule&type=&utf8=✓) words in React Native, this is example for use `AsyncStorage`:
-
-<img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">
-
-Make sure you are in `RNDebuggerWorker.js` context, the same as the previous tip.
+* `$r`: You selected element on react-devtools.
+* `require('<providesModule>')`: The module specified [`@providesModule`](https://github.com/facebook/react-native/search?l=JavaScript&q=providesModule&type=&utf8=✓) words in React Native, even you can specify in your files. This is example for use `AsyncStorage`:
+<img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">  
+* `showAsyncStorageContentInDev()` - Log AsyncStorage content
 
 #### [iOS only] Force your app on debug mode
 
