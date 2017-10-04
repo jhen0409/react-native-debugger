@@ -53,7 +53,7 @@ Name                  | Description
 `revert`              | Revert rndebugger-open injection. Default is `false`
 `open`                | Run open directly instead of inject patch
 `port`                | Specified react-native packager port with `--open` option. Default is `8081`
-`expo`                | Use [Expo](https://github.com/expo) specified RN packager default port if you're not specified port.
+`expo`                | Use [Expo](https://github.com/expo)'s RN packager port if you're not specified port.
 
 You can also use following commands instead of this patch:
 
