@@ -50,7 +50,7 @@ $ npm install --save react-native-devsettings-android
 $ react-native link react-native-devsettings-android
 ```
 
-Note that it only for regular RN project, so it doesn't support Expo without eject.
+Note that it only for regular RN project, so it doesn't support CRNA without eject.
 
 ## Known issues
 
