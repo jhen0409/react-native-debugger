@@ -30,14 +30,14 @@ function connectToRND(rndPath, log, cb) {
     });
     const timeoutId = setTimeout(() => {
       if (log) {
-        console.log(`\n[RNDebugger] Cannot connect to port ${port}.\n`);
+        console.log(`\n[RNDebugger] Cannot connect to server with port ${port}.\n`);
       }
       connection.end();
     }, 1000);
     connection.on('end', () => {
       clearTimeout(timeoutId);
       if (!pass && log) {
-        console.log('\n[RNDebugger] Try to set port of React Native server failed.\n');
+        console.log('\n[RNDebugger] Try to set port of React Native packager failed.\n');
       }
       cb(pass);
     });
@@ -58,9 +58,9 @@ export default ({ port }, cb) => {
           connectToRND(rndPath, false, pass => {
             if (!pass) {
               console.log(
-                '\n[RNDebugger] Cannot open the app, maybe not install?\n' +
-                  '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\n' +
-                  "Or it's never started. (Not registered URI Scheme)\n"
+                "\n[RNDebugger] Cannot open the app, maybe you haven't install the app?\n" +
+                  'Run `brew update && brew cask install react-native-debugger` ' +
+                  'or download from https://github.com/jhen0409/react-native-debugger/releases\n'
               );
             }
             cb(pass, true);

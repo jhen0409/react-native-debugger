@@ -8,8 +8,7 @@ import {
   path as middlewarePath,
 } from './injectDevToolsMiddleware';
 
-const getModulePath = moduleName =>
-  path.join(process.cwd(), 'node_modules', moduleName);
+const getModulePath = moduleName => path.join(process.cwd(), 'node_modules', moduleName);
 
 const log = (pass, msg) => {
   const prefix = pass ? chalk.green.bgBlack('PASS') : chalk.red.bgBlack('FAIL');
@@ -34,7 +33,7 @@ export default (argv, cb) => {
   // Revert injection
   if (argv.revert) {
     const passMiddleware = revertMiddleware(modulePath);
-    const msg = 'Revert injection of React Native Debugger from React Native server';
+    const msg = 'Revert injection of React Native Debugger from React Native packager';
     log(
       passMiddleware,
       msg + (!passMiddleware ? `, the file '${middlewarePath}' not found.` : '.')
@@ -52,7 +51,8 @@ export default (argv, cb) => {
   if (process.platform !== 'darwin') {
     inject();
   } else {
-    const cwd = '/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/'; // eslint-disable-line
+    const cwd =
+      '/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/'; // eslint-disable-line
     const lsregisterPath = 'lsregister';
     if (!fs.existsSync(cwd + lsregisterPath)) return inject();
 
@@ -61,9 +61,10 @@ export default (argv, cb) => {
         log(
           false,
           '[RNDebugger] The `rndebugger://` URI scheme seems not registered, ' +
-          'maybe you haven\'t install the app? ' +
-          '(Please visit https://github.com/jhen0409/react-native-debugger#installation) ' +
-          'Or it\'s never open. (Not registered URI Scheme)'
+            "maybe you haven't install the app? " +
+            'Run `brew update && brew cask install react-native-debugger` ' +
+            'or download from https://github.com/jhen0409/react-native-debugger/releases ' +
+            'then open it to register the URI scheme.'
         );
       }
       inject();
