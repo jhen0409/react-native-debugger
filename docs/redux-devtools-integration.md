@@ -26,5 +26,6 @@ You can ignore the browser extension specified things.
 * [Debugger Integration](debugger-integration.md)
 * [React DevTools Integration](react-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

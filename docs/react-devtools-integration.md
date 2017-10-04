@@ -54,5 +54,6 @@ Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 * [Debugger Integration](debugger-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

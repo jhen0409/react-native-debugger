@@ -52,5 +52,6 @@ You can also click `React Native Debugger` (`RND` for Linux / Windows) -> `Check
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

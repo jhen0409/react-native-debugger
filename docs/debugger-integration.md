@@ -4,7 +4,7 @@ The Debugger worker is referenced from [react-native](https://github.com/faceboo
 
 * `Console`
 * `Sources`
-* `Network` (Inspect Network requests if you are enabled [Network Inspect](#how-network-inspect-works))
+* `Network` (Inspect Network requests if you are enabled [Network Inspect](network-inspect-of-chrome-devtools))
 * `Memory`
 
 ## Multiple React Native packager (custom port) support
@@ -24,34 +24,6 @@ You can toggle the application menu item:
 Then you can click source link in console to open file in editor.
 
 Currently we used the [`launchEditor` util from Create React App](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/launchEditor.js), it can auto-detect editors, but only for macOS / Windows, for Linux, you can set `REACR_EDITOR` or `EDITOR` env in RNDebugger console, or just contribute to CRA. :)
-
-## How `Network Inspect` works?
-
-See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53), it used `XMLHttpRequest` from WebWorker of Chrome:
-
-```js
-global.XMLHttpRequest = global.originalXMLHttpRequest ?
-  global.originalXMLHttpRequest :
-  global.XMLHttpRequest;
-global.FormData = global.originalFormData ?
-  global.originalFormData :
-  global.FormData;
-```
-
-So you can open `Network` tab in devtools to inspect requests of `fetch` and `XMLHttpRequest`.
-
-Even you can do this on official remote debugger, but it have two different:
-
-* RNDebugger is based on [Electron](https://github.com/electron/electron) so it haven't CORS problem
-* We supported to set [`Forbidden header name`](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name), so you can use header like `Origin` and `User-Agent`.
-
-It have some limitations you need pay attention:
-
-* [iOS] It will passed `NSExceptionDomains` check, if you forget to set domain name, the requests will break in production, so we should be clear about the difference.
-* React Native `FormData` support `uri` property you can use file from `CameraRoll`, but `originalFormData` doesn't supported.
-* It can't inspect request like `Image` load, so if your Image source have set session, the session can't apply to `fetch` and `XMLHttpRequest`.
-
-Also, if you want to inspect deeper network requests (Like request of `Image`), use tool like [Charles](https://www.charlesproxy.com) or [Stetho](https://facebook.github.io/stetho) will be better.
 
 ## Debugging tips
 
@@ -92,5 +64,6 @@ if (__DEV__) {
 * [React DevTools Integration](react-devtools-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)
