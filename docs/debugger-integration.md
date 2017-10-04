@@ -22,8 +22,7 @@ For macOS (10.12+), it used native tabs feature, see [the support page](https://
 When you enabled remote debugging, RNDebugger should switched context to `RNDebuggerWorker.js` automatically, so you can get global variables of React Native runtime in the console.
 
 * `$r`: You selected element on react-devtools.
-* `require('<providesModule>')`: The module specified [`@providesModule`](https://github.com/facebook/react-native/search?l=JavaScript&q=providesModule&type=&utf8=✓) words in React Native, even you can specify in your files. This is example for use `AsyncStorage`:
-<img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">  
+* `require('<providesModule>')`: The module specified [`@providesModule`](https://github.com/facebook/react-native/search?l=JavaScript&q=providesModule&type=&utf8=✓) words in React Native, even you can specify in your files. This is example for use `AsyncStorage`: <img width="519" alt="t" src="https://cloud.githubusercontent.com/assets/3001525/25587896/a1253c9e-2ed8-11e7-9d70-6368cfd5e016.png">
 * `showAsyncStorageContentInDev()` - Log AsyncStorage content
 
 #### [iOS only] Force your app on debug mode
