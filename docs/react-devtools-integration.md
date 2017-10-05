@@ -53,5 +53,8 @@ Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 * [Getting Started](getting-started.md)
 * [Debugger Integration](debugger-integration.md)
 * [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)
