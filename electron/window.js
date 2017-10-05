@@ -1,5 +1,5 @@
 import path from 'path';
-import { BrowserWindow, Menu } from 'electron';
+import { BrowserWindow, Menu, globalShortcut } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
@@ -28,7 +28,23 @@ const changeMenuItems = menus => {
   });
 };
 
-const onFocus = async win =>
+const invokeDevMethod = (win, name) =>
+  executeJavaScript(win, `window.invokeDevMethod && window.invokeDevMethod('${name}')`);
+
+const registerKeyboradShortcut = win => {
+  const prefix = process.platform === 'darwin' ? 'Command' : 'Ctrl';
+  // If another window focused, register a new shortcut
+  if (globalShortcut.isRegistered(`${prefix}+R`) || globalShortcut.isRegistered(`${prefix}+I`)) {
+    globalShortcut.unregisterAll();
+  }
+  globalShortcut.register(`${prefix}+R`, () => invokeDevMethod(win, 'reload'));
+  globalShortcut.register(`${prefix}+I`, () => invokeDevMethod(win, 'toggleElementInspector'));
+};
+
+const unregisterKeyboradShortcut = () => globalShortcut.unregisterAll();
+
+const registerShortcuts = async win => {
+  registerKeyboradShortcut(win);
   changeMenuItems({
     Debugger: {
       'Stay in Front': {
@@ -39,6 +55,7 @@ const onFocus = async win =>
       },
     },
   });
+};
 
 export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   const winBounds = store.get('winBounds');
@@ -64,7 +81,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   win.webContents.on('did-finish-load', () => {
     win.webContents.setZoomLevel(store.get('zoomLevel', 0));
     win.focus();
-    onFocus(win);
+    registerShortcuts(win);
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
     }
@@ -77,8 +94,17 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     catchConsoleLogLink(win, location.host, location.port);
     removeUnecessaryTabs(win);
   });
-  win.on('focus', () => onFocus(win));
+  win.on('show', () => {
+    if (!win.isFocused()) return;
+    registerShortcuts(win);
+  });
+  win.on('focus', () => registerShortcuts(win));
+  win.on('restore', () => registerShortcuts(win));
+  win.on('hide', () => unregisterKeyboradShortcut());
+  win.on('blur', () => unregisterKeyboradShortcut());
+  win.on('minimize', () => unregisterKeyboradShortcut());
   win.close = async () => {
+    unregisterKeyboradShortcut();
     store.set('winBounds', win.getBounds());
     win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
     await executeJavaScript(win, 'window.beforeWindowClose && window.beforeWindowClose()');
