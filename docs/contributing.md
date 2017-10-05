@@ -37,6 +37,7 @@ Run lint and test, currently we just wrote E2E test for RNDebugger.
 ```bash
 $ yarn lint
 $ yarn test
+$ yarn test-e2e
 ```
 
 You need to closes all React Native packager (make sure `8081` or `8088` port not listening) when running the test.

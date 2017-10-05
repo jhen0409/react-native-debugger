@@ -22,7 +22,8 @@
     "dev:electron":
       "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
-    "test": "mocha --compilers js:babel-core/register ./test/e2e/app.spec.js",
+    "test": "jest __tests__",
+    "test-e2e": "jest __e2e__ --forceExit",
     "postinstall": "node ./scripts/postinstall.js"
   },
   "repository": {
@@ -56,11 +57,10 @@
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^6.0.0",
-    "expect": "^1.20.2",
+    "jest": "^21.2.1",
     "lodash-webpack-plugin": "^0.11.4",
     "mobx": "^3.2.2",
     "mobx-remotedev": "^0.2.8",
-    "mocha": "^3.5.1",
     "raw-loader": "^0.5.1",
     "shelljs": "^0.7.8",
     "spectron": "^3.7.2",
