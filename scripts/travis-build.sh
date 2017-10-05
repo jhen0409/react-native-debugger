@@ -20,5 +20,6 @@ npm --version
 yarn
 cd npm-package && yarn && cd ..
 yarn lint
-yarn build
 yarn test
+yarn build
+yarn test-e2e
