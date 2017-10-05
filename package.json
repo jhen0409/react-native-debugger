@@ -99,5 +99,8 @@
   },
   "optionalDependencies": {
     "electron-named-image": "^1.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
