@@ -7,6 +7,7 @@ import launchEditor from 'react-dev-utils/launchEditor';
 import App from './containers/App';
 import configureStore from './store/configureStore';
 import { beforeWindowClose } from './actions/debugger';
+import { invokeDevMethod } from './utils/devMenu';
 import { client, tryADBReverse } from './utils/adb';
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
@@ -50,6 +51,8 @@ window.toggleOpenInEditor = () => {
   return toggleOpenInEditor(currentWindow, host, port);
 };
 window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow);
+
+window.invokeDevMethod = name => invokeDevMethod(name)();
 
 // Package will missing /usr/local/bin,
 // we need fix it for ensure child process work

@@ -76,7 +76,6 @@
     "adbkit": "^2.11.0",
     "electron-context-menu": "^0.9.1",
     "electron-gh-releases": "^2.0.4",
-    "electron-localshortcut": "^2.0.2",
     "electron-store": "^1.2.0",
     "jsan": "^3.1.9",
     "multiline-template": "^0.1.2",

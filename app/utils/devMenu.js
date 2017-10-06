@@ -2,8 +2,6 @@ import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
 
-const localShortcut = remote.getGlobal('localShortcut');
-
 const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
@@ -95,14 +93,11 @@ contextMenu({
       .concat(defaultContextMenuItems),
 });
 
-const invokeDevMethod = name => () => {
+export const invokeDevMethod = name => () => {
   if (availableMethods.includes(name)) {
     return devMenuMethods[name]();
   }
 };
-const keyPrefix = process.platform === 'darwin' ? 'Command' : 'Ctrl';
-localShortcut.register(currentWindow, `${keyPrefix}+R`, invokeDevMethod('reload'));
-localShortcut.register(currentWindow, `${keyPrefix}+I`, invokeDevMethod('toggleElementInspector'));
 
 const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
 
