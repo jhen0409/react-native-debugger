@@ -301,16 +301,21 @@ describe('Application launch', () => {
       await checkInstance('RemoteDev store instance 1');
     });
 
-    it("should haven't any logs in console of main window", async () => {
+    it('should have only specific logs in console of main window', async () => {
       const { client } = app;
       const logs = await client.getRenderProcessLogs();
       // Print renderer process logs
-      logs.forEach(log => {
-        console.log('Message:', log.message);
-        console.log('Source:', log.source);
-        console.log('Level:', log.level);
-      });
-      expect(logs.length).toEqual(0);
+      logs.forEach(log =>
+        console.log(`Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`)
+      );
+      expect(logs.length).toEqual(1);
+      const [formDataWarning] = logs;
+
+      expect(formDataWarning.source).toBe('worker');
+      expect(formDataWarning.level).toBe('WARNING');
+      expect(
+        formDataWarning.message.indexOf("Detected you're enabled Network Inspect") > 0
+      ).toBeTruthy();
     });
   });
 });

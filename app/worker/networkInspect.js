@@ -15,7 +15,7 @@ export const toggleNetworkInspect = enabled => {
       '[RNDebugger] ' +
         'I tried to enable Network Inspect but XHR ' +
         "have been replaced by worker's XHR. " +
-        'You can disable Network Inspect (documentation: https://goo.gl/f4bjnH) ' +
+        'You can disable Network Inspect (documentation: https://goo.gl/BVvEkJ) ' +
         'or tracking your app code if you have called ' +
         '`global.XMLHttpRequest = global.originalXMLHttpRequest`.'
     );
@@ -33,7 +33,7 @@ export const toggleNetworkInspect = enabled => {
   console.log(
     '[RNDebugger]',
     'Network Inspect is enabled,',
-    'see the documentation (https://goo.gl/o3FvdC) for more information.'
+    'see the documentation (https://goo.gl/yEcRrU) for more information.'
   );
 };
 
@@ -78,11 +78,27 @@ const isForbiddenHeaderName = header =>
 export const replaceForbiddenHeadersForWorkerXHR = () => {
   if (!isWorkerMethod(self.XMLHttpRequest)) return;
   const originalSetRequestHeader = self.XMLHttpRequest.prototype.setRequestHeader;
-  self.XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+  self.XMLHttpRequest.prototype.setRequestHeader = function setRequestHeader(header, value) {
     let replacedHeader = header;
     if (isForbiddenHeaderName(header)) {
       replacedHeader = `__RN_DEBUGGER_SET_HEADER_REQUEST_${header}`;
     }
     return originalSetRequestHeader.call(this, replacedHeader, value);
+  };
+};
+
+export const addURIWarningForWorkerFormData = () => {
+  if (!isWorkerMethod(self.FormData)) return;
+  const originAppend = FormData.prototype.append;
+  self.FormData.prototype.append = function append(key, value) {
+    if (value && value.uri) {
+      console.warn(
+        '[RNDebugger] ' +
+          "Detected you're enabled Network Inspect and using `uri` in FormData, " +
+          'it will be a problem if you use it for upload, ' +
+          'please see the documentation (https://goo.gl/yEcRrU) for more information.'
+      );
+    }
+    return originAppend.call(this, key, value);
   };
 };
