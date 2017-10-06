@@ -67,7 +67,7 @@ ${replaceFuncFlag}
               );
             }
             __rndebuggerIsOpening = false;
-            !pass && ${keyFunc}(port, true);
+            !pass && ${keyFunc}${funcCall};
           });
         } else {
           __rndebuggerIsOpening = false;
@@ -77,7 +77,7 @@ ${replaceFuncFlag}
   } else if (!skipRNDebugger) {
     __connectToRND(__rnd_path, true, pass => {
       __rndebuggerIsOpening = false;
-      !pass && ${keyFunc}(port, true);
+      !pass && ${keyFunc}${funcCall};
     });
     return;
   }
