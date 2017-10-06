@@ -16,6 +16,7 @@ const flags = {
       func: `function ${keyFunc}(port, args = '') {`,
       replaceFunc: `function ${keyFunc}(port, args = '', skipRNDebugger) {`,
       funcCall: '(port, args, true)',
+      args: "+ '&args=' + args",
     },
   },
   // react-native, react-native-macos
@@ -23,6 +24,7 @@ const flags = {
     func: `function ${keyFunc}(port) {`,
     replaceFunc: `function ${keyFunc}(port, skipRNDebugger) {`,
     funcCall: '(port, true)',
+    args: '',
   },
 };
 
