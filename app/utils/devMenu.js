@@ -74,6 +74,7 @@ const defaultContextMenuItems = [
 ];
 
 contextMenu({
+  async: true,
   window: currentWindow,
   showInspectElement: process.env.NODE_ENV === 'development',
   prepend: () =>

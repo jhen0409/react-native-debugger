@@ -2224,9 +2224,9 @@ electron-chromedriver@~1.7.1:
     electron-download "^4.1.0"
     extract-zip "^1.6.5"
 
-electron-context-menu@^0.9.1:
+electron-context-menu@jhen0409/electron-context-menu#async-popup:
   version "0.9.1"
-  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.9.1.tgz#ed4df20c080491c3c996abfcb363159946a38058"
+  resolved "https://codeload.github.com/jhen0409/electron-context-menu/tar.gz/3fdaa653da9c12922513843ea161530062691670"
   dependencies:
     electron-dl "^1.2.0"
     electron-is-dev "^0.1.1"
