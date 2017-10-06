@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.8/rn-debugger-macos-x64.zip",
-  "name": "v0.7.8",
-  "notes": "1. Fix show/hide react panel makes server start listening even if no worker running\n2. Fix problem of react-devtools default theme doesn't change\n3. Clear RND interval before debugger window close\n4. Ignore __RND_INTERVAL__ logging on MessageQueue.spy\n5. Hide source map of react-devtools-core\n6. Add method to show AsyncStorage contents by console.table\n7. Add keyboard shortcuts for trigger dev menu methods\n8. Remove Reload Window menu item\n9. Update dependencies"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.9/rn-debugger-macos-x64.zip",
+  "name": "v0.7.9",
+  "notes": "1. Fix show event of registered keyboard shortcuts\n2. Log warning if originalFormData appended uri"
 }
