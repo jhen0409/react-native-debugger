@@ -1,10 +1,11 @@
 import { bindActionCreators } from 'redux';
+import { ipcRenderer } from 'electron';
 import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { DISCONNECTED } from 'remotedev-app/lib/constants/socketActionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
 import { showNotification, liftedDispatch } from 'remotedev-app/lib/actions';
 import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
-import { SET_DEBUGGER_WORKER } from '../actions/debugger';
+import { SET_DEBUGGER_WORKER, SYNC_STATE } from '../actions/debugger';
 import { setReduxDevToolsMethods, updateSliderContent } from '../utils/devMenu';
 
 const unboundActions = {
@@ -38,6 +39,23 @@ const toWorker = ({ message, action, state, toAll }) => {
   });
 };
 
+const postImportMessage = (state) => {
+  if (!worker) return;
+
+  const instances = store.getState().instances;
+  const instanceId = getActiveInstance(instances);
+  const id = instances.options[instanceId].connectionId;
+  worker.postMessage({
+    method: 'emitReduxMessage',
+    content: {
+      type: 'IMPORT',
+      state,
+      instanceId,
+      id,
+    },
+  });
+};
+
 // Receive messages from worker
 const messaging = message => {
   const { data } = message;
@@ -60,6 +78,16 @@ const removeWorker = () => {
   worker = null;
 };
 
+const syncLiftedState = (liftedState) => {
+  const actionsById = liftedState.actionsById;
+  const payload = [];
+  liftedState.stagedActionIds.slice(1).forEach(id => {
+    payload.push(actionsById[id].action);
+  });
+  const serialized = JSON.stringify({ payload: JSON.stringify(payload) });
+  ipcRenderer.send('sync-state', serialized);
+};
+
 export default inStore => {
   store = inStore;
   actions = bindActionCreators(unboundActions, store.dispatch);
@@ -76,7 +104,9 @@ export default inStore => {
     if (action.type === LIFTED_ACTION) {
       toWorker(action);
     }
-    if (action.type === UPDATE_STATE || action.type === LIFTED_ACTION) {
+    if (
+      action.type === UPDATE_STATE || action.type === LIFTED_ACTION || action.type === SYNC_STATE
+    ) {
       next(action);
       const state = store.getState();
       const instances = state.instances;
@@ -88,6 +118,12 @@ export default inStore => {
         setReduxDevToolsMethods(false);
       }
       updateSliderContent(liftedState, action.action && action.action.dontUpdateTouchBarSlider);
+      if (action.request && action.request.type === 'ACTION') {
+        syncLiftedState(liftedState);
+      }
+      if (action.type === SYNC_STATE) {
+        postImportMessage(action.payload);
+      }
       return;
     }
     return next(action);

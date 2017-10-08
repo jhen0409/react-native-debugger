@@ -1,6 +1,7 @@
 export const SET_DEBUGGER_LOCATION = 'SET_DEBUGGER_LOCATION';
 export const SET_DEBUGGER_STATUS = 'SET_DEBUGGER_STATUS';
 export const SET_DEBUGGER_WORKER = 'SET_DEBUGGER_WORKER';
+export const SYNC_STATE = 'SYNC_STATE';
 export const BEFORE_WINDOW_CLOSE = 'BEFORE_WINDOW_CLOSE';
 
 export const setDebuggerLocation = loc => ({
@@ -17,6 +18,11 @@ export const setDebuggerWorker = (worker, status) => ({
   type: SET_DEBUGGER_WORKER,
   worker,
   status,
+});
+
+export const syncState = payload => ({
+  type: SYNC_STATE,
+  payload,
 });
 
 export const beforeWindowClose = () => ({

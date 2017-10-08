@@ -34,6 +34,14 @@ ipcMain.on('check-port-available', async (event, arg) => {
   event.sender.send('check-port-available-reply', true);
 });
 
+ipcMain.on('sync-state', async (event, arg) => {
+  BrowserWindow.getAllWindows()
+    .filter(win => Number(win.webContents.id) !== event.sender.id)
+    .forEach(win => {
+      win.webContents.send('sync-state', arg);
+    });
+});
+
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length !== 0) return;
   createWindow(defaultOptions);
