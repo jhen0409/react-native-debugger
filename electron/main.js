@@ -1,5 +1,5 @@
 import path from 'path';
-import { app, ipcMain, BrowserWindow, Menu } from 'electron';
+import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
@@ -57,6 +57,15 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('before-quit', async event => {
+  event.preventDefault();
+  for (const win of BrowserWindow.getAllWindows()) {
+    win.removeAllListeners('close');
+    await win.close();
+  }
+  process.exit();
+});
+
 app.on('ready', async () => {
   await installExtensions();
 
@@ -65,4 +74,22 @@ app.on('ready', async () => {
   const menuTemplate = createMenuTemplate(defaultOptions);
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
+
+  const replaceHeaderPrefix = '__RN_DEBUGGER_SET_HEADER_REQUEST_';
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    Object.entries(details.requestHeaders).forEach(([header, value]) => {
+      if (header.startsWith(replaceHeaderPrefix)) {
+        const originalHeader = header.replace(replaceHeaderPrefix, '');
+        details.requestHeaders[originalHeader] = value;
+        delete details.requestHeaders[header];
+      }
+    });
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+});
+
+// Pass all certificate errors in favor of Network Inspect feature
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  event.preventDefault();
+  callback(true);
 });

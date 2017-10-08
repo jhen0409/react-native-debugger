@@ -1,3 +1,8 @@
+import {
+  replaceForbiddenHeadersForWorkerXHR,
+  addURIWarningForWorkerFormData,
+} from './networkInspect';
+
 // Add the missing `global` for WebWorker
 self.global = self;
 
@@ -8,3 +13,6 @@ self.global = self;
 if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
   delete self.Blob;
 }
+
+replaceForbiddenHeadersForWorkerXHR();
+addURIWarningForWorkerFormData();

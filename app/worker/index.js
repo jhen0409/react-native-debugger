@@ -11,10 +11,11 @@
 // Edit from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debuggerWorker.js
 
 import './setup';
-import { checkAvailableDevMenuMethods, invokeDevMenuMethod } from './devMenu';
+import { checkAvailableDevMenuMethods, invokeDevMenuMethodIfAvailable } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
 import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
 import * as RemoteDev from './remotedev';
+import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -30,19 +31,27 @@ self.reduxNativeDevToolsCompose = composeWithDevTools;
 self.__REDUX_DEVTOOLS_EXTENSION__ = devToolsEnhancer;
 self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = composeWithDevTools;
 
-const setupRNDebugger = message => {
+const setupRNDebuggerBeforeImportScript = message => {
+  self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+};
+
+const setupRNDebugger = async message => {
   // We need to regularly update JS runtime
   // because the changes of worker message (Redux DevTools, DevMenu)
   // doesn't notify to the remote JS runtime
   self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
 
-  checkAvailableDevMenuMethods(message.networkInspect);
-  reportDefaultReactDevToolsPort();
+  const modules = await getRequiredModules();
+  if (modules) {
+    ignoreRNDIntervalSpy(modules);
+    checkAvailableDevMenuMethods(modules, message.networkInspect);
+    reportDefaultReactDevToolsPort(modules);
+  }
 };
 
 const messageHandlers = {
   executeApplicationScript(message, sendReply) {
-    self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+    setupRNDebuggerBeforeImportScript(message);
 
     Object.keys(message.inject).forEach(key => {
       self[key] = JSON.parse(message.inject[key]);
@@ -54,24 +63,32 @@ const messageHandlers = {
       error = err.message;
     }
     sendReply(null /* result */, error);
+
     if (!error) {
       setupRNDebugger(message);
     }
+    return false;
+  },
+  emitReduxMessage() {
+    // pass to other listeners
+    return true;
+  },
+  invokeDevMenuMethod({ name, args }) {
+    invokeDevMenuMethodIfAvailable(name, args);
+    return false;
+  },
+  beforeTerminate() {
+    // Clean for notify native bridge
+    if (window.__RND_INTERVAL__) {
+      clearInterval(window.__RND_INTERVAL__);
+      window.__RND_INTERVAL__ = null;
+    }
+    return false;
   },
 };
 
 addEventListener('message', message => {
   const object = message.data;
-
-  // handle redux message
-  if (object.method === 'emitReduxMessage') {
-    return true;
-  }
-
-  if (object.method === 'invokeDevMenuMethod') {
-    invokeDevMenuMethod(object.name, object.args);
-    return false;
-  }
 
   const sendReply = (result, error) => {
     postMessage({ replyID: object.id, result, error });
@@ -80,21 +97,21 @@ addEventListener('message', message => {
   const handler = messageHandlers[object.method];
   if (handler) {
     // Special cased handlers
-    handler(object, sendReply);
-  } else {
-    // Other methods get called on the bridge
-    let returnValue = [[], [], [], 0];
-    let error;
-    try {
-      if (typeof __fbBatchedBridge === 'object') {
-        returnValue = __fbBatchedBridge[object.method].apply(null, object.arguments);
-      } else {
-        error = 'Failed to call function, __fbBatchedBridge is undefined';
-      }
-    } catch (err) {
-      error = err.message;
-    } finally {
-      sendReply(JSON.stringify(returnValue), error);
-    }
+    return handler(object, sendReply);
   }
+  // Other methods get called on the bridge
+  let returnValue = [[], [], [], 0];
+  let error;
+  try {
+    if (typeof __fbBatchedBridge === 'object') {
+      returnValue = __fbBatchedBridge[object.method].apply(null, object.arguments);
+    } else {
+      error = 'Failed to call function, __fbBatchedBridge is undefined';
+    }
+  } catch (err) {
+    error = err.message;
+  } finally {
+    sendReply(JSON.stringify(returnValue), error);
+  }
+  return false;
 });

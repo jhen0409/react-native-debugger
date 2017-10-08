@@ -1,55 +1,32 @@
 /* eslint-disable no-underscore-dangle */
 
-import { avoidWarnForRequire } from './utils';
-
-let networkInspect;
-
-const toggleNetworkInspect = enabled => {
-  if (!enabled && networkInspect) {
-    window.XMLHttpRequest = networkInspect.XMLHttpRequest;
-    window.FormData = networkInspect.FormData;
-    networkInspect = null;
-    return;
-  }
-  if (!enabled) return;
-  networkInspect = {
-    XMLHttpRequest: window.XMLHttpRequest,
-    FormData: window.FormData,
-  };
-  window.XMLHttpRequest = window.originalXMLHttpRequest
-    ? window.originalXMLHttpRequest
-    : window.XMLHttpRequest;
-  window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
-
-  console.log(
-    '[RNDebugger]',
-    'Network Inspect is enabled,',
-    'you can open `Network` tab to inspect requests of `fetch` and `XMLHttpRequest`.'
-  );
-};
+import { toggleNetworkInspect } from './networkInspect';
+import { getClearAsyncStorageFn, getShowAsyncStorageFn } from './asyncStorage';
 
 let availableDevMenuMethods = {};
 
-export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false) => {
-  const done = await avoidWarnForRequire('NativeModules', 'AsyncStorage');
-  const NativeModules = window.__DEV__ ? window.require('NativeModules') : {};
-  const AsyncStorage = window.__DEV__ ? window.require('AsyncStorage') : {};
-  done();
-
+export const checkAvailableDevMenuMethods = async (
+  { NativeModules, AsyncStorage },
+  enableNetworkInspect = false
+) => {
   // RN 0.43 use DevSettings, DevMenu will be deprecated
   const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
   // Currently `show dev menu` is only on DevMenu
   const showDevMenu =
-    (DevSettings && DevSettings.show) || NativeModules.DevMenu
-      ? NativeModules.DevMenu.show
-      : undefined;
+    (DevSettings && DevSettings.show) ||
+    (NativeModules.DevMenu && NativeModules.DevMenu.show) ||
+    undefined;
 
   const methods = {
     ...DevSettings,
     show: showDevMenu,
     networkInspect: toggleNetworkInspect,
-    clearAsyncStorage: () => AsyncStorage.clear().catch(f => f),
+    showAsyncStorage: getShowAsyncStorageFn(AsyncStorage),
+    clearAsyncStorage: getClearAsyncStorageFn(AsyncStorage),
   };
+  if (methods.showAsyncStorage) {
+    window.showAsyncStorageContentInDev = methods.showAsyncStorage;
+  }
   const result = Object.keys(methods).filter(key => !!methods[key]);
   availableDevMenuMethods = methods;
 
@@ -57,7 +34,7 @@ export const checkAvailableDevMenuMethods = async (enableNetworkInspect = false)
   postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
 
-export const invokeDevMenuMethod = (name, args = []) => {
+export const invokeDevMenuMethodIfAvailable = (name, args = []) => {
   const method = availableDevMenuMethods[name];
   if (method) method(...args);
 };

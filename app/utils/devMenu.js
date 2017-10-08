@@ -20,7 +20,10 @@ let storeLiftedState;
 /* slider, prev, next */
 let rightBar = {};
 
-const getBarItems = bar => Object.keys(bar).map(key => bar[key]).filter(barItem => !!barItem);
+const getBarItems = bar =>
+  Object.keys(bar)
+    .map(key => bar[key])
+    .filter(barItem => !!barItem);
 const setTouchBar = () =>
   currentWindow.setTouchBar([
     ...getBarItems(leftBar),
@@ -30,13 +33,14 @@ const setTouchBar = () =>
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
-const networkInspect = {
-  isEnabled: () => localStorage.networkInspect === 'enabled',
-  getHighlightColor: () => (networkInspect.isEnabled() ? '#7A7A7A' : '#363636'),
+let networkInspectEnabled = false;
+export const networkInspect = {
+  isEnabled: () => !!networkInspectEnabled,
+  getHighlightColor: () => (networkInspectEnabled ? '#7A7A7A' : '#363636'),
   toggle() {
-    localStorage.networkInspect = networkInspect.isEnabled() ? 'disabled' : 'enabled';
+    networkInspectEnabled = !networkInspectEnabled;
   },
-  label: () => (networkInspect.isEnabled() ? 'Disable Network Inspect' : 'Enable Network Inspect'),
+  label: () => (networkInspectEnabled ? 'Disable Network Inspect' : 'Enable Network Inspect'),
 };
 
 const devMenuMethods = {
@@ -50,8 +54,11 @@ const devMenuMethods = {
     }
     invokeDevMenuMethod({
       name: 'networkInspect',
-      args: [networkInspect.isEnabled()],
+      args: [networkInspectEnabled],
     });
+  },
+  showAsyncStorage: () => {
+    invokeDevMenuMethod({ name: 'showAsyncStorage' });
   },
   clearAsyncStorage: () => {
     if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
@@ -67,6 +74,7 @@ const defaultContextMenuItems = [
 ];
 
 contextMenu({
+  async: true,
   window: currentWindow,
   showInspectElement: process.env.NODE_ENV === 'development',
   prepend: () =>
@@ -76,6 +84,8 @@ contextMenu({
         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
       availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
       item(networkInspect.label(), n, devMenuMethods.networkInspect),
+      availableMethods.includes('showAsyncStorage') &&
+        item('Log AsyncStorage content', n, devMenuMethods.showAsyncStorage),
       availableMethods.includes('clearAsyncStorage') &&
         item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
       separator,
@@ -83,6 +93,12 @@ contextMenu({
       .filter(menuItem => !!menuItem)
       .concat(defaultContextMenuItems),
 });
+
+export const invokeDevMethod = name => () => {
+  if (availableMethods.includes(name)) {
+    return devMenuMethods[name]();
+  }
+};
 
 const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
 

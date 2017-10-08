@@ -1,51 +1,55 @@
 import fs from 'fs';
 import path from 'path';
 import net from 'net';
+import http from 'http';
 import webpack from 'webpack';
 import { Server as WebSocketServer } from 'ws';
-import expect from 'expect';
 import electronPath from 'electron';
 import { Application } from 'spectron';
-import { delay } from '../utils/e2e.js';
-import autoUpdateFeed from '../../auto_updater.json';
+import autoUpdateFeed from '../auto_updater.json';
 
-describe('Application launch', function spec() {
-  this.timeout(6e4);
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
-  before(async () => {
+// eslint-disable-next-line
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 6e4;
+
+describe('Application launch', () => {
+  let app;
+
+  beforeAll(async () => {
     // Build a bundle for simulate RNDebugger worker run react-native bundle,
     // it included redux, mobx, remotedev tests
     await new Promise(resolve =>
       webpack({
-        entry: './test/e2e/fixture/app',
+        entry: './__e2e__/fixture/app',
         output: {
-          filename: './test/e2e/fixture/app.bundle.js',
+          filename: './__e2e__/fixture/app.bundle.js',
         },
         resolve: {
           mainFields: ['main', 'browser'],
         },
       }).run(resolve)
     );
-    this.app = new Application({
+    app = new Application({
       path: electronPath,
-      args: ['--user-dir=test/e2e/tmp', 'dist'],
+      args: ['--user-dir=__e2e__/tmp', 'dist'],
       env: {
         REACT_ONLY_FOR_LOCAL: 1,
         OPEN_DEVTOOLS: 0,
       },
     });
-    return this.app.start();
+    return app.start();
   });
 
-  after(() => {
-    if (this.app && this.app.isRunning()) {
-      return this.app.stop();
+  afterAll(() => {
+    if (app && app.isRunning()) {
+      return app.stop();
     }
   });
 
   it(`should be v${process.env.npm_package_version}`, async () => {
     // Check the App version (dist/package.json) is same with package.json
-    const { electron } = this.app;
+    const { electron } = app;
     const version = await electron.remote.app.getVersion();
 
     // Check auto update feed is expected
@@ -60,7 +64,7 @@ describe('Application launch', function spec() {
   });
 
   it('should show an initial window', async () => {
-    const { client, browserWindow } = this.app;
+    const { client, browserWindow } = app;
 
     await client.waitUntilWindowLoaded();
     await delay(2000);
@@ -68,7 +72,7 @@ describe('Application launch', function spec() {
     expect(title).toBe('React Native Debugger - Attempting reconnection (port 8081)');
 
     // Avoid RND clear logs
-    await this.app.webContents.executeJavaScript('console.clear = noop => noop');
+    await app.webContents.executeJavaScript('console.clear = noop => noop');
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
@@ -88,21 +92,21 @@ describe('Application launch', function spec() {
   });
 
   it("should contain Inspector monitor's component on Redux DevTools", async () => {
-    const { client } = this.app;
+    const { client } = app;
 
     const val = await client.element('//div[contains(@class, "inspector-")]').getText();
-    expect(val).toExist();
+    expect(val).not.toBeNull();
   });
 
   it('should contain an empty actions list on Redux DevTools', async () => {
-    const { client } = this.app;
+    const { client } = app;
 
     const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
     expect(val).toBe('');
   });
 
   it('should show waiting message on React DevTools', async () => {
-    const { client } = this.app;
+    const { client } = app;
     const exist = await client.isExisting('//h2[text()="Waiting for React to connect…"]');
     expect(exist).toBe(true);
   });
@@ -121,7 +125,7 @@ describe('Application launch', function spec() {
     const url = await getURLFromConnection(server);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
-    const title = await this.app.browserWindow.getTitle();
+    const title = await app.browserWindow.getTitle();
     expect(title).toBe('React Native Debugger - Waiting for client connection (port 8081)');
     server.close();
   });
@@ -152,7 +156,7 @@ describe('Application launch', function spec() {
     const url = await getURLFromConnection(server);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
-    const title = await this.app.browserWindow.getTitle();
+    const title = await app.browserWindow.getTitle();
     expect(title).toBe(
       `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`
     );
@@ -160,8 +164,22 @@ describe('Application launch', function spec() {
   });
 
   describe('Import fake script after', () => {
-    before(async () => {
+    const getOneRequestHeaders = port =>
+      new Promise(resolve => {
+        const server = http.createServer((req, res) => {
+          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.end('');
+          resolve(req.headers);
+          server.close();
+        });
+        server.listen(port);
+      });
+
+    let headersPromise;
+    beforeAll(async () => {
       const server = new WebSocketServer({ port: customRNServerPort });
+
+      headersPromise = getOneRequestHeaders(8099);
 
       await new Promise(resolve => {
         server.on('connection', socket => {
@@ -174,7 +192,7 @@ describe('Application launch', function spec() {
                     id: 'sendFakeScript',
                     method: 'executeApplicationScript',
                     inject: [],
-                    url: '../../test/e2e/fixture/app.bundle.js',
+                    url: '../../__e2e__/fixture/app.bundle.js',
                   })
                 );
                 break;
@@ -192,12 +210,19 @@ describe('Application launch', function spec() {
           );
         });
       });
-      const title = await this.app.browserWindow.getTitle();
+      const title = await app.browserWindow.getTitle();
       expect(title).toBe(`React Native Debugger - Connected (port ${customRNServerPort})`);
     });
 
+    it('should received forbidden header names from xhr-test', async () => {
+      const headers = await headersPromise;
+
+      expect(headers.origin).toBe('custom_origin_here');
+      expect(headers['user-agent']).toBe('react-native');
+    });
+
     it('should have @@INIT action on Redux DevTools', async () => {
-      const { client } = this.app;
+      const { client } = app;
       const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
       expect(val).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
     });
@@ -205,9 +230,15 @@ describe('Application launch', function spec() {
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
     const selectInstance = async (client, instance) => {
-      await client.element(`//div[text()="${currentInstance}"]`).click().then(wait);
+      await client
+        .element(`//div[text()="${currentInstance}"]`)
+        .click()
+        .then(wait);
       currentInstance = instance;
-      return client.element(`//div[text()="${instance}"]`).click().then(wait);
+      return client
+        .element(`//div[text()="${instance}"]`)
+        .click()
+        .then(wait);
     };
 
     const expectActions = {
@@ -244,12 +275,12 @@ describe('Application launch', function spec() {
         expect(val).toMatch(action);
       }
       for (const action of notExpt) {
-        expect(val).toNotMatch(action);
+        expect(val).not.toMatch(action);
       }
     };
 
     const checkInstance = async name => {
-      const { client } = this.app;
+      const { client } = app;
 
       await selectInstance(client, name);
       const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
@@ -270,16 +301,21 @@ describe('Application launch', function spec() {
       await checkInstance('RemoteDev store instance 1');
     });
 
-    it("should haven't any logs in console of main window", async () => {
-      const { client } = this.app;
+    it('should have only specific logs in console of main window', async () => {
+      const { client } = app;
       const logs = await client.getRenderProcessLogs();
       // Print renderer process logs
-      logs.forEach(log => {
-        console.log('Message:', log.message);
-        console.log('Source:', log.source);
-        console.log('Level:', log.level);
-      });
-      expect(logs.length).toEqual(0);
+      logs.forEach(log =>
+        console.log(`Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`)
+      );
+      expect(logs.length).toEqual(1);
+      const [formDataWarning] = logs;
+
+      expect(formDataWarning.source).toBe('worker');
+      expect(formDataWarning.level).toBe('WARNING');
+      expect(
+        formDataWarning.message.indexOf("Detected you're enabled Network Inspect") > 0
+      ).toBeTruthy();
     });
   });
 });

@@ -14,10 +14,16 @@ import {
   zoom,
   resetZoom,
   haveOpenedWindow,
+  toggleOpenInEditor,
   toggleDeviceSync,
 } from './util';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
+
+const viewItems =
+  process.env.NODE_ENV === 'developemnt'
+    ? [item('Reload Window', 'Alt+Command+R', () => reload(getWin()))]
+    : [];
 
 export default ({ iconPath }) => [
   menu('React Native Debugger', [
@@ -36,6 +42,10 @@ export default ({ iconPath }) => [
       item('New Window', 'Command+T', () =>
         createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
       ),
+      item('Enable open in editor for console log', n, () => toggleOpenInEditor(getWin()), {
+        type: 'checkbox',
+        checked: false,
+      }),
       item('Toggle Device Sync', n, () => toggleDeviceSync()),
       separator,
       item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
@@ -58,17 +68,19 @@ export default ({ iconPath }) => [
     item('Paste', 'Command+V', n, { selector: 'paste:' }),
     item('Select All', 'Command+A', n, { selector: 'selectAll:' }),
   ]),
-  menu('View', [
-    item('Reload', 'Command+R', () => reload(getWin())),
-    item('Toggle Full Screen', 'F11', () => toggleFullscreen(getWin())),
-    item('Toggle Developer Tools', 'Alt+Command+I', () => toggleDevTools(getWin(), 'chrome')),
-    item('Toggle React DevTools', 'Alt+Command+J', () => toggleDevTools(getWin(), 'react')),
-    item('Toggle Redux DevTools', 'Alt+Command+K', () => toggleDevTools(getWin(), 'redux')),
-    separator,
-    item('Zoom In', 'Command+=', () => zoom(getWin(), 1)),
-    item('Zoom Out', 'Command+-', () => zoom(getWin(), -1)),
-    item('Reset Zoom', 'Command+0', () => resetZoom(getWin())),
-  ]),
+  menu(
+    'View',
+    viewItems.concat([
+      item('Toggle Full Screen', 'F11', () => toggleFullscreen(getWin())),
+      item('Toggle Developer Tools', 'Alt+Command+I', () => toggleDevTools(getWin(), 'chrome')),
+      item('Toggle React DevTools', 'Alt+Command+J', () => toggleDevTools(getWin(), 'react')),
+      item('Toggle Redux DevTools', 'Alt+Command+K', () => toggleDevTools(getWin(), 'redux')),
+      separator,
+      item('Zoom In', 'Command+=', () => zoom(getWin(), 1)),
+      item('Zoom Out', 'Command+-', () => zoom(getWin(), -1)),
+      item('Reset Zoom', 'Command+0', () => resetZoom(getWin())),
+    ])
+  ),
   menu('Help', [
     item('Documentation', n, () =>
       shell.openExternal('https://github.com/jhen0409/react-native-debugger/tree/master/docs')

@@ -2,11 +2,18 @@
 
 self.window = global;
 
+// Remove native fetch as react-native use whatwg-fetch polyfill
+self.fetch = undefined;
+
 const requiredModules = {
   NativeModules: {},
   Platform: {},
   setupDevtools: undefined,
   AsyncStorage: {},
+  MessageQueue: {
+    spy: () => {},
+    prototype: { __spy: null },
+  },
 };
 // Simulate React Native's window.require polyfill
 window.require = moduleName => {

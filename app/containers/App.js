@@ -9,6 +9,7 @@ import ReduxDevTools from './ReduxDevTools';
 import ReactInspector from './ReactInspector';
 import FormInput from '../components/FormInput';
 import Draggable from '../components/Draggable';
+import { catchConsoleLogLink } from '../../electron/devtools';
 
 const currentWindow = remote.getCurrentWindow();
 
@@ -75,20 +76,16 @@ export default class App extends Component {
       (event, arg) => this.state.syncDevices && this.props.debugger.syncState(arg));
     ipcRenderer.on('toggle-sync', () => this.toggleSync());
 
-    ipcRenderer.on('set-debugger-loc', (e, payload) =>
-      this.setDebuggerLocation(JSON.parse(payload))
-    );
+    ipcRenderer.on('set-debugger-loc', (e, payload) => {
+      const location = JSON.parse(payload);
+      this.setDebuggerLocation(location);
+      catchConsoleLogLink(currentWindow, location.host || 'localhost', location.port);
+    });
     if (!this.props.debugger.isPortSettingRequired) {
       this.setDebuggerLocation(JSON.parse(process.env.DEBUGGER_SETTING || '{}'));
     }
     window.onbeforeunload = this.removeAllListeners;
     window.notifyDevToolsThemeChange = this.props.actions.setting.changeDefaultTheme;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.setting.themeName !== nextProps.setting.themeName) {
-      ReactInspector.setDefaultThemeName(nextProps.setting.themeName);
-    }
   }
 
   componentWillUnmount() {

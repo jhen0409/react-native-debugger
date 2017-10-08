@@ -1,8 +1,10 @@
 # React DevTools Integration
 
-The React DevTools is built by [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector), it will open a WebSocket server to waiting React Native connection.
+The React DevTools is built by [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector).
 
-__*NOTE*__ The server will listen a random port and inject `window.__REACT_DEVTOOLS_PORT__` global variable in debugger worker, the port is only works with React Native version ^0.39, it will fallback to `8097` (default port) if you're using React Native version under 0.39.
+It will open a WebSocket server to waiting React Native connection. The connection already included in React Native (see [`setupDevtools.js`](https://github.com/facebook/react-native/blob/master/Libraries/Core/Devtools/setupDevtools.js)), it will keep trying to connect the React DevTools server in development mode, it should works well without specify anything, unless you need to set the server hostname for [use it with real device](#how-to-use-it-with-real-device).
+
+We made the server listen a random port and inject `window.__REACT_DEVTOOLS_PORT__` global variable in debugger worker, note that the random port is only works with React Native version >= 0.39, otherwise it will fallback to `8097` (default port).
 
 For Android, we have the built-in `adb` util and it will reverse the port automatically.
 
@@ -25,14 +27,34 @@ It's support Atom, Subline, VSCode for macOS.
 
 You can read the section [`Integration with React Native Inspector`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools#integration-with-react-native-inspector) from README of `react-devtools`, we have the same usage with the package.
 
+## Change theme of Chrome DevTools with React DevTools together
+
+You can change Chrome DevTools theme (Default / Dark), the theme of React DevTools will be changed together if you have no selected another theme for React DevTools:
+
+![2017-08-23 13_20_17](https://user-images.githubusercontent.com/3001525/29600011-f0782798-8798-11e7-88cf-98f50e24199d.gif)
+
+The `RNDebugger DevTools` option is by default to match Chrome DevTools.
+
+__*NOTE*__ Currently Chrome DevTools (Electron) doesn't reload automatically, we need to `Toggle Developer Tools` twice (Application menu or `⌥+⌘+I` (`Ctrl+Alt+I`)), subscribe [#87](https://github.com/jhen0409/react-native-debugger/issues/87) for tracking the issue.
+
 ## How to use it with real device?
 
-* If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native, change `'localhost'` to your machine IP.
-  - `<= 0.30` - [Change `localhost` of `Libraries/Devtools/setupDevtools.js#L17`](https://github.com/facebook/react-native/blob/bd60d828c5fc9cb066e5f647c87ecd6f70cb63a5/Libraries/Devtools/setupDevtools.js#L17)
-  - `>= 0.31` - [Add `hostname = 'your IP'` to next line of `Libraries/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/46417dd26a4ab247d59ad147fdfe1655cb23edf9/Libraries/Devtools/setupDevtools.js#L20-L23)
-  - `>= 0.37` - [The same as above, but the path is changed to `Libraries/Core/Devtools/setupDevtools.js#L20-L23`](https://github.com/facebook/react-native/blob/292cc82d0ebc437a6f1cdd2e972b3917b7ee05a4/Libraries/Core/Devtools/setupDevtools.js#L20-L23)
-  - `>= 0.43` - [Change `host` of `Libraries/Core/Devtools/setupDevtools.js#L28-L30`](https://github.com/facebook/react-native/blob/0.43-stable/Libraries/Core/Devtools/setupDevtools.js)
+* If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native manually, change `'localhost'` to your machine IP.
+  - `< 0.37` - Find [`node_modules/react-native/Libraries/Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.36-stable/Libraries/Devtools/setupDevtools.js) in your project, then change `hostname` variable.
+  - `>= 0.37 && < 0.43` - The same as above, but the path have been changed to [`Libraries/`__Core__/`Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.37-stable/Libraries/Core/Devtools/setupDevtools.js)
+  - `>= 0.43` - The same as above, but use `host` property of `connectToDevTools` instead.
 
 ## Get `$r` global variable of React Native runtime in the console
 
 Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
+
+## Other documentations
+
+* [Getting Started](getting-started.md)
+* [Debugger Integration](debugger-integration.md)
+* [Redux DevTools Integration](redux-devtools-integration.md)
+* [Shortcut references](shortcut-references.md)
+* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Enable open in editor in console](enable-open-in-editor-in-console.md)
+* [Troubleshooting](troubleshooting.md)
+* [Contributing](contributing.md)

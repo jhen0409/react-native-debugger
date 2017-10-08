@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { shell } from 'electron';
 import { tryADBReverse } from '../utils/adb';
 
 let ReactServer;
@@ -21,31 +22,29 @@ const styles = {
     height: '100%',
     justifyContent: 'center',
   },
+  tip: {
+    lineHeight: 1.5,
+  },
+  link: {
+    cursor: 'pointer',
+    color: '#777',
+  },
 };
 
-// Avoid errors
-const originErr = console.error;
-console.error = (...args) => {
-  if (args[0] === '[React DevTools]') {
-    return;
-  }
-  return originErr(...args);
-};
+const isReactPanelOpen = props => props.setting.react;
 
 @connect(
   state => ({
     debugger: state.debugger,
+    setting: state.setting,
   }),
   dispatch => ({ dispatch })
 )
 export default class ReactInspector extends Component {
   static propTypes = {
     debugger: PropTypes.object,
+    setting: PropTypes.object,
   };
-
-  static setDefaultThemeName(themeName) {
-    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
-  }
 
   static setProjectRoots(projectRoots) {
     getReactInspector().setProjectRoots(projectRoots);
@@ -60,14 +59,28 @@ export default class ReactInspector extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { prevWorker } = this.props.debugger;
-    const { worker } = nextProps.debugger;
-    if (worker && prevWorker !== worker) {
+    const { worker } = this.props.debugger;
+    const { worker: nextWorker } = nextProps.debugger;
+    if (nextWorker && nextWorker !== worker) {
+      this.closeServerIfExists();
+      if (isReactPanelOpen(this.props)) {
+        this.server = this.startServer();
+        this.setDefaultThemeName(nextProps.setting.themeName);
+      }
+      nextWorker.addEventListener('message', this.workerOnMessage);
+    } else if (!nextWorker) {
+      this.closeServerIfExists();
+    }
+    if (this.props.setting.themeName !== nextProps.setting.themeName) {
+      this.setDefaultThemeName(nextProps.setting.themeName);
+    }
+    // Open / Close server when react panel opened / hidden
+    if (!worker && !nextWorker) return;
+    if (isReactPanelOpen(this.props) && !isReactPanelOpen(nextProps)) {
+      this.closeServerIfExists();
+    } else if (!isReactPanelOpen(this.props) && isReactPanelOpen(nextProps)) {
       this.closeServerIfExists();
       this.server = this.startServer();
-      worker.addEventListener('message', this.workerOnMessage);
-    } else if (!worker) {
-      this.closeServerIfExists();
     }
   }
 
@@ -79,8 +92,11 @@ export default class ReactInspector extends Component {
     this.closeServerIfExists();
   }
 
+  setDefaultThemeName(themeName) {
+    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
+  }
+
   listeningPort = window.reactDevToolsPort;
-  loggedWarn = false;
 
   workerOnMessage = message => {
     const { data } = message;
@@ -91,23 +107,30 @@ export default class ReactInspector extends Component {
     if (port && port !== this.listeningPort) {
       this.listeningPort = port;
       this.closeServerIfExists();
-      this.server = this.startServer(port);
+      if (isReactPanelOpen(this.props)) {
+        this.server = this.startServer(port);
+      }
       if (platform === 'android') tryADBReverse(port).catch(() => {});
     }
   };
 
   startServer(port = this.listeningPort) {
+    let loggedWarn = false;
     return getReactInspector()
       .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
-        if (!this.loggedWarn && port === 8097 && status === 'Failed to start the server.') {
-          console.warn(
+        if (!loggedWarn && status === 'Failed to start the server.') {
+          const message =
+            port !== 8097
+              ? 're-open the debugger window might be helpful.'
+              : 'we recommended to upgrade React Native version to 0.39+ for random port support.';
+          console.error(
             '[RNDebugger]',
-            'Failed to start React DevTools server with port `8097`,',
-            'because another instance of DevTools is listening,',
-            'we recommended to upgrade React Native version to 0.39+ for random port support.'
+            `Failed to start React DevTools server with port \`${port}\`,`,
+            'because another server is listening,',
+            message
           );
-          this.loggedWarn = true;
+          loggedWarn = true;
         }
       })
       .setContentDOMNode(document.getElementById(containerId))
@@ -121,13 +144,23 @@ export default class ReactInspector extends Component {
     }
   };
 
+  handleDocLinkClick = () =>
+    shell.openExternal(
+      'https://github.com/jhen0409/react-native-debugger/blob/master/docs/react-devtools-integration.md#how-to-use-it-with-real-device'
+    );
+
   render() {
     return (
       <div id={containerId} style={styles.container}>
         <div id="waiting">
-          <h2>
-            {'Waiting for React to connect…'}
-          </h2>
+          <h2>{'Waiting for React to connect…'}</h2>
+          <h5 style={styles.tip}>
+            {"If you're using real device, to ensure you have read "}
+            <span style={styles.link} onClick={this.handleDocLinkClick}>
+              `How to use it with real device?`
+            </span>
+            {' section in documentation.'}
+          </h5>
         </div>
       </div>
     );

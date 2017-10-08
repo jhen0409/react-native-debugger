@@ -47,6 +47,8 @@ export const zoom = (win, val) => {
 };
 export const resetZoom = win => win && win.webContents.setZoomLevel(0);
 export const haveOpenedWindow = () => !!BrowserWindow.getAllWindows().length;
+export const toggleOpenInEditor = win =>
+  win && win.webContents.executeJavaScript('window.toggleOpenInEditor()');
 
 export const menu = (label, submenu, role) => ({ label, submenu, role });
 export const item = (label, accelerator, click, rest) => ({

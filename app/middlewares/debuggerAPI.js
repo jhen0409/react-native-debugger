@@ -9,13 +9,16 @@
 
 // Take from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debugger.html
 
-import WebSocket from 'ws';
+import { remote } from 'electron';
 import { bindActionCreators } from 'redux';
+import { checkPortStatus } from 'portscanner';
 import * as debuggerActions from '../actions/debugger';
-import { setDevMenuMethods } from '../utils/devMenu';
+import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
+import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
 
-const { SET_DEBUGGER_LOCATION } = debuggerActions;
+const currentWindow = remote.getCurrentWindow();
+const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;
 let actions;
@@ -60,7 +63,16 @@ const shutdownJSRuntime = () => {
 const isScriptBuildForAndroid = url =>
   url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
-const connectToDebuggerProxy = () => {
+let preconnectTimeout;
+const preconnect = async (fn, firstTimeout) => {
+  if (firstTimeout || (await checkPortStatus(port, host)) !== 'open') {
+    preconnectTimeout = setTimeout(() => preconnect(fn), 500);
+    return;
+  }
+  socket = await fn();
+};
+
+const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
@@ -83,10 +95,12 @@ const connectToDebuggerProxy = () => {
     // Special message that asks for a new JS runtime
     if (object.method === 'prepareJSRuntime') {
       shutdownJSRuntime();
+      createJSRuntime();
       if (process.env.NODE_ENV !== 'development') {
         console.clear();
+        clearNetworkLogs(currentWindow);
       }
-      createJSRuntime();
+      selectRNDebuggerWorkerContext(currentWindow);
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
@@ -94,7 +108,7 @@ const connectToDebuggerProxy = () => {
       // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        object.networkInspect = localStorage.networkInspect === 'enabled';
+        object.networkInspect = networkInspect.isEnabled();
         object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
@@ -111,9 +125,7 @@ const connectToDebuggerProxy = () => {
     if (e.reason) {
       console.warn(e.reason);
     }
-    setTimeout(() => {
-      socket = connectToDebuggerProxy();
-    }, 500);
+    preconnect(connectToDebuggerProxy, true);
   };
   return ws;
 };
@@ -127,7 +139,9 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
     shutdownJSRuntime();
     socket.close();
   } else {
-    socket = connectToDebuggerProxy();
+    // Should ensure cleared timeout if called preconnect twice
+    clearTimeout(preconnectTimeout);
+    preconnect(connectToDebuggerProxy);
   }
 };
 
@@ -137,6 +151,12 @@ export default ({ dispatch }) => {
   return next => action => {
     if (action.type === SET_DEBUGGER_LOCATION) {
       setDebuggerLoc(action.loc);
+    }
+    if (action.type === BEFORE_WINDOW_CLOSE) {
+      // Reture boolean instead of handle reducer
+      if (!worker) return false;
+      worker.postMessage({ method: 'beforeTerminate' });
+      return true;
     }
     return next(action);
   };
