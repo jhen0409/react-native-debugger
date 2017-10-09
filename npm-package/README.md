@@ -55,17 +55,7 @@ Name                  | Description
 `port`                | Specified react-native packager port with `--open` option. Default is `8081`
 `expo`                | Use [Expo](https://github.com/expo)'s RN packager port if you're not specified port.
 
-You can also use following commands instead of this patch:
-
-```bash
-# macOS
-$ open "rndebugger://set-debugger-loc?port=8082"
-
-# macOS with `REACT_DEBUGGER` env
-$ REACT_DEBUGGER="open -g 'rndebugger://set-debugger-loc?port=8082' ||" npm start
-# If you're use Expo
-$ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open -g 'rndebugger://set-debugger-loc?port=8082' ||" npm start
-```
+You can also [`Launch by CLI or React Native packager`](https://github.com/jhen0409/react-native-debugger/blob/master/docs/getting-started.md#launch-by-cli-or-react-native-packager-macos-only) instead of this package.
 
 ## LICENSE
 
