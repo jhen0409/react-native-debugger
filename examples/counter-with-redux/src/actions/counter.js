@@ -19,5 +19,4 @@ export const incrementIfOdd = () => (dispatch, getState) => {
 export const incrementAsync = (delay = 1000) => dispatch =>
   setTimeout(() => {
     dispatch(increment());
-    console.log(123);
   }, delay);

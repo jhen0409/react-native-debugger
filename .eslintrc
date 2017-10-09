@@ -4,7 +4,7 @@
   "env": {
     "browser": true,
     "node": true,
-    "jest": true,
+    "jest": true
   },
   "settings": {
     "import/core-modules": ["electron"]
@@ -13,7 +13,7 @@
     "react/prefer-stateless-function": 0,
     "consistent-return": 0,
     "strict": 0,
-    "no-console": 0,
+    "no-console": 1,
     "no-param-reassign": ["error", { "props": false }],
     "no-underscore-dangle": [
       "error",
