@@ -9,6 +9,8 @@ __[Linux / Windows]__ Currently it cannot open the app automatically, it just se
 
 ![demo](https://user-images.githubusercontent.com/3001525/31390358-490eb22a-ad99-11e7-9d1a-65b4d185e261.gif)
 
+> Demo with initial project of Create React Native App (Expo)
+
 ## Installation
 
 First, install [React Native Debugger](https://github.com/jhen0409/react-native-debugger#installation).
