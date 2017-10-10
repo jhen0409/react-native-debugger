@@ -8,7 +8,7 @@
 
 This is a standalone app for debugging React Native apps:
 
-* Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide [more functionally](docs/debugger-integration.md).
+* Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide more functionally.
 * Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core).
 * Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
 
@@ -20,7 +20,7 @@ This is a standalone app for debugging React Native apps:
 
 The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page.
 
-For __macOS__, you can use [Homebrew Cask](http://caskroom.io) to install:
+For __macOS__, you can use [Homebrew Cask](https://caskroom.github.io) to install:
 
 ```bash
 $ brew update && brew cask install react-native-debugger
