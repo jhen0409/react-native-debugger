@@ -7,7 +7,7 @@ __[Linux / Windows]__ Currently it cannot open the app automatically, it just se
 
 ## Screenshot
 
-![demo](https://cloud.githubusercontent.com/assets/3001525/15777379/59a9c654-29c1-11e6-8656-247b8450bc47.gif)
+![demo](https://user-images.githubusercontent.com/3001525/31390358-490eb22a-ad99-11e7-9d1a-65b4d185e261.gif)
 
 ## Installation
 
