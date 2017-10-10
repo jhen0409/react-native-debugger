@@ -18,7 +18,7 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
     fs.removeSync(path.join(__dirname, 'tmp'));
   });
   versions.forEach(version => {
-    test(`inject / revert in RN ${version}`, async () => {
+    test(`inject / revert in react-native ${version}`, async () => {
       const code = await fetch(getRemoteMiddlewarePath(version)).then(res => res.text());
       fs.ensureDirSync(path.join(modulePath, middlewareDir));
       fs.outputFileSync(path.join(modulePath, middlewarePath), code);
@@ -36,5 +36,26 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
       revert(modulePath);
       expect(fs.readFileSync(path.join(modulePath, middlewarePath), 'utf-8')).toMatchSnapshot();
     });
+  });
+
+  test('inject / revert in react-native-macos', async () => {
+    const code = await fetch(
+      'https://raw.githubusercontent.com/ptmt/react-native-macos/merge-0.44.0/local-cli/server/middleware/getDevToolsMiddleware.js'
+    ).then(res => res.text());
+    fs.ensureDirSync(path.join(modulePath, middlewareDir));
+    fs.outputFileSync(path.join(modulePath, middlewarePath), code);
+    fs.outputFileSync(
+      path.join(modulePath, 'package.json'),
+      JSON.stringify({
+        version: '0.8.7',
+        name: 'react-native-macos',
+      })
+    );
+
+    expect(code).toMatchSnapshot();
+    inject(modulePath);
+    expect(fs.readFileSync(path.join(modulePath, middlewarePath), 'utf-8')).toMatchSnapshot();
+    revert(modulePath);
+    expect(fs.readFileSync(path.join(modulePath, middlewarePath), 'utf-8')).toMatchSnapshot();
   });
 });

@@ -37,7 +37,7 @@ const getModuleInfo = modulePath => {
 };
 
 function getFlag(moduleName, version) {
-  const list = flags[moduleName || 'react-native'] || flags.default;
+  const list = flags[moduleName || 'react-native'] || {};
   const versions = Object.keys(list);
   let flag = flags.default;
   for (let i = 0; i < versions.length; i++) {
