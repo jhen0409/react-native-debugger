@@ -28,7 +28,7 @@ $ REACT_DEBUGGER="open -g 'rndebugger://set-debugger-loc?port=8001' ||" react-na
 Special case of Expo (CRNA):
 
 ```bash
-$ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open -g 'rndebugger://set-debugger-loc?port=19001' ||" react-native start
+$ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open -g 'rndebugger://set-debugger-loc?port=19001' ||" npm start
 ```
 
 __*NOTE*__ Currently the `REACT_DEBUGGER` env doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).
