@@ -6,7 +6,7 @@ import {
   path as middlewarePath,
   inject,
   revert,
-} from './injectDevToolsMiddleware';
+} from '../injectDevToolsMiddleware';
 
 const getRemoteMiddlewarePath = version =>
   `https://raw.githubusercontent.com/facebook/react-native/${version}-stable/local-cli/server/middleware/getDevToolsMiddleware.js`;
@@ -18,7 +18,7 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
     fs.removeSync(path.join(__dirname, 'tmp'));
   });
   versions.forEach(version => {
-    it(`${version}`, async () => {
+    test(`inject / revert in RN ${version}`, async () => {
       const code = await fetch(getRemoteMiddlewarePath(version)).then(res => res.text());
       fs.ensureDirSync(path.join(modulePath, middlewareDir));
       fs.outputFileSync(path.join(modulePath, middlewarePath), code);

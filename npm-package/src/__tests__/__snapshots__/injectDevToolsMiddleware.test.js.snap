@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Inject to devtoolsMiddleware of React Native packager 0.49 1`] = `
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.49 1`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -81,7 +81,7 @@ module.exports = function(options, isChromeConnected) {
 "
 `;
 
-exports[`Inject to devtoolsMiddleware of React Native packager 0.49 2`] = `
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.49 2`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -247,7 +247,7 @@ module.exports = function(options, isChromeConnected) {
 "
 `;
 
-exports[`Inject to devtoolsMiddleware of React Native packager 0.49 3`] = `
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.49 3`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -329,7 +329,7 @@ module.exports = function(options, isChromeConnected) {
 "
 `;
 
-exports[`Inject to devtoolsMiddleware of React Native packager 0.50 1`] = `
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.50 1`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -407,7 +407,7 @@ module.exports = function(options, isChromeConnected) {
 "
 `;
 
-exports[`Inject to devtoolsMiddleware of React Native packager 0.50 2`] = `
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.50 2`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -570,7 +570,7 @@ module.exports = function(options, isChromeConnected) {
 "
 `;
 
-exports[`Inject to devtoolsMiddleware of React Native packager 0.50 3`] = `
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.50 3`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
