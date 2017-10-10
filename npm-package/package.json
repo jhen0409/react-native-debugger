@@ -1,21 +1,21 @@
 {
   "name": "react-native-debugger-open",
   "version": "0.3.13",
-  "description": "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
+  "description":
+    "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
   },
   "main": "lib/open.js",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore *.tmpl.js",
-    "prepublish": "npm run build"
+    "test": "jest",
+    "build": "babel src --out-dir lib --ignore tmp/,__snapshots__/,*.test.js",
+    "prepublish": "npm test && npm run build"
   },
-  "files": [
-    "bin",
-    "lib"
-  ],
+  "files": ["bin", "lib"],
   "homepage": "https://github.com/jhen0409/react-native-debugger",
-  "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/npm-package",
+  "repository":
+    "https://github.com/jhen0409/react-native-debugger/tree/master/npm-package",
   "keywords": [
     "react",
     "react-native",
@@ -35,6 +35,9 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
-    "babel-preset-es2015-node4": "^2.1.1"
+    "babel-preset-es2015-node4": "^2.1.1",
+    "fs-extra": "^4.0.2",
+    "jest": "^21.2.1",
+    "node-fetch": "^1.7.3"
   }
 }

@@ -3,7 +3,10 @@ import { join } from 'path';
 import es6Template from 'es6-template';
 import semver from 'semver';
 
-const template = fs.readFileSync(join(__dirname, 'injectDevToolsMiddleware.tmpl.js'), 'utf-8');
+const tmplPath = join(__dirname, 'injectDevToolsMiddleware.tmpl.js');
+const tmplPathInDev = join(__dirname, '../lib/injectDevToolsMiddleware.tmpl.js');
+
+const template = fs.readFileSync(fs.existsSync(tmplPath) ? tmplPath : tmplPathInDev, 'utf-8');
 
 const name = 'react-native-debugger-patch';
 const startFlag = `/* ${name} start */`;
@@ -29,7 +32,7 @@ const flags = {
 };
 
 const getModuleInfo = modulePath => {
-  const pkg = require(join(modulePath, 'package.json')); // eslint-disable-line
+  const pkg = JSON.parse(fs.readFileSync(join(modulePath, 'package.json'))); // eslint-disable-line
   return { version: pkg.version, name: pkg.name };
 };
 
