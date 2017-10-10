@@ -17,6 +17,9 @@ function rebuildModules(buildPath) {
 }
 
 async function run() {
+  shell.cd('npm-package');
+  shell.exec('yarn');
+  shell.cd('-');
   await rebuildModules(path.resolve(__dirname, '..'));
   shell.cd('dist');
   shell.exec('yarn');

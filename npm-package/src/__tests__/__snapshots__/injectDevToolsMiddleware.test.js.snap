@@ -1,0 +1,650 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.49 1`] = `
+"/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+'use strict';
+
+const fs = require('fs');
+const launchChrome = require('../util/launchChrome');
+const path = require('path');
+
+const {exec} = require('child_process');
+
+function launchChromeDevTools(port) {
+  var debuggerURL = 'http://localhost:' + port + '/debugger-ui';
+  console.log('Launching Dev Tools...');
+  launchChrome(debuggerURL);
+}
+
+function escapePath(pathname) {
+  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+}
+
+function launchDevTools({port, projectRoots}, isChromeConnected) {
+  // Explicit config always wins
+  var customDebugger = process.env.REACT_DEBUGGER;
+  if (customDebugger) {
+    var projects = projectRoots.map(escapePath).join(' ');
+    var command = customDebugger + ' ' + projects;
+    console.log('Starting custom debugger by executing: ' + command);
+    exec(command, function (error, stdout, stderr) {
+      if (error !== null) {
+        console.log('Error while starting custom debugger: ' + error);
+      }
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port);
+  }
+}
+
+module.exports = function(options, isChromeConnected) {
+  return function(req, res, next) {
+    if (req.url === '/debugger-ui') {
+      var debuggerPath = path.join(__dirname, '..', 'util', 'debugger.html');
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      fs.createReadStream(debuggerPath).pipe(res);
+    } else if (req.url === '/debuggerWorker.js') {
+      var workerPath = path.join(__dirname, '..', 'util', 'debuggerWorker.js');
+      res.writeHead(200, {'Content-Type': 'application/javascript'});
+      fs.createReadStream(workerPath).pipe(res);
+    } else if (req.url === '/launch-safari-devtools') {
+      // TODO: remove \`console.log\` and dev tools binary
+      console.log(
+        'We removed support for Safari dev-tools. ' +
+        'If you still need this, please let us know.'
+      );
+    } else if (req.url === '/launch-chrome-devtools') {
+      // TODO: Remove this case in the future
+      console.log(
+        'The method /launch-chrome-devtools is deprecated. You are ' +
+        ' probably using an application created with an older CLI with the ' +
+        ' packager of a newer CLI. Please upgrade your application: ' +
+        'https://facebook.github.io/react-native/docs/upgrading.html');
+        launchDevTools(options, isChromeConnected);
+        res.end('OK');
+    } else if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+};
+"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.49 2`] = `
+"/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+'use strict';
+
+const fs = require('fs');
+const launchChrome = require('../util/launchChrome');
+const path = require('path');
+
+const {exec} = require('child_process');
+
+/* react-native-debugger-patch start */
+var __opn = require('opn');
+var __fs = require('fs');
+var __path = require('path');
+var __net = require('net');
+var __childProcess = require('child_process');
+var __home_env = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
+var __port_file = __path.join(process.env[__home_env], '.rndebugger_port');
+
+function __connectToRND(rndPath, log, cb) {
+  var __port;
+  try {
+    __port = __fs.readFileSync(__port_file, 'utf-8');
+  } catch (e) {
+    log && console.log(
+      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+    );
+    return cb(false);
+  }
+  var __c = __net.createConnection({ port: __port }, () => {
+    let pass = false;
+    __c.setEncoding('utf-8');
+    __c.write(JSON.stringify({ path: rndPath }));
+    __c.on('data', data => {
+      pass = data === 'success';
+      __c.end();
+    });
+    const __timeoutId = setTimeout(() => {
+      log && console.log(
+        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+      );
+      __c.end();
+    }, 1000);
+    __c.on('end', () => {
+      clearTimeout(__timeoutId);
+      !pass && log && console.log(
+        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+      );
+      cb(pass);
+    });
+
+  });
+}
+
+var __rndebuggerIsOpening = false;
+function launchChromeDevTools(port, skipRNDebugger) {
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port ;
+
+  if (__rndebuggerIsOpening) return;
+  __rndebuggerIsOpening = true;
+  if (process.platform === 'darwin' && !skipRNDebugger) {
+    var __env = Object.assign({}, process.env);
+    // This env is specified from Expo (and CRNA), we need avoid it included in rndebugger
+    delete __env.ELECTRON_RUN_AS_NODE;
+    __childProcess
+      .spawn('open', ['-g', '-a', 'React Native Debugger', __rnd_path], { env: __env })
+      .once('close', code => {
+        if (code > 0) {
+          __connectToRND(__rnd_path, false, pass => {
+            if (!pass) {
+              console.log(
+                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
+                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+              );
+            }
+            __rndebuggerIsOpening = false;
+            !pass && launchChromeDevTools(port, true);
+          });
+        } else {
+          __rndebuggerIsOpening = false;
+        }
+      })
+    return;
+  } else if (!skipRNDebugger) {
+    __connectToRND(__rnd_path, true, pass => {
+      __rndebuggerIsOpening = false;
+      !pass && launchChromeDevTools(port, true);
+    });
+    return;
+  }
+  __rndebuggerIsOpening = false;
+/* react-native-debugger-patch end */
+
+  var debuggerURL = 'http://localhost:' + port + '/debugger-ui';
+  console.log('Launching Dev Tools...');
+  launchChrome(debuggerURL);
+}
+
+function escapePath(pathname) {
+  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+}
+
+function launchDevTools({port, projectRoots}, isChromeConnected) {
+  // Explicit config always wins
+  var customDebugger = process.env.REACT_DEBUGGER;
+  if (customDebugger) {
+    var projects = projectRoots.map(escapePath).join(' ');
+    var command = customDebugger + ' ' + projects;
+    console.log('Starting custom debugger by executing: ' + command);
+    exec(command, function (error, stdout, stderr) {
+      if (error !== null) {
+        console.log('Error while starting custom debugger: ' + error);
+      }
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port);
+  }
+}
+
+module.exports = function(options, isChromeConnected) {
+  return function(req, res, next) {
+    if (req.url === '/debugger-ui') {
+      var debuggerPath = path.join(__dirname, '..', 'util', 'debugger.html');
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      fs.createReadStream(debuggerPath).pipe(res);
+    } else if (req.url === '/debuggerWorker.js') {
+      var workerPath = path.join(__dirname, '..', 'util', 'debuggerWorker.js');
+      res.writeHead(200, {'Content-Type': 'application/javascript'});
+      fs.createReadStream(workerPath).pipe(res);
+    } else if (req.url === '/launch-safari-devtools') {
+      // TODO: remove \`console.log\` and dev tools binary
+      console.log(
+        'We removed support for Safari dev-tools. ' +
+        'If you still need this, please let us know.'
+      );
+    } else if (req.url === '/launch-chrome-devtools') {
+      // TODO: Remove this case in the future
+      console.log(
+        'The method /launch-chrome-devtools is deprecated. You are ' +
+        ' probably using an application created with an older CLI with the ' +
+        ' packager of a newer CLI. Please upgrade your application: ' +
+        'https://facebook.github.io/react-native/docs/upgrading.html');
+        launchDevTools(options, isChromeConnected);
+        res.end('OK');
+    } else if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+};
+"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.49 3`] = `
+"/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+'use strict';
+
+const fs = require('fs');
+const launchChrome = require('../util/launchChrome');
+const path = require('path');
+
+const {exec} = require('child_process');
+
+function launchChromeDevTools(port) {
+
+  var debuggerURL = 'http://localhost:' + port + '/debugger-ui';
+  console.log('Launching Dev Tools...');
+  launchChrome(debuggerURL);
+}
+
+function escapePath(pathname) {
+  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+}
+
+function launchDevTools({port, projectRoots}, isChromeConnected) {
+  // Explicit config always wins
+  var customDebugger = process.env.REACT_DEBUGGER;
+  if (customDebugger) {
+    var projects = projectRoots.map(escapePath).join(' ');
+    var command = customDebugger + ' ' + projects;
+    console.log('Starting custom debugger by executing: ' + command);
+    exec(command, function (error, stdout, stderr) {
+      if (error !== null) {
+        console.log('Error while starting custom debugger: ' + error);
+      }
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port);
+  }
+}
+
+module.exports = function(options, isChromeConnected) {
+  return function(req, res, next) {
+    if (req.url === '/debugger-ui') {
+      var debuggerPath = path.join(__dirname, '..', 'util', 'debugger.html');
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      fs.createReadStream(debuggerPath).pipe(res);
+    } else if (req.url === '/debuggerWorker.js') {
+      var workerPath = path.join(__dirname, '..', 'util', 'debuggerWorker.js');
+      res.writeHead(200, {'Content-Type': 'application/javascript'});
+      fs.createReadStream(workerPath).pipe(res);
+    } else if (req.url === '/launch-safari-devtools') {
+      // TODO: remove \`console.log\` and dev tools binary
+      console.log(
+        'We removed support for Safari dev-tools. ' +
+        'If you still need this, please let us know.'
+      );
+    } else if (req.url === '/launch-chrome-devtools') {
+      // TODO: Remove this case in the future
+      console.log(
+        'The method /launch-chrome-devtools is deprecated. You are ' +
+        ' probably using an application created with an older CLI with the ' +
+        ' packager of a newer CLI. Please upgrade your application: ' +
+        'https://facebook.github.io/react-native/docs/upgrading.html');
+        launchDevTools(options, isChromeConnected);
+        res.end('OK');
+    } else if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+};
+"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.50 1`] = `
+"/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @format
+ */
+'use strict';
+
+const launchChrome = require('../util/launchChrome');
+
+const {exec} = require('child_process');
+
+function launchChromeDevTools(port, args = '') {
+  var debuggerURL = 'http://localhost:' + port + '/debugger-ui' + args;
+  console.log('Launching Dev Tools...');
+  launchChrome(debuggerURL);
+}
+
+function escapePath(pathname) {
+  // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '\\"' + pathname + '\\"';
+}
+
+function launchDevTools(
+  {port, projectRoots, useDeltaBundler},
+  isChromeConnected,
+) {
+  // Explicit config always wins
+  var customDebugger = process.env.REACT_DEBUGGER;
+  if (customDebugger) {
+    var projects = projectRoots.map(escapePath).join(' ');
+    var command = customDebugger + ' ' + projects;
+    console.log('Starting custom debugger by executing: ' + command);
+    exec(command, function(error, stdout, stderr) {
+      if (error !== null) {
+        console.log('Error while starting custom debugger: ' + error);
+      }
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port, useDeltaBundler ? '#useDeltaBundler' : '');
+  }
+}
+
+module.exports = function(options, isChromeConnected) {
+  return function(req, res, next) {
+    if (req.url === '/launch-safari-devtools') {
+      // TODO: remove \`console.log\` and dev tools binary
+      console.log(
+        'We removed support for Safari dev-tools. ' +
+          'If you still need this, please let us know.',
+      );
+    } else if (req.url === '/launch-chrome-devtools') {
+      // TODO: Remove this case in the future
+      console.log(
+        'The method /launch-chrome-devtools is deprecated. You are ' +
+          ' probably using an application created with an older CLI with the ' +
+          ' packager of a newer CLI. Please upgrade your application: ' +
+          'https://facebook.github.io/react-native/docs/upgrading.html',
+      );
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+};
+"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.50 2`] = `
+"/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @format
+ */
+'use strict';
+
+const launchChrome = require('../util/launchChrome');
+
+const {exec} = require('child_process');
+
+/* react-native-debugger-patch start */
+var __opn = require('opn');
+var __fs = require('fs');
+var __path = require('path');
+var __net = require('net');
+var __childProcess = require('child_process');
+var __home_env = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
+var __port_file = __path.join(process.env[__home_env], '.rndebugger_port');
+
+function __connectToRND(rndPath, log, cb) {
+  var __port;
+  try {
+    __port = __fs.readFileSync(__port_file, 'utf-8');
+  } catch (e) {
+    log && console.log(
+      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+    );
+    return cb(false);
+  }
+  var __c = __net.createConnection({ port: __port }, () => {
+    let pass = false;
+    __c.setEncoding('utf-8');
+    __c.write(JSON.stringify({ path: rndPath }));
+    __c.on('data', data => {
+      pass = data === 'success';
+      __c.end();
+    });
+    const __timeoutId = setTimeout(() => {
+      log && console.log(
+        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+      );
+      __c.end();
+    }, 1000);
+    __c.on('end', () => {
+      clearTimeout(__timeoutId);
+      !pass && log && console.log(
+        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+      );
+      cb(pass);
+    });
+
+  });
+}
+
+var __rndebuggerIsOpening = false;
+function launchChromeDevTools(port, args = '', skipRNDebugger) {
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port ;
+
+  if (__rndebuggerIsOpening) return;
+  __rndebuggerIsOpening = true;
+  if (process.platform === 'darwin' && !skipRNDebugger) {
+    var __env = Object.assign({}, process.env);
+    // This env is specified from Expo (and CRNA), we need avoid it included in rndebugger
+    delete __env.ELECTRON_RUN_AS_NODE;
+    __childProcess
+      .spawn('open', ['-g', '-a', 'React Native Debugger', __rnd_path], { env: __env })
+      .once('close', code => {
+        if (code > 0) {
+          __connectToRND(__rnd_path, false, pass => {
+            if (!pass) {
+              console.log(
+                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
+                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+              );
+            }
+            __rndebuggerIsOpening = false;
+            !pass && launchChromeDevTools(port, args, true);
+          });
+        } else {
+          __rndebuggerIsOpening = false;
+        }
+      })
+    return;
+  } else if (!skipRNDebugger) {
+    __connectToRND(__rnd_path, true, pass => {
+      __rndebuggerIsOpening = false;
+      !pass && launchChromeDevTools(port, args, true);
+    });
+    return;
+  }
+  __rndebuggerIsOpening = false;
+/* react-native-debugger-patch end */
+
+  var debuggerURL = 'http://localhost:' + port + '/debugger-ui' + args;
+  console.log('Launching Dev Tools...');
+  launchChrome(debuggerURL);
+}
+
+function escapePath(pathname) {
+  // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '\\"' + pathname + '\\"';
+}
+
+function launchDevTools(
+  {port, projectRoots, useDeltaBundler},
+  isChromeConnected,
+) {
+  // Explicit config always wins
+  var customDebugger = process.env.REACT_DEBUGGER;
+  if (customDebugger) {
+    var projects = projectRoots.map(escapePath).join(' ');
+    var command = customDebugger + ' ' + projects;
+    console.log('Starting custom debugger by executing: ' + command);
+    exec(command, function(error, stdout, stderr) {
+      if (error !== null) {
+        console.log('Error while starting custom debugger: ' + error);
+      }
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port, useDeltaBundler ? '#useDeltaBundler' : '');
+  }
+}
+
+module.exports = function(options, isChromeConnected) {
+  return function(req, res, next) {
+    if (req.url === '/launch-safari-devtools') {
+      // TODO: remove \`console.log\` and dev tools binary
+      console.log(
+        'We removed support for Safari dev-tools. ' +
+          'If you still need this, please let us know.',
+      );
+    } else if (req.url === '/launch-chrome-devtools') {
+      // TODO: Remove this case in the future
+      console.log(
+        'The method /launch-chrome-devtools is deprecated. You are ' +
+          ' probably using an application created with an older CLI with the ' +
+          ' packager of a newer CLI. Please upgrade your application: ' +
+          'https://facebook.github.io/react-native/docs/upgrading.html',
+      );
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+};
+"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in RN 0.50 3`] = `
+"/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @format
+ */
+'use strict';
+
+const launchChrome = require('../util/launchChrome');
+
+const {exec} = require('child_process');
+
+function launchChromeDevTools(port, args = '') {
+
+  var debuggerURL = 'http://localhost:' + port + '/debugger-ui' + args;
+  console.log('Launching Dev Tools...');
+  launchChrome(debuggerURL);
+}
+
+function escapePath(pathname) {
+  // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '\\"' + pathname + '\\"';
+}
+
+function launchDevTools(
+  {port, projectRoots, useDeltaBundler},
+  isChromeConnected,
+) {
+  // Explicit config always wins
+  var customDebugger = process.env.REACT_DEBUGGER;
+  if (customDebugger) {
+    var projects = projectRoots.map(escapePath).join(' ');
+    var command = customDebugger + ' ' + projects;
+    console.log('Starting custom debugger by executing: ' + command);
+    exec(command, function(error, stdout, stderr) {
+      if (error !== null) {
+        console.log('Error while starting custom debugger: ' + error);
+      }
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port, useDeltaBundler ? '#useDeltaBundler' : '');
+  }
+}
+
+module.exports = function(options, isChromeConnected) {
+  return function(req, res, next) {
+    if (req.url === '/launch-safari-devtools') {
+      // TODO: remove \`console.log\` and dev tools binary
+      console.log(
+        'We removed support for Safari dev-tools. ' +
+          'If you still need this, please let us know.',
+      );
+    } else if (req.url === '/launch-chrome-devtools') {
+      // TODO: Remove this case in the future
+      console.log(
+        'The method /launch-chrome-devtools is deprecated. You are ' +
+          ' probably using an application created with an older CLI with the ' +
+          ' packager of a newer CLI. Please upgrade your application: ' +
+          'https://facebook.github.io/react-native/docs/upgrading.html',
+      );
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+};
+"
+`;

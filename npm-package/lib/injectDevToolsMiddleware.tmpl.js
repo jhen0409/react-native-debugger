@@ -46,7 +46,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 ${replaceFuncFlag}
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port;
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port ${args};
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
@@ -67,7 +67,7 @@ ${replaceFuncFlag}
               );
             }
             __rndebuggerIsOpening = false;
-            !pass && ${keyFunc}(port, true);
+            !pass && ${keyFunc}${funcCall};
           });
         } else {
           __rndebuggerIsOpening = false;
@@ -77,7 +77,7 @@ ${replaceFuncFlag}
   } else if (!skipRNDebugger) {
     __connectToRND(__rnd_path, true, pass => {
       __rndebuggerIsOpening = false;
-      !pass && ${keyFunc}(port, true);
+      !pass && ${keyFunc}${funcCall};
     });
     return;
   }
