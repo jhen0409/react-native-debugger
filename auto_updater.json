@@ -1,7 +1,7 @@
 {
   "url":
-    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.10/rn-debugger-macos-x64.zip",
-  "name": "v0.7.10",
+    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.11/rn-debugger-macos-x64.zip",
+  "name": "v0.7.11",
   "notes":
-    "1. Revert 'Ensure app run as single instance' in 0.7.9, it was break `rndebugger-open`\n2. Fix context menu block UI renders"
+    "1. Fix problem between redux and remotedev handler\n2. Add sync device actions (`Toggle Device Sync` in app menu)\n3. Update dependencies"
 }
