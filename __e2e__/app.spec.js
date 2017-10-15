@@ -229,7 +229,8 @@ describe('Application launch', () => {
 
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
-    const selectInstance = async (client, instance) => {
+    const selectInstance = async (instance) => {
+      const { client } = app;
       await client
         .element(`//div[text()="${currentInstance}"]`)
         .click()
@@ -239,6 +240,13 @@ describe('Application launch', () => {
         .element(`//div[text()="${instance}"]`)
         .click()
         .then(wait);
+    };
+    const commit = () => {
+      const { client } = app;
+      client
+        .element('//div[text()="Commit"]')
+        .click()
+        .then(delay(100));
     };
 
     const expectActions = {
@@ -282,9 +290,10 @@ describe('Application launch', () => {
     const checkInstance = async name => {
       const { client } = app;
 
-      await selectInstance(client, name);
+      await selectInstance(name);
       const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
       runExpectActions(name, val);
+      await commit();
     };
 
     it('should have two Redux store instances on Redux DevTools', async () => {
