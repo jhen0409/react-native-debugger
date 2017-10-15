@@ -117,32 +117,34 @@ function handleMessages(message) {
     Object.keys(instances).forEach(key => {
       handleMessages({ ...message, id: key, toAll: false });
     });
-    return;
+    return false;
   }
 
   const instance = instances[id || instanceId];
+  if (!instance) return true;
   const { store, filters } = instance;
-  if (!store) return;
+  if (!store) return false;
 
   switch (type) {
     case 'DISPATCH':
       store.liftedStore.dispatch(action);
-      return;
+      break;
     case 'ACTION':
       dispatchRemotely(action, instance);
-      return;
+      break;
     case 'IMPORT':
       importPayloadFrom(store, state, instance);
-      return;
+      break;
     case 'EXPORT':
       exportState(instance);
-      return;
+      break;
     case 'UPDATE':
       relay('STATE', getLiftedState(store, filters), instance);
-      return;
+      break;
     default:
-      return;
+      break;
   }
+  return false;
 }
 
 function start(instance) {

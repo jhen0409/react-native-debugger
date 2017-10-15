@@ -13,12 +13,18 @@ export function extractState(message) {
 }
 
 function handleMessages(message) {
-  if (!message.payload) message.payload = message.action;
-  Object.keys(listeners).forEach(id => {
-    if (message.instanceId && id !== message.instanceId) return;
-    if (typeof listeners[id] === 'function') listeners[id](message);
-    else listeners[id].forEach(fn => { fn(message); });
-  });
+  if (!message.payload) {
+    message.payload = message.action;
+  }
+  const fn = listeners[message.instanceId];
+  if (!fn) return true;
+
+  if (typeof fn === 'function') {
+    fn(message);
+  } else {
+    fn.forEach(func => { func(message); });
+  }
+  return false;
 }
 
 export function start() {
@@ -26,7 +32,7 @@ export function start() {
     self.addEventListener('message', message => {
       const { method, content } = message.data;
       if (method === 'emitReduxMessage') {
-        handleMessages(content);
+        return handleMessages(content);
       }
     });
     listenerAdded = true;
