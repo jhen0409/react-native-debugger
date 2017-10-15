@@ -47,7 +47,7 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.0.5",
     "devtron": "^1.4.0",
-    "electron": "~1.7.8",
+    "electron": "~1.8.1",
     "electron-debug": "^1.4.0",
     "electron-devtools-installer": "^2.2.0",
     "electron-packager": "^9.1.0",
