@@ -121,6 +121,7 @@ function handleMessages(message) {
   }
 
   const instance = instances[id || instanceId];
+  if (!instance) return;
   const { store, filters } = instance;
   if (!store) return;
 
