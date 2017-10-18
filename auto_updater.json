@@ -1,7 +1,7 @@
 {
   "url":
-    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.11/rn-debugger-macos-x64.zip",
-  "name": "v0.7.11",
+    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.12/rn-debugger-macos-x64.zip",
+  "name": "v0.7.12",
   "notes":
-    "1. Fix problem between redux and remotedev handler\n2. Add sync device actions (`Toggle Device Sync` in app menu)\n3. Update dependencies"
+    "1. Fix main process doesn't exit when all window closed on Linux / Windows\n2. Fix increase position of multiple debugger windows\n\n* If you're using RNDebugger v0.7.8 ~ v0.7.11 on Linux / Windows, please remember to upgrade."
 }
