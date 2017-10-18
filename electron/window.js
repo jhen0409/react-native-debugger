@@ -64,13 +64,14 @@ const getWindowSize = ({ width, height }) => ({
 
 export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   const winBounds = store.get('winBounds');
+  const increasePosition = BrowserWindow.getAllWindows().length * 10;
   const win = new BrowserWindow({
     ...winBounds,
     ...getWindowSize(winBounds),
-    ...(BrowserWindow.getAllWindows().length && winBounds.x && winBounds.y
+    ...(increasePosition && winBounds.x && winBounds.y
       ? {
-        x: winBounds.x + 10,
-        y: winBounds.y + 10,
+        x: winBounds.x + increasePosition,
+        y: winBounds.y + increasePosition,
       }
       : {}),
     backgroundColor: '#272c37',
