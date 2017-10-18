@@ -57,12 +57,16 @@ const registerShortcuts = async win => {
   });
 };
 
+const getWindowSize = ({ width, height }) => ({
+  width: width && width >= 100 ? width : 1024,
+  height: height && height >= 100 ? height : 750,
+});
+
 export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   const winBounds = store.get('winBounds');
   const win = new BrowserWindow({
-    width: 1024,
-    height: 750,
     ...winBounds,
+    ...getWindowSize(winBounds),
     ...(BrowserWindow.getAllWindows().length && winBounds.x && winBounds.y
       ? {
         x: winBounds.x + 10,
@@ -105,7 +109,11 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
   win.on('minimize', () => unregisterKeyboradShortcut());
   win.close = async () => {
     unregisterKeyboradShortcut();
-    store.set('winBounds', win.getBounds());
+    const bounds = win.getBounds();
+    store.set('winBounds', {
+      ...bounds,
+      ...getWindowSize(bounds),
+    });
     win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
     await executeJavaScript(win, 'window.beforeWindowClose && window.beforeWindowClose()');
     win.destroy();
