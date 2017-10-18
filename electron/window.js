@@ -57,7 +57,7 @@ const registerShortcuts = async win => {
   });
 };
 
-const getWindowSize = ({ width, height }) => ({
+const getWindowSize = ({ width, height } = {}) => ({
   width: width && width >= 100 ? width : 1024,
   height: height && height >= 100 ? height : 750,
 });
