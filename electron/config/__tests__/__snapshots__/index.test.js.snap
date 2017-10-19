@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`readConfig 1`] = `
+Object {
+  "config": Object {
+    "autoUpdate": true,
+    "defaultRNPakcagerPorts": Array [
+      8081,
+    ],
+    "defaultReactDevToolsTheme": "RNDebugger",
+    "editor": "",
+    "fontFamily": "monaco, Consolas, Lucida Console, monospace",
+    "fontSize": 12,
+    "windowBounds": Object {
+      "frame": true,
+      "height": 750,
+      "width": 1024,
+    },
+  },
+}
+`;
+
+exports[`readConfig 2`] = `
+Object {
+  "config": Object {
+    "autoUpdate": false,
+  },
+}
+`;
+
+exports[`readConfig 3`] = `
+Object {
+  "config": Object {
+    "autoUpdate": true,
+    "defaultRNPakcagerPorts": Array [
+      8081,
+    ],
+    "defaultReactDevToolsTheme": "RNDebugger",
+    "editor": "",
+    "fontFamily": "monaco, Consolas, Lucida Console, monospace",
+    "fontSize": 12,
+    "windowBounds": Object {
+      "frame": true,
+      "height": 750,
+      "width": 1024,
+    },
+  },
+  "isConfigBroken": true,
+}
+`;
