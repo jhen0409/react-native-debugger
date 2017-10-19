@@ -17,6 +17,7 @@ import {
   toggleOpenInEditor,
   toggleDeviceSync,
 } from './util';
+import { openConfigFile } from '../config';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 
@@ -47,6 +48,7 @@ export default ({ iconPath }) => [
         checked: false,
       }),
       item('Toggle Device Sync', n, () => toggleDeviceSync()),
+      item('Open config file', n, () => openConfigFile()),
       separator,
       item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
       item('Close', 'Command+W', n, { selector: 'performClose:' }),

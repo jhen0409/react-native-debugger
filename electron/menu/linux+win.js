@@ -18,6 +18,7 @@ import {
   toggleOpenInEditor,
   toggleDeviceSync,
 } from './util';
+import { openConfigFile } from '../config';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 const viewItems =
@@ -46,6 +47,7 @@ export default ({ iconPath }) => [
         checked: false,
       }),
       item('Toggle Device Sync', n, () => toggleDeviceSync()),
+      item('Open config file', n, () => openConfigFile()),
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),
     ],
