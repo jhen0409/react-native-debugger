@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import json5 from 'json5';
+import { shell } from 'electron';
 import template from './template';
 
 const filePath = path.join(
@@ -8,7 +9,7 @@ const filePath = path.join(
   '.rndebuggerrc'
 );
 
-export default function readConfig(configFile = filePath) {
+export const readConfig = (configFile = filePath) => {
   if (!fs.existsSync(configFile)) {
     // Create a new one
     fs.writeFileSync(configFile, template);
@@ -21,4 +22,9 @@ export default function readConfig(configFile = filePath) {
     // Alert parse config not successful
     return { config: json5.parse(template), isConfigBroken: true };
   }
-}
+};
+
+export const openConfigFile = (configFile = filePath) => {
+  readConfig();
+  shell.openItem(configFile);
+};
