@@ -3,6 +3,7 @@ import { BrowserWindow, Menu, globalShortcut } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { readConfig } from './config';
 
 const store = new Store();
 
@@ -59,6 +60,12 @@ const registerShortcuts = async win => {
 
 const minSize = 100;
 export const createWindow = ({ iconPath, isPortSettingRequired }) => {
+  const { config, isConfigBroken } = readConfig();
+
+  if (isConfigBroken) {
+    // TODO: Alert?
+  }
+
   const winBounds = store.get('winBounds');
   const increasePosition = BrowserWindow.getAllWindows().length * 10;
   const { width, height } = winBounds || {};
@@ -76,6 +83,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
       : {}),
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
+    ...config.windowBounds,
   });
 
   let url = `file://${path.resolve(__dirname)}/app.html`;
@@ -90,7 +98,8 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
       win.openDevTools();
     }
-    if (BrowserWindow.getAllWindows().length === 1) {
+    const checkUpdate = config.autoUpdate !== false;
+    if (checkUpdate && BrowserWindow.getAllWindows().length === 1) {
       autoUpdate(iconPath);
     }
   });
