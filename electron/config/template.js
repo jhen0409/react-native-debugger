@@ -7,8 +7,8 @@ module.exports = `
 
   // Settings of debugger window, 
   windowBounds: {
-    width: 1024,
-    height: 750,
+    // width: 1024,
+    // height: 750,
 
     // Show frame for debugger window
     // but due to https://github.com/electron/electron/issues/3647
