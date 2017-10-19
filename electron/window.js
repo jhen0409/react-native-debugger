@@ -119,8 +119,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     event.preventDefault();
     win.close();
   });
-  // Try to fix https://github.com/jhen0409/react-native-debugger/issues/81
-  // but really not sure because the method works fine on most machines
+
+  // https://github.com/electron/electron/issues/10442
   win._setEscapeTouchBarItem = () => {}; // eslint-disable-line
+
   return win;
 };
