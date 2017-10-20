@@ -42,5 +42,6 @@ Of course, if you want to inspect deeper network requests (Like request of `Imag
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
 * [Enable open in editor in console](enable-open-in-editor-in-console.md)
+* [Config file in home directory](config-file-in-home-directory.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

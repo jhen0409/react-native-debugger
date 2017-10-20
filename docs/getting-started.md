@@ -88,5 +88,6 @@ You can also click `React Native Debugger` (`RND` for Linux / Windows) -> `Check
 * [Shortcut references](shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 * [Enable open in editor in console](enable-open-in-editor-in-console.md)
+* [Config file in home directory](config-file-in-home-directory.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

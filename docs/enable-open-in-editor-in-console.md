@@ -18,5 +18,6 @@ Instead of open file in `Sources` tab, you can open file in editor by click sour
 * [Redux DevTools Integration](redux-devtools-integration.md)
 * [Shortcut references](shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+* [Config file in home directory](config-file-in-home-directory.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)
