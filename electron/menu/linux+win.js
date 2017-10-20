@@ -47,7 +47,7 @@ export default ({ iconPath }) => [
         checked: false,
       }),
       item('Toggle Device Sync', n, () => toggleDeviceSync()),
-      item('Open config file', n, () => openConfigFile()),
+      item('Open Config File', n, () => openConfigFile()),
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),
     ],

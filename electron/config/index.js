@@ -4,7 +4,7 @@ import json5 from 'json5';
 import { shell } from 'electron';
 import template from './template';
 
-const filePath = path.join(
+export const filePath = path.join(
   process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'],
   '.rndebuggerrc'
 );
@@ -18,9 +18,9 @@ export const readConfig = (configFile = filePath) => {
   try {
     // eslint-disable-next-line
     return { config: json5.parse(fs.readFileSync(configFile, 'utf-8')) };
-  } catch (e) {
+  } catch (error) {
     // Alert parse config not successful
-    return { config: json5.parse(template), isConfigBroken: true };
+    return { config: json5.parse(template), isConfigBroken: true, error };
   }
 };
 

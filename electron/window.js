@@ -1,10 +1,10 @@
 import path from 'path';
 import qs from 'querystring';
-import { BrowserWindow, Menu, globalShortcut } from 'electron';
+import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
-import { readConfig } from './config';
+import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
 
@@ -61,10 +61,16 @@ const registerShortcuts = async win => {
 
 const minSize = 100;
 export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
-  const { config, isConfigBroken } = readConfig();
+  const { config, isConfigBroken, error } = readConfig();
 
   if (isConfigBroken) {
-    // TODO: Alert?
+    dialog.showErrorBox(
+      'Root config error',
+      `Parse root config failed, please checkout \`${configFile}\`, the error trace:\n\n` +
+        `${error}\n\n` +
+        'RNDebugger will load default config instead. ' +
+        'You can click `Debugger` -> `Open Config File` in application menu.'
+    );
   }
 
   const winBounds = store.get('winBounds');

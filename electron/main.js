@@ -72,11 +72,7 @@ if (process.platform === 'darwin') {
 app.on('ready', async () => {
   await installExtensions();
 
-  const { config, isConfigBroken } = readConfig();
-
-  if (isConfigBroken) {
-    // TODO: Alert?
-  }
+  const { config } = readConfig();
 
   let { defaultRNPakcagerPorts } = config;
   if (!Array.isArray(defaultRNPakcagerPorts)) {

@@ -59,6 +59,7 @@ Object {
       "frame": true,
     },
   },
+  "error": [SyntaxError: Unexpected 'i' at line 1 column 16 of the JSON5 data. Still to read: "is_broken, }"],
   "isConfigBroken": true,
 }
 `;
