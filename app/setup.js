@@ -5,4 +5,6 @@ const query = qs.parse(url.parse(location.href).query);
 
 window.query = query;
 
-process.env.EDITOR = query.editor || process.env.EDITOR;
+if (query.editor) {
+  process.env.EDITOR = query.editor;
+}
