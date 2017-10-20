@@ -4,6 +4,7 @@ import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createMenuTemplate } from './menu';
+import { readConfig } from './config';
 
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };
@@ -71,7 +72,20 @@ if (process.platform === 'darwin') {
 app.on('ready', async () => {
   await installExtensions();
 
-  createWindow(defaultOptions);
+  const { config, isConfigBroken } = readConfig();
+
+  if (isConfigBroken) {
+    // TODO: Alert?
+  }
+
+  let { defaultRNPakcagerPorts } = config;
+  if (!Array.isArray(defaultRNPakcagerPorts)) {
+    defaultRNPakcagerPorts = [8081];
+  }
+
+  defaultRNPakcagerPorts.forEach(port => {
+    createWindow({ port, ...defaultOptions });
+  });
 
   const menuTemplate = createMenuTemplate(defaultOptions);
   const menu = Menu.buildFromTemplate(menuTemplate);

@@ -1,6 +1,5 @@
 // json5
-module.exports = `
-{
+module.exports = `{
   // Styles of debugger window
   fontFamily: 'monaco, Consolas, Lucida Console, monospace',
   fontSize: 12,
@@ -31,5 +30,7 @@ module.exports = `
   // but the default theme doesn't change manually changed theme
   // see https://github.com/facebook/react-devtools/blob/master/frontend/Themes/Themes.js to get more 
   defaultReactDevToolsTheme: 'RNDebugger',
+
+  defaultNetworkInspect: false,
 }
 `;

@@ -1,12 +1,10 @@
-import qs from 'querystring';
-import url from 'url';
 import {
   SET_DEBUGGER_STATUS,
   SET_DEBUGGER_WORKER,
   SET_DEBUGGER_LOCATION,
 } from '../actions/debugger';
 
-const { isPortSettingRequired } = qs.parse(url.parse(location.href).query);
+const { isPortSettingRequired } = window.query;
 
 function getStatusMessage(status, port) {
   let message;
@@ -40,7 +38,7 @@ const initialState = {
   statusMessage: getStatusMessage(isPortSettingRequired ? 'new' : 'disconnected', 8081),
   location: {
     host: 'localhost',
-    port: 8081,
+    port: window.query.port || 8081,
   },
   isPortSettingRequired,
 };

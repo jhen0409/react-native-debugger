@@ -1,4 +1,5 @@
 import path from 'path';
+import qs from 'querystring';
 import { BrowserWindow, Menu, globalShortcut } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
@@ -59,7 +60,7 @@ const registerShortcuts = async win => {
 };
 
 const minSize = 100;
-export const createWindow = ({ iconPath, isPortSettingRequired }) => {
+export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   const { config, isConfigBroken } = readConfig();
 
   if (isConfigBroken) {
@@ -85,12 +86,17 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     tabbingIdentifier: 'rndebugger',
     ...config.windowBounds,
   });
+  const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
-  let url = `file://${path.resolve(__dirname)}/app.html`;
-  if (isPortSettingRequired) {
-    url += '?isPortSettingRequired=1';
-  }
-  win.loadURL(url);
+  const query = {
+    port,
+    networkInspect: config.defaultNetworkInspect && 1,
+    isPortSettingRequired: isPortSettingRequired && 1,
+  };
+  Object.keys(query).forEach(key => {
+    if (!query[key]) delete query[key];
+  });
+  win.loadURL(`file://${path.resolve(__dirname)}/app.html?${qs.stringify(query)}`);
   win.webContents.on('did-finish-load', () => {
     win.webContents.setZoomLevel(store.get('zoomLevel', 0));
     win.focus();
@@ -99,7 +105,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
       win.openDevTools();
     }
     const checkUpdate = config.autoUpdate !== false;
-    if (checkUpdate && BrowserWindow.getAllWindows().length === 1) {
+    if (checkUpdate && isFirstWindow) {
       autoUpdate(iconPath);
     }
   });
