@@ -1,11 +1,14 @@
 // json5
 module.exports = `{
+  // Font family of the debugger window
   fontFamily: 'monaco, Consolas, Lucida Console, monospace',
 
+  // Zoom level of the debugger window, it will override persited zoomLevel
   // zoomLevel: 0,
 
   // Settings of debugger window, 
   windowBounds: {
+    // Size of the debugger window, it will override persisted size
     // width: 1024,
     // height: 750,
 
