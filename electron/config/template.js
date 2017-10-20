@@ -12,6 +12,7 @@ module.exports = `{
     // Show frame for debugger window
     // but due to https://github.com/electron/electron/issues/3647
     // so we can't have custom title bar if no frame
+    // titleBarStyle: 'hidden',
     frame: true,
   },
 

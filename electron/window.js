@@ -97,6 +97,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   const query = {
     port,
     editor: config.editor,
+    fontFamily: config.fontFamily,
     defaultReactDevToolsTheme: config.defaultReactDevToolsTheme,
     networkInspect: config.defaultNetworkInspect && 1,
     isPortSettingRequired: isPortSettingRequired && 1,
@@ -120,7 +121,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   win.webContents.on('devtools-opened', async () => {
     const { location } = await checkWindowInfo(win);
     catchConsoleLogLink(win, location.host, location.port);
-    removeUnecessaryTabs(win);
+    if (config.showAllDevToolsTab !== true) {
+      removeUnecessaryTabs(win);
+    }
   });
   win.on('show', () => {
     if (!win.isFocused()) return;
