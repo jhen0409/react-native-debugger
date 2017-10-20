@@ -1,7 +1,7 @@
 // json5
 module.exports = `{
   fontFamily: 'monaco, Consolas, Lucida Console, monospace',
-  
+
   // zoomLevel: 0,
 
   // Settings of debugger window, 
@@ -28,9 +28,11 @@ module.exports = `{
 
   // Set default react-devtools theme (default is match Chrome DevTools theme)
   // but the default theme doesn't change manually changed theme
-  // see https://github.com/facebook/react-devtools/blob/master/frontend/Themes/Themes.js to get more 
+  // see https://github.com/facebook/react-devtools/blob/master/frontend/Themes/Themes.js to get more
   defaultReactDevToolsTheme: 'RNDebugger',
 
+  // Enable Network Inspect by default
+  // See https://github.com/jhen0409/react-native-debugger/blob/master/docs/network-inspect-of-chrome-devtools.md
   defaultNetworkInspect: false,
 }
 `;
