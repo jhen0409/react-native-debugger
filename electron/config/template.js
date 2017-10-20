@@ -1,8 +1,8 @@
 // json5
 module.exports = `{
-  // Styles of debugger window
   fontFamily: 'monaco, Consolas, Lucida Console, monospace',
-  fontSize: 12,
+  
+  // zoomLevel: 0,
 
   // Settings of debugger window, 
   windowBounds: {

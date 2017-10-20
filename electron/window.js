@@ -100,7 +100,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   win.loadURL(`file://${path.resolve(__dirname)}/app.html?${qs.stringify(query)}`);
   win.webContents.on('did-finish-load', () => {
-    win.webContents.setZoomLevel(store.get('zoomLevel', 0));
+    win.webContents.setZoomLevel(config.zoomLevel || store.get('zoomLevel', 0));
     win.focus();
     registerShortcuts(win);
     if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
