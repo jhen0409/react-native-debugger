@@ -1,6 +1,7 @@
 import 'remotedev-monitor-components/lib/presets';
 
 import React, { Component } from 'react';
+import { shell } from 'electron';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -26,6 +27,9 @@ import SliderButton from 'remotedev-app/lib/components/buttons/SliderButton';
 import LockButton from 'remotedev-app/lib/components/buttons/LockButton';
 import RecordButton from 'remotedev-app/lib/components/buttons/RecordButton';
 import PrintButton from 'remotedev-app/lib/components/buttons/PrintButton';
+import Button from 'remotedev-app/lib/components/Button';
+// eslint-disable-next-line
+import HelpIcon from 'react-icons/lib/fa/lightbulb-o';
 
 const sliderStyle = {
   padding: '15px 5px',
@@ -71,6 +75,8 @@ export default class ReduxDevTools extends Component {
     sliderIsOpen: PropTypes.bool,
   };
 
+  openHelp = () => shell.openExternal('https://goo.gl/SHU4yL');
+
   render() {
     const {
       selected,
@@ -83,6 +89,7 @@ export default class ReduxDevTools extends Component {
       options,
     } = this.props;
     const isRedux = options.lib === 'redux';
+    const isConnected = !!options.connectionId;
     return (
       <div className="redux-container" style={containerStyle}>
         <div style={styles.buttonBar}>
@@ -98,15 +105,16 @@ export default class ReduxDevTools extends Component {
         />
         <Notification />
         {sliderIsOpen &&
-          options.connectionId &&
-          <SliderMonitor
-            monitor="SliderMonitor"
-            liftedState={liftedState}
-            dispatch={liftedDispatch}
-            showActions={monitor === 'ChartMonitor'}
-            style={sliderStyle}
-            fillColor="rgb(120, 144, 156)"
-          />}
+          isConnected && (
+            <SliderMonitor
+              monitor="SliderMonitor"
+              liftedState={liftedState}
+              dispatch={liftedDispatch}
+              showActions={monitor === 'ChartMonitor'}
+              style={sliderStyle}
+              fillColor="rgb(120, 144, 156)"
+            />
+          )}
         {dispatcherIsOpen && options.connectionId && <Dispatcher options={options} />}
         <div className="redux-buttonbar" style={styles.buttonBar}>
           {isRedux && <RecordButton paused={liftedState.isPaused} />}
@@ -116,6 +124,11 @@ export default class ReduxDevTools extends Component {
           <ImportButton />
           <ExportButton liftedState={liftedState} />
           <PrintButton />
+          {!isConnected && (
+            <Button Icon={HelpIcon} onClick={this.openHelp}>
+              How to use
+            </Button>
+          )}
         </div>
       </div>
     );
