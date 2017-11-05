@@ -16,6 +16,16 @@ const currentWindow = remote.getCurrentWindow();
 webFrame.setZoomFactor(1);
 webFrame.setZoomLevelLimits(1, 1);
 
+// Prevent dropped file
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  e.stopPropagation();
+});
+document.addEventListener('dragover', e => {
+  e.preventDefault();
+  e.stopPropagation();
+});
+
 const store = configureStore();
 
 // Provide for user
