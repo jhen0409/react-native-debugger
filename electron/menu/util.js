@@ -12,12 +12,6 @@ const detail = multiline`
   | https://github.com/zalmoxisus/remotedev-app
 `;
 
-export const toggleDeviceSync = () => {
-  BrowserWindow.getAllWindows().forEach(window => {
-    window.webContents.send('toggle-sync');
-  });
-};
-
 export const showAboutDialog = iconPath =>
   (remote ? remote.dialog : dialog).showMessageBox({
     title: 'About',

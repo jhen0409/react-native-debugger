@@ -4,6 +4,7 @@ import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
 import { createMenuTemplate } from './menu';
+import { sendSyncState } from './sync-state';
 
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };
@@ -34,13 +35,7 @@ ipcMain.on('check-port-available', async (event, arg) => {
   event.sender.send('check-port-available-reply', true);
 });
 
-ipcMain.on('sync-state', async (event, arg) => {
-  BrowserWindow.getAllWindows()
-    .filter(win => Number(win.webContents.id) !== event.sender.id)
-    .forEach(win => {
-      win.webContents.send('sync-state', arg);
-    });
-});
+ipcMain.on('sync-state', sendSyncState);
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length !== 0) return;
