@@ -16,8 +16,8 @@ import {
   resetZoom,
   haveOpenedWindow,
   toggleOpenInEditor,
-  toggleDeviceSync,
 } from './util';
+import { toggleSyncState, isSyncState } from '../sync-state';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 const viewItems =
@@ -45,7 +45,10 @@ export default ({ iconPath }) => [
         type: 'checkbox',
         checked: false,
       }),
-      item('Toggle Device Sync', n, () => toggleDeviceSync()),
+      item('Toggle Device Sync', n, toggleSyncState, {
+        type: 'checkbox',
+        checked: isSyncState(),
+      }),
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),
     ],
