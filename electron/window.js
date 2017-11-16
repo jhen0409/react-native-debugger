@@ -50,7 +50,7 @@ const registerShortcuts = async win => {
       'Stay in Front': {
         checked: win.isAlwaysOnTop(),
       },
-      'Enable open in editor for console log': {
+      'Enable Open in Editor for Console Log': {
         checked: await checkIsOpenInEditorEnabled(win),
       },
     },

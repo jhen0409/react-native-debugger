@@ -41,7 +41,7 @@ export default ({ iconPath }) => [
       item('New Window', 'Ctrl+T', () =>
         createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
       ),
-      item('Enable open in editor for console log', n, () => toggleOpenInEditor(getWin()), {
+      item('Enable Open in Editor for Console Log', n, () => toggleOpenInEditor(getWin()), {
         type: 'checkbox',
         checked: false,
       }),
