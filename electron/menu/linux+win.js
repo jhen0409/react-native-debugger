@@ -16,9 +16,9 @@ import {
   resetZoom,
   haveOpenedWindow,
   toggleOpenInEditor,
-  toggleDeviceSync,
 } from './util';
 import { openConfigFile } from '../config';
+import { toggleSyncState, isSyncState } from '../sync-state';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
 const viewItems =
@@ -42,11 +42,14 @@ export default ({ iconPath }) => [
       item('New Window', 'Ctrl+T', () =>
         createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
       ),
-      item('Enable open in editor for console log', n, () => toggleOpenInEditor(getWin()), {
+      item('Enable Open in Editor for Console Log', n, () => toggleOpenInEditor(getWin()), {
         type: 'checkbox',
         checked: false,
       }),
-      item('Toggle Device Sync', n, () => toggleDeviceSync()),
+      item('Toggle Device Sync', n, toggleSyncState, {
+        type: 'checkbox',
+        checked: isSyncState(),
+      }),
       item('Open Config File', n, () => openConfigFile()),
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),

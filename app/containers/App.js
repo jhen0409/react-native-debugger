@@ -62,20 +62,10 @@ export default class App extends Component {
     actions: PropTypes.object.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      syncDevices: true,
-    };
-  }
-
   componentDidMount() {
     const { toggleDevTools } = this.props.actions.setting;
     ipcRenderer.on('toggle-devtools', (e, name) => toggleDevTools(name));
-    ipcRenderer.on('sync-state',
-      (event, arg) => this.state.syncDevices && this.props.debugger.syncState(arg));
-    ipcRenderer.on('toggle-sync', () => this.toggleSync());
-
+    ipcRenderer.on('sync-state', (event, arg) => this.props.actions.debugger.syncState(arg));
     ipcRenderer.on('set-debugger-loc', (e, payload) => {
       const location = JSON.parse(payload);
       this.setDebuggerLocation(location);
@@ -130,13 +120,6 @@ export default class App extends Component {
       };
     }
     return { redux: size, react: 1 - size };
-  }
-
-  toggleSync() {
-    console.warn(`Syncing devices: ${!this.state.syncDevices}`);
-    this.setState({
-      syncDevices: !this.state.syncDevices,
-    });
   }
 
   removeAllListeners() {
