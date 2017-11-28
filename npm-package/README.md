@@ -23,7 +23,7 @@ $ npm i --save-dev react-native-debugger-open # or -g
 
 ## Usage
 
-#### Inject to react-natvie packager
+#### Inject to react-native packager
 
 Add command to your project's package.json:
 
@@ -38,7 +38,7 @@ The `./node_modules/react-native/local-cli/server/middleware/getDevToolsMiddlewa
 
 #### Use `REACT_DEBUGGER` env of react-native packager
 
-Instead of `Inject to react-natvie packager`, you can just do:
+Instead of `Inject to react-native packager`, you can just do:
 
 ```bash
 $ REACT_DEBUGGER="rndebugger-open --open --port 8081" npm start
