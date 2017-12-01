@@ -12,10 +12,6 @@ This is a standalone app for debugging React Native apps:
 * Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core).
 * Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/GXkY2etiE71ZpVHZtV36rvhT/jhen0409/react-native-debugger'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/GXkY2etiE71ZpVHZtV36rvhT/jhen0409/react-native-debugger.svg' />
-</a>
-
 ## Installation
 
 The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page.
