@@ -53,6 +53,29 @@ $ yarn run pack # all
 
 If you want to build binaries yourself, please remove [../electron/update.js](electron/update.js) (and [electon/main.js usage](electon/main.js)), `osx-sign` in [../scripts/package-macos.sh](scripts/package-macos.sh).
 
+## Financial contributions
+
+We also welcome financial contributions in full transparency on our [open collective](https://opencollective.com/react-native-debugger).
+Anyone can file an expense. If the expense makes sense for the development of the community, it will be "merged" in the ledger of our open collective by the core contributors and the person who filed the expense will be reimbursed.
+
+## Credits
+
+### Contributors
+
+Thank you to all the people who have already contributed to react-native-debugger!
+
+### Backers
+
+Thank you to all our backers! [[Become a backer](https://opencollective.com/react-native-debugger#backer)]
+
+<a href="https://opencollective.com/react-native-debugger#backers" target="_blank"><img src="https://opencollective.com/react-native-debugger/backers.svg?width=890"></a>
+
+### Sponsors
+
+Thank you to all our sponsors! (please ask your company to also support this open source project by [becoming a sponsor](https://opencollective.com/react-native-debugger#sponsor))
+
+<a href="https://opencollective.com/react-native-debugger#backers" target="_blank"><img src="https://opencollective.com/react-native-debugger/sponsors.svg?width=890"></a>
+
 ## Other documentations
 
 * [Getting Started](getting-started.md)
