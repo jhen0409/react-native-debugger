@@ -155,11 +155,11 @@ export default class ReactInspector extends Component {
         <div id="waiting">
           <h2>{'Waiting for React to connect…'}</h2>
           <h5 style={styles.tip}>
-            {"If you're using real device, to ensure you have read "}
+            {"If you're using a real device, ensure you have read the "}
             <span style={styles.link} onClick={this.handleDocLinkClick}>
-              `How to use it with real device?`
+              `How to use it with a real device?`
             </span>
-            {' section in documentation.'}
+            {' section in the documentation.'}
           </h5>
         </div>
       </div>
