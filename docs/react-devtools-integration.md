@@ -35,14 +35,15 @@ You can change Chrome DevTools theme (Default / Dark), the theme of React DevToo
 
 The `RNDebugger DevTools` option is by default to match Chrome DevTools.
 
-__*NOTE*__ Currently Chrome DevTools (Electron) doesn't reload automatically, we need to `Toggle Developer Tools` twice (Application menu or `⌥+⌘+I` (`Ctrl+Alt+I`)), subscribe [#87](https://github.com/jhen0409/react-native-debugger/issues/87) for tracking the issue.
+**_NOTE_** Currently Chrome DevTools (Electron) doesn't reload automatically, we need to `Toggle Developer Tools` twice (Application menu or `⌥+⌘+I` (`Ctrl+Alt+I`)), subscribe [#87](https://github.com/jhen0409/react-native-debugger/issues/87) for tracking the issue.
 
 ## How to use it with real device?
 
+* Starting from RN `0.53.0-rc`, it should work by default.
 * If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native manually, change `'localhost'` to your machine IP.
-  - `< 0.37` - Find [`node_modules/react-native/Libraries/Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.36-stable/Libraries/Devtools/setupDevtools.js) in your project, then change `hostname` variable.
-  - `>= 0.37 && < 0.43` - The same as above, but the path have been changed to [`Libraries/`__Core__/`Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.37-stable/Libraries/Core/Devtools/setupDevtools.js)
-  - `>= 0.43` - The same as above, but use `host` property of `connectToDevTools` instead.
+  * `< 0.37` - Find [`node_modules/react-native/Libraries/Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.36-stable/Libraries/Devtools/setupDevtools.js) in your project, then change `hostname` variable.
+  * `>= 0.37 && < 0.43` - The same as above, but the path have been changed to [`Libraries/`**Core**/`Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.37-stable/Libraries/Core/Devtools/setupDevtools.js)
+  * `>= 0.43` - The same as above, but use `host` property of `connectToDevTools` instead.
 
 ## Get `$r` global variable of React Native runtime in the console
 
