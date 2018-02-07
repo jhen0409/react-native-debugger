@@ -21,6 +21,12 @@ const flags = {
       funcCall: '(port, args, true)',
       args: "+ '&args=' + args",
     },
+    '0.53.0': {
+      func: `function ${keyFunc}(host, args = '') {`,
+      replaceFunc: `function ${keyFunc}(host, args = '', skipRNDebugger) {`,
+      funcCall: '(host, args, true)',
+      args: "+ '&args=' + args",
+    },
   },
   // react-native, react-native-macos
   default: {
