@@ -146,7 +146,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 function launchChromeDevTools(port, skipRNDebugger) {
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port ;
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port;
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
@@ -472,7 +472,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 function launchChromeDevTools(port, args = '', skipRNDebugger) {
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port ;
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port + '&args=' + args;
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
@@ -795,7 +795,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 function launchChromeDevTools(port, skipRNDebugger) {
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port ;
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port;
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;

@@ -19,13 +19,13 @@ const flags = {
       func: `function ${keyFunc}(port, args = '') {`,
       replaceFunc: `function ${keyFunc}(port, args = '', skipRNDebugger) {`,
       funcCall: '(port, args, true)',
-      args: "+ '&args=' + args",
+      args: "port + '&args=' + args",
     },
     '0.53.0': {
       func: `function ${keyFunc}(host, args = '') {`,
       replaceFunc: `function ${keyFunc}(host, args = '', skipRNDebugger) {`,
       funcCall: '(host, args, true)',
-      args: "+ '&args=' + args",
+      args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
     },
   },
   // react-native, react-native-macos
@@ -33,7 +33,7 @@ const flags = {
     func: `function ${keyFunc}(port) {`,
     replaceFunc: `function ${keyFunc}(port, skipRNDebugger) {`,
     funcCall: '(port, true)',
-    args: '',
+    args: 'port',
   },
 };
 
@@ -63,7 +63,7 @@ export const inject = modulePath => {
   if (!fs.existsSync(filePath)) return false;
 
   const info = getModuleInfo(modulePath);
-  const { func: funcFlag, replaceFunc: replaceFuncFlag, funcCall } = getFlag(
+  const { func: funcFlag, replaceFunc: replaceFuncFlag, funcCall, args } = getFlag(
     info.name,
     info.version
   );
@@ -74,6 +74,7 @@ export const inject = modulePath => {
     keyFunc,
     funcCall,
     endFlag,
+    args,
   });
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
