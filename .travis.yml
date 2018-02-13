@@ -13,7 +13,7 @@ addons:
     packages:
       - yarn
 env:
-  - NODE_VERSION="8"
+  - NODE_VERSION="9"
 script:
   - ./scripts/travis-setup.sh
   - yarn
