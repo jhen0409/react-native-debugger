@@ -16,10 +16,3 @@ fi
 
 node --version
 npm --version
-
-yarn
-cd npm-package && yarn && cd ..
-yarn lint
-yarn test
-yarn build
-yarn test-e2e
