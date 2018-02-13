@@ -14,11 +14,4 @@ addons:
       - yarn
 env:
   - NODE_VERSION="9"
-script:
-  - ./scripts/travis-setup.sh
-  - yarn
-  - cd npm-package && yarn && cd ..
-  - yarn lint
-  - yarn build
-  - yarn test
-  - yarn test-e2e
+script: ./scripts/travis-build.sh
