@@ -161,7 +161,7 @@ export default class App extends Component {
     return (
       <div style={styles.wrapBackground}>
         <FormInput
-          title={'Type an another React Native packager port'}
+          title={'Type in another React Native packager port'}
           button="Confirm"
           inputProps={{
             type: 'input',
