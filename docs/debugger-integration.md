@@ -4,7 +4,7 @@ The Debugger worker is referenced from [react-native](https://github.com/faceboo
 
 * `Console`
 * `Sources`
-* `Network` (Inspect Network requests if you are enabled [Network Inspect](network-inspect-of-chrome-devtools))
+* `Network` (Inspect Network requests if you are enabled [Network Inspect](network-inspect-of-chrome-devtools.md))
 * `Memory`
 
 ## Multiple React Native packager (custom port) support
