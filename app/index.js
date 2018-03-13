@@ -15,6 +15,9 @@ const currentWindow = remote.getCurrentWindow();
 
 webFrame.setZoomFactor(1);
 webFrame.setZoomLevelLimits(1, 1);
+if (process.env.E2E_TEST) {
+  webFrame.registerURLSchemeAsPrivileged('file');
+}
 
 // Prevent dropped file
 document.addEventListener('drop', e => {
