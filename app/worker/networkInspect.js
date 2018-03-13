@@ -9,6 +9,7 @@ export const toggleNetworkInspect = enabled => {
     window.XMLHttpRequest = networkInspect.XMLHttpRequest;
     window.FormData = networkInspect.FormData;
     window.Blob = networkInspect.Blob;
+    window.FileReader = networkInspect.FileReader;
     networkInspect = null;
     if (window._fetchSupport) {
       window._fetchSupport.blob = !!window._fetchSupport._blob;
@@ -31,12 +32,14 @@ export const toggleNetworkInspect = enabled => {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
     Blob: window.Blob,
+    FileReader: window.FileReader,
   };
   window.XMLHttpRequest = window.originalXMLHttpRequest
     ? window.originalXMLHttpRequest
     : window.XMLHttpRequest;
   window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
   window.Blob = window.originalBlob ? window.originalBlob : window.Blob;
+  window.FileReader = window.originalFileReader ? window.originalFileReader : window.FileReader;
 
   // Don't enable blob for use native XMLHttpRequest
   // See https://github.com/jhen0409/react-native-debugger/issues/56
