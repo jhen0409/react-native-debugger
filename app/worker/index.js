@@ -14,6 +14,7 @@ import './setup';
 import { checkAvailableDevMenuMethods, invokeDevMenuMethodIfAvailable } from './devMenu';
 import { reportDefaultReactDevToolsPort } from './reactDevTools';
 import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
+import { replaceFetchCode } from './networkInspect';
 import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 
@@ -50,18 +51,23 @@ const setupRNDebugger = async message => {
 };
 
 const messageHandlers = {
-  executeApplicationScript(message, sendReply) {
+  async executeApplicationScript(message, sendReply) {
     setupRNDebuggerBeforeImportScript(message);
 
     Object.keys(message.inject).forEach(key => {
       self[key] = JSON.parse(message.inject[key]);
     });
     let error;
+
     try {
-      importScripts(message.url);
+      const js = await fetch(message.url)
+        .then(res => res.text())
+        .then(replaceFetchCode);
+      eval.call(self, js); // eslint-disable-line
     } catch (err) {
       error = err.message;
     }
+
     sendReply(null /* result */, error);
 
     if (!error) {
