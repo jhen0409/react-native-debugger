@@ -2,11 +2,18 @@ const isWorkerMethod = fn => String(fn).indexOf('[native code]') > -1;
 
 let networkInspect;
 
+/* eslint-disable no-underscore-dangle */
 export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
+    window.fetch = networkInspect.fetch;
     window.XMLHttpRequest = networkInspect.XMLHttpRequest;
     window.FormData = networkInspect.FormData;
+    window.Blob = networkInspect.Blob;
+    window.FileReader = networkInspect.FileReader;
     networkInspect = null;
+    if (window._fetchSupport) {
+      window._fetchSupport.blob = !!window._fetchSupport._blob;
+    }
     return;
   }
   if (!enabled) return;
@@ -24,11 +31,22 @@ export const toggleNetworkInspect = enabled => {
   networkInspect = {
     XMLHttpRequest: window.XMLHttpRequest,
     FormData: window.FormData,
+    Blob: window.Blob,
+    FileReader: window.FileReader,
   };
   window.XMLHttpRequest = window.originalXMLHttpRequest
     ? window.originalXMLHttpRequest
     : window.XMLHttpRequest;
   window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
+  window.Blob = window.originalBlob ? window.originalBlob : window.Blob;
+  window.FileReader = window.originalFileReader ? window.originalFileReader : window.FileReader;
+
+  // Don't enable blob for use native XMLHttpRequest
+  // See https://github.com/jhen0409/react-native-debugger/issues/56
+  if (window._fetchSupport) {
+    window._fetchSupport._blob = window._fetchSupport.blob;
+    window._fetchSupport.blob = false;
+  }
 
   console.log(
     '[RNDebugger]',
@@ -36,6 +54,13 @@ export const toggleNetworkInspect = enabled => {
     'see the documentation (https://goo.gl/yEcRrU) for more information.'
   );
 };
+
+// Get the `support` variable in favor of toggleNetworkInspect
+export const replaceFetchCode = source =>
+  source.replace(
+    /if \(self.fetch\) {\n\s+return;\n\s+}\n\s+var support = {/g,
+    'if (self.fetch) {\n      return;\n    }\n    var support = self._fetchSupport = {'
+  );
 
 /*
  * `originalXMLHttpRequest` haven't permission to set forbidden header name
