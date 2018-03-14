@@ -1,7 +1,7 @@
 {
   "url":
-    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.13/rn-debugger-macos-x64.zip",
-  "name": "v0.7.13",
+    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.14/rn-debugger-macos-x64.zip",
+  "name": "v0.7.14",
   "notes":
-    "1. Fix Toggle Device Sync feature caused error\n2. Set minimum size of window\n3. Add How to use button on Redux panel, show only if not connected\n4. Prevent dropped file for debugger window\n5. Update name of Enable Open in Editor for Console Log menu item"
+    "1. Delta Bundler support (RN >= 0.52)\n2. Fix typo of port setting\n3. Improve grammar of ReactInspector tips"
 }
