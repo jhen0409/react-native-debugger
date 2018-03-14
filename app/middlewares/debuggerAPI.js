@@ -73,6 +73,13 @@ const preconnect = async (fn, firstTimeout) => {
   socket = await fn();
 };
 
+const clearLogs = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    console.clear();
+    clearNetworkLogs(currentWindow);
+  }
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
@@ -97,10 +104,7 @@ const connectToDebuggerProxy = async () => {
     if (object.method === 'prepareJSRuntime') {
       shutdownJSRuntime();
       createJSRuntime();
-      if (process.env.NODE_ENV !== 'development') {
-        console.clear();
-        clearNetworkLogs(currentWindow);
-      }
+      clearLogs();
       selectRNDebuggerWorkerContext(currentWindow);
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
@@ -119,9 +123,12 @@ const connectToDebuggerProxy = async () => {
         try {
           const deltaUrl = object.url.replace('index.bundle', 'index.delta');
           await fetch(deltaUrl);
+          clearLogs();
           worker.postMessage({ ...object, url: await deltaUrlToBlobUrl(deltaUrl) });
           return;
-        } catch (e) {}
+        } catch (e) {
+          clearLogs();
+        }
       }
       worker.postMessage(object);
     }

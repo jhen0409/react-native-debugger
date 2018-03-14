@@ -7,6 +7,8 @@
  * @format
  */
 
+/* eslint-disable no-underscore-dangle */
+
 /**
  * This file is a copy of the reference `DeltaPatcher`, located in
  * metro. The reason to not reuse that file is that in this context
