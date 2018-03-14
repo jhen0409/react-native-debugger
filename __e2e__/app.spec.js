@@ -34,8 +34,7 @@ describe('Application launch', () => {
       path: electronPath,
       args: ['--user-dir=__e2e__/tmp', 'dist'],
       env: {
-        REACT_ONLY_FOR_LOCAL: 1,
-        OPEN_DEVTOOLS: 0,
+        E2E_TEST: 1,
       },
     });
     return app.start();
@@ -70,9 +69,6 @@ describe('Application launch', () => {
     await delay(2000);
     const title = await browserWindow.getTitle();
     expect(title).toBe('React Native Debugger - Attempting reconnection (port 8081)');
-
-    // Avoid RND clear logs
-    await app.webContents.executeJavaScript('console.clear = noop => noop');
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
@@ -229,7 +225,7 @@ describe('Application launch', () => {
 
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
-    const selectInstance = async (instance) => {
+    const selectInstance = async instance => {
       const { client } = app;
       await client
         .element(`//div[text()="${currentInstance}"]`)
@@ -317,9 +313,16 @@ describe('Application launch', () => {
       logs.forEach(log =>
         console.log(`Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`)
       );
-      expect(logs.length).toEqual(1);
-      const [formDataWarning] = logs;
+      expect(logs.length).toEqual(2);
+      const [notFoundDeltaBundleError, formDataWarning] = logs;
 
+      expect(notFoundDeltaBundleError.source).toBe('network');
+      expect(notFoundDeltaBundleError.level).toBe('SEVERE');
+      expect(
+        notFoundDeltaBundleError.message.indexOf(
+          'app.delta.js - Failed to load resource: net::ERR_FILE_NOT_FOUND'
+        ) > 0
+      ).toBeTruthy();
       expect(formDataWarning.source).toBe('worker');
       expect(formDataWarning.level).toBe('WARNING');
       expect(

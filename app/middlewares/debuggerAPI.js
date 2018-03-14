@@ -16,6 +16,7 @@ import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
+import deltaUrlToBlobUrl from './delta/deltaUrlToBlobUrl';
 
 const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
@@ -72,12 +73,19 @@ const preconnect = async (fn, firstTimeout) => {
   socket = await fn();
 };
 
+const clearLogs = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    console.clear();
+    clearNetworkLogs(currentWindow);
+  }
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
-  ws.onmessage = message => {
+  ws.onmessage = async message => {
     if (!message.data) {
       return;
     }
@@ -96,10 +104,7 @@ const connectToDebuggerProxy = async () => {
     if (object.method === 'prepareJSRuntime') {
       shutdownJSRuntime();
       createJSRuntime();
-      if (process.env.NODE_ENV !== 'development') {
-        console.clear();
-        clearNetworkLogs(currentWindow);
-      }
+      clearLogs();
       selectRNDebuggerWorkerContext(currentWindow);
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
@@ -113,6 +118,15 @@ const connectToDebuggerProxy = async () => {
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
           tryADBReverse(window.reactDevToolsPort).catch(() => {});
+        }
+        // Check Delta support
+        try {
+          const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
+          clearLogs();
+          worker.postMessage({ ...object, url });
+          return;
+        } catch (e) {
+          clearLogs();
         }
       }
       worker.postMessage(object);

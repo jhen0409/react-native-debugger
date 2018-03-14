@@ -87,7 +87,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
     win.webContents.setZoomLevel(store.get('zoomLevel', 0));
     win.focus();
     registerShortcuts(win);
-    if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
+    if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
       win.openDevTools();
     }
     if (BrowserWindow.getAllWindows().length === 1) {
