@@ -14,29 +14,34 @@ const cachedBundleUrls = new Map();
  * whole JS bundle Blob.
  */
 export default async function deltaUrlToBlobUrl(deltaUrl) {
-  const cachedBundle = cachedBundleUrls.get(deltaUrl);
+  const client = DeltaPatcher.get(deltaUrl);
 
-  const deltaBundleId = cachedBundle ? `&deltaBundleId=${cachedBundle.id}` : '';
+  const deltaBundleId = client.getLastBundleId()
+    ? `&deltaBundleId=${client.getLastBundleId()}`
+    : '';
 
   const data = await fetch(deltaUrl + deltaBundleId);
   const bundle = await data.json();
 
-  const deltaPatcher = DeltaPatcher.get(bundle.id).applyDelta({
+  const deltaPatcher = client.applyDelta({
+    id: bundle.id,
     pre: new Map(bundle.pre),
     post: new Map(bundle.post),
     delta: new Map(bundle.delta),
     reset: bundle.reset,
   });
 
+  const cachedBundle = cachedBundleUrls.get(deltaUrl);
+
   // If nothing changed, avoid recreating a bundle blob by reusing the
   // previous one.
   if (deltaPatcher.getLastNumModifiedFiles() === 0 && cachedBundle) {
-    return cachedBundle.url;
+    return cachedBundle;
   }
 
   // Clean up the previous bundle URL to not leak memory.
   if (cachedBundle) {
-    URL.revokeObjectURL(cachedBundle.url);
+    URL.revokeObjectURL(cachedBundle);
   }
 
   // To make Source Maps work correctly, we need to add a newline between
@@ -48,11 +53,8 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
     type: 'application/javascript',
   });
 
-  const bundleUrl = URL.createObjectURL(blob);
-  cachedBundleUrls.set(deltaUrl, {
-    id: bundle.id,
-    url: bundleUrl,
-  });
+  const bundleContents = URL.createObjectURL(blob);
+  cachedBundleUrls.set(deltaUrl, bundleContents);
 
-  return bundleUrl;
+  return bundleContents;
 }
