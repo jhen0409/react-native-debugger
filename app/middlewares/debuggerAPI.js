@@ -16,6 +16,7 @@ import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
+import deltaUrlToBlobUrl from './delta/deltaUrlToBlobUrl';
 
 const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
@@ -77,7 +78,7 @@ const connectToDebuggerProxy = async () => {
 
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
-  ws.onmessage = message => {
+  ws.onmessage = async message => {
     if (!message.data) {
       return;
     }
@@ -114,6 +115,13 @@ const connectToDebuggerProxy = async () => {
           // Reserve React Inspector port for debug via USB on Android real device
           tryADBReverse(window.reactDevToolsPort).catch(() => {});
         }
+        // Check Delta support
+        try {
+          const deltaUrl = object.url.replace('index.bundle', 'index.delta');
+          await fetch(deltaUrl);
+          worker.postMessage({ ...object, url: await deltaUrlToBlobUrl(deltaUrl) });
+          return;
+        } catch (e) {}
       }
       worker.postMessage(object);
     }
