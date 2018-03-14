@@ -83,5 +83,8 @@ export default ({ iconPath }) => [
     item('Issues', n, () =>
       shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues')
     ),
+    item('Open Collective', n, () =>
+      shell.openExternal('https://opencollective.com/react-native-debugger')
+    ),
   ]),
 ];
