@@ -17,6 +17,7 @@ import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
 import deltaUrlToBlobUrl from './delta/deltaUrlToBlobUrl';
+import checkDeltaAvailable from './delta/checkDeltaAvailable';
 
 const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
@@ -121,10 +122,12 @@ const connectToDebuggerProxy = async () => {
         }
         // Check Delta support
         try {
-          const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
-          clearLogs();
-          worker.postMessage({ ...object, url });
-          return;
+          if (await checkDeltaAvailable(host, port)) {
+            const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
+            clearLogs();
+            worker.postMessage({ ...object, url });
+            return;
+          }
         } catch (e) {
           clearLogs();
         }
