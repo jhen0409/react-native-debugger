@@ -7,7 +7,7 @@
  * @format
  */
 
-import patchFetchPolyfill from './patchFetchPolyfill';
+import { checkFetchExists, patchFetchPolyfill } from './patchFetchPolyfill';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -37,6 +37,7 @@ export default class DeltaPatcher {
     this._initialized = false;
     this._lastNumModifiedFiles = 0;
     this._lastModifiedDate = new Date();
+    this._fetchPolyfillPatched = false;
   }
 
   static get(id) {
@@ -60,6 +61,7 @@ export default class DeltaPatcher {
     }
 
     this._initialized = true;
+    this._fetchPolyfillPatched = false;
 
     // Reset the current delta when we receive a fresh delta.
     if (deltaBundle.reset) {
@@ -117,8 +119,11 @@ export default class DeltaPatcher {
     for (const [key, value] of patch.entries()) {
       if (value == null) {
         original.delete(key);
-      } else {
+      } else if (!this._fetchPolyfillPatched && checkFetchExists(value)) {
+        this._fetchPolyfillPatched = true;
         original.set(key, patchFetchPolyfill(value));
+      } else {
+        original.set(key, value);
       }
     }
   }
