@@ -7,8 +7,9 @@ import {
 self.global = self;
 
 /*
- * Currently Blob is not supported for RN,
- * we should remove it in WebWorker because it will used for `whatwg-fetch`
+ * Blob is not supported for RN < 0.54,
+ * we should remove it in WebWorker because
+ * it will used for `whatwg-fetch` on older RN versions
  */
 if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
   delete self.Blob;

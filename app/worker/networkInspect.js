@@ -2,11 +2,15 @@ const isWorkerMethod = fn => String(fn).indexOf('[native code]') > -1;
 
 let networkInspect;
 
+/* eslint-disable no-underscore-dangle */
 export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
     window.XMLHttpRequest = networkInspect.XMLHttpRequest;
     window.FormData = networkInspect.FormData;
     networkInspect = null;
+    if (window._fetchSupport) {
+      window._fetchSupport.blob = !!window._fetchSupport._blob;
+    }
     return;
   }
   if (!enabled) return;
@@ -29,6 +33,13 @@ export const toggleNetworkInspect = enabled => {
     ? window.originalXMLHttpRequest
     : window.XMLHttpRequest;
   window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
+
+  // Disable `support.blob` in `whatwg-fetch` for use native XMLHttpRequest,
+  // See https://github.com/jhen0409/react-native-debugger/issues/56
+  if (window._fetchSupport) {
+    window._fetchSupport._blob = window._fetchSupport.blob;
+    window._fetchSupport.blob = false;
+  }
 
   console.log(
     '[RNDebugger]',
