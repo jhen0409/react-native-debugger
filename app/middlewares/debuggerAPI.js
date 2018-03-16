@@ -145,7 +145,6 @@ const connectToDebuggerProxy = async () => {
             worker.postMessage({ ...object, url });
             return;
           }
-        } catch (e) {
         } finally {
           // Clear logs even if no error catched
           clearLogs();
