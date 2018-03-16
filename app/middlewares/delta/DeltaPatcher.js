@@ -7,6 +7,8 @@
  * @format
  */
 
+import patchFetchPolyfill from './patchFetchPolyfill';
+
 /* eslint-disable no-underscore-dangle */
 
 /**
@@ -116,7 +118,7 @@ export default class DeltaPatcher {
       if (value == null) {
         original.delete(key);
       } else {
-        original.set(key, value);
+        original.set(key, patchFetchPolyfill(value));
       }
     }
   }
