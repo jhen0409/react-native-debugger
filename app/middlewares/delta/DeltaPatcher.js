@@ -80,9 +80,9 @@ export default class DeltaPatcher {
       this._lastModifiedDate = new Date();
     }
 
-    this._patchMap(this._lastBundle.pre, deltaBundle.pre);
-    this._patchMap(this._lastBundle.post, deltaBundle.post);
-    this._patchMap(this._lastBundle.modules, deltaBundle.delta);
+    this._patchMap(this._lastBundle.pre, deltaBundle.pre, 'pre');
+    this._patchMap(this._lastBundle.post, deltaBundle.post, 'post');
+    this._patchMap(this._lastBundle.modules, deltaBundle.delta, 'delta');
 
     this._lastBundle.id = deltaBundle.id;
 
@@ -115,11 +115,11 @@ export default class DeltaPatcher {
     );
   }
 
-  _patchMap(original, patch) {
+  _patchMap(original, patch, type) {
     for (const [key, value] of patch.entries()) {
       if (value == null) {
         original.delete(key);
-      } else if (!this._fetchPolyfillPatched && checkFetchExists(value)) {
+      } else if (type === 'delta' && !this._fetchPolyfillPatched && checkFetchExists(value)) {
         this._fetchPolyfillPatched = true;
         original.set(key, patchFetchPolyfill(value));
       } else {
