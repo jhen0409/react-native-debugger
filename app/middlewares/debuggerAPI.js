@@ -113,7 +113,7 @@ const connectToDebuggerProxy = async () => {
 
     // Check Delta support will be consume more delay time,
     // continuing messages may cause it to error (In case of RN 0.45),
-    if (object.method === 'callFunctionReturnFlushedQueue') {
+    if (!scriptExecuted && object.method === 'callFunctionReturnFlushedQueue') {
       await waitingScriptExecuted();
     }
 
