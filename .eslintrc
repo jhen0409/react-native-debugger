@@ -13,7 +13,7 @@
     "react/prefer-stateless-function": 0,
     "consistent-return": 0,
     "strict": 0,
-    "no-console": 1,
+    "no-console": 0,
     "no-param-reassign": ["error", { "props": false }],
     "no-underscore-dangle": [
       "error",
@@ -22,15 +22,14 @@
           "__IS_REDUX_NATIVE_MESSAGE__",
           "__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__",
           "__PLATFORM__",
-          "__REPORT_REACT_DEVTOOLS_PORT__"
+          "__REPORT_REACT_DEVTOOLS_PORT__",
+          "__FETCH_SUPPORT__",
+          "__NETWORK_INSPECT__"
         ]
       }
     ],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "import/prefer-default-export": 0,
-    "import/no-extraneous-dependencies": [
-      "error",
-      { "optionalDependencies": true }
-    ]
+    "import/no-extraneous-dependencies": ["error", { "optionalDependencies": true }]
   }
 }

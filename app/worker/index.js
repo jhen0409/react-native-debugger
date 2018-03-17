@@ -16,6 +16,7 @@ import { reportDefaultReactDevToolsPort } from './reactDevTools';
 import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
 import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
+import { toggleNetworkInspect } from './networkInspect';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -33,6 +34,9 @@ self.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = composeWithDevTools;
 
 const setupRNDebuggerBeforeImportScript = message => {
   self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
+  if (message.networkInspect) {
+    self.__NETWORK_INSPECT__ = toggleNetworkInspect;
+  }
 };
 
 const setupRNDebugger = async message => {
