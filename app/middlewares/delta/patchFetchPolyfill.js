@@ -5,8 +5,15 @@
  * so we could use it to fix the issue.
  */
 const isFetch = '"node_modules/whatwg-fetch/fetch.js"';
-const flag = /(if \(self.fetch\) {\n\s+return;\n\s+}\n\s+var support )(=)( {)/g;
-const replaceStr = '$1= self._fetchSupport =$3';
+
+const fetchSupportFlag = /(if \(self.fetch\) {\n\s+return;\n\s+}\n\s+var support )(=)( {)/g;
+const fetchSupportReplaceStr = '$1= self.__FETCH_SUPPORT__ =$3';
+
+const toggleFlag = 'if (support.arrayBuffer) {';
+// Toggle Network Inspect after define `support` var.
+// We have been set up `__NETWORK_INSPECT__` in Worker before import application script.
+const toggleReplaceStr = `self.__NETWORK_INSPECT__ && self.__NETWORK_INSPECT__(true);${toggleFlag}`;
 
 export const checkFetchExists = code => code.indexOf(isFetch) > -1;
-export const patchFetchPolyfill = code => code.replace(flag, replaceStr);
+export const patchFetchPolyfill = code =>
+  code.replace(fetchSupportFlag, fetchSupportReplaceStr).replace(toggleFlag, toggleReplaceStr);
