@@ -23,6 +23,7 @@ const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;
+let scriptExecuted = false;
 let actions;
 let host;
 let port;
@@ -54,6 +55,7 @@ const createJSRuntime = () => {
 
 const shutdownJSRuntime = () => {
   const { setDebuggerWorker } = actions;
+  scriptExecuted = false;
   if (worker) {
     worker.terminate();
     setDevMenuMethods([]);
@@ -81,6 +83,14 @@ const clearLogs = () => {
   }
 };
 
+const interval = time => new Promise(resolve => setTimeout(resolve, time));
+
+const waitingScriptExecuted = async () => {
+  while (!scriptExecuted) {
+    await interval(50);
+  }
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
@@ -99,6 +109,12 @@ const connectToDebuggerProxy = async () => {
 
     if (!object.method) {
       return;
+    }
+
+    // Check Delta support will be consume more delay time,
+    // continuing messages may cause it to error (In case of RN 0.45),
+    if (!scriptExecuted && object.method === 'callFunctionReturnFlushedQueue') {
+      await waitingScriptExecuted();
     }
 
     // Special message that asks for a new JS runtime
@@ -125,12 +141,14 @@ const connectToDebuggerProxy = async () => {
           if (await checkDeltaAvailable(host, port)) {
             const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
             clearLogs();
+            scriptExecuted = true;
             worker.postMessage({ ...object, url });
             return;
           }
         } finally {
           // Clear logs even if no error catched
           clearLogs();
+          scriptExecuted = true;
         }
       }
       worker.postMessage(object);
