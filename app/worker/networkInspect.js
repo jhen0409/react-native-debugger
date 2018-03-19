@@ -6,6 +6,10 @@ let networkInspect;
 // Disable `support.blob` in `whatwg-fetch` for use native XMLHttpRequest,
 // See https://github.com/jhen0409/react-native-debugger/issues/56
 const toggleBlobOfFetchSupport = disabled => {
+  // Ensure the initial script of `whatwg-fetch` is executed because it's lazy property,
+  // see https://github.com/facebook/react-native/blob/0.54-stable/Libraries/Core/InitializeCore.js#L89
+  self.fetch; // eslint-disable-line
+
   if (!self.__FETCH_SUPPORT__) return;
   if (disabled) {
     self.__FETCH_SUPPORT__._blobBackup = self.__FETCH_SUPPORT__.blob;
@@ -47,7 +51,6 @@ export const toggleNetworkInspect = enabled => {
   self.FormData = self.originalFormData ? self.originalFormData : self.FormData;
 
   toggleBlobOfFetchSupport(true);
-
   console.log(
     '[RNDebugger]',
     'Network Inspect is enabled,',
