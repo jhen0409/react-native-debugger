@@ -43,7 +43,7 @@ export default (icon, notify) => {
         buttons: ['Download', 'Later'],
         title: 'React Native Debugger',
         icon,
-        message: 'The new version has been released.',
+        message: 'A newer version is available.',
       });
       checking = false;
       if (index === 1) return;
@@ -65,8 +65,8 @@ export default (icon, notify) => {
       buttons: ['Restart', 'Later'],
       title: 'React Native Debugger',
       icon,
-      message: 'The new version has been downloaded. ' +
-        'Please restart the application to apply the updates.',
+      message: 'The newer version has been downloaded. ' +
+        'Please restart the application to apply the update.',
       detail: `${releaseName}\n\n${releaseNotes}`,
     });
     checking = false;
