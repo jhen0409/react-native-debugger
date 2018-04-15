@@ -9,7 +9,7 @@ const isFetch = /"node_modules\/@?[a-zA-Z-_/]*whatwg-fetch\/fetch.js"/;
 const fetchSupportFlag = /(if \(self.fetch\) {\n\s+return;\n\s+}\n\s+var support )(=)( {)/g;
 const fetchSupportReplaceStr = '$1= self.__FETCH_SUPPORT__ =$3';
 
-const toggleFlag = 'if (support.arrayBuffer) {';
+const toggleFlag = 'self.fetch.polyfill = true';
 // Toggle Network Inspect after define `support` var.
 // We have been set up `__NETWORK_INSPECT__` in Worker before import application script.
 const toggleReplaceStr = `self.__NETWORK_INSPECT__ && self.__NETWORK_INSPECT__(true);${toggleFlag}`;
