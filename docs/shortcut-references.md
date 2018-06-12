@@ -4,7 +4,7 @@ This section will explain about the following items in RNDebugger.
 
 * [Content menu](#context-menu)
 * [Touch Bar](#touch-bar-in-macos)
-* [Keyborad shortcuts](#keyborad-shortcuts)
+* [Keyboard shortcuts](#keyboard-shortcuts)
 
 ## Context menu
 
@@ -13,7 +13,7 @@ We have context menu (right-click) for provides useful features:
 ![Context menu](https://cloud.githubusercontent.com/assets/3001525/25920996/5c488966-3606-11e7-8d0c-cb564671067b.gif)
 
 * Reload JS [iOS only]
-* Toogle Elements Inspector [iOS only]
+* Toggle Elements Inspector [iOS only]
 * Show Developer Menu [iOS only]
 * Enable / Disable [Network Inspect](debugger-integration.md#how-network-inspect-works)
 * Log AsyncStorage content
@@ -29,10 +29,10 @@ The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devto
 
 If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
 
-## Keyborad shortcuts
+## Keyboard shortcuts
 
 * Reload JS (macOS: `Command+R`, Windows / Linux: `Ctrl+R`) [iOS only]
-* Toogle Elements Inspector (macOS: `Command+I`, Windows / Linux: `Ctrl+I`) (RN ^0.43 support) [iOS only]
+* Toggle Elements Inspector (macOS: `Command+I`, Windows / Linux: `Ctrl+I`) (RN ^0.43 support) [iOS only]
 * New Debugger Window (macOS: `Command+T`, Windows / Linux: `Ctrl+T`)
 * Toggle Developer Tools (macOS: `Command+Option+I`, Windows / Linux: `Ctrl+Alt+I`)
 * Toggle Redux DevTools (macOS: `Command+Option+J`, Windows / Linux: `Ctrl+Alt+J`)
