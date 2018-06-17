@@ -92,6 +92,13 @@ const waitingScriptExecuted = async () => {
   }
 };
 
+const flushQueuedMessages = () => {
+  if (!worker) return;
+  // Flush any messages queued up and clear them
+  queuedMessages.forEach(message => worker.postMessage(message));
+  queuedMessages = [];
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
@@ -127,37 +134,40 @@ const connectToDebuggerProxy = async () => {
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
-    } else if (object.method === 'executeApplicationScript') {
-      object.networkInspect = networkInspect.isEnabled();
-      object.reactDevToolsPort = window.reactDevToolsPort;
-      if (isScriptBuildForAndroid(object.url)) {
-        // Reserve React Inspector port for debug via USB on Android real device
-        tryADBReverse(window.reactDevToolsPort).catch(() => {});
-      }
-      // Check Delta support
-      try {
-        if (await checkDeltaAvailable(host, port)) {
-          const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
+    } else {
+      if (!worker) return;
+      if (object.method === 'executeApplicationScript') {
+        object.networkInspect = networkInspect.isEnabled();
+        object.reactDevToolsPort = window.reactDevToolsPort;
+        if (isScriptBuildForAndroid(object.url)) {
+          // Reserve React Inspector port for debug via USB on Android real device
+          tryADBReverse(window.reactDevToolsPort).catch(() => {});
+        }
+        // Check Delta support
+        try {
+          if (await checkDeltaAvailable(host, port)) {
+            const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
+            clearLogs();
+            scriptExecuted = true;
+            worker.postMessage({ ...object, url });
+            flushQueuedMessages();
+            return;
+          }
+        } finally {
+          // Clear logs even if no error catched
           clearLogs();
           scriptExecuted = true;
-          worker.postMessage({ ...object, url });
-          // Flush any messages queued up and clear them
-          queuedMessages.forEach(m => worker.postMessage(m));
-          queuedMessages = [];
-          return;
         }
-      } finally {
-        // Clear logs even if no error catched
-        clearLogs();
-        scriptExecuted = true;
       }
-    } else if (scriptExecuted) {
-      // Otherwise, pass through to the worker provided the
-      // application script has been executed. If not add
-      // it to a queue until it has been executed.
-      worker.postMessage(object);
-    } else {
-      queuedMessages.push(object);
+      if (scriptExecuted) {
+        // Otherwise, pass through to the worker provided the
+        // application script has been executed. If not add
+        // it to a queue until it has been executed.
+        worker.postMessage(object);
+        flushQueuedMessages();
+      } else {
+        queuedMessages.push(object);
+      }
     }
   };
 
