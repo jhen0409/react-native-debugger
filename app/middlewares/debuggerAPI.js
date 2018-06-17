@@ -23,6 +23,7 @@ const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;
+let queuedMessages = [];
 let scriptExecuted = false;
 let actions;
 let host;
@@ -126,32 +127,39 @@ const connectToDebuggerProxy = async () => {
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
-    } else {
-      // Otherwise, pass through to the worker.
-      if (!worker) return;
-      if (object.method === 'executeApplicationScript') {
-        object.networkInspect = networkInspect.isEnabled();
-        object.reactDevToolsPort = window.reactDevToolsPort;
-        if (isScriptBuildForAndroid(object.url)) {
-          // Reserve React Inspector port for debug via USB on Android real device
-          tryADBReverse(window.reactDevToolsPort).catch(() => {});
-        }
-        // Check Delta support
-        try {
-          if (await checkDeltaAvailable(host, port)) {
-            const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
-            clearLogs();
-            scriptExecuted = true;
-            worker.postMessage({ ...object, url });
-            return;
-          }
-        } finally {
-          // Clear logs even if no error catched
+    } else if (object.method === 'executeApplicationScript') {
+      object.networkInspect = networkInspect.isEnabled();
+      object.reactDevToolsPort = window.reactDevToolsPort;
+      if (isScriptBuildForAndroid(object.url)) {
+        // Reserve React Inspector port for debug via USB on Android real device
+        tryADBReverse(window.reactDevToolsPort).catch(() => {});
+      }
+      // Check Delta support
+      try {
+        if (await checkDeltaAvailable(host, port)) {
+          const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
           clearLogs();
           scriptExecuted = true;
+          worker.postMessage({ ...object, url });
+          // Flush any messages queued up and clear them
+          queuedMessages.forEach(m => worker.postMessage(m));
+          queuedMessages = [];
+          return;
         }
+      } finally {
+        // Clear logs even if no error catched
+        clearLogs();
+        scriptExecuted = true;
       }
-      worker.postMessage(object);
+    } else {
+      // Otherwise, pass through to the worker provided the
+      // application script has been executed. If not add
+      // it to a queue until it has been executed.
+      if (scriptExecuted) {
+        worker.postMessage(object);
+      } else {
+        queuedMessages.push(object);
+      }
     }
   };
 
