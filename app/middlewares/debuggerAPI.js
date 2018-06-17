@@ -23,6 +23,7 @@ const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;
+let queuedMessages = [];
 let scriptExecuted = false;
 let actions;
 let host;
@@ -83,12 +84,11 @@ const clearLogs = () => {
   }
 };
 
-const interval = time => new Promise(resolve => setTimeout(resolve, time));
-
-const waitingScriptExecuted = async () => {
-  while (!scriptExecuted) {
-    await interval(50);
-  }
+const flushQueuedMessages = () => {
+  if (!worker) return;
+  // Flush any messages queued up and clear them
+  queuedMessages.forEach(message => worker.postMessage(message));
+  queuedMessages = [];
 };
 
 const connectToDebuggerProxy = async () => {
@@ -97,25 +97,14 @@ const connectToDebuggerProxy = async () => {
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
   ws.onmessage = async message => {
-    if (!message.data) {
-      return;
-    }
-    const object = JSON.parse(message.data);
+    if (!message.data) return;
 
+    const object = JSON.parse(message.data);
     if (object.$event === 'client-disconnected') {
       shutdownJSRuntime();
       return;
     }
-
-    if (!object.method) {
-      return;
-    }
-
-    // Check Delta support will be consume more delay time,
-    // continuing messages may cause it to error (In case of RN 0.45),
-    if (!scriptExecuted && object.method === 'callFunctionReturnFlushedQueue') {
-      await waitingScriptExecuted();
-    }
+    if (!object.method) return;
 
     // Special message that asks for a new JS runtime
     if (object.method === 'prepareJSRuntime') {
@@ -127,7 +116,6 @@ const connectToDebuggerProxy = async () => {
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
     } else {
-      // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
         object.networkInspect = networkInspect.isEnabled();
@@ -143,6 +131,7 @@ const connectToDebuggerProxy = async () => {
             clearLogs();
             scriptExecuted = true;
             worker.postMessage({ ...object, url });
+            flushQueuedMessages();
             return;
           }
         } finally {
@@ -151,7 +140,15 @@ const connectToDebuggerProxy = async () => {
           scriptExecuted = true;
         }
       }
-      worker.postMessage(object);
+      if (scriptExecuted) {
+        // Otherwise, pass through to the worker provided the
+        // application script has been executed. If not add
+        // it to a queue until it has been executed.
+        worker.postMessage(object);
+        flushQueuedMessages();
+      } else {
+        queuedMessages.push(object);
+      }
     }
   };
 
