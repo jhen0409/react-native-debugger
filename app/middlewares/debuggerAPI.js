@@ -84,14 +84,6 @@ const clearLogs = () => {
   }
 };
 
-const interval = time => new Promise(resolve => setTimeout(resolve, time));
-
-const waitingScriptExecuted = async () => {
-  while (!scriptExecuted) {
-    await interval(50);
-  }
-};
-
 const flushQueuedMessages = () => {
   if (!worker) return;
   // Flush any messages queued up and clear them
@@ -105,25 +97,14 @@ const connectToDebuggerProxy = async () => {
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
   ws.onmessage = async message => {
-    if (!message.data) {
-      return;
-    }
-    const object = JSON.parse(message.data);
+    if (!message.data) return;
 
+    const object = JSON.parse(message.data);
     if (object.$event === 'client-disconnected') {
       shutdownJSRuntime();
       return;
     }
-
-    if (!object.method) {
-      return;
-    }
-
-    // Check Delta support will be consume more delay time,
-    // continuing messages may cause it to error (In case of RN 0.45),
-    if (!scriptExecuted && object.method === 'callFunctionReturnFlushedQueue') {
-      await waitingScriptExecuted();
-    }
+    if (!object.method) return;
 
     // Special message that asks for a new JS runtime
     if (object.method === 'prepareJSRuntime') {
