@@ -151,15 +151,13 @@ const connectToDebuggerProxy = async () => {
         clearLogs();
         scriptExecuted = true;
       }
-    } else {
+    } else if (scriptExecuted) {
       // Otherwise, pass through to the worker provided the
       // application script has been executed. If not add
       // it to a queue until it has been executed.
-      if (scriptExecuted) {
-        worker.postMessage(object);
-      } else {
-        queuedMessages.push(object);
-      }
+      worker.postMessage(object);
+    } else {
+      queuedMessages.push(object);
     }
   };
 
