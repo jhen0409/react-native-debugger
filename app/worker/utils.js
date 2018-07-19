@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 // Avoid warning of use `window.require` on dev mode
+// it actually unnecessary for RN >= 0.56, so it is backward compatibility
 const avoidWarnForRequire = moduleNames => {
   if (!moduleNames.length) moduleNames.push('NativeModules');
   return new Promise(resolve =>
@@ -23,20 +24,39 @@ const avoidWarnForRequire = moduleNames => {
   );
 };
 
-const requiredModules = [
-  'MessageQueue',
-  'NativeModules',
-  'AsyncStorage',
-  'Platform',
-  'setupDevtools',
-];
+let reactNative;
+const rnModuleId = 1;
+
+const getModule = name => {
+  let result;
+  try {
+    reactNative = reactNative || window.require(rnModuleId);
+    result = reactNative && reactNative[name];
+  } finally {
+    // Backward compatibility
+    try {
+      result = result || window.require(name);
+    } catch (e) {} // eslint-disable-line
+  }
+  return result || { __empty: true };
+};
+
+const requiredModules = {
+  MessageQueue: () =>
+    Object.getPrototypeOf(self.__fbBatchedBridge).constructor || window.require('MessageQueue'),
+  NativeModules: () => getModule('NativeModules'),
+  AsyncStorage: () => getModule('AsyncStorage'),
+  Platform: () => getModule('Platform'),
+  setupDevtools: () => getModule('setupDevtools'),
+};
+
 export const getRequiredModules = async () => {
   if (!window.__DEV__ || typeof window.require !== 'function') return;
-  const done = await avoidWarnForRequire(requiredModules);
+  const done = await avoidWarnForRequire(Object.keys(requiredModules));
   const modules = {};
-  requiredModules.forEach(
-    name => (modules[name] = window.__DEV__ ? window.require(name) : { __empty: true })
-  );
+  for (const name of Object.keys(requiredModules)) {
+    modules[name] = requiredModules[name]();
+  }
   done();
   return modules;
 };
