@@ -6,26 +6,31 @@ You can enable this feature by the [context menu or Touch Bar](shortcut-referenc
 
 ## How it works
 
-See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53). It uses `XMLHttpRequest` from WebWorker in Chrome:
+See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53). It uses `XMLHttpRequest` from WebWorker in Chrome, basically it can manually setup by:
 
 ```js
-global.XMLHttpRequest = global.originalXMLHttpRequest
-  ? global.originalXMLHttpRequest
-  : global.XMLHttpRequest
-global.FormData = global.originalFormData
-  ? global.originalFormData
-  : global.FormData
+global.XMLHttpRequest = global.originalXMLHttpRequest ?
+  global.originalXMLHttpRequest :
+  global.XMLHttpRequest;
+global.FormData = global.originalFormData ?
+  global.originalFormData :
+  global.FormData;
 
-/* 
- * https://github.com/jhen0409/react-native-debugger/issues/209#issuecomment-386781165
- */
-fetch // Ensure to get the lazy property
+fetch; // Ensure to get the lazy property
 
-// RNDebugger only
-if (window.__FETCH_SUPPORT__) {
-  window.__FETCH_SUPPORT__.blob = false
+if (window.__FETCH_SUPPORT__) { // it's RNDebugger only to have
+  window.__FETCH_SUPPORT__.blob = false;
+} else {
+  global.Blob = global.originalBlob ?
+    global.originalBlob :
+    global.Blob;
+  global.FileReader = global.originalFileReader ?
+    global.originalFileReader :
+    global.FileReader;
 }
 ```
+
+> Note that replace `global.Blob` will cause issue like [#56](https://github.com/jhen0409/react-native-debugger/issues/56).
 
 This allows you can open the `Network` tab in devtools to inspect requests of `fetch` and `XMLHttpRequest`.
 
