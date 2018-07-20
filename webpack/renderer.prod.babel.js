@@ -1,10 +1,11 @@
 import webpack from 'webpack';
-import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './base.babel';
 
 const baseProdConfig = {
   ...baseConfig,
+  mode: 'production',
   devtool: 'hidden-source-map',
   output: {
     ...baseConfig.output,
@@ -26,11 +27,15 @@ const baseProdConfig = {
       __REACT_DEVTOOLS_GLOBAL_HOOK__: 'false',
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new UglifyJSPlugin({
-      sourceMap: true,
-      uglifyOptions: { output: { comments: false } },
-    }),
   ],
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: { output: { comments: false } },
+      }),
+    ],
+  },
 };
 
 const buildProdConfig = config => ({
