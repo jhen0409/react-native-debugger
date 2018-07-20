@@ -5,6 +5,9 @@ const connectViaExtension = window.devToolsExtension.connect;
 const logReducer = reducer => {
   const remotedev = connectViaExtension({
     name: 'RemoteDev store instance 1',
+    actionCreators: {
+      test: () => {},
+    },
   });
   return (state, action) => {
     const reducedState = reducer(state, action);

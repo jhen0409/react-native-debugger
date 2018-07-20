@@ -1,7 +1,7 @@
 // Edit from https://github.com/zalmoxisus/remotedev/blob/master/src/devTools.js
 
 import { stringify, parse } from 'jsan';
-import { generateId } from 'remotedev-utils';
+import { generateId, getActionsArray } from 'remotedev-utils';
 
 let listenerAdded;
 const listeners = {};
@@ -22,7 +22,7 @@ function handleMessages(message) {
   if (typeof fn === 'function') {
     fn(message);
   } else {
-    fn.forEach(func => { func(message); });
+    fn.forEach(func => func(message));
   }
   return false;
 }
@@ -69,6 +69,12 @@ export function send(action, state, type, options) {
       instanceId: options.instanceId,
       name: options.name,
     };
+    message.libConfig = {
+      type: options.type,
+      name: options.name,
+      serialize: !!options.serialize,
+      actionCreators: options.actionCreators,
+    };
     postMessage({ __IS_REDUX_NATIVE_MESSAGE__: true, content: message });
   }, 0);
 }
@@ -79,6 +85,7 @@ export function connect(options = {}) {
     ...options,
     instanceId: id,
     name: options.name || id,
+    actionCreators: JSON.stringify(getActionsArray(options.actionCreators || {})),
   };
   start();
   return {
