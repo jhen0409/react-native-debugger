@@ -23,7 +23,7 @@ When you enabled remote debugging, RNDebugger should switched context to `RNDebu
 
 - `$r`: You selected element on react-devtools.
 - `showAsyncStorageContentInDev()` - Log AsyncStorage content
-- `require('ReactNative')` (RN < 0.56) or `require(1)` (RN >= 0.56) - Get react-native modules
+- `require('ReactNative')` (RN < 0.56) or `$reactNative` (RN >= 0.56, RNDebugger only) - Get react-native modules
 
 #### [iOS only] Force your app on debug mode
 

@@ -41,7 +41,7 @@ const lookupForRN = (size = 999) => {
 const getModule = (name, size) => {
   let result;
   try {
-    reactNative = reactNative || lookupForRN(size);
+    reactNative = global.$reactNative = reactNative || lookupForRN(size);
     result = reactNative && reactNative[name];
   } finally {
     // Backward compatibility
