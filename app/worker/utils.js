@@ -27,28 +27,25 @@ const avoidWarnForRequire = moduleNames => {
 let reactNative;
 
 const lookupForRN = (size = 999) => {
-  try {
-    for (let i = 0; i <= size - 1; i++) {
-      const rn = window.require(i);
-      if (rn.requireNativeComponent && rn.NativeModules) {
-        return rn;
-      }
+  for (let i = 0; i <= size - 1; i++) {
+    const rn = window.require(i);
+    if (rn.requireNativeComponent && rn.NativeModules) {
+      return rn;
     }
-  } catch (e) {} // eslint-disable-line
-  return null;
+  }
 };
 
 const getModule = (name, size) => {
   let result;
   try {
-    reactNative = global.$reactNative = reactNative || lookupForRN(size);
-    result = reactNative && reactNative[name];
-  } finally {
-    // Backward compatibility
-    try {
-      result = result || window.require(name);
-    } catch (e) {} // eslint-disable-line
-  }
+    // RN >= 0.56
+    if (window.require.name === 'metroRequire') {
+      reactNative = global.$reactNative = reactNative || lookupForRN(size);
+      result = reactNative && reactNative[name];
+    } else if (window.require.name === '_require') {
+      result = window.require(name);
+    }
+  } catch (e) {} // eslint-disable-line
   return result || { __empty: true };
 };
 
