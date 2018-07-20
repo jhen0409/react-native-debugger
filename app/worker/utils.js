@@ -26,13 +26,14 @@ const avoidWarnForRequire = moduleNames => {
 
 let reactNative;
 
-const lookupForRN = (size = 999) => {
-  for (let i = 0; i <= size - 1; i++) {
-    const rn = window.require(i);
+const lookupForRNModules = (size = 999) => {
+  for (let moduleId = 0; moduleId <= size - 1; moduleId++) {
+    const rn = window.require(moduleId);
     if (rn.requireNativeComponent && rn.NativeModules) {
       return rn;
     }
   }
+  return null;
 };
 
 const getModule = (name, size) => {
@@ -40,7 +41,7 @@ const getModule = (name, size) => {
   try {
     // RN >= 0.56
     if (window.require.name === 'metroRequire') {
-      reactNative = global.$reactNative = reactNative || lookupForRN(size);
+      reactNative = global.$reactNative = reactNative || lookupForRNModules(size);
       result = reactNative && reactNative[name];
     } else if (window.require.name === '_require') {
       result = window.require(name);
@@ -50,8 +51,9 @@ const getModule = (name, size) => {
 };
 
 const requiredModules = {
-  MessageQueue: () =>
-    Object.getPrototypeOf(self.__fbBatchedBridge).constructor || window.require('MessageQueue'),
+  MessageQueue: size =>
+    (self.__fbBatchedBridge && Object.getPrototypeOf(self.__fbBatchedBridge).constructor) ||
+    getModule('MessageQueue', size),
   NativeModules: size => getModule('NativeModules', size),
   AsyncStorage: size => getModule('AsyncStorage', size),
   Platform: size => getModule('Platform', size),
