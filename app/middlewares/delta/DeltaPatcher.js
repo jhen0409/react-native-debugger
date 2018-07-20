@@ -113,6 +113,10 @@ export default class DeltaPatcher {
     );
   }
 
+  getSizeOfAllModules() {
+    return this._lastBundle.pre.size + this._lastBundle.modules.size + this._lastBundle.post.size;
+  }
+
   _patchMap(original, patch) {
     for (const [key, value] of patch.entries()) {
       if (value == null) {

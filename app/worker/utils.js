@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 // Avoid warning of use `window.require` on dev mode
+// it actually unnecessary for RN >= 0.56, so it is backward compatibility
 const avoidWarnForRequire = moduleNames => {
   if (!moduleNames.length) moduleNames.push('NativeModules');
   return new Promise(resolve =>
@@ -23,20 +24,49 @@ const avoidWarnForRequire = moduleNames => {
   );
 };
 
-const requiredModules = [
-  'MessageQueue',
-  'NativeModules',
-  'AsyncStorage',
-  'Platform',
-  'setupDevtools',
-];
-export const getRequiredModules = async () => {
+let reactNative;
+
+const lookupForRNModules = (size = 999) => {
+  for (let moduleId = 0; moduleId <= size - 1; moduleId++) {
+    const rn = window.require(moduleId);
+    if (rn.requireNativeComponent && rn.NativeModules) {
+      return rn;
+    }
+  }
+  return null;
+};
+
+const getModule = (name, size) => {
+  let result;
+  try {
+    // RN >= 0.56
+    if (window.require.name === 'metroRequire') {
+      reactNative = global.$reactNative = reactNative || lookupForRNModules(size);
+      result = reactNative && reactNative[name];
+    } else if (window.require.name === '_require') {
+      result = window.require(name);
+    }
+  } catch (e) {} // eslint-disable-line
+  return result || { __empty: true };
+};
+
+const requiredModules = {
+  MessageQueue: size =>
+    (self.__fbBatchedBridge && Object.getPrototypeOf(self.__fbBatchedBridge).constructor) ||
+    getModule('MessageQueue', size),
+  NativeModules: size => getModule('NativeModules', size),
+  AsyncStorage: size => getModule('AsyncStorage', size),
+  Platform: size => getModule('Platform', size),
+  setupDevtools: size => getModule('setupDevtools', size),
+};
+
+export const getRequiredModules = async size => {
   if (!window.__DEV__ || typeof window.require !== 'function') return;
-  const done = await avoidWarnForRequire(requiredModules);
+  const done = await avoidWarnForRequire(Object.keys(requiredModules));
   const modules = {};
-  requiredModules.forEach(
-    name => (modules[name] = window.__DEV__ ? window.require(name) : { __empty: true })
-  );
+  for (const name of Object.keys(requiredModules)) {
+    modules[name] = requiredModules[name](size);
+  }
   done();
   return modules;
 };

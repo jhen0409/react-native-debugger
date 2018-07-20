@@ -127,7 +127,10 @@ const connectToDebuggerProxy = async () => {
         // Check Delta support
         try {
           if (await checkDeltaAvailable(host, port)) {
-            const url = await deltaUrlToBlobUrl(object.url.replace('.bundle', '.delta'));
+            const { url, moduleSize } = await deltaUrlToBlobUrl(
+              object.url.replace('.bundle', '.delta')
+            );
+            object.moduleSize = moduleSize;
             clearLogs();
             scriptExecuted = true;
             worker.postMessage({ ...object, url });

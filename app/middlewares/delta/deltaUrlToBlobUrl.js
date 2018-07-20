@@ -36,7 +36,7 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
   // If nothing changed, avoid recreating a bundle blob by reusing the
   // previous one.
   if (deltaPatcher.getLastNumModifiedFiles() === 0 && cachedBundle) {
-    return cachedBundle;
+    return { url: cachedBundle, moduleSize: deltaPatcher.getSizeOfAllModules() };
   }
 
   // Clean up the previous bundle URL to not leak memory.
@@ -56,5 +56,5 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
   const bundleContents = URL.createObjectURL(blob);
   cachedBundleUrls.set(deltaUrl, bundleContents);
 
-  return bundleContents;
+  return { url: bundleContents, moduleSize: deltaPatcher.getSizeOfAllModules() };
 }
