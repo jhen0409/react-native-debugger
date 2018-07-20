@@ -45,7 +45,7 @@ const setupRNDebugger = async message => {
   // doesn't notify to the remote JS runtime
   self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
 
-  const modules = await getRequiredModules();
+  const modules = await getRequiredModules(message.moduleSize);
   if (modules) {
     ignoreRNDIntervalSpy(modules);
     checkAvailableDevMenuMethods(modules, message.networkInspect);

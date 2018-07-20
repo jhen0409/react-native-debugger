@@ -25,12 +25,23 @@ const avoidWarnForRequire = moduleNames => {
 };
 
 let reactNative;
-const rnModuleId = 1;
 
-const getModule = name => {
+const lookupForRN = (size = 999) => {
+  try {
+    for (let i = 0; i <= size - 1; i++) {
+      const rn = window.require(i);
+      if (rn.requireNativeComponent && rn.NativeModules) {
+        return rn;
+      }
+    }
+  } catch (e) {} // eslint-disable-line
+  return null;
+};
+
+const getModule = (name, size) => {
   let result;
   try {
-    reactNative = reactNative || window.require(rnModuleId);
+    reactNative = reactNative || lookupForRN(size);
     result = reactNative && reactNative[name];
   } finally {
     // Backward compatibility
@@ -44,18 +55,18 @@ const getModule = name => {
 const requiredModules = {
   MessageQueue: () =>
     Object.getPrototypeOf(self.__fbBatchedBridge).constructor || window.require('MessageQueue'),
-  NativeModules: () => getModule('NativeModules'),
-  AsyncStorage: () => getModule('AsyncStorage'),
-  Platform: () => getModule('Platform'),
-  setupDevtools: () => getModule('setupDevtools'),
+  NativeModules: size => getModule('NativeModules', size),
+  AsyncStorage: size => getModule('AsyncStorage', size),
+  Platform: size => getModule('Platform', size),
+  setupDevtools: size => getModule('setupDevtools', size),
 };
 
-export const getRequiredModules = async () => {
+export const getRequiredModules = async size => {
   if (!window.__DEV__ || typeof window.require !== 'function') return;
   const done = await avoidWarnForRequire(Object.keys(requiredModules));
   const modules = {};
   for (const name of Object.keys(requiredModules)) {
-    modules[name] = requiredModules[name]();
+    modules[name] = requiredModules[name](size);
   }
   done();
   return modules;
