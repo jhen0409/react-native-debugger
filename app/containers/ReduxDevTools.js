@@ -90,6 +90,8 @@ export default class ReduxDevTools extends Component {
     } = this.props;
     const isRedux = options.lib === 'redux';
     const isConnected = !!options.connectionId;
+    const isSliderOpen = sliderIsOpen && isConnected;
+    const isDispathcerOpen = dispatcherIsOpen && isConnected;
     return (
       <div className="redux-container" style={containerStyle}>
         <div style={styles.buttonBar}>
@@ -104,18 +106,17 @@ export default class ReduxDevTools extends Component {
           lib={options.lib}
         />
         <Notification />
-        {sliderIsOpen &&
-          isConnected && (
-            <SliderMonitor
-              monitor="SliderMonitor"
-              liftedState={liftedState}
-              dispatch={liftedDispatch}
-              showActions={monitor === 'ChartMonitor'}
-              style={sliderStyle}
-              fillColor="rgb(120, 144, 156)"
-            />
-          )}
-        {dispatcherIsOpen && options.connectionId && <Dispatcher options={options} />}
+        {isSliderOpen && (
+          <SliderMonitor
+            monitor="SliderMonitor"
+            liftedState={liftedState}
+            dispatch={liftedDispatch}
+            showActions={monitor === 'ChartMonitor'}
+            style={sliderStyle}
+            fillColor="rgb(120, 144, 156)"
+          />
+        )}
+        {isDispathcerOpen && <Dispatcher options={options} />}
         <div className="redux-buttonbar" style={styles.buttonBar}>
           {isRedux && <RecordButton paused={liftedState.isPaused} />}
           {isRedux && <LockButton locked={liftedState.isLocked} />}
