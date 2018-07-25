@@ -26,27 +26,23 @@ export default class Draggable extends PureComponent {
 
   onUp = evt => {
     evt.preventDefault();
-    const doc = this.node.ownerDocument;
-    doc.removeEventListener('mousemove', this.onMove);
-    doc.removeEventListener('mouseup', this.onUp);
+    document.removeEventListener('mousemove', this.onMove);
+    document.removeEventListener('mouseup', this.onUp);
     if (this.props.onStop) {
       this.props.onStop();
     }
   };
 
-  onRef = ref => (this.node = ref);
-
   startDragging = evt => {
     evt.preventDefault();
-    const doc = this.node.ownerDocument;
-    doc.addEventListener('mousemove', this.onMove);
-    doc.addEventListener('mouseup', this.onUp);
+    document.addEventListener('mousemove', this.onMove);
+    document.addEventListener('mouseup', this.onUp);
     if (this.props.onStart) {
       this.props.onStart();
     }
   };
 
   render() {
-    return <div ref={this.onRef} style={styles.draggable} onMouseDown={this.startDragging} />;
+    return <div style={styles.draggable} onMouseDown={this.startDragging} />;
   }
 }

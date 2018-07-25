@@ -29,10 +29,13 @@ const baseProdConfig = {
     new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   optimization: {
+    minimize: true,
     minimizer: [
       new UglifyJsPlugin({
         sourceMap: true,
-        uglifyOptions: { output: { comments: false } },
+        uglifyOptions: {
+          output: { comments: false },
+        },
       }),
     ],
   },

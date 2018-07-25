@@ -20,6 +20,7 @@ export default {
     new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   optimization: {
+    minimize: true,
     minimizer: [
       new UglifyJsPlugin({
         sourceMap: true,
