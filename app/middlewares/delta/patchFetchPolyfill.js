@@ -11,6 +11,10 @@ const isFetch = [
    * RN >= 0.56
    */
   /,"whatwg-fetch.js"\)/,
+  /*
+   * RN >= 0.57, it is now in react-native/Libraries/vendor/core/
+   */
+  /"node_modules\/react-native\/Libraries\/vendor\/core\/whatwg-fetch.js"/,
 ];
 
 const fetchSupportFlag = /(var support )(=)( {)/g;
