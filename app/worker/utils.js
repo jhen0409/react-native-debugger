@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
-// Avoid warning of use `window.require` on dev mode
+// Avoid warning of use metro require on dev mode
 // it actually unnecessary for RN >= 0.56, so it is backward compatibility
 const avoidWarnForRequire = moduleNames => {
   if (!moduleNames.length) moduleNames.push('NativeModules');
@@ -26,9 +26,17 @@ const avoidWarnForRequire = moduleNames => {
 
 let reactNative;
 
+const getRequireMethod = () => {
+  // RN >= 0.57
+  if (typeof window.__r === 'function') return window.__r;
+  // RN < 0.57
+  if (typeof window.require === 'function') return window.require;
+};
+
 const lookupForRNModules = (size = 999) => {
+  const metroRequire = getRequireMethod();
   for (let moduleId = 0; moduleId <= size - 1; moduleId++) {
-    const rn = window.require(moduleId);
+    const rn = metroRequire(moduleId);
     if (rn.requireNativeComponent && rn.NativeModules) {
       return rn;
     }
@@ -39,12 +47,13 @@ const lookupForRNModules = (size = 999) => {
 const getModule = (name, size) => {
   let result;
   try {
+    const metroRequire = getRequireMethod();
     // RN >= 0.56
-    if (window.require.name === 'metroRequire') {
+    if (metroRequire.name === 'metroRequire') {
       reactNative = global.$reactNative = reactNative || lookupForRNModules(size);
       result = reactNative && reactNative[name];
-    } else if (window.require.name === '_require') {
-      result = window.require(name);
+    } else if (metroRequire.name === '_require') {
+      result = metroRequire(name);
     }
   } catch (e) {} // eslint-disable-line
   return result || { __empty: true };
@@ -61,7 +70,7 @@ const requiredModules = {
 };
 
 export const getRequiredModules = async size => {
-  if (!window.__DEV__ || typeof window.require !== 'function') return;
+  if (!window.__DEV__ || !getRequireMethod()) return;
   const done = await avoidWarnForRequire(Object.keys(requiredModules));
   const modules = {};
   for (const name of Object.keys(requiredModules)) {
