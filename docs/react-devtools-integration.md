@@ -1,10 +1,12 @@
 # React DevTools Integration
 
+**_NOTE_** Supported React Native version is `>= 0.43`. Please downgrade RNDebugger version to `0.7.20` if you're using older versions of React Native.
+
 The React DevTools is built by [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector).
 
 It will open a WebSocket server to waiting React Native connection. The connection already included in React Native (see [`setupDevtools.js`](https://github.com/facebook/react-native/blob/master/Libraries/Core/Devtools/setupDevtools.js)), it will keep trying to connect the React DevTools server in development mode, it should works well without specify anything, unless you need to set the server hostname for [use it with real device](#how-to-use-it-with-real-device).
 
-We made the server listen a random port and inject `window.__REACT_DEVTOOLS_PORT__` global variable in debugger worker, note that the random port is only works with React Native version >= 0.39, otherwise it will fallback to `8097` (default port).
+We made the server listen a random port and inject `window.__REACT_DEVTOOLS_PORT__` global variable in debugger worker.
 
 For Android, we have the built-in `adb` util and it will reverse the port automatically.
 
@@ -12,8 +14,8 @@ For Android, we have the built-in `adb` util and it will reverse the port automa
 
 #### React Native Style Editor
 
-* Native styler
-* Layout inspect (RN ^0.43 support)
+- Native styler
+- Layout inspect
 
 <img width="288" alt="2017-05-27 12 00 36" src="https://cloud.githubusercontent.com/assets/3001525/26518163/0dc24ea6-42dd-11e7-91aa-52da5c4d347d.png">
 
@@ -39,11 +41,9 @@ The `RNDebugger DevTools` option is by default to match Chrome DevTools.
 
 ## How to use it with real device?
 
-* Starting from RN `0.53.0-rc`, it should work by default.
-* If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native manually, change `'localhost'` to your machine IP.
-  * `< 0.37` - Find [`node_modules/react-native/Libraries/Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.36-stable/Libraries/Devtools/setupDevtools.js) in your project, then change `hostname` variable.
-  * `>= 0.37 && < 0.43` - The same as above, but the path have been changed to [`Libraries/`**Core**/`Devtools/setupDevtools.js`](https://github.com/facebook/react-native/blob/0.37-stable/Libraries/Core/Devtools/setupDevtools.js)
-  * `>= 0.43` - The same as above, but use `host` property of `connectToDevTools` instead.
+- Starting from RN `0.53.0-rc`, it should work by default.
+- If you're debugging via Wi-Fi, you need to edit `setupDevtools.js` of React Native manually, change `'localhost'` to your machine IP.
+  - `>= 0.43` - The same as above, but use `host` property of `connectToDevTools` instead.
 
 ## Get `$r` global variable of React Native runtime in the console
 
@@ -51,11 +51,11 @@ Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 
 ## Other documentations
 
-* [Getting Started](getting-started.md)
-* [Debugger Integration](debugger-integration.md)
-* [Redux DevTools Integration](redux-devtools-integration.md)
-* [Shortcut references](shortcut-references.md)
-* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
-* [Enable open in editor in console](enable-open-in-editor-in-console.md)
-* [Troubleshooting](troubleshooting.md)
-* [Contributing](contributing.md)
+- [Getting Started](getting-started.md)
+- [Debugger Integration](debugger-integration.md)
+- [Redux DevTools Integration](redux-devtools-integration.md)
+- [Shortcut references](shortcut-references.md)
+- [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+- [Enable open in editor in console](enable-open-in-editor-in-console.md)
+- [Troubleshooting](troubleshooting.md)
+- [Contributing](contributing.md)
