@@ -1,16 +1,36 @@
 const isWorkerMethod = fn => String(fn).indexOf('[native code]') > -1;
 
+/* eslint-disable no-underscore-dangle */
 let networkInspect;
+
+// Disable `support.blob` in `whatwg-fetch` for use native XMLHttpRequest,
+// See https://github.com/jhen0409/react-native-debugger/issues/56
+const toggleBlobOfFetchSupport = disabled => {
+  // Ensure the initial script of `whatwg-fetch` is executed because it's lazy property,
+  // see https://github.com/facebook/react-native/blob/0.54-stable/Libraries/Core/InitializeCore.js#L89
+  self.fetch; // eslint-disable-line
+
+  if (!self.__FETCH_SUPPORT__) return;
+  if (disabled) {
+    self.__FETCH_SUPPORT__._blobBackup = self.__FETCH_SUPPORT__.blob;
+    self.__FETCH_SUPPORT__.blob = false;
+  } else {
+    self.__FETCH_SUPPORT__.blob = !!self.__FETCH_SUPPORT__._blobBackup;
+    delete self.__FETCH_SUPPORT__._blobBackup;
+  }
+};
 
 export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
-    window.XMLHttpRequest = networkInspect.XMLHttpRequest;
-    window.FormData = networkInspect.FormData;
+    self.XMLHttpRequest = networkInspect.XMLHttpRequest;
+    self.FormData = networkInspect.FormData;
     networkInspect = null;
+    toggleBlobOfFetchSupport(false);
     return;
   }
   if (!enabled) return;
-  if (isWorkerMethod(window.XMLHttpRequest) || isWorkerMethod(window.FormData)) {
+  if (enabled && networkInspect) return;
+  if (isWorkerMethod(self.XMLHttpRequest) || isWorkerMethod(self.FormData)) {
     console.warn(
       '[RNDebugger] ' +
         'I tried to enable Network Inspect but XHR ' +
@@ -22,14 +42,15 @@ export const toggleNetworkInspect = enabled => {
     return;
   }
   networkInspect = {
-    XMLHttpRequest: window.XMLHttpRequest,
-    FormData: window.FormData,
+    XMLHttpRequest: self.XMLHttpRequest,
+    FormData: self.FormData,
   };
-  window.XMLHttpRequest = window.originalXMLHttpRequest
-    ? window.originalXMLHttpRequest
-    : window.XMLHttpRequest;
-  window.FormData = window.originalFormData ? window.originalFormData : window.FormData;
+  self.XMLHttpRequest = self.originalXMLHttpRequest
+    ? self.originalXMLHttpRequest
+    : self.XMLHttpRequest;
+  self.FormData = self.originalFormData ? self.originalFormData : self.FormData;
 
+  toggleBlobOfFetchSupport(true);
   console.log(
     '[RNDebugger]',
     'Network Inspect is enabled,',

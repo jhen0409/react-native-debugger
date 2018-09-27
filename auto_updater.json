@@ -1,7 +1,7 @@
 {
   "url":
-    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.13/rn-debugger-macos-x64.zip",
-  "name": "v0.7.13",
+    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.20/rn-debugger-macos-x64.zip",
+  "name": "v0.7.20",
   "notes":
-    "1. Fix Toggle Device Sync feature caused error\n2. Set minimum size of window\n3. Add How to use button on Redux panel, show only if not connected\n4. Prevent dropped file for debugger window\n5. Update name of Enable Open in Editor for Console Log menu item"
+    "1. Add the recently changes from redux-devtools-extension\n2. Fix context menu functions for RN 0.56\n3. Fix ref issue of Draggable component"
 }

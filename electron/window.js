@@ -110,7 +110,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     win.webContents.setZoomLevel(config.zoomLevel || store.get('zoomLevel', 0));
     win.focus();
     registerShortcuts(win);
-    if (process.env.OPEN_DEVTOOLS !== '0' && !isPortSettingRequired) {
+    if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
       win.openDevTools();
     }
     const checkUpdate = config.autoUpdate !== false;

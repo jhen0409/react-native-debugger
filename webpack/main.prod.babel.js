@@ -1,10 +1,11 @@
 import path from 'path';
 import webpack from 'webpack';
-import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import baseConfig from './base.babel';
 
 export default {
   ...baseConfig,
+  mode: 'production',
   devtool: 'hidden-source-map',
   entry: './electron/main',
   output: {
@@ -17,11 +18,16 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new UglifyJSPlugin({
-      sourceMap: true,
-      uglifyOptions: { output: { comments: false } },
-    }),
   ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: { output: { comments: false } },
+      }),
+    ],
+  },
   target: 'electron-main',
   node: {
     __dirname: false,
