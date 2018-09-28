@@ -33,7 +33,7 @@ const setTouchBar = () =>
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
-let networkInspectEnabled = false;
+let networkInspectEnabled = !!window.query.networkInspect;
 export const networkInspect = {
   isEnabled: () => !!networkInspectEnabled,
   getHighlightColor: () => (networkInspectEnabled ? '#7A7A7A' : '#363636'),
@@ -119,18 +119,6 @@ const setDevMenuMethodsForTouchBar = () => {
   initNamedImages();
 
   leftBar = {
-    reload:
-      availableMethods.includes('reload') &&
-      new TouchBarButton({
-        icon: namedImages.reload,
-        click: devMenuMethods.reload,
-      }),
-    toggleElementInspector:
-      availableMethods.includes('toggleElementInspector') &&
-      new TouchBarButton({
-        icon: namedImages.toggleElementInspector,
-        click: devMenuMethods.toggleElementInspector,
-      }),
     // Default items
     networkInspect: new TouchBarButton({
       icon: namedImages.networkInspect,
@@ -138,6 +126,18 @@ const setDevMenuMethodsForTouchBar = () => {
       backgroundColor: networkInspect.getHighlightColor(),
     }),
   };
+  if (availableMethods.includes('reload')) {
+    leftBar.reload = new TouchBarButton({
+      icon: namedImages.reload,
+      click: devMenuMethods.reload,
+    });
+  }
+  if (availableMethods.includes('toggleElementInspector')) {
+    leftBar.toggleElementInspector = new TouchBarButton({
+      icon: namedImages.toggleElementInspector,
+      click: devMenuMethods.toggleElementInspector,
+    });
+  }
   setTouchBar();
 };
 

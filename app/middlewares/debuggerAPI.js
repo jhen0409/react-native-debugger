@@ -16,11 +16,15 @@ import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
+import deltaUrlToBlobUrl from './delta/deltaUrlToBlobUrl';
+import checkDeltaAvailable from './delta/checkDeltaAvailable';
 
 const currentWindow = remote.getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;
+let queuedMessages = [];
+let scriptExecuted = false;
 let actions;
 let host;
 let port;
@@ -52,6 +56,7 @@ const createJSRuntime = () => {
 
 const shutdownJSRuntime = () => {
   const { setDebuggerWorker } = actions;
+  scriptExecuted = false;
   if (worker) {
     worker.terminate();
     setDevMenuMethods([]);
@@ -72,40 +77,45 @@ const preconnect = async (fn, firstTimeout) => {
   socket = await fn();
 };
 
+const clearLogs = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    console.clear();
+    clearNetworkLogs(currentWindow);
+  }
+};
+
+const flushQueuedMessages = () => {
+  if (!worker) return;
+  // Flush any messages queued up and clear them
+  queuedMessages.forEach(message => worker.postMessage(message));
+  queuedMessages = [];
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
-  ws.onmessage = message => {
-    if (!message.data) {
-      return;
-    }
-    const object = JSON.parse(message.data);
+  ws.onmessage = async message => {
+    if (!message.data) return;
 
+    const object = JSON.parse(message.data);
     if (object.$event === 'client-disconnected') {
       shutdownJSRuntime();
       return;
     }
-
-    if (!object.method) {
-      return;
-    }
+    if (!object.method) return;
 
     // Special message that asks for a new JS runtime
     if (object.method === 'prepareJSRuntime') {
       shutdownJSRuntime();
       createJSRuntime();
-      if (process.env.NODE_ENV !== 'development') {
-        console.clear();
-        clearNetworkLogs(currentWindow);
-      }
+      clearLogs();
       selectRNDebuggerWorkerContext(currentWindow);
       ws.send(JSON.stringify({ replyID: object.id }));
     } else if (object.method === '$disconnected') {
       shutdownJSRuntime();
     } else {
-      // Otherwise, pass through to the worker.
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
         object.networkInspect = networkInspect.isEnabled();
@@ -114,8 +124,34 @@ const connectToDebuggerProxy = async () => {
           // Reserve React Inspector port for debug via USB on Android real device
           tryADBReverse(window.reactDevToolsPort).catch(() => {});
         }
+        // Check Delta support
+        try {
+          if (await checkDeltaAvailable(host, port)) {
+            const { url, moduleSize } = await deltaUrlToBlobUrl(
+              object.url.replace('.bundle', '.delta')
+            );
+            object.moduleSize = moduleSize;
+            clearLogs();
+            scriptExecuted = true;
+            worker.postMessage({ ...object, url });
+            flushQueuedMessages();
+            return;
+          }
+        } finally {
+          // Clear logs even if no error catched
+          clearLogs();
+          scriptExecuted = true;
+        }
       }
-      worker.postMessage(object);
+      if (scriptExecuted) {
+        // Otherwise, pass through to the worker provided the
+        // application script has been executed. If not add
+        // it to a queue until it has been executed.
+        worker.postMessage(object);
+        flushQueuedMessages();
+      } else {
+        queuedMessages.push(object);
+      }
     }
   };
 
@@ -134,7 +170,7 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
   if (host === packagerHost && port === Number(packagerPort)) return;
 
   host = packagerHost || 'localhost';
-  port = packagerPort || 8081;
+  port = packagerPort || window.query.port || 8081;
   if (socket) {
     shutdownJSRuntime();
     socket.close();

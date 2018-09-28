@@ -8,15 +8,16 @@ Instead of open file in `Sources` tab, you can open file in editor by click sour
 
 ## Known issues
 
-* Currently this feature doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).
+- Currently this feature doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).
 
 ## Other documentations
 
-* [Getting Started](getting-started.md)
-* [Debugger Integration](debugger-integration.md)
-* [React DevTools Integration](react-devtools-integration.md)
-* [Redux DevTools Integration](redux-devtools-integration.md)
-* [Shortcut references](shortcut-references.md)
-* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
-* [Troubleshooting](troubleshooting.md)
-* [Contributing](contributing.md)
+- [Getting Started](getting-started.md)
+- [Debugger Integration](debugger-integration.md)
+- [React DevTools Integration](react-devtools-integration.md)
+- [Redux DevTools Integration](redux-devtools-integration.md)
+- [Shortcut references](shortcut-references.md)
+- [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+- [Config file in home directory](config-file-in-home-directory.md)
+- [Troubleshooting](troubleshooting.md)
+- [Contributing](contributing.md)

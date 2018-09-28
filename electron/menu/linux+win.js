@@ -17,6 +17,7 @@ import {
   haveOpenedWindow,
   toggleOpenInEditor,
 } from './util';
+import { openConfigFile } from '../config';
 import { toggleSyncState, isSyncState } from '../sync-state';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
@@ -49,6 +50,7 @@ export default ({ iconPath }) => [
         type: 'checkbox',
         checked: isSyncState(),
       }),
+      item('Open Config File', n, () => openConfigFile()),
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),
     ],
@@ -82,6 +84,9 @@ export default ({ iconPath }) => [
     ),
     item('Issues', n, () =>
       shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues')
+    ),
+    item('Open Collective', n, () =>
+      shell.openExternal('https://opencollective.com/react-native-debugger')
     ),
   ]),
 ];

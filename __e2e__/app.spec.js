@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import net from 'net';
 import http from 'http';
-import webpack from 'webpack';
-import { Server as WebSocketServer } from 'ws';
 import electronPath from 'electron';
 import { Application } from 'spectron';
+import buildTestBundle, { bundlePath } from './buildTestBundle';
+import createMockRNServer from './mockRNServer';
 import autoUpdateFeed from '../auto_updater.json';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
@@ -17,25 +17,12 @@ describe('Application launch', () => {
   let app;
 
   beforeAll(async () => {
-    // Build a bundle for simulate RNDebugger worker run react-native bundle,
-    // it included redux, mobx, remotedev tests
-    await new Promise(resolve =>
-      webpack({
-        entry: './__e2e__/fixture/app',
-        output: {
-          filename: './__e2e__/fixture/app.bundle.js',
-        },
-        resolve: {
-          mainFields: ['main', 'browser'],
-        },
-      }).run(resolve)
-    );
+    await buildTestBundle();
     app = new Application({
       path: electronPath,
       args: ['--user-dir=__e2e__/tmp', 'dist'],
       env: {
-        REACT_ONLY_FOR_LOCAL: 1,
-        OPEN_DEVTOOLS: 0,
+        E2E_TEST: 1,
       },
     });
     return app.start();
@@ -70,9 +57,6 @@ describe('Application launch', () => {
     await delay(2000);
     const title = await browserWindow.getTitle();
     expect(title).toBe('React Native Debugger - Attempting reconnection (port 8081)');
-
-    // Avoid RND clear logs
-    await app.webContents.executeJavaScript('console.clear = noop => noop');
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
@@ -120,18 +104,19 @@ describe('Application launch', () => {
     });
 
   it('should connect to fake RN server', async () => {
-    const server = new WebSocketServer({ port: 8081 });
+    const { wss, server } = createMockRNServer();
 
-    const url = await getURLFromConnection(server);
+    const url = await getURLFromConnection(wss);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
     const title = await app.browserWindow.getTitle();
     expect(title).toBe('React Native Debugger - Waiting for client connection (port 8081)');
     server.close();
+    wss.close();
   });
 
   it('should connect to fake RN server (port 8088) with send set-debugger-loc after', async () => {
-    const server = new WebSocketServer({ port: customRNServerPort });
+    const { wss, server } = createMockRNServer(customRNServerPort);
 
     const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${customRNServerPort}`;
     const homeEnv = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
@@ -153,7 +138,7 @@ describe('Application launch', () => {
     });
     expect(sendSuccess).toBe(true);
 
-    const url = await getURLFromConnection(server);
+    const url = await getURLFromConnection(wss);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
     const title = await app.browserWindow.getTitle();
@@ -161,6 +146,7 @@ describe('Application launch', () => {
       `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`
     );
     server.close();
+    wss.close();
   });
 
   describe('Import fake script after', () => {
@@ -176,13 +162,17 @@ describe('Application launch', () => {
       });
 
     let headersPromise;
+    let server;
+    let wss;
     beforeAll(async () => {
-      const server = new WebSocketServer({ port: customRNServerPort });
+      const info = createMockRNServer(customRNServerPort);
+      server = info.server;
+      wss = info.wss;
 
       headersPromise = getOneRequestHeaders(8099);
 
       await new Promise(resolve => {
-        server.on('connection', socket => {
+        wss.on('connection', socket => {
           socket.on('message', message => {
             const data = JSON.parse(message);
             switch (data.replyID) {
@@ -192,7 +182,7 @@ describe('Application launch', () => {
                     id: 'sendFakeScript',
                     method: 'executeApplicationScript',
                     inject: [],
-                    url: '../../__e2e__/fixture/app.bundle.js',
+                    url: `../../${bundlePath}`,
                   })
                 );
                 break;
@@ -214,6 +204,11 @@ describe('Application launch', () => {
       expect(title).toBe(`React Native Debugger - Connected (port ${customRNServerPort})`);
     });
 
+    afterAll(() => {
+      server.close();
+      wss.close();
+    });
+
     it('should received forbidden header names from xhr-test', async () => {
       const headers = await headersPromise;
 
@@ -229,7 +224,7 @@ describe('Application launch', () => {
 
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
-    const selectInstance = async (instance) => {
+    const selectInstance = async instance => {
       const { client } = app;
       await client
         .element(`//div[text()="${currentInstance}"]`)
@@ -319,7 +314,6 @@ describe('Application launch', () => {
       );
       expect(logs.length).toEqual(1);
       const [formDataWarning] = logs;
-
       expect(formDataWarning.source).toBe('worker');
       expect(formDataWarning.level).toBe('WARNING');
       expect(

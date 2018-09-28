@@ -38,7 +38,7 @@ __*NOTE*__ Currently the `REACT_DEBUGGER` env doesn't work with Haul bundler, pl
 If you don‘t care to add a dependency, you can use the package, it can help to:
 
 * Replace `open debugger-ui with Chrome` to `open React Native Debugger` in react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
-* Detect react-native packager port then send to the app, if you launch packager with custom `--port` or use Expo, this will very useful
+* Detect react-native packager port then send to the app, if you launch packager with custom `--port` or use Expo, this will be very useful
 
 ### What about Linux / Windows support?
 
@@ -88,5 +88,6 @@ You can also click `React Native Debugger` (`RND` for Linux / Windows) -> `Check
 * [Shortcut references](shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 * [Enable open in editor in console](enable-open-in-editor-in-console.md)
+* [Config file in home directory](config-file-in-home-directory.md)
 * [Troubleshooting](troubleshooting.md)
 * [Contributing](contributing.md)

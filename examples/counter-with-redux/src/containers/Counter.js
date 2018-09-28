@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -19,7 +20,10 @@ const styles = StyleSheet.create({
   },
 });
 
-@connect(state => state, dispatch => bindActionCreators(CounterActions, dispatch))
+@connect(
+  state => state,
+  dispatch => bindActionCreators(CounterActions, dispatch)
+)
 export default class Counter extends Component {
   static propTypes = {
     incrementAsync: PropTypes.func.isRequired,

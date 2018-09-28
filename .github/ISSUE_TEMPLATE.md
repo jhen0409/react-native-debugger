@@ -11,3 +11,6 @@ React Native version: [FILL THIS OUT]
 Platform: [FILL THIS OUT: iOS, Android, ...]
 Is real device of platform: [Yes or No]
 Operating System: [FILL THIS OUT: macOS, Linux, Windows]
+
+<!-- Love react-native-debugger? Please consider supporting our collective:
+👉  https://opencollective.com/react-native-debugger/donate -->
