@@ -170,7 +170,7 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
   if (host === packagerHost && port === Number(packagerPort)) return;
 
   host = packagerHost || 'localhost';
-  port = packagerPort || 8081;
+  port = packagerPort || window.query.port || 8081;
   if (socket) {
     shutdownJSRuntime();
     socket.close();

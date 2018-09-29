@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.7.20",
+  "version": "0.8.0",
   "productName": "React Native Debugger In Dev",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
@@ -74,6 +74,7 @@
     "electron-gh-releases": "^2.0.4",
     "electron-store": "^1.2.0",
     "jsan": "^3.1.9",
+    "json5": "^0.5.1",
     "multiline-template": "^0.1.2",
     "node-watch": "^0.5.6",
     "portscanner": "^2.1.1",

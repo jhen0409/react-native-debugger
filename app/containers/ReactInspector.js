@@ -93,7 +93,13 @@ export default class ReactInspector extends Component {
   }
 
   setDefaultThemeName(themeName) {
-    getReactInspector().setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
+    const theme = window.query.defaultReactDevToolsTheme;
+    const inspector = getReactInspector();
+    if (!theme || theme === 'RNDebugger') {
+      inspector.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
+    } else {
+      inspector.setDefaultThemeName(theme);
+    }
   }
 
   listeningPort = window.reactDevToolsPort;

@@ -16,6 +16,7 @@ import {
   haveOpenedWindow,
   toggleOpenInEditor,
 } from './util';
+import { openConfigFile } from '../config';
 import { isSyncState, toggleSyncState } from '../sync-state';
 
 const getWin = () => BrowserWindow.getFocusedWindow();
@@ -50,6 +51,7 @@ export default ({ iconPath }) => [
         type: 'checkbox',
         checked: isSyncState(),
       }),
+      item('Open Config File', n, () => openConfigFile()),
       separator,
       item('Minimize', 'Command+M', n, { selector: 'performMiniaturize:' }),
       item('Close', 'Command+W', n, { selector: 'performClose:' }),

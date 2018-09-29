@@ -1,7 +1,5 @@
 {
-  "url":
-    "https://github.com/jhen0409/react-native-debugger/releases/download/v0.7.20/rn-debugger-macos-x64.zip",
-  "name": "v0.7.20",
-  "notes":
-    "1. Add the recently changes from redux-devtools-extension\n2. Fix context menu functions for RN 0.56\n3. Fix ref issue of Draggable component"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.0/rn-debugger-macos-x64.zip",
+  "name": "v0.8.0",
+  "notes": "1. Fix context menu functions on RN 0.57\n2. Update react-devtools-core for supporting react-profiler\n3. Implement root config file in home directory"
 }

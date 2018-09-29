@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   font-family: monaco, Consolas, Lucida Console, monospace;
   overflow: hidden;
   font-size: 100%;
@@ -8,6 +9,7 @@ html, body {
   height: 100%;
   background-color: rgb(53, 59, 70);
 }
+
 #root {
   width: 100%;
   height: 100%;

@@ -33,7 +33,7 @@ const setTouchBar = () =>
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
-let networkInspectEnabled = false;
+let networkInspectEnabled = !!window.query.networkInspect;
 export const networkInspect = {
   isEnabled: () => !!networkInspectEnabled,
   getHighlightColor: () => (networkInspectEnabled ? '#7A7A7A' : '#363636'),

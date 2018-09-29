@@ -9,28 +9,27 @@ You can enable this feature by the [context menu or Touch Bar](shortcut-referenc
 See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53). It uses `XMLHttpRequest` from WebWorker in Chrome, basically it can manually setup by:
 
 ```js
-global.XMLHttpRequest = global.originalXMLHttpRequest ?
-  global.originalXMLHttpRequest :
-  global.XMLHttpRequest;
-global.FormData = global.originalFormData ?
-  global.originalFormData :
-  global.FormData;
+global.XMLHttpRequest = global.originalXMLHttpRequest
+  ? global.originalXMLHttpRequest
+  : global.XMLHttpRequest
+global.FormData = global.originalFormData
+  ? global.originalFormData
+  : global.FormData
 
-fetch; // Ensure to get the lazy property
+fetch // Ensure to get the lazy property
 
-if (window.__FETCH_SUPPORT__) { // it's RNDebugger only to have
-  window.__FETCH_SUPPORT__.blob = false;
+if (window.__FETCH_SUPPORT__) {
+  // it's RNDebugger only to have
+  window.__FETCH_SUPPORT__.blob = false
 } else {
   /*
    * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
    * If you're using another way you can just use the native Blob and remove the `else` statement
    */
-  global.Blob = global.originalBlob ?
-    global.originalBlob :
-    global.Blob;
-  global.FileReader = global.originalFileReader ?
-    global.originalFileReader :
-    global.FileReader;
+  global.Blob = global.originalBlob ? global.originalBlob : global.Blob
+  global.FileReader = global.originalFileReader
+    ? global.originalFileReader
+    : global.FileReader
 }
 ```
 
@@ -61,5 +60,6 @@ If you want to inspect deeper network requests (like requests made with `Image`)
 - [Redux DevTools Integration](redux-devtools-integration.md)
 - [Shortcut references](shortcut-references.md)
 - [Enable open in editor in console](enable-open-in-editor-in-console.md)
+- [Config file in home directory](config-file-in-home-directory.md)
 - [Troubleshooting](troubleshooting.md)
 - [Contributing](contributing.md)
