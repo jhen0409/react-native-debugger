@@ -9,7 +9,7 @@ function rebuildModules(buildPath) {
       buildPath,
       // eslint-disable-next-line
       electronVersion: require('electron/package.json').version,
-      extraModules: ['electron-named-image'],
+      extraModules: [],
       force: true,
       types: ['prod', 'optional'],
     });

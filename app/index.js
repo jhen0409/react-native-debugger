@@ -14,7 +14,7 @@ import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 const currentWindow = remote.getCurrentWindow();
 
 webFrame.setZoomFactor(1);
-webFrame.setZoomLevelLimits(1, 1);
+webFrame.setVisualZoomLevelLimits(1, 1);
 if (process.env.E2E_TEST) {
   webFrame.registerURLSchemeAsPrivileged('file');
 }
