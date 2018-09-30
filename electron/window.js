@@ -1,8 +1,10 @@
 import path from 'path';
-import { BrowserWindow, Menu, globalShortcut } from 'electron';
+import qs from 'querystring';
+import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
 
@@ -58,7 +60,19 @@ const registerShortcuts = async win => {
 };
 
 const minSize = 100;
-export const createWindow = ({ iconPath, isPortSettingRequired }) => {
+export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
+  const { config, isConfigBroken, error } = readConfig();
+
+  if (isConfigBroken) {
+    dialog.showErrorBox(
+      'Root config error',
+      `Parse root config failed, please checkout \`${configFile}\`, the error trace:\n\n` +
+        `${error}\n\n` +
+        'RNDebugger will load default config instead. ' +
+        'You can click `Debugger` -> `Open Config File` in application menu.'
+    );
+  }
+
   const winBounds = store.get('winBounds');
   const increasePosition = BrowserWindow.getAllWindows().length * 10;
   const { width, height } = winBounds || {};
@@ -76,28 +90,40 @@ export const createWindow = ({ iconPath, isPortSettingRequired }) => {
       : {}),
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
+    ...config.windowBounds,
   });
+  const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
-  let url = `file://${path.resolve(__dirname)}/app.html`;
-  if (isPortSettingRequired) {
-    url += '?isPortSettingRequired=1';
-  }
-  win.loadURL(url);
+  const query = {
+    port,
+    editor: config.editor,
+    fontFamily: config.fontFamily,
+    defaultReactDevToolsTheme: config.defaultReactDevToolsTheme,
+    networkInspect: config.defaultNetworkInspect && 1,
+    isPortSettingRequired: isPortSettingRequired && 1,
+  };
+  Object.keys(query).forEach(key => {
+    if (!query[key]) delete query[key];
+  });
+  win.loadURL(`file://${path.resolve(__dirname)}/app.html?${qs.stringify(query)}`);
   win.webContents.on('did-finish-load', () => {
-    win.webContents.setZoomLevel(store.get('zoomLevel', 0));
+    win.webContents.setZoomLevel(config.zoomLevel || store.get('zoomLevel', 0));
     win.focus();
     registerShortcuts(win);
     if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
       win.openDevTools();
     }
-    if (BrowserWindow.getAllWindows().length === 1) {
+    const checkUpdate = config.autoUpdate !== false;
+    if (checkUpdate && isFirstWindow) {
       autoUpdate(iconPath);
     }
   });
   win.webContents.on('devtools-opened', async () => {
     const { location } = await checkWindowInfo(win);
     catchConsoleLogLink(win, location.host, location.port);
-    removeUnecessaryTabs(win);
+    if (config.showAllDevToolsTab !== true) {
+      removeUnecessaryTabs(win);
+    }
   });
   win.on('show', () => {
     if (!win.isFocused()) return;

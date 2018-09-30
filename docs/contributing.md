@@ -78,11 +78,12 @@ Thank you to all our sponsors! (please ask your company to also support this ope
 
 ## Other documentations
 
-* [Getting Started](getting-started.md)
-* [Debugger Integration](debugger-integration.md)
-* [React DevTools Integration](react-devtools-integration.md)
-* [Redux DevTools Integration](redux-devtools-integration.md)
-* [Shortcut references](shortcut-references.md)
-* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
-* [Enable open in editor in console](enable-open-in-editor-in-console.md)
-* [Troubleshooting](troubleshooting.md)
+- [Getting Started](getting-started.md)
+- [Debugger Integration](debugger-integration.md)
+- [React DevTools Integration](react-devtools-integration.md)
+- [Redux DevTools Integration](redux-devtools-integration.md)
+- [Shortcut references](shortcut-references.md)
+- [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+- [Enable open in editor in console](enable-open-in-editor-in-console.md)
+- [Config file in home directory](config-file-in-home-directory.md)
+- [Troubleshooting](troubleshooting.md)

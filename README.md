@@ -31,6 +31,7 @@ $ brew update && brew cask install react-native-debugger
 * [Shortcut references](docs/shortcut-references.md)
 * [Network inspect of Chrome Developer Tools](docs/network-inspect-of-chrome-devtools.md)
 * [Enable open in editor in console](docs/enable-open-in-editor-in-console.md)
+* [Config file in home directory](docs/config-file-in-home-directory.md)
 * [Troubleshooting](docs/troubleshooting.md)
 * [Contributing](docs/contributing.md)
 

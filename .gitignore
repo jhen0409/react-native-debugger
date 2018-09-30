@@ -7,3 +7,4 @@ dist/main.js*
 release/
 *.bundle.js
 tmp/
+config_test
