@@ -69,12 +69,12 @@ app.on('ready', async () => {
 
   const { config } = readConfig();
 
-  let { defaultRNPakcagerPorts } = config;
-  if (!Array.isArray(defaultRNPakcagerPorts)) {
-    defaultRNPakcagerPorts = [8081];
+  let { defaultRNPackagerPorts } = config;
+  if (!Array.isArray(defaultRNPackagerPorts)) {
+    defaultRNPackagerPorts = [8081];
   }
 
-  defaultRNPakcagerPorts.forEach(port => {
+  defaultRNPackagerPorts.forEach(port => {
     createWindow({ port, ...defaultOptions });
   });
 

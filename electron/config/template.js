@@ -23,7 +23,7 @@ module.exports = `{
   autoUpdate: true,
 
   // RNDebugger will open debugger window with the ports when app launched
-  defaultRNPakcagerPorts: [8081],
+  defaultRNPackagerPorts: [8081],
 
   // Env for
   // open React DevTools source file link
