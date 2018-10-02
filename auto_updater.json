@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.0/rn-debugger-macos-x64.zip",
-  "name": "v0.8.0",
-  "notes": "1. Fix context menu functions on RN 0.57\n2. Update react-devtools-core for supporting react-profiler\n3. Implement root config file in home directory"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.1/rn-debugger-macos-x64.zip",
+  "name": "v0.8.1",
+  "notes": "1. Do notify before autoUpdater.checkForUpdates\n2. Rename defaultRNPackagerPorts as correct config field name"
 }
