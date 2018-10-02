@@ -1,76 +1,88 @@
 import { app, dialog, shell } from 'electron';
 import GhReleases from 'electron-gh-releases';
+import fetch from 'electron-fetch';
+
+const repo = 'jhen0409/react-native-debugger';
+
+const getFeed = () =>
+  fetch(`https://raw.githubusercontent.com/${repo}/master/auto_updater.json`).then(res =>
+    res.json()
+  );
+
+const showDialog = ({ icon, buttons, message, detail }) =>
+  dialog.showMessageBox({
+    type: 'info',
+    buttons,
+    title: 'React Native Debugger',
+    icon,
+    message,
+    detail,
+  });
+
+const notifyUpdateAvailable = ({ icon, detail }) => {
+  const index = showDialog({
+    message: 'A newer version is available.',
+    buttons: ['Download', 'Later'],
+    icon,
+    detail,
+  });
+  return index === 0;
+};
+
+const notifyUpdateDownloaded = ({ icon }) => {
+  const index = showDialog({
+    message:
+      'The newer version has been downloaded. ' +
+      'Please restart the application to apply the update.',
+    buttons: ['Restart', 'Later'],
+    icon,
+  });
+  return index === 0;
+};
 
 let checking = false;
 
 export default (icon, notify) => {
-  if (checking) {
-    console.log('[Updater] Already checking...');
-    return;
-  }
+  if (checking) return;
 
   checking = true;
   const updater = new GhReleases({
-    repo: 'jhen0409/react-native-debugger',
+    repo,
     currentVersion: app.getVersion(),
   });
 
-  updater.check((err, status) => {
+  updater.check(async (err, status) => {
     if (process.platform === 'linux' && err.message === 'This platform is not supported.') {
       err = null; // eslint-disable-line
       status = true; // eslint-disable-line
     }
     if (notify && err) {
-      dialog.showMessageBox({
-        type: 'info',
-        buttons: ['OK'],
-        title: 'React Native Debugger',
-        icon,
-        message: err.message,
-      });
-      console.log('[Updater]', err.message);
+      showDialog({ message: err.message, buttons: ['OK'] });
       checking = false;
       return;
     }
     if (err || !status) {
-      console.log('[Updater] Error', err && err.message, status);
       checking = false;
       return;
     }
+    const feed = await getFeed();
+    const detail = `${feed.name}\n\n${feed.notes}`;
     if (notify) {
-      const index = dialog.showMessageBox({
-        type: 'info',
-        buttons: ['Download', 'Later'],
-        title: 'React Native Debugger',
-        icon,
-        message: 'A newer version is available.',
-      });
-      checking = false;
-      if (index === 1) return;
-      shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
-      console.log('[Updater] Open external link.');
-      return;
-    }
-    if (process.env.NODE_ENV === 'production' && process.platform === 'darwin') {
+      const open = notifyUpdateAvailable({ icon, detail });
+      if (open) shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
+    } else if (
+      process.env.NODE_ENV === 'production' &&
+      process.platform === 'darwin' &&
+      notifyUpdateAvailable({ icon, detail })
+    ) {
       updater.download();
-      console.log('[Updater] Starting download...');
     }
-  });
-  console.log('[Updater] Checking updates...');
-
-  updater.on('update-downloaded', ([, releaseNotes, releaseName]) => {
-    console.log('[Updater] Downloaded.');
-    const index = dialog.showMessageBox({
-      type: 'info',
-      buttons: ['Restart', 'Later'],
-      title: 'React Native Debugger',
-      icon,
-      message: 'The newer version has been downloaded. ' +
-        'Please restart the application to apply the update.',
-      detail: `${releaseName}\n\n${releaseNotes}`,
-    });
     checking = false;
-    if (index === 1) return;
-    updater.install();
+  });
+
+  updater.on('update-downloaded', () => {
+    if (notifyUpdateDownloaded({ icon })) {
+      updater.install();
+    }
   });
 };
