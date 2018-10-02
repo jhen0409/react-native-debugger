@@ -5,7 +5,7 @@ Object {
   "config": Object {
     "autoUpdate": true,
     "defaultNetworkInspect": false,
-    "defaultRNPakcagerPorts": Array [
+    "defaultRNPackagerPorts": Array [
       8081,
     ],
     "defaultReactDevToolsTheme": "RNDebugger",
@@ -22,7 +22,7 @@ Object {
   "config": Object {
     "autoUpdate": true,
     "defaultNetworkInspect": false,
-    "defaultRNPakcagerPorts": Array [
+    "defaultRNPackagerPorts": Array [
       8081,
     ],
     "defaultReactDevToolsTheme": "RNDebugger",
@@ -47,7 +47,7 @@ Object {
   "config": Object {
     "autoUpdate": true,
     "defaultNetworkInspect": false,
-    "defaultRNPakcagerPorts": Array [
+    "defaultRNPackagerPorts": Array [
       8081,
     ],
     "defaultReactDevToolsTheme": "RNDebugger",
