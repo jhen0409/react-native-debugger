@@ -19,23 +19,23 @@ const showDialog = ({ icon, buttons, message, detail }) =>
     detail,
   });
 
-const notifyUpdateAvailable = detail => {
+const notifyUpdateAvailable = ({ icon, detail }) => {
   const index = showDialog({
     message: 'A newer version is available.',
     buttons: ['Download', 'Later'],
+    icon,
     detail,
   });
-  if (index === 1) return;
-  shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
+  return index === 0;
 };
 
-const notifyRequestUpdate = detail => {
+const notifyUpdateDownloaded = ({ icon }) => {
   const index = showDialog({
     message:
       'The newer version has been downloaded. ' +
       'Please restart the application to apply the update.',
-    buttons: ['Download and Restart', 'Later'],
-    detail,
+    buttons: ['Restart', 'Later'],
+    icon,
   });
   return index === 0;
 };
@@ -68,16 +68,21 @@ export default (icon, notify) => {
     const feed = await getFeed();
     const detail = `${feed.name}\n\n${feed.notes}`;
     if (notify) {
-      notifyUpdateAvailable(detail);
+      const open = notifyUpdateAvailable({ icon, detail });
+      if (open) shell.openExternal('https://github.com/jhen0409/react-native-debugger/releases');
     } else if (
       process.env.NODE_ENV === 'production' &&
       process.platform === 'darwin' &&
-      notifyRequestUpdate()
+      notifyUpdateAvailable({ icon, detail })
     ) {
       updater.download();
     }
     checking = false;
   });
 
-  updater.on('update-downloaded', () => updater.install());
+  updater.on('update-downloaded', () => {
+    if (notifyUpdateDownloaded({ icon })) {
+      updater.install();
+    }
+  });
 };
