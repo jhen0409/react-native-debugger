@@ -2,10 +2,10 @@
 
 Just these steps let you start RNDebugger out of box:
 
-* Make sure all debugger clients of React Native are closed, usually are `http://localhost:<port>/debugger-ui`
-* Make sure RNDebugger is open and wait state.
-* RNDebugger will try connect to debugger proxy, use port `8081` by default, you can new debugger window (macOS: `Command+T`, Linux/Windows: `Ctrl+T`) to specify the port if you want.
-* Enable `Debug JS Remotely` of [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) on your app
+- Make sure all debugger clients of React Native are closed, usually are `http://localhost:<port>/debugger-ui`
+- Make sure RNDebugger is open and wait state.
+- RNDebugger will try connect to debugger proxy, use port `8081` by default, you can new debugger window (macOS: `Command+T`, Linux/Windows: `Ctrl+T`) to specify the port if you want.
+- Enable `Debug JS Remotely` of [developer menu](https://facebook.github.io/react-native/docs/debugging.html#accessing-the-in-app-developer-menu) on your app
 
 ## Launch by CLI or React Native packager (`macOS` only)
 
@@ -31,14 +31,14 @@ Special case of Expo (CRNA):
 $ REACT_DEBUGGER="unset ELECTRON_RUN_AS_NODE && open -g 'rndebugger://set-debugger-loc?port=19001' ||" npm start
 ```
 
-__*NOTE*__ Currently the `REACT_DEBUGGER` env doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).
+**_NOTE_** Currently the `REACT_DEBUGGER` env doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).
 
 ### Use [`react-native-debugger-open`](../npm-package)
 
 If you don‘t care to add a dependency, you can use the package, it can help to:
 
-* Replace `open debugger-ui with Chrome` to `open React Native Debugger` in react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
-* Detect react-native packager port then send to the app, if you launch packager with custom `--port` or use Expo, this will be very useful
+- Replace `open debugger-ui with Chrome` to `open React Native Debugger` in react-native packager, saving you from closing the debugger-ui page everytime it automatically opens :)
+- Detect react-native packager port then send to the app, if you launch packager with custom `--port` or use Expo, this will be very useful
 
 ### What about Linux / Windows support?
 
@@ -54,23 +54,23 @@ Use the same API as [`redux-devtools-extension`](https://github.com/zalmoxisus/r
 
 ```js
 const store = createStore(
-  reducer, /* preloadedState, */
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+  reducer /* preloadedState, */,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+)
 ```
 
 See [`Redux DevTools Integration`](redux-devtools-integration.md) section for more information.
 
 ## Platform support
 
-* [React Native](https://github.com/facebook/react-native) >= 0.21.0
-* [React Native for macOS](https://github.com/ptmt/react-native-desktop) (formerly react-native-desktop) >= 0.8.7
-* [React Native for Windows](https://github.com/Microsoft/react-native-windows)
+- [React Native](https://github.com/facebook/react-native) >= 0.43
+- [React Native for macOS](https://github.com/ptmt/react-native-macos) (formerly react-native-desktop) >= 0.14.0
+- [React Native for Windows](https://github.com/Microsoft/react-native-windows)
 
 ## Examples for use RNDebugger
 
-* [`Redux counter`](../examples/counter-with-redux)
-* [`MobX counter`](../examples/counter-with-mobx) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
+- [`Redux counter`](../examples/counter-with-redux)
+- [`MobX counter`](../examples/counter-with-mobx) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
 
 The examples was bootstrapped with [`create-react-native-app`](https://github.com/react-community/create-react-native-app).
 
@@ -82,12 +82,12 @@ You can also click `React Native Debugger` (`RND` for Linux / Windows) -> `Check
 
 ## Other documentations
 
-* [Debugger Integration](debugger-integration.md)
-* [React DevTools Integration](react-devtools-integration.md)
-* [Redux DevTools Integration](redux-devtools-integration.md)
-* [Shortcut references](shortcut-references.md)
-* [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
-* [Enable open in editor in console](enable-open-in-editor-in-console.md)
-* [Config file in home directory](config-file-in-home-directory.md)
-* [Troubleshooting](troubleshooting.md)
-* [Contributing](contributing.md)
+- [Debugger Integration](debugger-integration.md)
+- [React DevTools Integration](react-devtools-integration.md)
+- [Redux DevTools Integration](redux-devtools-integration.md)
+- [Shortcut references](shortcut-references.md)
+- [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
+- [Enable open in editor in console](enable-open-in-editor-in-console.md)
+- [Config file in home directory](config-file-in-home-directory.md)
+- [Troubleshooting](troubleshooting.md)
+- [Contributing](contributing.md)
