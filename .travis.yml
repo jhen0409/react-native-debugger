@@ -1,10 +1,6 @@
 os:
   - linux
   - osx
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode8.3
 addons:
   apt:
     sources:
