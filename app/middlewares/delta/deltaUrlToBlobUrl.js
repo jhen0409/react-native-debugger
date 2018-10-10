@@ -19,10 +19,8 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
   const lastBundleId = client.getLastBundleId();
 
   const deltaBundleId = lastBundleId
-    ? `${
-        lastBundleId.indexOf("?") === -1 ? "?" : "&"
-      }deltaBundleId=${lastBundleId}`
-    : "";
+    ? `${lastBundleId.indexOf('?') === -1 ? '?' : '&'}deltaBundleId=${lastBundleId}`
+    : '';
 
 
   const data = await fetch(deltaUrl + deltaBundleId);
