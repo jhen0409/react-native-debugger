@@ -4,7 +4,7 @@
 
 ![React Native Debugger](https://user-images.githubusercontent.com/3001525/29451479-6621bf1a-83c8-11e7-8ebb-b4e98b1af91c.png)
 
-> Run the redux example of [react-navigation](https://github.com/react-community/react-navigation/tree/master/examples/ReduxExample) with Redux DevTools setup
+> Run the redux example of [react-navigation](https://github.com/react-navigation/react-navigation/tree/master/examples) with Redux DevTools setup
 
 This is a standalone app for debugging React Native apps:
 
