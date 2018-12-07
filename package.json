@@ -82,7 +82,7 @@
     "prop-types": "^15.6.1",
     "react": "^15.6.1",
     "react-dev-utils": "^4.2.1",
-    "react-devtools-core": "^3.4.0",
+    "react-devtools-core": "^3.4.3",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",

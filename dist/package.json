@@ -13,7 +13,7 @@
   "dependencies": {
     "adbkit": "^2.11.0",
     "electron-store": "^1.2.0",
-    "react-devtools-core": "^3.4.0"
+    "react-devtools-core": "^3.4.3"
   },
   "optionalDependencies": {
     "electron-named-image": "^1.0.4"
