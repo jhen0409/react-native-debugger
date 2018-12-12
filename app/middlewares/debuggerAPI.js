@@ -32,6 +32,15 @@ let socket;
 
 const workerOnMessage = message => {
   const { data } = message;
+
+  if (data.APOLLO_MESSAGE) {
+    postMessage({
+      event: data.event,
+      payload: data,
+      source: 'apollo-devtools-backend',
+    }, "*");
+  }
+
   if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
     return true;
   }
@@ -43,6 +52,12 @@ const workerOnMessage = message => {
   socket.send(JSON.stringify(data));
 };
 
+const onWindowMessage = e => {
+  if (e.data && e.data.source === 'apollo-devtools-proxy') {
+    worker.postMessage({source: 'apollo-devtools-proxy', event: e.data.payload.event, payload: e.data.payload.payload});
+  }
+}
+
 const createJSRuntime = () => {
   // This worker will run the application javascript code,
   // making sure that it's run in an environment without a global
@@ -50,7 +65,7 @@ const createJSRuntime = () => {
   // eslint-disable-next-line
   worker = new Worker(`${__webpack_public_path__}RNDebuggerWorker.js`);
   worker.addEventListener('message', workerOnMessage);
-
+  window.addEventListener('message', onWindowMessage);
   actions.setDebuggerWorker(worker, 'connected');
 };
 
@@ -59,6 +74,7 @@ const shutdownJSRuntime = () => {
   scriptExecuted = false;
   if (worker) {
     worker.terminate();
+    window.removeEventListener('messsage', onWindowMessage);
     setDevMenuMethods([]);
   }
   worker = null;

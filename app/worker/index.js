@@ -17,6 +17,10 @@ import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
 import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
+import Bridge from './apollo/bridge';
+import { initBroadCastEvents } from "./apollo/broadcastQueries";
+import { initLinkEvents } from "./apollo/links";
+import { checkVersions } from "./apollo/checkVersions";
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -51,6 +55,38 @@ const setupRNDebugger = async message => {
     checkAvailableDevMenuMethods(modules, message.networkInspect);
     reportDefaultReactDevToolsPort(modules);
   }
+
+  const interval = setInterval(() => {
+    if (self.__APOLLO_CLIENT__) {
+      clearInterval(interval);
+
+      const hook = {
+        ApolloClient: self.__APOLLO_CLIENT__
+      };
+
+      const bridge = new Bridge({
+        listen(fn) {
+          self.addEventListener("message", evt =>
+          {
+            return fn(evt.data);
+          });
+        },
+        send(data) {
+          postMessage(data);
+        },
+      });
+
+      if (Number(hook.ApolloClient.version[0]) !== 1) {
+        initLinkEvents(hook, bridge);
+        initBroadCastEvents(hook, bridge);
+      }
+      bridge.log("backend ready.");
+      bridge.send("ready", hook.ApolloClient.version);
+      checkVersions(hook, bridge);
+
+    }
+
+  }, 1000);
 };
 
 const messageHandlers = {
@@ -66,6 +102,7 @@ const messageHandlers = {
     } catch (err) {
       error = err.message;
     }
+
     sendReply(null /* result */, error);
 
     if (!error) {
