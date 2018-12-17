@@ -45,7 +45,7 @@
     "electron": "~1.7.15",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.3",
-    "electron-packager": "^12.1.0",
+    "electron-packager": "^13.0.1",
     "electron-rebuild": "^1.7.3",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^10.0.0",
