@@ -52,14 +52,6 @@ async@~0.2.9:
   resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
   integrity sha1-trvgsGdLnXGXCMo43owjfLUmw9E=
 
-<<<<<<< HEAD
-=======
-bindings@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.0.tgz#b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7"
-  integrity sha512-DpLh5EzMR2kzvX1KIlVC0VkC3iZtHKTgdtZ0a3pglBZdaQFjt5S9g9xd1lE+YvXyfd6mtCeRnrUfOLYiTMlNSw==
-
->>>>>>> master
 bluebird@~2.9.24:
   version "2.9.34"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.9.34.tgz#2f7b4ec80216328a9fddebdf69c8d4942feff7d8"
@@ -95,17 +87,6 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-<<<<<<< HEAD
-=======
-electron-named-image@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/electron-named-image/-/electron-named-image-1.0.4.tgz#698c0ae6a4e0793e67a6efda2c2183c5d421e92c"
-  integrity sha512-xVPSH5PpFQo74asVUm+6SVZvzvuXNFHoOzOisWpjGntDVO6pudq8bhlJ6Ht3uF0RO7LOEM3i7M5sX3yZgLFXIg==
-  dependencies:
-    bindings "^1.3.0"
-    nan "^2.6.2"
-
->>>>>>> master
 electron-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-1.2.0.tgz#96f708f0188c7708907e9f9b7cba790bed6b989f"
@@ -165,14 +146,6 @@ ms@2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
-<<<<<<< HEAD
-=======
-nan@^2.6.2:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
-  integrity sha1-2Vv3IeyHfgjbJ27T/G63j5CDrUY=
-
->>>>>>> master
 node-forge@^0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.1.tgz#9da611ea08982f4b94206b3beb4cc9665f20c300"
