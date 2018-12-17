@@ -18,9 +18,7 @@ import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
 import Bridge from './apollo/bridge';
-import { initBroadCastEvents } from "./apollo/broadcastQueries";
-import { initLinkEvents } from "./apollo/links";
-import { checkVersions } from "./apollo/checkVersions";
+import { initBackend } from './apollo/backend';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -68,22 +66,20 @@ const setupRNDebugger = async message => {
         listen(fn) {
           self.addEventListener("message", evt =>
           {
-            return fn(evt.data);
+            if (evt.data.source === "apollo-devtools-proxy" && evt.data.payload) {
+              return fn(evt.data);
+            }
           });
         },
         send(data) {
-          postMessage(data);
+          postMessage({
+            ...data,
+            source: 'apollo-devtools-backend'
+          });
         },
       });
 
-      if (Number(hook.ApolloClient.version[0]) !== 1) {
-        initLinkEvents(hook, bridge);
-        initBroadCastEvents(hook, bridge);
-      }
-      bridge.log("backend ready.");
-      bridge.send("ready", hook.ApolloClient.version);
-      checkVersions(hook, bridge);
-
+      initBackend(bridge, hook);
     }
 
   }, 1000);

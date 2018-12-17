@@ -14,8 +14,8 @@ export default async () => {
     }
     BrowserWindow.addDevToolsExtension(path.resolve('dist/devtools-helper/'));
 
-    BrowserWindow.addDevToolsExtension(path.resolve('../apollo-client-devtools/shells/webextension/'));
   } else {
     BrowserWindow.addDevToolsExtension(path.join(__dirname, 'devtools-helper/'));
   }
+  BrowserWindow.addDevToolsExtension(path.resolve('../apollo-client-devtools/shells/webextension/'));
 };

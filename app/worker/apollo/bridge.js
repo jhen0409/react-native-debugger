@@ -21,7 +21,6 @@ export default class Bridge extends EventEmitter {
 
   send(event, payload) {
     this.wall.send({
-      APOLLO_MESSAGE: true,
       event,
       payload,
     });

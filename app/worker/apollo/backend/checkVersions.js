@@ -1,8 +1,8 @@
 import genUuid from "uuid/v1";
 
-export const checkVersions = async (hook, bridge) => {
-  const uuid = genUuid();
+let uuid = genUuid();
 
+export const checkVersions = (hook, bridge) => {
   const { version } = hook.ApolloClient;
   const { devToolsVersion } = hook;
 

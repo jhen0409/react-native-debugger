@@ -33,11 +33,10 @@ let socket;
 const workerOnMessage = message => {
   const { data } = message;
 
-  if (data.APOLLO_MESSAGE) {
+  if (data.source === 'apollo-devtools-backend') {
     postMessage({
-      event: data.event,
-      payload: data,
       source: 'apollo-devtools-backend',
+      payload: data,
     }, "*");
   }
 
