@@ -1,6 +1,6 @@
 # React DevTools Integration
 
-**_NOTE_** Supported React Native version is `>= 0.43`. Please downgrade RNDebugger version to `0.7.20` if you're using older versions of React Native.
+**_NOTE_** Supported React Native version is `>= 0.43`. Please downgrade RNDebugger version to `0.7.21` if you're using older versions of React Native.
 
 The React DevTools is built by [`react-devtools-core/standalone`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core#requirereact-devtools-corestandalone), this is same with element inspector of [`Nuclide`](https://nuclide.io/docs/platforms/react-native/#debugging__element-inspector).
 
