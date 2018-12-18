@@ -34,10 +34,14 @@ const workerOnMessage = message => {
   const { data } = message;
 
   if (data.source === 'apollo-devtools-backend') {
+    if (!window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__) {
+      window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__ = true;
+    }
+
     postMessage({
       source: 'apollo-devtools-backend',
       payload: data,
-    }, "*");
+    }, '*');
   }
 
   if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
@@ -53,9 +57,10 @@ const workerOnMessage = message => {
 
 const onWindowMessage = e => {
   if (e.data && e.data.source === 'apollo-devtools-proxy') {
-    worker.postMessage({source: 'apollo-devtools-proxy', event: e.data.payload.event, payload: e.data.payload.payload});
+    const message = typeof e.data.payload === 'string' ? { event: e.data.payload } : e.data.payload;
+    worker.postMessage({ source: 'apollo-devtools-proxy', ...message });
   }
-}
+};
 
 const createJSRuntime = () => {
   // This worker will run the application javascript code,
