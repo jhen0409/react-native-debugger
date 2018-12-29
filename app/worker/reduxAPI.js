@@ -20,7 +20,9 @@ function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
 }
 
-const instances = { /* [id]: { name, store, ... } */ };
+const instances = {
+  /* [id]: { name, store, ... } */
+};
 
 let lastAction;
 let isExcess;
@@ -28,15 +30,53 @@ let listenerAdded;
 let locked;
 let paused;
 
+function getStackTrace(config, toExcludeFromTrace) {
+  if (!config.trace) return undefined;
+  if (typeof config.trace === 'function') return config.trace();
+
+  let stack;
+  let extraFrames = 0;
+  let prevStackTraceLimit;
+  const traceLimit = config.traceLimit;
+  const error = Error();
+  if (Error.captureStackTrace) {
+    if (Error.stackTraceLimit < traceLimit) {
+      prevStackTraceLimit = Error.stackTraceLimit;
+      Error.stackTraceLimit = traceLimit;
+    }
+    Error.captureStackTrace(error, toExcludeFromTrace);
+  } else {
+    extraFrames = 3;
+  }
+  stack = error.stack;
+  if (prevStackTraceLimit) Error.stackTraceLimit = prevStackTraceLimit;
+  if (
+    extraFrames ||
+    typeof Error.stackTraceLimit !== 'number' ||
+    Error.stackTraceLimit > traceLimit
+  ) {
+    const frames = stack.split('\n');
+    if (frames.length > traceLimit) {
+      stack = frames
+        .slice(0, traceLimit + extraFrames + (frames[0] === 'Error' ? 1 : 0))
+        .join('\n');
+    }
+  }
+  return stack;
+}
+
 function getLiftedState(store, filters) {
   return filterStagedActions(store.liftedStore.getState(), filters);
 }
 
 function relay(type, state, instance, action, nextActionId) {
   const {
-    filters, predicate,
-    stateSanitizer, actionSanitizer,
-    serializeState, serializeAction,
+    filters,
+    predicate,
+    stateSanitizer,
+    actionSanitizer,
+    serializeState,
+    serializeAction,
   } = instance;
 
   const message = {
@@ -45,14 +85,24 @@ function relay(type, state, instance, action, nextActionId) {
     name: instance.name,
   };
   if (state) {
-    message.payload = type === 'ERROR' ?
-      state :
-      stringify(
-        filterState(state, type, filters, stateSanitizer, actionSanitizer, nextActionId, predicate),
-        serializeState
-      );
+    message.payload =
+      type === 'ERROR'
+        ? state
+        : stringify(
+          filterState(
+            state,
+            type,
+            filters,
+            stateSanitizer,
+            actionSanitizer,
+            nextActionId,
+            predicate
+          ),
+          serializeState
+        );
   }
   if (type === 'ACTION') {
+    action.stack = getStackTrace(instance, true);
     message.action = stringify(
       !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1),
       serializeAction
@@ -103,9 +153,9 @@ function exportState({ id: instanceId, store, serializeState }) {
       type: 'EXPORT',
       payload: stringify(payload, serializeState),
       committedState:
-        typeof liftedState.committedState !== 'undefined' ?
-          stringify(liftedState.committedState, serializeState) :
-          undefined,
+        typeof liftedState.committedState !== 'undefined'
+          ? stringify(liftedState.committedState, serializeState)
+          : undefined,
       instanceId,
     },
   });
@@ -221,6 +271,8 @@ export default function devToolsEnhancer(options = {}) {
     deserializeAction,
     serialize,
     predicate,
+    trace,
+    traceLimit,
   } = options;
   const id = generateId(options.instanceId);
 
@@ -228,16 +280,14 @@ export default function devToolsEnhancer(options = {}) {
   const serializeAction = getSeralizeParameter(options, 'serializeAction');
 
   return next => (reducer, initialState) => {
-    const store = configureStore(
-      next, monitorReducer, {
-        maxAge,
-        shouldCatchErrors,
-        shouldHotReload,
-        shouldRecordChanges,
-        shouldStartLocked,
-        pauseActionType,
-      }
-    )(reducer, initialState);
+    const store = configureStore(next, monitorReducer, {
+      maxAge,
+      shouldCatchErrors,
+      shouldHotReload,
+      shouldRecordChanges,
+      shouldStartLocked,
+      pauseActionType,
+    })(reducer, initialState);
 
     instances[id] = {
       name: name || id,
@@ -256,6 +306,8 @@ export default function devToolsEnhancer(options = {}) {
       serializeAction,
       serialize,
       predicate,
+      trace,
+      traceLimit,
     };
 
     start(instances[id]);
@@ -266,20 +318,17 @@ export default function devToolsEnhancer(options = {}) {
   };
 }
 
-const preEnhancer = instanceId => next =>
-  (reducer, initialState, enhancer) => {
-    const store = next(reducer, initialState, enhancer);
+const preEnhancer = instanceId => next => (reducer, initialState, enhancer) => {
+  const store = next(reducer, initialState, enhancer);
 
-    if (instances[instanceId]) {
-      instances[instanceId].store = store;
-    }
-    return {
-      ...store,
-      dispatch: (action) => (
-        locked ? action : store.dispatch(action)
-      ),
-    };
+  if (instances[instanceId]) {
+    instances[instanceId].store = store;
+  }
+  return {
+    ...store,
+    dispatch: action => (locked ? action : store.dispatch(action)),
   };
+};
 
 devToolsEnhancer.updateStore = (newStore, instanceId) => {
   console.warn(
@@ -309,7 +358,8 @@ devToolsEnhancer.updateStore = (newStore, instanceId) => {
 const compose = options => (...funcs) => (...args) => {
   const instanceId = generateId(options.instanceId);
   return [preEnhancer(instanceId), ...funcs].reduceRight(
-    (composed, f) => f(composed), devToolsEnhancer({ ...options, instanceId })(...args)
+    (composed, f) => f(composed),
+    devToolsEnhancer({ ...options, instanceId })(...args)
   );
 };
 

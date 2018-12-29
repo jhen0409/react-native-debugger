@@ -14,6 +14,13 @@
   dependencies:
     "@babel/highlight" "7.0.0-beta.44"
 
+"@babel/code-frame@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
+  integrity sha512-OfC2uemaknXr87bdLUkWog7nYuliM9Ij5HUcajsVcMCpQrcLmtxRbVFTIqmcSkSeYRBFBRxs2FiUqFJDLdiebA==
+  dependencies:
+    "@babel/highlight" "^7.0.0"
+
 "@babel/code-frame@^7.0.0-beta.35":
   version "7.0.0-beta.54"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.54.tgz#0024f96fdf7028a21d68e273afd4e953214a1ead"
@@ -72,6 +79,15 @@
     chalk "^2.0.0"
     esutils "^2.0.2"
     js-tokens "^3.0.0"
+
+"@babel/highlight@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.0.0.tgz#f710c38c8d458e6dd9a201afb637fcb781ce99e4"
+  integrity sha512-UFMC4ZeFC48Tpvj7C8UgLvtkaUuovQX+5xNWrsIoMG8o2z+XFKjKaN9iVmS84dPwVN00W4wPmqvYoZF3EGAsfw==
+  dependencies:
+    chalk "^2.0.0"
+    esutils "^2.0.2"
+    js-tokens "^4.0.0"
 
 "@babel/template@7.0.0-beta.44":
   version "7.0.0-beta.44"
@@ -425,6 +441,11 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
+
+anser@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/anser/-/anser-1.4.7.tgz#78c0ce6aefffaa09bed267bd7d26ee5b9fb6d575"
+  integrity sha512-0jA836gkgorW5M+yralEdnAuQ4Z8o/jAu9Po3//dAClUyq9LdKEIAVVZNoej9jfnRi20wPL/gBb3eTjpzppjLg==
 
 ansi-escapes@^1.1.0:
   version "1.4.0"
@@ -1362,13 +1383,6 @@ babel-plugin-transform-regenerator@^6.22.0:
   integrity sha1-4HA2lvveJ/Cj78rPi03KL3s6jy8=
   dependencies:
     regenerator-transform "^0.10.0"
-
-babel-plugin-transform-runtime@^6.7.5:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
-  integrity sha1-iEkNRGUC6puOfvsP4J7E2ZR5se4=
-  dependencies:
-    babel-runtime "^6.22.0"
 
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"
@@ -4797,7 +4811,7 @@ html-encoding-sniffer@^1.0.2:
   dependencies:
     whatwg-encoding "^1.0.1"
 
-html-entities@^1.2.0:
+html-entities@^1.2.0, html-entities@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
   integrity sha1-DfKTUfByEWNRXfueVUPl9u7VFi8=
@@ -5872,7 +5886,7 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
-"js-tokens@^3.0.0 || ^4.0.0":
+"js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
@@ -5885,10 +5899,15 @@ js-yaml@^3.7.0, js-yaml@^3.9.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsan@^3.1.0, jsan@^3.1.2, jsan@^3.1.3, jsan@^3.1.5, jsan@^3.1.9:
+jsan@^3.1.0, jsan@^3.1.3, jsan@^3.1.5, jsan@^3.1.9:
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.10.tgz#ba9917b864defff567e0c990a34ae7a8d5eb1d90"
   integrity sha512-Rpme/mJFG3BlIM8/9L+0qAIGccx6dyYEODdkZUHYKyJI3NIl6d13buXa7aE3lO1kZAGMalG0/6QzalXdDdUc4g==
+
+jsan@^3.1.12:
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/jsan/-/jsan-3.1.13.tgz#4de8c7bf8d1cfcd020c313d438f930cec4b91d86"
+  integrity sha512-9kGpCsGHifmw6oJet+y8HaCl14y7qgAsxVdV3pCHDySNR3BfDC30zgkssd7x5LRVAT22dnpbe9JdzzmXZnq9/g==
 
 jsbn@~0.1.0:
   version "0.1.1"
@@ -8044,17 +8063,7 @@ react-icons@^2.2.1:
   dependencies:
     react-icon-base "2.1.0"
 
-react-json-tree@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.10.0.tgz#92d5c223fc7718614a906591cd916127ce2b6033"
-  integrity sha1-ktXCI/x3GGFKkGWRzZFhJ84rYDM=
-  dependencies:
-    babel-plugin-transform-runtime "^6.7.5"
-    babel-runtime "^6.6.1"
-    react-base16-styling "^0.4.1"
-    react-pure-render "^1.0.2"
-
-react-json-tree@^0.10.8:
+react-json-tree@^0.10.7, react-json-tree@^0.10.8:
   version "0.10.9"
   resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.10.9.tgz#7263173a2cc8bf05eac63b0419c3ce75b232e284"
   integrity sha1-cmMXOizIvwXqxjsEGcPOdbIy4oQ=
@@ -8115,7 +8124,7 @@ react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react@^15.1.0, react@^15.6.1:
+react@^15.1.0, react@^15.4.0, react@^15.6.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   integrity sha1-26BDSrQ5z+gvEI8PURZjkIF5qnI=
@@ -8279,10 +8288,10 @@ redux-devtools-instrument@^1.0.1:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
 
-redux-devtools-instrument@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.9.0.tgz#2faed9ac3292c783284b21843edfaa0567764a0c"
-  integrity sha512-pLFQoja1ojpsSRTWbC9yyc/a+z8uwOD7FPKLp+Abs7qjsah6khA5o8HBE2wa0VipE5vniYINdkNyxV/2iWADKg==
+redux-devtools-instrument@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/redux-devtools-instrument/-/redux-devtools-instrument-1.9.4.tgz#36d2ae0f155c6a664e1393ef1203a009b3183a7e"
+  integrity sha512-jS/xyhepBmtsqAt+bIEusVAtgNTcYl2ac7DAfCDrTSX84C77D0DMjpCh45RntaVfa2bVpNkn9vKWUMQBzTKNRg==
   dependencies:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
@@ -8317,6 +8326,19 @@ redux-devtools-themes@^1.0.0:
   integrity sha1-xILc48U3OXYEX0ATSQfZ3LOuPV0=
   dependencies:
     base16 "^1.0.0"
+
+redux-devtools-trace-monitor@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/redux-devtools-trace-monitor/-/redux-devtools-trace-monitor-0.1.0.tgz#b4d26fbd6fb2002b061d6e49e840b782418f4794"
+  integrity sha512-fUgCVeGbDpamX94F70ABMnemKRgYoPuTdfSyaasZ/fG1nW/bZKlsyW/eZIJjLBcdlWv7eK3IyRrypX3pRZ0/VA==
+  dependencies:
+    "@babel/code-frame" "^7.0.0"
+    anser "^1.4.7"
+    chalk "^2.4.1"
+    html-entities "^1.2.1"
+    react "^15.4.0"
+    redux-devtools-themes "^1.0.0"
+    settle-promise "^1.0.0"
 
 redux-devtools@^3.0.0:
   version "3.4.0"
@@ -8428,15 +8450,15 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-remotedev-app@^0.10.8:
-  version "0.10.8"
-  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.8.tgz#7cca9be39674993b81dd400fc094ff85c361c64e"
-  integrity sha1-fMqb45Z0mTuB3UAPwJT/hcNhxk4=
+remotedev-app@^0.10.13-beta:
+  version "0.10.13-beta"
+  resolved "https://registry.yarnpkg.com/remotedev-app/-/remotedev-app-0.10.13-beta.tgz#e240a10c9184fdca5fee68a36078eed313883aa7"
+  integrity sha512-QtbHdZg9kcVIH1/jBvq8jOd5okA+mRnx6zLP2O7eN3PTYpRvzRKpHKavNUTcFfjJgo94URqeAqpf/ZJ+y+SKhg==
   dependencies:
     chrome-storage-local "^0.1.6"
     d3-state-visualizer "^1.3.1"
     javascript-stringify "^1.5.0"
-    jsan "^3.1.2"
+    jsan "^3.1.12"
     jsondiffpatch "^0.2.4"
     lodash "^4.0.0"
     material-ui "0.16.4"
@@ -8450,16 +8472,17 @@ remotedev-app@^0.10.8:
     redux-devtools-log-monitor "^1.2.0"
     redux-devtools-test-generator "^0.4.0"
     redux-devtools-themes "^1.0.0"
-    remotedev-inspector-monitor "^0.10.2"
+    redux-devtools-trace-monitor "^0.1.0"
+    remotedev-inspector-monitor "^0.11.0"
     remotedev-monitor-components "^0.0.5"
     remotedev-slider "1.1.3"
     socketcluster-client "^5.5.0"
     styled-components "^1.1.1"
 
-remotedev-inspector-monitor@^0.10.2:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/remotedev-inspector-monitor/-/remotedev-inspector-monitor-0.10.2.tgz#2f6618fc2a2d5aa9d57e97baa21b9cb4f330f638"
-  integrity sha1-L2YY/CotWqnVfpe6ohuctPMw9jg=
+remotedev-inspector-monitor@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/remotedev-inspector-monitor/-/remotedev-inspector-monitor-0.11.0.tgz#552dbc3736e6d898a783b51cfd7d20b875620d5f"
+  integrity sha1-VS28Nzbm2Jing7Uc/X0guHViDV8=
   dependencies:
     babel-runtime "^6.3.19"
     dateformat "^1.0.12"
@@ -8473,7 +8496,7 @@ remotedev-inspector-monitor@^0.10.2:
     lodash.debounce "^4.0.3"
     react-base16-styling "^0.4.1"
     react-dragula "^1.1.17"
-    react-json-tree "0.10.0"
+    react-json-tree "^0.10.7"
     react-pure-render "^1.0.2"
     redux-devtools-themes "^1.0.0"
 
@@ -9022,6 +9045,11 @@ setprototypeof@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
   integrity sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==
+
+settle-promise@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/settle-promise/-/settle-promise-1.0.0.tgz#697adb58b821f387ce2757c06efc9de5f0ee33d8"
+  integrity sha1-aXrbWLgh84fOJ1fAbvyd5fDuM9g=
 
 sha.js@^2.4.0, sha.js@^2.4.8:
   version "2.4.11"
