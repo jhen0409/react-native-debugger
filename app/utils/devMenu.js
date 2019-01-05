@@ -6,9 +6,6 @@ const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
 const currentWindow = remote.getCurrentWindow();
 
-// eslint-disable-next-line import/no-unresolved
-const namedImage = process.platform === 'darwin' ? require('electron-named-image') : {};
-
 let worker;
 let availableMethods = [];
 
@@ -100,7 +97,8 @@ export const invokeDevMethod = name => () => {
   }
 };
 
-const icon = name => nativeImage.createFromBuffer(namedImage.getImageNamed(name));
+const hslShift = [0.5, 0.2, 0.8];
+const icon = name => nativeImage.createFromNamedImage(name, hslShift);
 
 let namedImages;
 const initNamedImages = () => {
