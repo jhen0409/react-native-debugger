@@ -17,8 +17,8 @@ import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
 import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
-import Bridge from './apollo/bridge';
-import { initBackend, sendBridgeReady } from './apollo/backend';
+import Bridge from 'apollo-client-devtools/bridge';
+import { initBackend, sendBridgeReady } from 'apollo-client-devtools/backend';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -73,6 +73,8 @@ const setupRNDebugger = async message => {
           });
         },
         send(data) {
+          console.log(data);
+
           postMessage({
             ...data,
             source: 'apollo-devtools-backend',
