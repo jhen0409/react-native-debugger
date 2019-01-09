@@ -62,9 +62,11 @@ const setupRNDebugger = async message => {
         ApolloClient: self.__APOLLO_CLIENT__
       };
 
+      let listener;
+
       const bridge = new Bridge({
         listen(fn) {
-          self.addEventListener("message", evt =>
+          listener = self.addEventListener("message", evt =>
           {
             if (evt.data.source === "apollo-devtools-proxy" && evt.data.payload) {
               return fn(evt.data);
@@ -79,9 +81,12 @@ const setupRNDebugger = async message => {
         },
       });
 
+      bridge.on("shutdown", () => {
+        self.removeEventListener('message', listener);
+      });
+
       initBackend(bridge, hook);
     }
-
   }, 1000);
 };
 

@@ -53,7 +53,7 @@ const workerOnMessage = message => {
 
 const onWindowMessage = e => {
   if (e.data && e.data.source === 'apollo-devtools-proxy') {
-    worker.postMessage({source: 'apollo-devtools-proxy', event: e.data.payload.event, payload: e.data.payload.payload});
+    worker.postMessage({source: 'apollo-devtools-proxy', ...e.data.payload});
   }
 }
 
