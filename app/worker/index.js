@@ -18,7 +18,7 @@ import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
 import Bridge from './apollo/bridge';
-import { initBackend } from './apollo/backend';
+import { initBackend, sendBridgeReady } from './apollo/backend';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -59,16 +59,15 @@ const setupRNDebugger = async message => {
       clearInterval(interval);
 
       const hook = {
-        ApolloClient: self.__APOLLO_CLIENT__
+        ApolloClient: self.__APOLLO_CLIENT__,
       };
 
       let listener;
 
       const bridge = new Bridge({
         listen(fn) {
-          listener = self.addEventListener("message", evt =>
-          {
-            if (evt.data.source === "apollo-devtools-proxy" && evt.data.payload) {
+          listener = self.addEventListener('message', evt => {
+            if (evt.data.source === 'apollo-devtools-proxy') {
               return fn(evt.data);
             }
           });
@@ -76,9 +75,13 @@ const setupRNDebugger = async message => {
         send(data) {
           postMessage({
             ...data,
-            source: 'apollo-devtools-backend'
+            source: 'apollo-devtools-backend',
           });
         },
+      });
+
+      bridge.on('init', () => {
+        sendBridgeReady();
       });
 
       bridge.on("shutdown", () => {
