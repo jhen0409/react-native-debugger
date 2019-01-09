@@ -55,43 +55,46 @@ const setupRNDebugger = async message => {
   }
 
   const interval = setInterval(() => {
-    if (self.__APOLLO_CLIENT__) {
-      clearInterval(interval);
-
-      const hook = {
-        ApolloClient: self.__APOLLO_CLIENT__,
-      };
-
-      let listener;
-
-      const bridge = new Bridge({
-        listen(fn) {
-          listener = self.addEventListener('message', evt => {
-            if (evt.data.source === 'apollo-devtools-proxy') {
-              return fn(evt.data);
-            }
-          });
-        },
-        send(data) {
-          console.log(data);
-
-          postMessage({
-            ...data,
-            source: 'apollo-devtools-backend',
-          });
-        },
-      });
-
-      bridge.on('init', () => {
-        sendBridgeReady();
-      });
-
-      bridge.on("shutdown", () => {
-        self.removeEventListener('message', listener);
-      });
-
-      initBackend(bridge, hook);
+    if (!self.__APOLLO_CLIENT__) {
+      return;
     }
+
+    clearInterval(interval);
+
+    const hook = {
+      ApolloClient: self.__APOLLO_CLIENT__,
+    };
+
+    let listener;
+
+    const bridge = new Bridge({
+      listen(fn) {
+        listener = self.addEventListener('message', evt => {
+          if (evt.data.source === 'apollo-devtools-proxy') {
+            return fn(evt.data);
+          }
+        });
+      },
+      send(data) {
+        console.log(data);
+
+        postMessage({
+          ...data,
+          source: 'apollo-devtools-backend',
+        });
+      },
+    });
+
+    bridge.on('init', () => {
+      sendBridgeReady();
+    });
+
+    bridge.on("shutdown", () => {
+      self.removeEventListener('message', listener);
+    });
+
+    initBackend(bridge, hook);
+
   }, 1000);
 };
 
