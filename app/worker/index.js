@@ -78,8 +78,6 @@ const setupRNDebugger = async message => {
         });
       },
       send(data) {
-        console.log(data);
-
         postMessage({
           ...data,
           source: 'apollo-devtools-backend',
