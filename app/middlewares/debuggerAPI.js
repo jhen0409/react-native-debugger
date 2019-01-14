@@ -30,16 +30,19 @@ let host;
 let port;
 let socket;
 
+const APOLLO_BACKEND = 'apollo-devtools-backend';
+const APOLLO_PROXY = 'apollo-devtools-proxy';
+
 const workerOnMessage = message => {
   const { data } = message;
 
-  if (data && data.source === 'apollo-devtools-backend') {
+  if (data && data.source === APOLLO_BACKEND) {
     if (!window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__) {
       window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__ = true;
     }
 
     postMessage({
-      source: 'apollo-devtools-backend',
+      source: APOLLO_BACKEND,
       payload: data,
     }, '*');
   }
@@ -56,10 +59,10 @@ const workerOnMessage = message => {
 };
 
 const onWindowMessage = e => {
-  const {data} = e;
-  if (data && data.source === 'apollo-devtools-proxy') {
+  const { data } = e;
+  if (data && data.source === APOLLO_PROXY) {
     const message = typeof data.payload === 'string' ? { event: data.payload } : data.payload;
-    worker.postMessage({ source: 'apollo-devtools-proxy', ...message });
+    worker.postMessage({ source: APOLLO_PROXY, ...message });
   }
 };
 

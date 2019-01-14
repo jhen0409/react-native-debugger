@@ -3,23 +3,22 @@ export const getClearAsyncStorageFn = AsyncStorage => {
   return () => AsyncStorage.clear().catch(f => f);
 };
 
-export const getSafeAsyncStorage = AsyncStorage => {
-  return {
-    async getItem(key) {
-      try {
-        return AsyncStorage.getItem(key);
-      } catch (e) {
-        return null;
-      }
-    },
-    async setItem(key, value) {
-      try {
-        return AsyncStorage.setItem(key, value);
-      } catch (e) {
-      }
+export const getSafeAsyncStorage = AsyncStorage => ({
+  async getItem(key) {
+    try {
+      return AsyncStorage.getItem(key);
+    } catch (e) {
+      return null;
     }
-  }
-};
+  },
+  async setItem(key, value) {
+    try {
+      return AsyncStorage.setItem(key, value);
+    } catch (e) {
+      return null;
+    }
+  },
+});
 
 export const getShowAsyncStorageFn = AsyncStorage => {
   if (!AsyncStorage.getAllKeys || !AsyncStorage.getItem) return;
