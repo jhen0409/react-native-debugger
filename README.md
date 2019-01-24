@@ -22,6 +22,8 @@ For **macOS**, you can use [Homebrew Cask](https://caskroom.github.io) to instal
 $ brew update && brew cask install react-native-debugger
 ```
 
+This puts `React Native Debugger.app` in your `/applications/` folder.
+
 ## Documentation
 
 * [Getting Started](docs/getting-started.md)
