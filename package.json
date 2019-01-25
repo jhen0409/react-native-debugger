@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "adbkit": "^2.11.0",
-    "apollo-dev-tools": "*",
+    "apollo-client-devtools": "2.1.7-alpha.1",
     "electron-context-menu": "jhen0409/electron-context-menu#async-popup",
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",

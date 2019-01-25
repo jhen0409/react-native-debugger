@@ -18,8 +18,8 @@ import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
 import { getSafeAsyncStorage } from './asyncStorage';
-import Bridge from 'apollo-client-devtools/bridge';
-import { initBackend, sendBridgeReady } from 'apollo-client-devtools/backend';
+import Bridge from 'apollo-client-devtools/src/bridge';
+import { initBackend, sendBridgeReady } from 'apollo-client-devtools/src/backend';
 import { version as devToolsVersion } from 'apollo-client-devtools/package.json';
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -64,7 +64,7 @@ const setupRNDebugger = async message => {
 
     const hook = {
       ApolloClient: self.__APOLLO_CLIENT__,
-      devToolsVersion
+      devToolsVersion,
     };
 
     let listener;
@@ -89,12 +89,11 @@ const setupRNDebugger = async message => {
       sendBridgeReady();
     });
 
-    bridge.on("shutdown", () => {
+    bridge.on('shutdown', () => {
       self.removeEventListener('message', listener);
     });
 
     initBackend(bridge, hook, getSafeAsyncStorage(modules.AsyncStorage));
-
   }, 1000);
 };
 
