@@ -14,13 +14,15 @@ This is a standalone app for debugging React Native apps:
 
 ## Installation
 
-The prebuilt binaries can be found on the [releases](https://github.com/jhen0409/react-native-debugger/releases) page.
+To install the app, you can download a prebuilt binary from the [release page](https://github.com/jhen0409/react-native-debugger/releases).
 
 For **macOS**, you can use [Homebrew Cask](https://caskroom.github.io) to install:
 
 ```bash
 $ brew update && brew cask install react-native-debugger
 ```
+
+This puts `React Native Debugger.app` in your `/applications/` folder.
 
 ## Documentation
 

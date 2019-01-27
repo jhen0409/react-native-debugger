@@ -7,14 +7,14 @@ import {
   generateId,
   stringify,
   getSeralizeParameter,
-} from 'remotedev-utils';
-import importState from 'remotedev-utils/lib/importState';
+} from 'redux-devtools-core/lib/utils';
+import importState from 'redux-devtools-core/lib/utils/importState';
 import {
   getLocalFilter,
   isFiltered,
   filterStagedActions,
   filterState,
-} from 'remotedev-utils/lib/filters';
+} from 'redux-devtools-core/lib/utils/filters';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);

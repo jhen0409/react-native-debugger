@@ -1,7 +1,7 @@
 # Getting Started
 
 Just these steps will let you start RNDebugger out of box:
-
+- Install the latest version ([download page](https://github.com/jhen0409/react-native-debugger/releases)).
 - Make sure all debugger clients of React Native are closed, usually are `http://localhost:<port>/debugger-ui`
 - Make sure RNDebugger is open and wait state.
 - RNDebugger will try connect to debugger proxy, use port `8081` by default, you can new debugger window (macOS: `Command+T`, Linux/Windows: `Ctrl+T`) to specify the port if you want.
