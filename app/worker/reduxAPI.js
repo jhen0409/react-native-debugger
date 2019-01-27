@@ -7,20 +7,22 @@ import {
   generateId,
   stringify,
   getSeralizeParameter,
-} from 'remotedev-utils';
-import importState from 'remotedev-utils/lib/importState';
+} from 'redux-devtools-core/lib/utils';
+import importState from 'redux-devtools-core/lib/utils/importState';
 import {
   getLocalFilter,
   isFiltered,
   filterStagedActions,
   filterState,
-} from 'remotedev-utils/lib/filters';
+} from 'redux-devtools-core/lib/utils/filters';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
 }
 
-const instances = { /* [id]: { name, store, ... } */ };
+const instances = {
+  /* [id]: { name, store, ... } */
+};
 
 let lastAction;
 let isExcess;
@@ -34,9 +36,12 @@ function getLiftedState(store, filters) {
 
 function relay(type, state, instance, action, nextActionId) {
   const {
-    filters, predicate,
-    stateSanitizer, actionSanitizer,
-    serializeState, serializeAction,
+    filters,
+    predicate,
+    stateSanitizer,
+    actionSanitizer,
+    serializeState,
+    serializeAction,
   } = instance;
 
   const message = {
@@ -45,12 +50,21 @@ function relay(type, state, instance, action, nextActionId) {
     name: instance.name,
   };
   if (state) {
-    message.payload = type === 'ERROR' ?
-      state :
-      stringify(
-        filterState(state, type, filters, stateSanitizer, actionSanitizer, nextActionId, predicate),
-        serializeState
-      );
+    message.payload =
+      type === 'ERROR'
+        ? state
+        : stringify(
+          filterState(
+            state,
+            type,
+            filters,
+            stateSanitizer,
+            actionSanitizer,
+            nextActionId,
+            predicate
+          ),
+          serializeState
+        );
   }
   if (type === 'ACTION') {
     message.action = stringify(
@@ -103,9 +117,9 @@ function exportState({ id: instanceId, store, serializeState }) {
       type: 'EXPORT',
       payload: stringify(payload, serializeState),
       committedState:
-        typeof liftedState.committedState !== 'undefined' ?
-          stringify(liftedState.committedState, serializeState) :
-          undefined,
+        typeof liftedState.committedState !== 'undefined'
+          ? stringify(liftedState.committedState, serializeState)
+          : undefined,
       instanceId,
     },
   });
@@ -228,16 +242,14 @@ export default function devToolsEnhancer(options = {}) {
   const serializeAction = getSeralizeParameter(options, 'serializeAction');
 
   return next => (reducer, initialState) => {
-    const store = configureStore(
-      next, monitorReducer, {
-        maxAge,
-        shouldCatchErrors,
-        shouldHotReload,
-        shouldRecordChanges,
-        shouldStartLocked,
-        pauseActionType,
-      }
-    )(reducer, initialState);
+    const store = configureStore(next, monitorReducer, {
+      maxAge,
+      shouldCatchErrors,
+      shouldHotReload,
+      shouldRecordChanges,
+      shouldStartLocked,
+      pauseActionType,
+    })(reducer, initialState);
 
     instances[id] = {
       name: name || id,
@@ -266,20 +278,17 @@ export default function devToolsEnhancer(options = {}) {
   };
 }
 
-const preEnhancer = instanceId => next =>
-  (reducer, initialState, enhancer) => {
-    const store = next(reducer, initialState, enhancer);
+const preEnhancer = instanceId => next => (reducer, initialState, enhancer) => {
+  const store = next(reducer, initialState, enhancer);
 
-    if (instances[instanceId]) {
-      instances[instanceId].store = store;
-    }
-    return {
-      ...store,
-      dispatch: (action) => (
-        locked ? action : store.dispatch(action)
-      ),
-    };
+  if (instances[instanceId]) {
+    instances[instanceId].store = store;
+  }
+  return {
+    ...store,
+    dispatch: action => (locked ? action : store.dispatch(action)),
   };
+};
 
 devToolsEnhancer.updateStore = (newStore, instanceId) => {
   console.warn(
@@ -309,7 +318,8 @@ devToolsEnhancer.updateStore = (newStore, instanceId) => {
 const compose = options => (...funcs) => (...args) => {
   const instanceId = generateId(options.instanceId);
   return [preEnhancer(instanceId), ...funcs].reduceRight(
-    (composed, f) => f(composed), devToolsEnhancer({ ...options, instanceId })(...args)
+    (composed, f) => f(composed),
+    devToolsEnhancer({ ...options, instanceId })(...args)
   );
 };
 
