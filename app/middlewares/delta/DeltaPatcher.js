@@ -56,7 +56,7 @@ export default class DeltaPatcher {
   applyDelta(deltaBundle) {
     const isOld = deltaBundle.id;
     // Make sure that the first received delta is a fresh one.
-    if (isOld ? !this._initialized && !deltaBundle.reset : 
+    if (isOld ? !this._initialized && !deltaBundle.reset :
       !this._initialized && !deltaBundle.base) {
       throw new Error('DeltaPatcher should receive a fresh Delta when being initialized');
     }
