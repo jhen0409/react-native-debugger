@@ -7,7 +7,6 @@
  * @format
  */
 
-
 /* eslint-disable no-underscore-dangle */
 
 /**
@@ -128,7 +127,6 @@ export default class DeltaPatcher {
   getSizeOfAllModules() {
     return this._lastBundle.pre.size + this._lastBundle.modules.size + this._lastBundle.post.size;
   }
-
 }
 
 DeltaPatcher._deltaPatchers = new Map();
