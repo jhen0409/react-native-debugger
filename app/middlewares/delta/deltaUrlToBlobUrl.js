@@ -25,14 +25,11 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
 
   const data = await fetch(deltaUrl + deltaBundleId);
   const bundle = await data.json();
+  console.log("BUNDLE", bundle)
+  alert(deltaUrl + deltaBundleId)
+  alert(data)
 
-  const deltaPatcher = client.applyDelta({
-    id: bundle.id,
-    pre: new Map(bundle.pre),
-    post: new Map(bundle.post),
-    delta: new Map(bundle.delta),
-    reset: bundle.reset,
-  });
+  const deltaPatcher = client.applyDelta(bundle);
 
   const cachedBundle = cachedBundleUrls.get(deltaUrl);
 

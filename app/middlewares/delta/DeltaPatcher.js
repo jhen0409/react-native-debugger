@@ -29,10 +29,10 @@ import { checkFetchExists, patchFetchPolyfill } from './patchFetchPolyfill';
 export default class DeltaPatcher {
   constructor() {
     this._lastBundle = {
-      pre: new Map(),
-      post: new Map(),
-      modules: new Map(),
       id: undefined,
+      pre: '',
+      post: '',
+      modules: new Map(),
     };
     this._initialized = false;
     this._lastNumModifiedFiles = 0;
@@ -55,32 +55,45 @@ export default class DeltaPatcher {
    */
   applyDelta(deltaBundle) {
     // Make sure that the first received delta is a fresh one.
-    if (!this._initialized && !deltaBundle.reset) {
+    if (!this._initialized && !deltaBundle.base) {
       throw new Error('DeltaPatcher should receive a fresh Delta when being initialized');
     }
 
     this._initialized = true;
 
     // Reset the current delta when we receive a fresh delta.
-    if (deltaBundle.reset) {
+    if (deltaBundle.base) {
       this._lastBundle = {
-        pre: new Map(),
-        post: new Map(),
-        modules: new Map(),
-        id: undefined,
+        id: deltaBundle.revisionId,
+        pre: deltaBundle.pre,
+        post: deltaBundle.post,
+        modules: new Map(deltaBundle.modules),
       };
     }
 
     this._lastNumModifiedFiles =
-      deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size;
+    deltaBundle.modules.length;
+
+    if (deltaBundle.deleted) {
+      this._lastNumModifiedFiles += deltaBundle.deleted.length;
+    }
+
+    this._lastBundle.id = deltaBundle.revisionId;
 
     if (this._lastNumModifiedFiles > 0) {
       this._lastModifiedDate = new Date();
     }
 
-    this._patchMap(this._lastBundle.pre, deltaBundle.pre);
-    this._patchMap(this._lastBundle.post, deltaBundle.post);
-    this._patchMap(this._lastBundle.modules, deltaBundle.delta);
+    for (const [key, value] of deltaBundle.modules) {
+      this._lastBundle.modules.set(key, value);
+    }
+
+    if (deltaBundle.deleted) {
+      for (const id of deltaBundle.deleted) {
+        this._lastBundle.modules.delete(id);
+      }
+    }
+
 
     this._lastBundle.id = deltaBundle.id;
 
@@ -107,9 +120,9 @@ export default class DeltaPatcher {
 
   getAllModules() {
     return [].concat(
-      Array.from(this._lastBundle.pre.values()),
+      [this._lastBundle.pre],
       Array.from(this._lastBundle.modules.values()),
-      Array.from(this._lastBundle.post.values())
+      [this._lastBundle.post],
     );
   }
 
@@ -117,17 +130,6 @@ export default class DeltaPatcher {
     return this._lastBundle.pre.size + this._lastBundle.modules.size + this._lastBundle.post.size;
   }
 
-  _patchMap(original, patch) {
-    for (const [key, value] of patch.entries()) {
-      if (value == null) {
-        original.delete(key);
-      } else if (checkFetchExists(value)) {
-        original.set(key, patchFetchPolyfill(value));
-      } else {
-        original.set(key, value);
-      }
-    }
-  }
 }
 
 DeltaPatcher._deltaPatchers = new Map();
