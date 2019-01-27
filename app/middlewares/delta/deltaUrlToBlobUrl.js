@@ -25,9 +25,6 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
 
   const data = await fetch(deltaUrl + deltaBundleId);
   const bundle = await data.json();
-  console.log("BUNDLE", bundle)
-  alert(deltaUrl + deltaBundleId)
-  alert(data)
 
   const deltaPatcher = client.applyDelta(bundle);
 

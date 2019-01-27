@@ -7,7 +7,6 @@
  * @format
  */
 
-import { checkFetchExists, patchFetchPolyfill } from './patchFetchPolyfill';
 
 /* eslint-disable no-underscore-dangle */
 
