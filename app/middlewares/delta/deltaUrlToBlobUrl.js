@@ -26,7 +26,7 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
   const data = await fetch(deltaUrl + deltaBundleId);
   const bundle = await data.json();
 
-  const isOld = bundle.id
+  const isOld = bundle.id;
 
   const deltaPatcher = client.applyDelta(isOld ? {
     id: bundle.id,

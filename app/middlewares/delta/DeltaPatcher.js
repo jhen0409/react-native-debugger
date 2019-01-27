@@ -54,9 +54,10 @@ export default class DeltaPatcher {
    * Applies a Delta Bundle to the current bundle.
    */
   applyDelta(deltaBundle) {
-    const isOld = deltaBundle.id
+    const isOld = deltaBundle.id;
     // Make sure that the first received delta is a fresh one.
-    if (isOld ? !this._initialized && !deltaBundle.reset : !this._initialized && !deltaBundle.base) {
+    if (isOld ? !this._initialized && !deltaBundle.reset : 
+      !this._initialized && !deltaBundle.base) {
       throw new Error('DeltaPatcher should receive a fresh Delta when being initialized');
     }
 
@@ -79,7 +80,8 @@ export default class DeltaPatcher {
       };
     }
 
-    this._lastNumModifiedFiles = isOld ? deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size :
+    this._lastNumModifiedFiles = isOld ?
+      deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size :
       deltaBundle.modules.length;
 
     if (deltaBundle.deleted) {
