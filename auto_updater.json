@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.2/rn-debugger-macos-x64.zip",
-  "name": "v0.8.2",
-  "notes": "1. Adds check for first query param for deltaBundleId\n2. Upgrade React Devtools Dependency"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.3/rn-debugger-macos-x64.zip",
+  "name": "v0.8.3",
+  "notes": "1. Support dark mode title bar for macOS\n2. Fixed to work with RN 0.58+"
 }
