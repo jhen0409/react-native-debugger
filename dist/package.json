@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "adbkit": "^2.11.0",
+    "apollo-client-devtools": "2.1.7-alpha.2",
     "electron-store": "^1.2.0",
     "react-devtools-core": "^3.4.0"
   },
