@@ -17,6 +17,7 @@ import devToolsEnhancer, { composeWithDevTools } from './reduxAPI';
 import * as RemoteDev from './remotedev';
 import { getRequiredModules, ignoreRNDIntervalSpy } from './utils';
 import { toggleNetworkInspect } from './networkInspect';
+import { handleApolloClient } from './apollo';
 
 /* eslint-disable no-underscore-dangle */
 self.__REMOTEDEV__ = RemoteDev;
@@ -51,6 +52,8 @@ const setupRNDebugger = async message => {
     checkAvailableDevMenuMethods(modules, message.networkInspect);
     reportDefaultReactDevToolsPort(modules);
   }
+
+  handleApolloClient(modules);
 };
 
 const messageHandlers = {
@@ -66,6 +69,7 @@ const messageHandlers = {
     } catch (err) {
       error = err.message;
     }
+
     sendReply(null /* result */, error);
 
     if (!error) {
