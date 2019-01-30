@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- */
+*/
 
 import { checkFetchExists, patchFetchPolyfill } from './patchFetchPolyfill';
 
@@ -29,10 +29,10 @@ import { checkFetchExists, patchFetchPolyfill } from './patchFetchPolyfill';
 export default class DeltaPatcher {
   constructor() {
     this._lastBundle = {
+      id: undefined,
       pre: new Map(),
       post: new Map(),
       modules: new Map(),
-      id: undefined,
     };
     this._initialized = false;
     this._lastNumModifiedFiles = 0;
@@ -54,35 +54,65 @@ export default class DeltaPatcher {
    * Applies a Delta Bundle to the current bundle.
    */
   applyDelta(deltaBundle) {
+    const isOld = deltaBundle.id;
     // Make sure that the first received delta is a fresh one.
-    if (!this._initialized && !deltaBundle.reset) {
+    if (isOld ? !this._initialized && !deltaBundle.reset :
+      !this._initialized && !deltaBundle.base) {
       throw new Error('DeltaPatcher should receive a fresh Delta when being initialized');
     }
 
     this._initialized = true;
 
     // Reset the current delta when we receive a fresh delta.
-    if (deltaBundle.reset) {
+    if (deltaBundle.reset && isOld) {
       this._lastBundle = {
         pre: new Map(),
         post: new Map(),
         modules: new Map(),
         id: undefined,
       };
+    } else if (deltaBundle.base) {
+      this._lastBundle = {
+        id: deltaBundle.revisionId,
+        pre: deltaBundle.pre,
+        post: deltaBundle.post,
+        modules: new Map(deltaBundle.modules),
+      };
     }
 
-    this._lastNumModifiedFiles =
-      deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size;
+    this._lastNumModifiedFiles = isOld ?
+      deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size :
+      deltaBundle.modules.length;
+
+    if (deltaBundle.deleted) {
+      this._lastNumModifiedFiles += deltaBundle.deleted.length;
+    }
+
+    this._lastBundle.id = isOld ? deltaBundle.id : deltaBundle.revisionId;
 
     if (this._lastNumModifiedFiles > 0) {
       this._lastModifiedDate = new Date();
     }
 
-    this._patchMap(this._lastBundle.pre, deltaBundle.pre);
-    this._patchMap(this._lastBundle.post, deltaBundle.post);
-    this._patchMap(this._lastBundle.modules, deltaBundle.delta);
+    if (isOld) {
+      this._patchMap(this._lastBundle.pre, deltaBundle.pre);
+      this._patchMap(this._lastBundle.post, deltaBundle.post);
+      this._patchMap(this._lastBundle.modules, deltaBundle.delta);
 
-    this._lastBundle.id = deltaBundle.id;
+      this._lastBundle.id = deltaBundle.id;
+    } else {
+      for (const [key, value] of deltaBundle.modules) {
+        this._lastBundle.modules.set(key, value);
+      }
+
+      if (deltaBundle.deleted) {
+        for (const id of deltaBundle.deleted) {
+          this._lastBundle.modules.delete(id);
+        }
+      }
+
+      this._lastBundle.id = deltaBundle.revisionId;
+    }
 
     return this;
   }
@@ -105,11 +135,15 @@ export default class DeltaPatcher {
     return this._lastModifiedDate;
   }
 
-  getAllModules() {
-    return [].concat(
+  getAllModules(isOld) {
+    return isOld ? [].concat(
       Array.from(this._lastBundle.pre.values()),
       Array.from(this._lastBundle.modules.values()),
       Array.from(this._lastBundle.post.values())
+    ) : [].concat(
+      [this._lastBundle.pre],
+      Array.from(this._lastBundle.modules.values()),
+      [this._lastBundle.post]
     );
   }
 

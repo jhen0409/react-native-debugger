@@ -1,7 +1,7 @@
 // Edit from https://github.com/zalmoxisus/remotedev/blob/master/src/devTools.js
 
 import { stringify, parse } from 'jsan';
-import { generateId, getActionsArray } from 'remotedev-utils';
+import { generateId, getActionsArray } from 'redux-devtools-core/lib/utils';
 
 let listenerAdded;
 const listeners = {};

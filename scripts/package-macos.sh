@@ -14,7 +14,8 @@ electron-packager dist/ \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
   --app-version $npm_package_version \
   --osx-sign='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
-  --icon electron/logo.icns
+  --icon electron/logo.icns \
+  --darwin-dark-mode-support
 
 cd release/React\ Native\ Debugger-darwin-x64
 zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app

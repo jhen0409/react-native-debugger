@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.8.1",
+  "version": "0.8.3",
   "productName": "React Native Debugger",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "main.js",
@@ -14,7 +14,7 @@
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "2.1.7-alpha.2",
     "electron-store": "^1.2.0",
-    "react-devtools-core": "^3.4.0"
+    "react-devtools-core": "^3.4.3"
   },
   "optionalDependencies": {
     "electron-named-image": "^1.0.4"

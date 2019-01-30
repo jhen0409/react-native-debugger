@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.1/rn-debugger-macos-x64.zip",
-  "name": "v0.8.1",
-  "notes": "1. Do notify before autoUpdater.checkForUpdates\n2. Rename defaultRNPackagerPorts as correct config field name"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.3/rn-debugger-macos-x64.zip",
+  "name": "v0.8.3",
+  "notes": "1. Support dark mode title bar for macOS\n2. Fixed to work with RN 0.58+"
 }
