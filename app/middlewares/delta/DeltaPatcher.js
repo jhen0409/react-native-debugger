@@ -154,7 +154,7 @@ export default class DeltaPatcher {
   }
 
   _patchMap(original, patch) {
-    for (const [key, value] of patch.entries()) {
+    for (const [key, value] of patch) {
       if (value == null) {
         original.delete(key);
       } else if (checkFetchExists(value)) {
