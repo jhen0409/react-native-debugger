@@ -66,7 +66,11 @@ const onWindowMessage = e => {
   const { data } = e;
   if (data && data.source === APOLLO_PROXY) {
     const message = typeof data.payload === 'string' ? { event: data.payload } : data.payload;
-    worker.postMessage({ source: APOLLO_PROXY, ...message });
+    worker.postMessage({
+      method: 'emitApolloMessage',
+      source: APOLLO_PROXY,
+      ...message,
+    });
   }
 };
 

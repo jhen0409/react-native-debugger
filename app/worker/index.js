@@ -82,6 +82,10 @@ const messageHandlers = {
     // pass to other listeners
     return true;
   },
+  emitApolloMessage() {
+    // pass to other listeners
+    return true;
+  },
   invokeDevMenuMethod({ name, args }) {
     invokeDevMenuMethodIfAvailable(name, args);
     return false;
