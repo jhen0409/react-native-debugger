@@ -26,5 +26,11 @@ const toggleFlag = 'fetch.polyfill = true';
 const toggleReplaceStr = `${toggleFlag};self.__NETWORK_INSPECT__ && self.__NETWORK_INSPECT__(true)`;
 
 export const checkFetchExists = code => isFetch.some(regex => regex.test(code));
-export const patchFetchPolyfill = code =>
-  code.replace(fetchSupportFlag, fetchSupportReplaceStr).replace(toggleFlag, toggleReplaceStr);
+export const patchFetchPolyfill = code => {
+  if (Array.isArray(code)) {
+    return code.map(item => (typeof item === 'string' ? patchFetchPolyfill(item) : item));
+  }
+  return code
+    .replace(fetchSupportFlag, fetchSupportReplaceStr)
+    .replace(toggleFlag, toggleReplaceStr);
+};
