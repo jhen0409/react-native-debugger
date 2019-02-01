@@ -48,6 +48,7 @@ const workerOnMessage = message => {
       },
       '*'
     );
+    return false;
   }
 
   if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
