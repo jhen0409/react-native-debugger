@@ -24,6 +24,7 @@ self.__REMOTEDEV__ = RemoteDev;
 
 devToolsEnhancer.send = RemoteDev.send;
 devToolsEnhancer.connect = RemoteDev.connect;
+devToolsEnhancer.disconnect = RemoteDev.disconnect;
 
 // Deprecated API, these may removed when redux-devtools-extension 3.0 release
 self.devToolsExtension = devToolsEnhancer;
