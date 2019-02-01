@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "productName": "React Native Debugger",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "main.js",

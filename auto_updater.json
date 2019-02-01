@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.8.3/rn-debugger-macos-x64.zip",
-  "name": "v0.8.3",
-  "notes": "1. Support dark mode title bar for macOS\n2. Fixed to work with RN 0.58+"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.0/rn-debugger-macos-x64.zip",
+  "name": "v0.9.0",
+  "notes": "1. Add Apollo Client DevTools\n2. Fix context menu on React Native ^0.58\n3. Add missing `__REDUX_DEVTOOLS_EXTENSION__.disconnect` API\n4. Bump React DevTools version to ^3.6.0"
 }
