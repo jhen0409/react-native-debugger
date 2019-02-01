@@ -8,9 +8,9 @@
 
 This is a standalone app for debugging React Native apps:
 
-* Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide more functionally.
-* Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core).
-* Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
+- Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide more functionally.
+- Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core).
+- Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
 
 ## Installation
 
@@ -26,21 +26,22 @@ This puts `React Native Debugger.app` in your `/applications/` folder.
 
 ## Documentation
 
-* [Getting Started](docs/getting-started.md)
-* [Debugger Integration](docs/debugger-integration.md)
-* [React DevTools Integration](docs/react-devtools-integration.md)
-* [Redux DevTools Integration](docs/redux-devtools-integration.md)
-* [Shortcut references](docs/shortcut-references.md)
-* [Network inspect of Chrome Developer Tools](docs/network-inspect-of-chrome-devtools.md)
-* [Enable open in editor in console](docs/enable-open-in-editor-in-console.md)
-* [Config file in home directory](docs/config-file-in-home-directory.md)
-* [Troubleshooting](docs/troubleshooting.md)
-* [Contributing](docs/contributing.md)
+- [Getting Started](docs/getting-started.md)
+- [Debugger Integration](docs/debugger-integration.md)
+- [React DevTools Integration](docs/react-devtools-integration.md)
+- [Redux DevTools Integration](docs/redux-devtools-integration.md)
+- [Apollo Client DevTools Integration](docs/apollo-client-devtools-integration.md)
+- [Shortcut references](docs/shortcut-references.md)
+- [Network inspect of Chrome Developer Tools](docs/network-inspect-of-chrome-devtools.md)
+- [Enable open in editor in console](docs/enable-open-in-editor-in-console.md)
+- [Config file in home directory](docs/config-file-in-home-directory.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Contributing](docs/contributing.md)
 
 ## Credits
 
-* Great work of [React DevTools](https://github.com/facebook/react-devtools)
-* Great work of [Redux DevTools](https://github.com/gaearon/redux-devtools) / [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) and all third-party monitors.
+- Great work of [React DevTools](https://github.com/facebook/react-devtools)
+- Great work of [Redux DevTools](https://github.com/gaearon/redux-devtools) / [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) and all third-party monitors.
 
 ## Backers
 

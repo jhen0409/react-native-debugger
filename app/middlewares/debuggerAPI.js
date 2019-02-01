@@ -41,10 +41,13 @@ const workerOnMessage = message => {
       window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__ = true;
     }
 
-    postMessage({
-      source: APOLLO_BACKEND,
-      payload: data,
-    }, '*');
+    postMessage(
+      {
+        source: APOLLO_BACKEND,
+        payload: data,
+      },
+      '*'
+    );
   }
 
   if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
