@@ -14,7 +14,7 @@
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "2.1.7-alpha.2",
     "electron-store": "^1.2.0",
-    "react-devtools-core": "^3.4.3"
+    "react-devtools-core": "^3.6.0"
   },
   "optionalDependencies": {
     "electron-named-image": "^1.0.4"
