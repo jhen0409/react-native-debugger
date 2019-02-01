@@ -13,10 +13,13 @@ export default async () => {
       } catch (e) {} // eslint-disable-line
     }
     BrowserWindow.addDevToolsExtension(path.resolve('dist/devtools-helper/'));
+    BrowserWindow.addDevToolsExtension(
+      path.join(__dirname, '../node_modules/apollo-client-devtools/shells/webextension/')
+    );
   } else {
     BrowserWindow.addDevToolsExtension(path.join(__dirname, 'devtools-helper/'));
+    BrowserWindow.addDevToolsExtension(
+      path.join(__dirname, 'node_modules/apollo-client-devtools/shells/webextension/')
+    );
   }
-  BrowserWindow.addDevToolsExtension(
-    path.resolve('node_modules/apollo-client-devtools/shells/webextension/')
-  );
 };
