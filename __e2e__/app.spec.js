@@ -320,5 +320,12 @@ describe('Application launch', () => {
         formDataWarning.message.indexOf("Detected you're enabled Network Inspect") > 0
       ).toBeTruthy();
     });
+
+    it('should show apollo devtools panel', async () => {
+      const { client } = app;
+      expect(
+        (await client.execute(() => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__)).value
+      ).toBeTruthy();
+    });
   });
 });
