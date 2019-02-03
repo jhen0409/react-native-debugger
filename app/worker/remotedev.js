@@ -117,3 +117,6 @@ export function connect(options = {}) {
     },
   };
 }
+
+// Not implemented
+export function disconnect() {}

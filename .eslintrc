@@ -24,7 +24,9 @@
           "__PLATFORM__",
           "__REPORT_REACT_DEVTOOLS_PORT__",
           "__FETCH_SUPPORT__",
-          "__NETWORK_INSPECT__"
+          "__NETWORK_INSPECT__",
+          "__APOLLO_CLIENT__",
+          "__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__"
         ]
       }
     ],
