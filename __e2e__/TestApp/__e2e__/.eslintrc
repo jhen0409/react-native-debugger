@@ -4,6 +4,7 @@
     "element": true,
     "waitFor": true,
     "by": true,
-    "simctl": true
+    "simctl": true,
+    "rndebugger": true
   }
 }

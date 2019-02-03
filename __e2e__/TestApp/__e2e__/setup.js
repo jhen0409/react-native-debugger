@@ -2,6 +2,7 @@
 
 import childProcess from 'child_process';
 import { promisify } from 'util';
+import createApplication from '../../rndebugger';
 
 /* eslint-disable import/no-unresolved */
 const detox = require('detox');
@@ -18,6 +19,8 @@ jest.setTimeout(120000);
 jasmine.getEnv().addReporter(adapter);
 
 beforeAll(async () => {
+  global.rndebugger = createApplication('../../dist');
+  await rndebugger.start();
   await detox.init(config);
 });
 
@@ -26,6 +29,9 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  if (rndebugger && rndebugger.isRunning()) {
+    await rndebugger.stop();
+  }
   await adapter.afterAll();
   await detox.cleanup();
 });
