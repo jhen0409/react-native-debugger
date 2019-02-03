@@ -1,9 +1,5 @@
 {
   "globals": {
-    "device": true,
-    "element": true,
-    "waitFor": true,
-    "by": true,
     "simctl": true,
     "rndebugger": true
   }

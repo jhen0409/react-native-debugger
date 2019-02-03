@@ -21,7 +21,7 @@ jasmine.getEnv().addReporter(adapter);
 beforeAll(async () => {
   global.rndebugger = createApplication('../../dist');
   await rndebugger.start();
-  await detox.init(config);
+  await detox.init(config, { initGlobals: false });
 });
 
 beforeEach(async () => {

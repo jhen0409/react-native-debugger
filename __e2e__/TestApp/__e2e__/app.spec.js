@@ -1,3 +1,4 @@
+import { expect as dExpect, element, by, device } from 'detox';
 import { delay } from '../../utils';
 
 describe('Main', () => {
@@ -6,7 +7,9 @@ describe('Main', () => {
     await delay(500);
   });
 
-  it('should open the article', async () => {
-    await expect(element(by.id('home'))).toBeVisible();
+  it('should open the app', async () => {
+    await dExpect(element(by.id('home'))).toBeVisible();
+    const title = await rndebugger.browserWindow.getTitle();
+    expect(title).toBe('React Native Debugger - Connected (port 8081)');
   });
 });
