@@ -1,6 +1,7 @@
 # Getting Started
 
 Just these steps will let you start RNDebugger out of box:
+
 - Install the latest version ([download page](https://github.com/jhen0409/react-native-debugger/releases)).
 - Make sure all debugger clients of React Native are closed, usually are `http://localhost:<port>/debugger-ui`
 - Make sure RNDebugger is open and wait state.
@@ -55,8 +56,8 @@ Using the same API as [`redux-devtools-extension`](https://github.com/zalmoxisus
 ```js
 const store = createStore(
   reducer /* preloadedState, */,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+)
 ```
 
 See [`Redux DevTools Integration`](redux-devtools-integration.md) section for more information.
@@ -85,6 +86,7 @@ You can also click `React Native Debugger` (`RND` for Linux / Windows) -> `Check
 - [Debugger Integration](debugger-integration.md)
 - [React DevTools Integration](react-devtools-integration.md)
 - [Redux DevTools Integration](redux-devtools-integration.md)
+- [Apollo Client DevTools Integration](apollo-client-devtools-integration.md)
 - [Shortcut references](shortcut-references.md)
 - [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 - [Enable open in editor in console](enable-open-in-editor-in-console.md)

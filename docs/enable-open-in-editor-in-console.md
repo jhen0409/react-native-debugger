@@ -16,6 +16,7 @@ Instead of open file in `Sources` tab, you can open file in editor by click sour
 - [Debugger Integration](debugger-integration.md)
 - [React DevTools Integration](react-devtools-integration.md)
 - [Redux DevTools Integration](redux-devtools-integration.md)
+- [Apollo Client DevTools Integration](apollo-client-devtools-integration.md)
 - [Shortcut references](shortcut-references.md)
 - [Network inspect of Chrome Developer Tools](network-inspect-of-chrome-devtools.md)
 - [Config file in home directory](config-file-in-home-directory.md)
