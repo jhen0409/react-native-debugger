@@ -44,4 +44,5 @@ export function handleApolloClient(modules) {
 
     initBackend(bridge, hook, getSafeAsyncStorage(modules.AsyncStorage));
   }, 1000);
+  return interval;
 }

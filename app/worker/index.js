@@ -48,13 +48,12 @@ const setupRNDebugger = async message => {
   self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
 
   const modules = await getRequiredModules(message.moduleSize);
+  const apolloCheckInterval = handleApolloClient(modules);
   if (modules) {
-    ignoreRNDIntervalSpy(modules);
+    ignoreRNDIntervalSpy(modules, [apolloCheckInterval]);
     checkAvailableDevMenuMethods(modules, message.networkInspect);
     reportDefaultReactDevToolsPort(modules);
   }
-
-  handleApolloClient(modules);
 };
 
 const messageHandlers = {
