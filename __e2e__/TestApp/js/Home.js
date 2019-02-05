@@ -22,9 +22,9 @@ export default class Home extends React.Component {
     return (
       <View testID="home" style={styles.container}>
         <Button
-          testID="navigate-async-storage"
-          title="Test Async Storage"
-          onPress={() => navigation.navigate('TestAsyncStorage')}
+          testID="navigate-context-menu"
+          title="Test Context Menu"
+          onPress={() => navigation.navigate('TestContextMenu')}
         />
       </View>
     );

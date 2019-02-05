@@ -1,11 +1,11 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Home from './Home';
-import TestAsyncStorage from './containers/TestAsyncStorage';
+import TestContextMenu from './containers/TestContextMenu';
 
 const AppNavigator = createStackNavigator(
   {
     Home: { screen: Home },
-    TestAsyncStorage: { screen: TestAsyncStorage },
+    TestContextMenu: { screen: TestContextMenu },
   },
   {
     initialRouteName: 'Home',
