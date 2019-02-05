@@ -83,7 +83,7 @@ export const getRequiredModules = async size => {
 const TO_JS = 0;
 const isIntervalMatch = (intervalIdList, info) =>
   info.type === TO_JS &&
-  info.module === 'JSTimersExecution' &&
+  (info.module === 'JSTimersExecution' || info.module === 'JSTimers') &&
   info.method === 'callTimers' &&
   info.args &&
   info.args[0] &&
