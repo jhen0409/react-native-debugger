@@ -81,28 +81,29 @@ export const getRequiredModules = async size => {
 };
 
 const TO_JS = 0;
-const isRNDInterval = info =>
+const isIntervalMatch = (intervalIdList, info) =>
   info.type === TO_JS &&
-  info.module === 'JSTimersExecution' &&
+  (info.module === 'JSTimersExecution' || info.module === 'JSTimers') &&
   info.method === 'callTimers' &&
   info.args &&
   info.args[0] &&
-  info.args[0][0] === self.__RND_INTERVAL__;
+  intervalIdList.includes(info.args[0][0]);
 
-export const ignoreRNDIntervalSpy = async ({ MessageQueue }) => {
+export const ignoreRNDIntervalSpy = async ({ MessageQueue }, intervals = []) => {
   if (MessageQueue.__empty) return;
   // Wrap spy function if it already set
+  const intervalIdList = [self.__RND_INTERVAL__].concat(intervals);
   if (MessageQueue.prototype.__spy) {
     const originalSpyFn = MessageQueue.prototype.__spy;
     MessageQueue.prototype.__spy = info => {
-      if (isRNDInterval(info)) return;
+      if (isIntervalMatch(intervalIdList, info)) return;
       return originalSpyFn(info);
     };
   }
   MessageQueue.spy = spyOrToggle => {
     if (spyOrToggle === true) {
       MessageQueue.prototype.__spy = info => {
-        if (isRNDInterval(info)) return;
+        if (isIntervalMatch(intervalIdList, info)) return;
         console.log(
           `${info.type === TO_JS ? 'N->JS' : 'JS->N'} : ` +
             `${info.module ? `${info.module}.` : ''}${info.method}` +
@@ -113,7 +114,7 @@ export const ignoreRNDIntervalSpy = async ({ MessageQueue }) => {
       MessageQueue.prototype.__spy = null;
     } else {
       MessageQueue.prototype.__spy = info => {
-        if (isRNDInterval(info)) return;
+        if (isIntervalMatch(intervalIdList, info)) return;
         return spyOrToggle(info);
       };
     }
