@@ -9,5 +9,5 @@ addons:
     packages:
       - yarn
 env:
-  - NODE_VERSION="9"
+  - NODE_VERSION="10"
 script: ./scripts/travis-build.sh
