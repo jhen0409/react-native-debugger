@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.2/rn-debugger-macos-x64.zip",
-  "name": "v0.9.2",
-  "notes": "1. Avoid DeltaPatcher warnings on Android\n2. Fix issue of Apollo DevTools bridge message effected React Native bridge"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.3/rn-debugger-macos-x64.zip",
+  "name": "v0.9.3",
+  "notes": "1. Fix handleApolloClient in case of app using prod bundle\n2. Ignore Apollo DevTools interval check for `MessageQueue.spy`"
 }
