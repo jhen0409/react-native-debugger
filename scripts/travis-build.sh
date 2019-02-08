@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+
+
 git clone https://github.com/creationix/nvm.git /tmp/.nvm
 source /tmp/.nvm/nvm.sh
 nvm install "$NODE_VERSION"
@@ -12,6 +14,8 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
   brew update
   brew install yarn
+  brew tap wix/brew
+  brew install applesimutils
 fi
 
 node --version
@@ -23,3 +27,10 @@ yarn lint
 yarn test
 yarn build
 yarn test-e2e
+
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  cd __e2e__/TestApp
+  yarn
+  yarn build-test-ios
+  yarn test-ios
+fi
