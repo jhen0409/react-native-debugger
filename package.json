@@ -100,6 +100,9 @@
     "electron-named-image": "^1.0.4"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/__e2e__/TestApp/"
+    ]
   }
 }
