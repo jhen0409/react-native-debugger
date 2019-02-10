@@ -15,13 +15,14 @@ $ cd npm-package && yarn && cd ..
 If you want to debug the [NPM package](../npm-package), just run `npm link <the package path>` on your React Native project.
 
 ### Run on development mode
+_Please ensure the `React Native Debugger` production / distribution app is closed._
 
 ```bash
 $ yarn dev:webpack  # Then open the another terminal tab
 $ yarn dev:electron
 ```
-
-Please ensure the `React Native Debugger` production app is closed.
+1. From here, you can open a react-native project with remote debugging enabled. 
+1. To see the development build of the react-native-debugger, do x,y,z
 
 ### Run on production mode
 
