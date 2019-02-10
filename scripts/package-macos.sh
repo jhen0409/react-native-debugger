@@ -17,6 +17,13 @@ electron-packager dist/ \
   --icon electron/logo.icns \
   --darwin-dark-mode-support
 
+electron-installer-dmg release/React\ Native\ Debugger-darwin-x64/React\ Native\ Debugger.app \
+  React\ Native\ Debugger \
+  --title "React Native Debugger" \
+  --icon electron/logo.icns \
+  --overwrite \
+  --dmgPath release/react-native-debugger_$npm_package_version.dmg
+
 cd release/React\ Native\ Debugger-darwin-x64
 zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app
 
