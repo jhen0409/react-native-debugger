@@ -34,12 +34,12 @@ const flags = {
       args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
     },
     '0.59.0-rc.0': {
-      target: '@react-native-commonunity/cli',
+      target: '@react-native-community/cli',
       dir: 'build/server/middleware',
       file: 'getDevToolsMiddleware.js',
-      func: `function ${keyFunc}(host, args = '') {`,
-      replaceFunc: `function ${keyFunc}(host, args = '', skipRNDebugger) {`,
-      funcCall: '(host, args, true)',
+      func: `function ${keyFunc}(host, port, args = '') {`,
+      replaceFunc: `function ${keyFunc}(host, port, args = '', skipRNDebugger) {`,
+      funcCall: '(host, port, args, true)',
       args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
     },
   },
@@ -95,6 +95,7 @@ export const inject = (modulePath, moduleName) => {
     file,
   } = getFlag(info.name, info.version);
   const filePath = join(modulePath, target, dir, file);
+  console.log(filePath);
   if (!fs.existsSync(filePath)) return false;
 
   const code = es6Template(template, {
