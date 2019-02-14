@@ -24,6 +24,7 @@ export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
     self.XMLHttpRequest = networkInspect.XMLHttpRequest;
     self.FormData = networkInspect.FormData;
+    self.WebSocket = networkInspect.WebSocket;
     networkInspect = null;
     toggleBlobOfFetchSupport(false);
     return;
@@ -44,12 +45,13 @@ export const toggleNetworkInspect = enabled => {
   networkInspect = {
     XMLHttpRequest: self.XMLHttpRequest,
     FormData: self.FormData,
+    WebSocket: self.WebSocket,
   };
   self.XMLHttpRequest = self.originalXMLHttpRequest
     ? self.originalXMLHttpRequest
     : self.XMLHttpRequest;
   self.FormData = self.originalFormData ? self.originalFormData : self.FormData;
-
+  self.WebSocket = self.originalWebSocket ? self.originalWebSocket : self.WebSocket;
   toggleBlobOfFetchSupport(true);
   console.log(
     '[RNDebugger]',
