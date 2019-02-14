@@ -2,13 +2,9 @@ import fs from 'fs';
 import cp from 'child_process';
 import path from 'path';
 import chalk from 'chalk';
-import {
-  inject as injectMiddleware,
-  revert as revertMiddleware,
-  path as middlewarePath,
-} from './injectDevToolsMiddleware';
+import { inject as injectMiddleware, revert as revertMiddleware } from './injectDevToolsMiddleware';
 
-const getModulePath = moduleName => path.join(process.cwd(), 'node_modules', moduleName);
+const modulePath = path.join(process.cwd(), 'node_modules');
 
 const log = (pass, msg) => {
   const prefix = pass ? chalk.green.bgBlack('PASS') : chalk.red.bgBlack('FAIL');
@@ -17,34 +13,25 @@ const log = (pass, msg) => {
 };
 
 export default (argv, cb) => {
-  let modulePath;
+  let moduleName;
   if (argv.macos) {
-    modulePath = getModulePath('react-native-macos');
-  } else if (argv.desktop) {
-    // react-native-macos is renamed from react-native-desktop
-    modulePath = getModulePath('react-native-desktop');
-    if (!fs.existsSync(modulePath)) {
-      modulePath = getModulePath('react-native-macos');
-    }
+    moduleName = 'react-native-macos';
   } else {
-    modulePath = getModulePath('react-native');
+    moduleName = 'react-native';
   }
 
   // Revert injection
   if (argv.revert) {
-    const passMiddleware = revertMiddleware(modulePath);
+    const passMiddleware = revertMiddleware(modulePath, moduleName);
     const msg = 'Revert injection of React Native Debugger from React Native packager';
-    log(
-      passMiddleware,
-      msg + (!passMiddleware ? `, the file '${middlewarePath}' not found.` : '.')
-    );
+    log(passMiddleware, msg + (!passMiddleware ? ', the file inject file not found.' : '.'));
     return cb(passMiddleware);
   }
 
   const inject = () => {
-    const pass = injectMiddleware(modulePath);
+    const pass = injectMiddleware(modulePath, moduleName);
     const msg = 'Replace `open debugger-ui with Chrome` to `open React Native Debugger`';
-    log(pass, msg + (pass ? '.' : `, the file '${middlewarePath}' not found.`));
+    log(pass, msg + (pass ? '.' : ', the file inject file not found.'));
     cb(pass);
   };
 
