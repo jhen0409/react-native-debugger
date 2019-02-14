@@ -91,6 +91,7 @@ app.on('ready', async () => {
         delete details.requestHeaders[header];
       }
     });
+    delete details.requestHeaders.Origin;
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 });
