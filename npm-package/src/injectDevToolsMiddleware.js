@@ -95,7 +95,6 @@ export const inject = (modulePath, moduleName) => {
     file,
   } = getFlag(info.name, info.version);
   const filePath = join(modulePath, target, dir, file);
-  console.log(filePath);
   if (!fs.existsSync(filePath)) return false;
 
   const code = es6Template(template, {
