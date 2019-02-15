@@ -84,6 +84,7 @@ app.on('ready', async () => {
 
   const replaceHeaderPrefix = '__RN_DEBUGGER_SET_HEADER_REQUEST_';
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    delete details.requestHeaders.Origin;
     Object.entries(details.requestHeaders).forEach(([header, value]) => {
       if (header.startsWith(replaceHeaderPrefix)) {
         const originalHeader = header.replace(replaceHeaderPrefix, '');
@@ -91,7 +92,6 @@ app.on('ready', async () => {
         delete details.requestHeaders[header];
       }
     });
-    delete details.requestHeaders.Origin;
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 });
