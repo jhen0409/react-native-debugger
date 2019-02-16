@@ -55,7 +55,7 @@ export default class DeltaPatcher {
    */
   applyDelta(deltaBundle) {
     // NOTE: Support for RN <= 0.57
-    const isLegacy = deltaBundle.id;
+    const isLegacy = !!deltaBundle.id;
     this._isLegacy = isLegacy;
 
     // Make sure that the first received delta is a fresh one.
@@ -67,50 +67,57 @@ export default class DeltaPatcher {
 
     this._initialized = true;
 
+    let bundle = deltaBundle;
+    if (isLegacy) {
+      bundle = {
+        ...deltaBundle,
+        pre: new Map(deltaBundle.pre),
+        post: new Map(deltaBundle.post),
+        delta: new Map(deltaBundle.delta),
+      };
+    }
+
     // Reset the current delta when we receive a fresh delta.
-    if (deltaBundle.reset && isLegacy) {
+    if (bundle.reset && isLegacy) {
       this._lastBundle = {
         pre: new Map(),
         post: new Map(),
         modules: new Map(),
         id: undefined,
       };
-    } else if (deltaBundle.base) {
+    } else if (bundle.base) {
       this._lastBundle = {
-        id: deltaBundle.revisionId,
-        pre: deltaBundle.pre,
-        post: deltaBundle.post,
-        modules: new Map(deltaBundle.modules),
+        id: bundle.revisionId,
+        pre: bundle.pre,
+        post: bundle.post,
+        modules: new Map(bundle.modules),
       };
     }
 
     if (isLegacy) {
-      this._lastNumModifiedFiles =
-        deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size;
+      this._lastNumModifiedFiles = bundle.pre.size + bundle.post.size + bundle.delta.size;
 
-      this._lastBundle.id = deltaBundle.id;
+      this._lastBundle.id = bundle.id;
 
-      this._patchMap(this._lastBundle.pre, deltaBundle.pre);
-      this._patchMap(this._lastBundle.post, deltaBundle.post);
-      this._patchMap(this._lastBundle.modules, deltaBundle.delta);
+      this._patchMap(this._lastBundle.pre, bundle.pre);
+      this._patchMap(this._lastBundle.post, bundle.post);
+      this._patchMap(this._lastBundle.modules, bundle.delta);
     } else {
       // TODO T37123645 The former case is deprecated, but necessary in order to
       // support older versions of the Metro bundler.
-      const modules = deltaBundle.modules
-        ? deltaBundle.modules
-        : deltaBundle.added.concat(deltaBundle.modified);
+      const modules = bundle.modules ? bundle.modules : bundle.added.concat(bundle.modified);
       this._lastNumModifiedFiles = modules.length;
 
-      if (deltaBundle.deleted) {
-        this._lastNumModifiedFiles += deltaBundle.deleted.length;
+      if (bundle.deleted) {
+        this._lastNumModifiedFiles += bundle.deleted.length;
       }
 
-      this._lastBundle.id = deltaBundle.revisionId;
+      this._lastBundle.id = bundle.revisionId;
 
       this._patchMap(this._lastBundle.modules, modules);
 
-      if (deltaBundle.deleted) {
-        for (const id of deltaBundle.deleted) {
+      if (bundle.deleted) {
+        for (const id of bundle.deleted) {
           this._lastBundle.modules.delete(id);
         }
       }
@@ -145,8 +152,8 @@ export default class DeltaPatcher {
     return this._lastModifiedDate;
   }
 
-  getAllModules(isLegacy) {
-    return isLegacy
+  getAllModules() {
+    return this.isLegacy()
       ? [].concat(
         Array.from(this._lastBundle.pre.values()),
         Array.from(this._lastBundle.modules.values()),
