@@ -64,7 +64,6 @@ const requiredModules = {
     (self.__fbBatchedBridge && Object.getPrototypeOf(self.__fbBatchedBridge).constructor) ||
     getModule('MessageQueue', size),
   NativeModules: size => getModule('NativeModules', size),
-  AsyncStorage: size => getModule('AsyncStorage', size),
   Platform: size => getModule('Platform', size),
   setupDevtools: size => getModule('setupDevtools', size),
 };
