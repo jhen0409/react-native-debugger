@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.5/rn-debugger-macos-x64.zip",
-  "name": "v0.9.5",
-  "notes": "1. Enable performance tab in production build\n2. Support RN ^0.59.0-rc.0 for Debugger and NPM package\n3. Avoid AsyncStorage warning on RN 0.59\n4. Remove `null` Origin header on network calls"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.6/rn-debugger-macos-x64.zip",
+  "name": "v0.9.6",
+  "notes": "1. Fix Delta bundler for RN versions <= 0.57"
 }
