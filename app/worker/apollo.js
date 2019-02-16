@@ -3,7 +3,7 @@ import { initBackend, sendBridgeReady } from 'apollo-client-devtools/src/backend
 import { version as devToolsVersion } from 'apollo-client-devtools/package.json';
 import { getSafeAsyncStorage } from './asyncStorage';
 
-export function handleApolloClient({ AsyncStorage } = {}) {
+export function handleApolloClient({ NativeModules } = {}) {
   const interval = setInterval(() => {
     if (!self.__APOLLO_CLIENT__) {
       return;
@@ -42,7 +42,7 @@ export function handleApolloClient({ AsyncStorage } = {}) {
       self.removeEventListener('message', listener);
     });
 
-    initBackend(bridge, hook, getSafeAsyncStorage(AsyncStorage));
+    initBackend(bridge, hook, getSafeAsyncStorage(NativeModules));
   }, 1000);
   return interval;
 }

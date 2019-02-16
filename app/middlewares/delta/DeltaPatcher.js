@@ -54,10 +54,13 @@ export default class DeltaPatcher {
    * Applies a Delta Bundle to the current bundle.
    */
   applyDelta(deltaBundle) {
-    const isOld = deltaBundle.id;
+    // NOTE: Support for RN <= 0.57
+    const isLegacy = deltaBundle.id;
+    this._isLegacy = isLegacy;
+
     // Make sure that the first received delta is a fresh one.
     if (
-      isOld ? !this._initialized && !deltaBundle.reset : !this._initialized && !deltaBundle.base
+      isLegacy ? !this._initialized && !deltaBundle.reset : !this._initialized && !deltaBundle.base
     ) {
       throw new Error('DeltaPatcher should receive a fresh Delta when being initialized');
     }
@@ -65,7 +68,7 @@ export default class DeltaPatcher {
     this._initialized = true;
 
     // Reset the current delta when we receive a fresh delta.
-    if (deltaBundle.reset && isOld) {
+    if (deltaBundle.reset && isLegacy) {
       this._lastBundle = {
         pre: new Map(),
         post: new Map(),
@@ -81,42 +84,50 @@ export default class DeltaPatcher {
       };
     }
 
-    this._lastNumModifiedFiles = isOld
-      ? deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size
-      : deltaBundle.modules.length;
+    if (isLegacy) {
+      this._lastNumModifiedFiles =
+        deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size;
 
-    if (deltaBundle.deleted) {
-      this._lastNumModifiedFiles += deltaBundle.deleted.length;
-    }
+      this._lastBundle.id = deltaBundle.id;
 
-    this._lastBundle.id = isOld ? deltaBundle.id : deltaBundle.revisionId;
-
-    if (this._lastNumModifiedFiles > 0) {
-      this._lastModifiedDate = new Date();
-    }
-
-    if (isOld) {
       this._patchMap(this._lastBundle.pre, deltaBundle.pre);
       this._patchMap(this._lastBundle.post, deltaBundle.post);
       this._patchMap(this._lastBundle.modules, deltaBundle.delta);
-
-      this._lastBundle.id = deltaBundle.id;
     } else {
-      this._patchMap(this._lastBundle.modules, deltaBundle.modules);
+      // TODO T37123645 The former case is deprecated, but necessary in order to
+      // support older versions of the Metro bundler.
+      const modules = deltaBundle.modules
+        ? deltaBundle.modules
+        : deltaBundle.added.concat(deltaBundle.modified);
+      this._lastNumModifiedFiles = modules.length;
+
+      if (deltaBundle.deleted) {
+        this._lastNumModifiedFiles += deltaBundle.deleted.length;
+      }
+
+      this._lastBundle.id = deltaBundle.revisionId;
+
+      this._patchMap(this._lastBundle.modules, modules);
 
       if (deltaBundle.deleted) {
         for (const id of deltaBundle.deleted) {
           this._lastBundle.modules.delete(id);
         }
       }
+    }
 
-      this._lastBundle.id = deltaBundle.revisionId;
+    if (this._lastNumModifiedFiles > 0) {
+      this._lastModifiedDate = new Date();
     }
 
     return this;
   }
 
-  getLastBundleId() {
+  isLegacy() {
+    return this._isLegacy;
+  }
+
+  getLastRevisionId() {
     return this._lastBundle.id;
   }
 
@@ -134,8 +145,8 @@ export default class DeltaPatcher {
     return this._lastModifiedDate;
   }
 
-  getAllModules(isOld) {
-    return isOld
+  getAllModules(isLegacy) {
+    return isLegacy
       ? [].concat(
         Array.from(this._lastBundle.pre.values()),
         Array.from(this._lastBundle.modules.values()),

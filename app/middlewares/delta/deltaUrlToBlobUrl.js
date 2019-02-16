@@ -16,19 +16,25 @@ const cachedBundleUrls = new Map();
 export default async function deltaUrlToBlobUrl(deltaUrl) {
   const client = DeltaPatcher.get(deltaUrl);
 
-  const lastBundleId = client.getLastBundleId();
+  const isLegacy = client.isLegacy();
+  let query;
+  if (isLegacy) {
+    const lastBundleId = client.getLastRevisionId();
+    query = lastBundleId
+      ? `${deltaUrl.indexOf('?') === -1 ? '?' : '&'}deltaBundleId=${lastBundleId}`
+      : '';
+  } else {
+    const lastRevisionId = client.getLastRevisionId();
+    query = lastRevisionId
+      ? `${deltaUrl.indexOf('?') === -1 ? '?' : '&'}revisionId=${lastRevisionId}`
+      : '';
+  }
 
-  const deltaBundleId = lastBundleId
-    ? `${deltaUrl.indexOf('?') === -1 ? '?' : '&'}deltaBundleId=${lastBundleId}`
-    : '';
-
-  const data = await fetch(deltaUrl + deltaBundleId);
+  const data = await fetch(deltaUrl + query);
   const bundle = await data.json();
 
-  const isOld = bundle.id;
-
   const deltaPatcher = client.applyDelta(
-    isOld
+    isLegacy
       ? {
         id: bundle.id,
         pre: new Map(bundle.pre),
@@ -54,7 +60,7 @@ export default async function deltaUrlToBlobUrl(deltaUrl) {
 
   // To make Source Maps work correctly, we need to add a newline between
   // modules.
-  const blobContent = deltaPatcher.getAllModules(isOld).map(module => `${module}\n`);
+  const blobContent = deltaPatcher.getAllModules(isLegacy).map(module => `${module}\n`);
 
   // Build the blob with the whole JS bundle.
   const blob = new Blob(blobContent, {
