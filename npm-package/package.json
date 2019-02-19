@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger-open",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "description":
     "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
   "bin": {
