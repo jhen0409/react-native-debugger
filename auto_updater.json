@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.6/rn-debugger-macos-x64.zip",
-  "name": "v0.9.6",
-  "notes": "1. Fix Delta bundler for RN versions <= 0.57"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.7/rn-debugger-macos-x64.zip",
+  "name": "v0.9.7",
+  "notes": "1. Fix AsyncStorage context menu functions on Android\n2. Fix AsyncStorage warning on RN >= 0.59"
 }
