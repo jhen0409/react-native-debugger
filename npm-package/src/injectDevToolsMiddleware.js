@@ -16,20 +16,49 @@ const keyFunc = 'launchChromeDevTools';
 const flags = {
   'react-native': {
     '0.50.0-rc.0': {
+      target: 'react-native',
+      dir: 'local-cli/server/middleware',
+      file: 'getDevToolsMiddleware.js',
       func: `function ${keyFunc}(port, args = '') {`,
       replaceFunc: `function ${keyFunc}(port, args = '', skipRNDebugger) {`,
       funcCall: '(port, args, true)',
       args: "port + '&args=' + args",
     },
     '0.53.0': {
+      target: 'react-native',
+      dir: 'local-cli/server/middleware',
+      file: 'getDevToolsMiddleware.js',
       func: `function ${keyFunc}(host, args = '') {`,
       replaceFunc: `function ${keyFunc}(host, args = '', skipRNDebugger) {`,
       funcCall: '(host, args, true)',
       args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
     },
+    '0.59.0-rc.0': {
+      target: '@react-native-community/cli',
+      dir: 'build/server/middleware',
+      file: 'getDevToolsMiddleware.js',
+      func: `function ${keyFunc}(host, port, args = '') {`,
+      replaceFunc: `function ${keyFunc}(host, port, args = '', skipRNDebugger) {`,
+      funcCall: '(host, port, args, true)',
+      args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
+    },
   },
-  // react-native, react-native-macos
+  'react-native-macos': {
+    '0.0.0': {
+      target: 'react-native-macos',
+      dir: 'local-cli/server/middleware',
+      file: 'getDevToolsMiddleware.js',
+      func: `function ${keyFunc}(port) {`,
+      replaceFunc: `function ${keyFunc}(port, skipRNDebugger) {`,
+      funcCall: '(port, true)',
+      args: 'port',
+    },
+  },
+  // react-native
   default: {
+    target: 'react-native',
+    dir: 'local-cli/server/middleware',
+    file: 'getDevToolsMiddleware.js',
     func: `function ${keyFunc}(port) {`,
     replaceFunc: `function ${keyFunc}(port, skipRNDebugger) {`,
     funcCall: '(port, true)',
@@ -37,8 +66,8 @@ const flags = {
   },
 };
 
-const getModuleInfo = modulePath => {
-  const pkg = JSON.parse(fs.readFileSync(join(modulePath, 'package.json'))); // eslint-disable-line
+const getModuleInfo = (modulePath, moduleName) => {
+  const pkg = JSON.parse(fs.readFileSync(join(modulePath, moduleName, 'package.json'))); // eslint-disable-line
   return { version: pkg.version, name: pkg.name };
 };
 
@@ -54,19 +83,19 @@ function getFlag(moduleName, version) {
   return flag;
 }
 
-export const dir = 'local-cli/server/middleware';
-export const file = 'getDevToolsMiddleware.js';
-export const path = join(exports.dir, exports.file);
-
-export const inject = modulePath => {
-  const filePath = join(modulePath, exports.path);
+export const inject = (modulePath, moduleName) => {
+  const info = getModuleInfo(modulePath, moduleName);
+  const {
+    func: funcFlag,
+    replaceFunc: replaceFuncFlag,
+    funcCall,
+    args,
+    target,
+    dir,
+    file,
+  } = getFlag(info.name, info.version);
+  const filePath = join(modulePath, target, dir, file);
   if (!fs.existsSync(filePath)) return false;
-
-  const info = getModuleInfo(modulePath);
-  const { func: funcFlag, replaceFunc: replaceFuncFlag, funcCall, args } = getFlag(
-    info.name,
-    info.version
-  );
 
   const code = es6Template(template, {
     startFlag,
@@ -91,12 +120,11 @@ export const inject = modulePath => {
   return true;
 };
 
-export const revert = modulePath => {
-  const filePath = join(modulePath, exports.path);
+export const revert = (modulePath, moduleName) => {
+  const info = getModuleInfo(modulePath, moduleName);
+  const { func: funcFlag, target, dir, file } = getFlag(info.name, info.version);
+  const filePath = join(modulePath, target, dir, file);
   if (!fs.existsSync(filePath)) return false;
-
-  const info = getModuleInfo(modulePath);
-  const { func: funcFlag } = getFlag(info.name, info.version);
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
   const start = middlewareCode.indexOf(startFlag); // already injected ?

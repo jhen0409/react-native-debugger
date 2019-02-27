@@ -54,69 +54,87 @@ export default class DeltaPatcher {
    * Applies a Delta Bundle to the current bundle.
    */
   applyDelta(deltaBundle) {
-    const isOld = deltaBundle.id;
+    // NOTE: Support for RN <= 0.57
+    const isLegacy = !!deltaBundle.id;
+    this._isLegacy = isLegacy;
+
     // Make sure that the first received delta is a fresh one.
     if (
-      isOld ? !this._initialized && !deltaBundle.reset : !this._initialized && !deltaBundle.base
+      isLegacy ? !this._initialized && !deltaBundle.reset : !this._initialized && !deltaBundle.base
     ) {
       throw new Error('DeltaPatcher should receive a fresh Delta when being initialized');
     }
 
     this._initialized = true;
 
+    let bundle = deltaBundle;
+    if (isLegacy) {
+      bundle = {
+        ...deltaBundle,
+        pre: new Map(deltaBundle.pre),
+        post: new Map(deltaBundle.post),
+        delta: new Map(deltaBundle.delta),
+      };
+    }
+
     // Reset the current delta when we receive a fresh delta.
-    if (deltaBundle.reset && isOld) {
+    if (bundle.reset && isLegacy) {
       this._lastBundle = {
         pre: new Map(),
         post: new Map(),
         modules: new Map(),
         id: undefined,
       };
-    } else if (deltaBundle.base) {
+    } else if (bundle.base) {
       this._lastBundle = {
-        id: deltaBundle.revisionId,
-        pre: deltaBundle.pre,
-        post: deltaBundle.post,
-        modules: new Map(deltaBundle.modules),
+        id: bundle.revisionId,
+        pre: bundle.pre,
+        post: bundle.post,
+        modules: new Map(bundle.modules),
       };
     }
 
-    this._lastNumModifiedFiles = isOld
-      ? deltaBundle.pre.size + deltaBundle.post.size + deltaBundle.delta.size
-      : deltaBundle.modules.length;
+    if (isLegacy) {
+      this._lastNumModifiedFiles = bundle.pre.size + bundle.post.size + bundle.delta.size;
 
-    if (deltaBundle.deleted) {
-      this._lastNumModifiedFiles += deltaBundle.deleted.length;
+      this._lastBundle.id = bundle.id;
+
+      this._patchMap(this._lastBundle.pre, bundle.pre);
+      this._patchMap(this._lastBundle.post, bundle.post);
+      this._patchMap(this._lastBundle.modules, bundle.delta);
+    } else {
+      // TODO T37123645 The former case is deprecated, but necessary in order to
+      // support older versions of the Metro bundler.
+      const modules = bundle.modules ? bundle.modules : bundle.added.concat(bundle.modified);
+      this._lastNumModifiedFiles = modules.length;
+
+      if (bundle.deleted) {
+        this._lastNumModifiedFiles += bundle.deleted.length;
+      }
+
+      this._lastBundle.id = bundle.revisionId;
+
+      this._patchMap(this._lastBundle.modules, modules);
+
+      if (bundle.deleted) {
+        for (const id of bundle.deleted) {
+          this._lastBundle.modules.delete(id);
+        }
+      }
     }
-
-    this._lastBundle.id = isOld ? deltaBundle.id : deltaBundle.revisionId;
 
     if (this._lastNumModifiedFiles > 0) {
       this._lastModifiedDate = new Date();
     }
 
-    if (isOld) {
-      this._patchMap(this._lastBundle.pre, deltaBundle.pre);
-      this._patchMap(this._lastBundle.post, deltaBundle.post);
-      this._patchMap(this._lastBundle.modules, deltaBundle.delta);
-
-      this._lastBundle.id = deltaBundle.id;
-    } else {
-      this._patchMap(this._lastBundle.modules, deltaBundle.modules);
-
-      if (deltaBundle.deleted) {
-        for (const id of deltaBundle.deleted) {
-          this._lastBundle.modules.delete(id);
-        }
-      }
-
-      this._lastBundle.id = deltaBundle.revisionId;
-    }
-
     return this;
   }
 
-  getLastBundleId() {
+  isLegacy() {
+    return this._isLegacy;
+  }
+
+  getLastRevisionId() {
     return this._lastBundle.id;
   }
 
@@ -134,8 +152,8 @@ export default class DeltaPatcher {
     return this._lastModifiedDate;
   }
 
-  getAllModules(isOld) {
-    return isOld
+  getAllModules() {
+    return this.isLegacy()
       ? [].concat(
         Array.from(this._lastBundle.pre.values()),
         Array.from(this._lastBundle.modules.values()),

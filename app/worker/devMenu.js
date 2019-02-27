@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 
 import { toggleNetworkInspect } from './networkInspect';
-import { getClearAsyncStorageFn, getShowAsyncStorageFn } from './asyncStorage';
+import { getClearAsyncStorageFn, getShowAsyncStorageFn, getSafeAsyncStorage } from './asyncStorage';
 
 let availableDevMenuMethods = {};
 
 export const checkAvailableDevMenuMethods = async (
-  { NativeModules, AsyncStorage },
+  { NativeModules },
   enableNetworkInspect = false
 ) => {
   // RN 0.43 use DevSettings, DevMenu will be deprecated
@@ -17,6 +17,7 @@ export const checkAvailableDevMenuMethods = async (
     (NativeModules.DevMenu && NativeModules.DevMenu.show) ||
     undefined;
 
+  const AsyncStorage = getSafeAsyncStorage(NativeModules);
   const methods = {
     ...DevSettings,
     show: showDevMenu,

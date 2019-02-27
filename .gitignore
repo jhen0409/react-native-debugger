@@ -8,3 +8,4 @@ release/
 *.bundle.js
 tmp/
 config_test
+.idea/
