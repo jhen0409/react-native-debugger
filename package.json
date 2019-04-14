@@ -5,7 +5,7 @@
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
   "scripts": {
-    "pack-macos": "npm run build && ./scripts/package-macos.sh",
+    "pack-macos": "./scripts/package-macos.sh",
     "pack-linux": "npm run build && ./scripts/package-linux.sh",
     "pack-windows": "npm run build && ./scripts/package-windows.sh",
     "prepack": "npm run build",
