@@ -194,7 +194,7 @@ function monitorReducer(state = {}, action) {
 function handleChange(state, liftedState, maxAge, instance) {
   if (checkForReducerErrors(liftedState, instance)) return;
 
-  const { filters } = instance;
+  const { filters, predicate } = instance;
   if (lastAction === 'PERFORM_ACTION') {
     const nextActionId = liftedState.nextActionId;
     const liftedAction = liftedState.actionsById[nextActionId - 1];

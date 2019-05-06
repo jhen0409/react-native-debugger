@@ -20,9 +20,7 @@ export default function run() {
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       name: 'Redux store instance 2',
       actionsBlacklist: ['NOT_SHOW_1_FOR_REDUX_STORE_2', 'NOT_SHOW_2_FOR_REDUX_STORE_2'],
-      predicate: (state, action) => {
-        return action.type !== 'NOT_SHOW_3_FOR_REDUX_STORE_2';
-      }
+      predicate: (state, action) => action.type !== 'NOT_SHOW_3_FOR_REDUX_STORE_2',
     })(/* No enhancers */)
   );
 
