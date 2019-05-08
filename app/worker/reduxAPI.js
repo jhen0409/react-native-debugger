@@ -194,11 +194,12 @@ function monitorReducer(state = {}, action) {
 function handleChange(state, liftedState, maxAge, instance) {
   if (checkForReducerErrors(liftedState, instance)) return;
 
-  const { filters } = instance;
+  const { filters, predicate } = instance;
   if (lastAction === 'PERFORM_ACTION') {
     const nextActionId = liftedState.nextActionId;
     const liftedAction = liftedState.actionsById[nextActionId - 1];
     if (isFiltered(liftedAction.action, filters)) return;
+    if (predicate && !predicate(state, liftedAction.action)) return;
     relay('ACTION', state, instance, liftedAction, nextActionId);
     if (!isExcess && maxAge) isExcess = liftedState.stagedActionIds.length >= maxAge;
   } else {

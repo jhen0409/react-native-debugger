@@ -254,7 +254,8 @@ describe('Application launch', () => {
         notExpt: [
           /TEST_PASS_FOR_REDUX_STORE_1/,
           /NOT_SHOW_1_FOR_REDUX_STORE_2/,
-          /NOT_SHOW_1_FOR_REDUX_STORE_2/,
+          /NOT_SHOW_2_FOR_REDUX_STORE_2/,
+          /NOT_SHOW_3_FOR_REDUX_STORE_2/,
         ],
       },
       'MobX store instance 1': {
