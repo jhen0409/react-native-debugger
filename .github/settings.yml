@@ -46,13 +46,15 @@ labels:
     color: c2e0c6
   - name: upstream
     color: 5319e7
+  - name: waiting-for-response
+    color: 3100ad
 
   # Integrations
   - name: integration/react-devtools
     color: 1b307c
   - name: integration/redux-devtools
     color: 7c2d9e
-  - name: integration/apollo-devtools
+  - name: integration/apollo-client-devtools
     color: 7066e8
 
   # Features
@@ -62,7 +64,3 @@ labels:
   # Packages
   - name: package/react-native-debugger-open
     color: f7e78f
-
-collaborators:
-  - username: mybigday-bot
-    permission: push
