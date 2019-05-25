@@ -2,20 +2,22 @@
 
 echo "[v$npm_package_version] Packaging darwin x64..."
 
-electron-packager dist/ \
-  --overwrite \
-  --platform darwin \
-  --arch x64 \
-  --asar \
-  --no-prune \
-  --out release \
-  --protocol-name "React Native Debugger" \
-  --protocol "rndebugger" \
-  --electron-version $(node -e "console.log(require('electron/package').version)") \
-  --app-version $npm_package_version \
-  --osx-sign='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
-  --icon electron/logo.icns \
-  --darwin-dark-mode-support
+# electron-packager dist/ \
+#   --overwrite \
+#   --platform darwin \
+#   --arch x64 \
+#   --asar \
+#   --no-prune \
+#   --out release \
+#   --protocol-name "React Native Debugger" \
+#   --protocol "rndebugger" \
+#   --electron-version $(node -e "console.log(require('electron/package').version)") \
+#   --app-version $npm_package_version \
+#   --osx-sign='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
+#   --icon electron/logo.icns \
+#   --darwin-dark-mode-support
+
+node scripts/createDMG.js
 
 cd release/React\ Native\ Debugger-darwin-x64
 zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app

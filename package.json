@@ -5,7 +5,7 @@
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
   "scripts": {
-    "pack-macos": "npm run build && ./scripts/package-macos.sh",
+    "pack-macos": "./scripts/package-macos.sh",
     "pack-linux": "npm run build && ./scripts/package-linux.sh",
     "pack-windows": "npm run build && ./scripts/package-windows.sh",
     "prepack": "npm run build",
@@ -46,6 +46,8 @@
     "electron": "~1.7.15",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.3",
+    "electron-installer-dmg": "^2.0.0",
+    "electron-installer-windows": "^1.1.0",
     "electron-packager": "^13.0.1",
     "electron-rebuild": "^1.7.3",
     "eslint": "^4.18.2",
@@ -97,7 +99,9 @@
     "remotedev-slider": "^1.1.3"
   },
   "optionalDependencies": {
-    "electron-named-image": "^1.0.4"
+    "electron-named-image": "^1.0.4",
+    "electron-installer-debian": "^1.1.0",
+    "electron-installer-redhat": "^1.0.0"
   },
   "jest": {
     "testEnvironment": "node"
