@@ -13,9 +13,7 @@ export default {
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
-  plugins: [
-    new LodashModuleReplacementPlugin(),
-  ],
+  plugins: [new LodashModuleReplacementPlugin()],
   resolve: {
     extensions: ['.js'],
     alias: {
@@ -34,6 +32,11 @@ export default {
           },
         ],
         exclude: /node_modules/,
+      },
+      {
+        test: /\.mjs$/,
+        include: /node_modules\/graphql/,
+        type: 'javascript/auto',
       },
     ],
   },
