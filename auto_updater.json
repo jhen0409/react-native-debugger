@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.8/rn-debugger-macos-x64.zip",
-  "name": "v0.9.8",
-  "notes": "1. Fix rn59 android source maps"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.9/rn-debugger-macos-x64.zip",
+  "name": "v0.9.9",
+  "notes": "1. Fixed: `predicate` option of the redux devtool is not used\n2. Update apollo dev tools to latest version"
 }
