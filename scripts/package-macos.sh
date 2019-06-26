@@ -17,6 +17,8 @@ electron-packager dist/ \
   --icon electron/logo.icns \
   --darwin-dark-mode-support
 
+node scripts/createDMG.js
+
 cd release/React\ Native\ Debugger-darwin-x64
 zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app
 

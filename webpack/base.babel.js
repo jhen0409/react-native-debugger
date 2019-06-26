@@ -13,11 +13,9 @@ export default {
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
-  plugins: [
-    new LodashModuleReplacementPlugin(),
-  ],
+  plugins: [new LodashModuleReplacementPlugin()],
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.mjs', '.js'],
     alias: {
       // From remotedev-app, but currently we don't need this
       'socketcluster-client': path.resolve(__dirname, 'mock-socketcluster-client'),
@@ -25,6 +23,12 @@ export default {
   },
   module: {
     rules: [
+      // https://github.com/graphql/graphql-js#using-in-a-browser
+      {
+        test: /\.mjs$/,
+        include: /node_modules\/graphql/,
+        type: 'javascript/auto',
+      },
       {
         test: /\.js$/,
         use: [

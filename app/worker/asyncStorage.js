@@ -26,6 +26,7 @@ export const getSafeAsyncStorage = NativeModules => {
     NativeModules &&
     (NativeModules.AsyncRocksDBStorage ||
       NativeModules.RNC_AsyncSQLiteDBStorage ||
+      NativeModules.AsyncSQLiteDBStorage ||
       NativeModules.AsyncLocalStorage);
 
   return {

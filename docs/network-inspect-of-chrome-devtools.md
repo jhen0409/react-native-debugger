@@ -6,7 +6,7 @@ You can enable this feature by the [context menu or Touch Bar](shortcut-referenc
 
 ## How it works
 
-See [the comments of `react-native/Libraries/Core/InitializeCore.js#L43-L53`](https://github.com/facebook/react-native/blob/0.45-stable/Libraries/Core/InitializeCore.js#L43-L53). It uses `XMLHttpRequest` from WebWorker in Chrome, basically it can manually setup by:
+See [the comments of `react-native/Libraries/Utilities/PolyfillFunctions#L15-L27`](https://github.com/facebook/react-native/blob/ab97b9f6021d2b31b7155970c2be0c83f7e43f04/Libraries/Utilities/PolyfillFunctions.js#L15-L27). It uses `XMLHttpRequest` from WebWorker in Chrome, basically it can manually setup by:
 
 ```js
 global.XMLHttpRequest = global.originalXMLHttpRequest

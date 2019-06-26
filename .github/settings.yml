@@ -1,0 +1,66 @@
+repository:
+  name: react-native-debugger
+  has_issues: true
+  has_wiki: true
+  has_downloads: true
+  default_branch: master
+  allow_squash_merge: true
+  allow_merge_commit: true
+  allow_rebase_merge: true
+
+labels:
+  - name: bug
+    color: CC0000
+  - name: help wanted
+    color: 33aa3f
+  - name: duplicate
+    color: cfd3d7
+  - name: enhancement
+    color: a2eeef
+  - name: question
+    color: d876e3
+  - name: invalid
+    color: e4e669
+  - name: wontfix
+    color: ffffff
+  - name: feature
+    color: 336699
+  - name: trivial
+    oldname: good first issue
+    color: afffb2
+  - name: has PR
+    color: 3100ad
+  - name: documentation
+    color: a1ed95
+  - name: RFC
+    color: 3100ad
+  - name: WIP
+    color: e4e669
+  - name: don't merge
+    color: CC0000
+  - name: stale
+    color: ffffff
+  - name: cannot-reproduce
+    color: bfdadc
+  - name: more-information-needed
+    color: c2e0c6
+  - name: upstream
+    color: 5319e7
+  - name: waiting-for-response
+    color: 3100ad
+
+  # Integrations
+  - name: integration/react-devtools
+    color: 1b307c
+  - name: integration/redux-devtools
+    color: 7c2d9e
+  - name: integration/apollo-client-devtools
+    color: 7066e8
+
+  # Features
+  - name: feature/network-inspect
+    color: fce885
+
+  # Packages
+  - name: package/react-native-debugger-open
+    color: f7e78f

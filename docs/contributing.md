@@ -47,7 +47,9 @@ You need to closes all React Native packager (make sure `8081` or `8088` port no
 
 ```bash
 $ yarn run pack-macos
+# On macOS: brew install fakeroot dpkg rpm
 $ yarn run pack-linux
+# On macOS: brew install wine mono
 $ yarn run pack-windows
 $ yarn run pack # all
 ```

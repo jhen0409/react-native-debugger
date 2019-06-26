@@ -159,9 +159,13 @@ export default class DeltaPatcher {
         Array.from(this._lastBundle.modules.values()),
         Array.from(this._lastBundle.post.values())
       )
-      : [].concat([this._lastBundle.pre], Array.from(this._lastBundle.modules.values()), [
-        this._lastBundle.post,
-      ]);
+      : [].concat(
+        [this._lastBundle.pre],
+        Array.from(this._lastBundle.modules.entries())
+          .sort(([id1], [id2]) => id1 - id2)
+          // eslint-disable-next-line no-unused-vars
+          .map(([id, contents]) => contents),
+        [this._lastBundle.post]);
   }
 
   getSizeOfAllModules() {

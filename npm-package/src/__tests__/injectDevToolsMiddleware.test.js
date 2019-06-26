@@ -66,10 +66,10 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
   });
 
   test('inject / revert in @react-native-commonunity/cli (RN ^0.59.0-rc.0)', async () => {
-    const mDir = 'build/server/middleware';
+    const mDir = 'build/commands/server/middleware';
     const mPath = path.join(mDir, 'getDevToolsMiddleware.js');
     const code = await fetch(
-      'https://unpkg.com/@react-native-community/cli@1.2.2/build/server/middleware/getDevToolsMiddleware.js'
+      'https://unpkg.com/@react-native-community/cli@1.5.0/build/commands/server/middleware/getDevToolsMiddleware.js'
     ).then(res => res.text());
     fs.ensureDirSync(path.join(modulePath, '@react-native-community/cli', mDir));
     fs.outputFileSync(path.join(modulePath, '@react-native-community/cli', mPath), code);

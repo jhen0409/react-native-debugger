@@ -35,12 +35,12 @@ const flags = {
     },
     '0.59.0-rc.0': {
       target: '@react-native-community/cli',
-      dir: 'build/server/middleware',
+      dir: 'build/commands/server/middleware',
       file: 'getDevToolsMiddleware.js',
-      func: `function ${keyFunc}(host, port, args = '') {`,
-      replaceFunc: `function ${keyFunc}(host, port, args = '', skipRNDebugger) {`,
-      funcCall: '(host, port, args, true)',
-      args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
+      func: `function ${keyFunc}(port, args = '') {`,
+      replaceFunc: `function ${keyFunc}(port, args = '', skipRNDebugger) {`,
+      funcCall: '(port, args, true)',
+      args: "port + '&args=' + args",
     },
   },
   'react-native-macos': {
