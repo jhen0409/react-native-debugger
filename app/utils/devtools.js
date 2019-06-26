@@ -16,11 +16,8 @@ export const isOpenInEditorEnabled = () => enabled;
 export const clearNetworkLogs = win => {
   if (win.devToolsWebContents) {
     return win.devToolsWebContents.executeJavaScript(`(() => {
-      if (typeof NetworkLog === 'object') {
-        NetworkLog.networkLog.reset()
-      }
-      if (typeof BrowserSDK === 'object') {
-        BrowserSDK.networkLog.reset()
+      if (typeof SDK === 'object' && SDK.networkLog) {
+        SDK.networkLog.reset()
       }
     })()`);
   }
