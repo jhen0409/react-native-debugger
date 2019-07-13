@@ -1,5 +1,12 @@
 <!--
-Before submitting the issue, please ensure you're using the latest version of react-native-debugger, and you have read the documentation.
+Before submitting the issue:
+
+- You're using the latest version of react-native-debugger
+- You have read the documentation
+- For the feature requests / issues of devtools integration like React / Redux / Apollo, you should submit an issue to that repo
+  - https://github.com/facebook/react-devtools/issues
+  - https://github.com/reduxjs/redux-devtools/issues
+  - https://github.com/apollographql/apollo-client-devtools/issues
 -->
 
 <!--
