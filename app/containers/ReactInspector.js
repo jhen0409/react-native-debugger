@@ -10,7 +10,7 @@ let ReactServer;
 const getReactInspector = () => {
   if (ReactServer) return ReactServer;
   // eslint-disable-next-line
-  ReactServer = ReactServer || require('react-devtools-core/standalone');
+  ReactServer = ReactServer || require('react-devtools-core/standalone').default;
 
   return ReactServer;
 };
@@ -95,10 +95,11 @@ export default class ReactInspector extends Component {
   setDefaultThemeName(themeName) {
     const theme = window.query.defaultReactDevToolsTheme;
     const inspector = getReactInspector();
+    // TODO: Get setDefaultThemeName back
     if (!theme || theme === 'RNDebugger') {
-      inspector.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
+      // inspector.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
     } else {
-      inspector.setDefaultThemeName(theme);
+      // inspector.setDefaultThemeName(theme);
     }
   }
 
@@ -122,8 +123,8 @@ export default class ReactInspector extends Component {
 
   startServer(port = this.listeningPort) {
     let loggedWarn = false;
+
     return getReactInspector()
-      .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
         if (!loggedWarn && status === 'Failed to start the server.') {
           const message =
