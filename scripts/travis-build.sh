@@ -6,7 +6,6 @@ nvm install "$NODE_VERSION"
 nvm use --delete-prefix "$NODE_VERSION"
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-  export DISPLAY=:99.0
   sleep 3
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
   brew update
