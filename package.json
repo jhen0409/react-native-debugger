@@ -18,7 +18,7 @@
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "jest __tests__",
-    "test-e2e": "jest __e2e__ --forceExit",
+    "test-e2e": "jest __e2e__ --runInBand --forceExit",
     "postinstall": "node ./scripts/postinstall.js"
   },
   "repository": {
@@ -69,7 +69,7 @@
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.4",
     "whatwg-fetch": "^2.0.3",
-    "ws": "^3.3.3"
+    "ws": "^7.1.1"
   },
   "dependencies": {
     "adbkit": "^2.11.0",
