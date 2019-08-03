@@ -380,6 +380,389 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 }"
 `;
 
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-commonunity/cli (RN ^0.60.0) 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = getDevToolsMiddleware;
+
+var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+
+function _cliTools() {
+  const data = require(\\"@react-native-community/cli-tools\\");
+
+  _cliTools = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function _child_process() {
+  const data = require(\\"child_process\\");
+
+  _child_process = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @format
+ */
+function launchChromeDevTools(port, args = '') {
+  const debuggerURL = \`http://localhost:\${port}/debugger-ui\${args}\`;
+
+  _cliTools().logger.info('Launching Dev Tools...');
+
+  (0, _launchChrome.default)(debuggerURL);
+}
+
+function escapePath(pathname) {
+  // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return \`\\"\${pathname}\\"\`;
+}
+
+function launchDevTools({
+  port,
+  watchFolders
+}, isChromeConnected) {
+  // Explicit config always wins
+  const customDebugger = process.env.REACT_DEBUGGER;
+
+  if (customDebugger) {
+    startCustomDebugger({
+      watchFolders,
+      customDebugger
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port);
+  }
+}
+
+function startCustomDebugger({
+  watchFolders,
+  customDebugger
+}) {
+  const folders = watchFolders.map(escapePath).join(' ');
+  const command = \`\${customDebugger} \${folders}\`;
+
+  _cliTools().logger.info('Starting custom debugger by executing:', command);
+
+  (0, _child_process().exec)(command, function (error, stdout, stderr) {
+    if (error !== null) {
+      _cliTools().logger.error('Error while starting custom debugger:', error);
+    }
+  });
+}
+
+function getDevToolsMiddleware(options, isChromeConnected) {
+  return function devToolsMiddleware(req, res, next) {
+    if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+}"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-commonunity/cli (RN ^0.60.0) 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = getDevToolsMiddleware;
+
+var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+
+function _cliTools() {
+  const data = require(\\"@react-native-community/cli-tools\\");
+
+  _cliTools = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function _child_process() {
+  const data = require(\\"child_process\\");
+
+  _child_process = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @format
+ */
+/* react-native-debugger-patch start */
+var __opn = require('opn');
+var __fs = require('fs');
+var __path = require('path');
+var __net = require('net');
+var __childProcess = require('child_process');
+var __home_env = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
+var __port_file = __path.join(process.env[__home_env], '.rndebugger_port');
+
+function __connectToRND(rndPath, log, cb) {
+  var __port;
+  try {
+    __port = __fs.readFileSync(__port_file, 'utf-8');
+  } catch (e) {
+    log && console.log(
+      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+    );
+    return cb(false);
+  }
+  var __c = __net.createConnection({ port: __port }, () => {
+    let pass = false;
+    __c.setEncoding('utf-8');
+    __c.write(JSON.stringify({ path: rndPath }));
+    __c.on('data', data => {
+      pass = data === 'success';
+      __c.end();
+    });
+    const __timeoutId = setTimeout(() => {
+      log && console.log(
+        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+      );
+      __c.end();
+    }, 1000);
+    __c.on('end', () => {
+      clearTimeout(__timeoutId);
+      !pass && log && console.log(
+        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+      );
+      cb(pass);
+    });
+
+  });
+}
+
+var __rndebuggerIsOpening = false;
+function launchChromeDevTools(port, args = '', skipRNDebugger) {
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + port + '&args=' + args;
+
+  if (__rndebuggerIsOpening) return;
+  __rndebuggerIsOpening = true;
+  if (process.platform === 'darwin' && !skipRNDebugger) {
+    var __env = Object.assign({}, process.env);
+    // This env is specified from Expo (and CRNA), we need avoid it included in rndebugger
+    delete __env.ELECTRON_RUN_AS_NODE;
+    __childProcess
+      .spawn('open', ['-g', '-a', 'React Native Debugger', __rnd_path], { env: __env })
+      .once('close', code => {
+        if (code > 0) {
+          __connectToRND(__rnd_path, false, pass => {
+            if (!pass) {
+              console.log(
+                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
+                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+              );
+            }
+            __rndebuggerIsOpening = false;
+            !pass && launchChromeDevTools(port, args, true);
+          });
+        } else {
+          __rndebuggerIsOpening = false;
+        }
+      })
+    return;
+  } else if (!skipRNDebugger) {
+    __connectToRND(__rnd_path, true, pass => {
+      __rndebuggerIsOpening = false;
+      !pass && launchChromeDevTools(port, args, true);
+    });
+    return;
+  }
+  __rndebuggerIsOpening = false;
+/* react-native-debugger-patch end */
+
+  const debuggerURL = \`http://localhost:\${port}/debugger-ui\${args}\`;
+
+  _cliTools().logger.info('Launching Dev Tools...');
+
+  (0, _launchChrome.default)(debuggerURL);
+}
+
+function escapePath(pathname) {
+  // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return \`\\"\${pathname}\\"\`;
+}
+
+function launchDevTools({
+  port,
+  watchFolders
+}, isChromeConnected) {
+  // Explicit config always wins
+  const customDebugger = process.env.REACT_DEBUGGER;
+
+  if (customDebugger) {
+    startCustomDebugger({
+      watchFolders,
+      customDebugger
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port);
+  }
+}
+
+function startCustomDebugger({
+  watchFolders,
+  customDebugger
+}) {
+  const folders = watchFolders.map(escapePath).join(' ');
+  const command = \`\${customDebugger} \${folders}\`;
+
+  _cliTools().logger.info('Starting custom debugger by executing:', command);
+
+  (0, _child_process().exec)(command, function (error, stdout, stderr) {
+    if (error !== null) {
+      _cliTools().logger.error('Error while starting custom debugger:', error);
+    }
+  });
+}
+
+function getDevToolsMiddleware(options, isChromeConnected) {
+  return function devToolsMiddleware(req, res, next) {
+    if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+}"
+`;
+
+exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-commonunity/cli (RN ^0.60.0) 3`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = getDevToolsMiddleware;
+
+var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+
+function _cliTools() {
+  const data = require(\\"@react-native-community/cli-tools\\");
+
+  _cliTools = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function _child_process() {
+  const data = require(\\"child_process\\");
+
+  _child_process = function () {
+    return data;
+  };
+
+  return data;
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @format
+ */
+function launchChromeDevTools(port, args = '') {
+
+  const debuggerURL = \`http://localhost:\${port}/debugger-ui\${args}\`;
+
+  _cliTools().logger.info('Launching Dev Tools...');
+
+  (0, _launchChrome.default)(debuggerURL);
+}
+
+function escapePath(pathname) {
+  // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return \`\\"\${pathname}\\"\`;
+}
+
+function launchDevTools({
+  port,
+  watchFolders
+}, isChromeConnected) {
+  // Explicit config always wins
+  const customDebugger = process.env.REACT_DEBUGGER;
+
+  if (customDebugger) {
+    startCustomDebugger({
+      watchFolders,
+      customDebugger
+    });
+  } else if (!isChromeConnected()) {
+    // Dev tools are not yet open; we need to open a session
+    launchChromeDevTools(port);
+  }
+}
+
+function startCustomDebugger({
+  watchFolders,
+  customDebugger
+}) {
+  const folders = watchFolders.map(escapePath).join(' ');
+  const command = \`\${customDebugger} \${folders}\`;
+
+  _cliTools().logger.info('Starting custom debugger by executing:', command);
+
+  (0, _child_process().exec)(command, function (error, stdout, stderr) {
+    if (error !== null) {
+      _cliTools().logger.error('Error while starting custom debugger:', error);
+    }
+  });
+}
+
+function getDevToolsMiddleware(options, isChromeConnected) {
+  return function devToolsMiddleware(req, res, next) {
+    if (req.url === '/launch-js-devtools') {
+      launchDevTools(options, isChromeConnected);
+      res.end('OK');
+    } else {
+      next();
+    }
+  };
+}"
+`;
+
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in react-native 0.49 1`] = `
 "/**
  * Copyright (c) 2015-present, Facebook, Inc.
