@@ -7,7 +7,6 @@ nvm use --delete-prefix "$NODE_VERSION"
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   export DISPLAY=:99.0
-  sh -e /etc/init.d/xvfb start
   sleep 3
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
   brew update

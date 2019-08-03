@@ -1,6 +1,8 @@
 os:
   - linux
   - osx
+services:
+  - xvfb
 addons:
   apt:
     sources:
