@@ -131,7 +131,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 /* react-native-debugger-patch start */
-var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
@@ -520,7 +519,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 /* react-native-debugger-patch start */
-var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
@@ -862,7 +860,6 @@ const path = require('path');
 const {exec} = require('child_process');
 
 /* react-native-debugger-patch start */
-var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
@@ -1188,7 +1185,6 @@ const launchChrome = require('../util/launchChrome');
 const {exec} = require('child_process');
 
 /* react-native-debugger-patch start */
-var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
@@ -1511,7 +1507,6 @@ const path = require('path');
 const {exec} = require('child_process');
 
 /* react-native-debugger-patch start */
-var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
