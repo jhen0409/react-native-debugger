@@ -1,8 +1,7 @@
 {
   "name": "react-native-debugger-open",
-  "version": "0.3.19",
-  "description":
-    "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
+  "version": "0.3.20",
+  "description": "Replace `open debugger-ui with Chrome` to `open React Native Debugger` from react-native packager",
   "bin": {
     "rndebugger-open": "bin/rndebugger-open.js"
   },
@@ -11,10 +10,20 @@
     "build": "babel src --out-dir lib --ignore __tests__",
     "prepublish": "npm run build"
   },
-  "files": ["bin", "lib"],
+  "files": [
+    "bin",
+    "lib"
+  ],
   "homepage": "https://github.com/jhen0409/react-native-debugger",
   "repository": "https://github.com/jhen0409/react-native-debugger/tree/master/npm-package",
-  "keywords": ["react", "react-native", "debugger", "react-devtools", "redux-devtools", "electron"],
+  "keywords": [
+    "react",
+    "react-native",
+    "debugger",
+    "react-devtools",
+    "redux-devtools",
+    "electron"
+  ],
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
   "dependencies": {
