@@ -2,13 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import net from 'net';
 import http from 'http';
-import electronPath from 'electron';
-import { Application } from 'spectron';
+import createApplication from './rndebugger';
 import buildTestBundle, { bundlePath } from './buildTestBundle';
 import createMockRNServer from './mockRNServer';
 import autoUpdateFeed from '../auto_updater.json';
-
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
+import { delay } from './utils';
 
 // eslint-disable-next-line
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 6e4;
@@ -18,13 +16,7 @@ describe('Application launch', () => {
 
   beforeAll(async () => {
     await buildTestBundle();
-    app = new Application({
-      path: electronPath,
-      args: ['--user-dir=__e2e__/tmp', 'dist'],
-      env: {
-        E2E_TEST: 1,
-      },
-    });
+    app = createApplication();
     return app.start();
   });
 

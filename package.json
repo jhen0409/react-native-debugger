@@ -104,6 +104,9 @@
     "electron-installer-redhat": "^1.0.0"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/__e2e__/TestApp/"
+    ]
   }
 }

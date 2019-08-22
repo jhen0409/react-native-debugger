@@ -1,0 +1,6 @@
+{
+  "globals": {
+    "simctl": true,
+    "rndebugger": true
+  }
+}
