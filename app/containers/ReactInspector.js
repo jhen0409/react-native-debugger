@@ -65,14 +65,10 @@ export default class ReactInspector extends Component {
       this.closeServerIfExists();
       if (isReactPanelOpen(this.props)) {
         this.server = this.startServer();
-        this.setDefaultThemeName(nextProps.setting.themeName);
       }
       nextWorker.addEventListener('message', this.workerOnMessage);
     } else if (!nextWorker) {
       this.closeServerIfExists();
-    }
-    if (this.props.setting.themeName !== nextProps.setting.themeName) {
-      this.setDefaultThemeName(nextProps.setting.themeName);
     }
     // Open / Close server when react panel opened / hidden
     if (!worker && !nextWorker) return;
@@ -90,17 +86,6 @@ export default class ReactInspector extends Component {
 
   componentWillUnmount() {
     this.closeServerIfExists();
-  }
-
-  setDefaultThemeName(themeName) {
-    const theme = window.query.defaultReactDevToolsTheme;
-    const inspector = getReactInspector();
-    // TODO: Get setDefaultThemeName back
-    if (!theme || theme === 'RNDebugger') {
-      // inspector.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
-    } else {
-      // inspector.setDefaultThemeName(theme);
-    }
   }
 
   listeningPort = window.reactDevToolsPort;
