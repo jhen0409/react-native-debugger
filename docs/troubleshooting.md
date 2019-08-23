@@ -4,7 +4,7 @@
 
 - For Android and React Native version less than v0.60, you need to add and link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) package
 - If you're not using dev bundle (dev=true) from React Native packager, it will not working as expected.
-- For some reasons, some dependencies affected [Promise](https://github.com/jhen0409/react-native-debugger/blob/master/app/worker/utils.js#L7) behavior. It is recommended to use the initial project to find out the reason.
+- For some reasons, some dependencies may affected [Promise](https://github.com/jhen0409/react-native-debugger/blob/master/app/worker/utils.js#L7) behavior. It is recommended to use the initial project to find out the reason.
 - If you are sure it is caused by a new version of React Native, please file an new issue.
 
 ## How to resolve problem of high memory usage on devtools?
