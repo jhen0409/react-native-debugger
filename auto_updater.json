@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.11/rn-debugger-macos-x64.zip",
-  "name": "v0.9.11",
-  "notes": "1. Fix log AsyncStorage content if no keys\n2. Update patchFetchPolyfill to support React Native v0.60\n3. Bump react-devtools-core to v3.6.2"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.12/rn-debugger-macos-x64.zip",
+  "name": "v0.9.12",
+  "notes": "1. Fix wrong version of react-devtools-core"
 }
