@@ -12,14 +12,14 @@ We have context menu (right-click) for provides useful features:
 
 ![Context menu](https://cloud.githubusercontent.com/assets/3001525/25920996/5c488966-3606-11e7-8d0c-cb564671067b.gif)
 
-- Reload JS [iOS only]
-- Toggle Elements Inspector [iOS only]
+- Reload
+- Toggle Elements Inspector
 - Show Developer Menu [iOS only]
 - Enable / Disable [Network Inspect](debugger-integration.md#how-network-inspect-works)
 - Log AsyncStorage content
 - Clear AsyncStorage
 
-It includes three developer menu features for iOS, these would be useful for real device, instead of open developer menu in iOS device manually.
+It includes the developer menu features, these would be useful for real device, instead of open developer menu in device manually.
 
 ## Touch Bar in macOS
 
@@ -31,8 +31,8 @@ If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https:
 
 ## Keyboard shortcuts
 
-- Reload JS (macOS: `Command+R`, Windows / Linux: `Ctrl+R`) [iOS only]
-- Toggle Elements Inspector (macOS: `Command+I`, Windows / Linux: `Ctrl+I`) (RN ^0.43 support) [iOS only]
+- Reload JS (macOS: `Command+R`, Windows / Linux: `Ctrl+R`)
+- Toggle Elements Inspector (macOS: `Command+I`, Windows / Linux: `Ctrl+I`)
 - New Debugger Window (macOS: `Command+T`, Windows / Linux: `Ctrl+T`)
 - Toggle Developer Tools (macOS: `Command+Option+I`, Windows / Linux: `Ctrl+Alt+I`)
 - Toggle Redux DevTools (macOS: `Command+Option+J`, Windows / Linux: `Ctrl+Alt+J`)
@@ -41,7 +41,7 @@ If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https:
 
 You can also read [Keyboard Shortcuts Reference of Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools/shortcuts).
 
-## Android support for iOS only features
+## Android support for all features on React Native version < 0.60
 
 You could link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) in your project to enable the features:
 
