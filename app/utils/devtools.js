@@ -25,12 +25,17 @@ export const clearNetworkLogs = win => {
 
 export const selectRNDebuggerWorkerContext = win => {
   if (win.devToolsWebContents) {
-    return win.devToolsWebContents.executeJavaScript(`(() => {
+    return win.devToolsWebContents.executeJavaScript(`setTimeout(() => {
       const { console } = UI.panels;
       if (console && console._view && console._view._consoleContextSelector) {
         const selector = console._view._consoleContextSelector;
-        selector.itemSelected(selector._items._items[1]);
+        const item = selector._items._items.find(
+          item => item._label === 'RNDebuggerWorker.js'
+        );
+        if (item) {
+          selector.itemSelected(item);
+        }
       }
-    })()`);
+    }, 100)`);
   }
 };
