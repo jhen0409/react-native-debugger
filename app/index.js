@@ -16,9 +16,6 @@ const currentWindow = remote.getCurrentWindow();
 
 webFrame.setZoomFactor(1);
 webFrame.setVisualZoomLevelLimits(1, 1);
-if (process.env.E2E_TEST) {
-  webFrame.registerURLSchemeAsPrivileged('file');
-}
 
 // Prevent dropped file
 document.addEventListener('drop', e => {
@@ -47,8 +44,8 @@ window.checkWindowInfo = () => {
 };
 
 window.beforeWindowClose = () =>
-  new Promise(
-    resolve => (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
+  new Promise(resolve =>
+    (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
   );
 
 // For security, we should disable nodeIntegration when user use this open a website

@@ -61,7 +61,7 @@
     "mobx-remotedev": "^0.2.8",
     "raw-loader": "^0.5.1",
     "shelljs": "^0.8.2",
-    "spectron": "^3.8.0",
+    "spectron": "^8.0.0",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.16.1",
