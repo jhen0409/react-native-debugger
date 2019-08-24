@@ -1,5 +1,4 @@
 ${startFlag}
-var __opn = require('opn');
 var __fs = require('fs');
 var __path = require('path');
 var __net = require('net');
