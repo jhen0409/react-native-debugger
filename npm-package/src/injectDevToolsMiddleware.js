@@ -117,8 +117,13 @@ const injectCode = (
   });
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
-  let start = middlewareCode.indexOf(startFlag); // already injected ?
+  let start = middlewareCode.indexOf(startFlag);
   let end = middlewareCode.indexOf(endFlag) + endFlag.length;
+  // already injected
+  if (start > -1 && middlewareCode.indexOf(replaceFuncFlag) === -1) {
+    start = -1;
+    end = -1;
+  }
   if (start === -1) {
     start = middlewareCode.indexOf(funcFlag);
     end = start + funcFlag.length;
@@ -142,13 +147,21 @@ export const inject = (modulePath, moduleName) => {
   return true;
 };
 
-const revertCode = (modulePath, { func: funcFlag, target, dir, file }) => {
+const revertCode = (
+  modulePath,
+  { func: funcFlag, replaceFunc: replaceFuncFlag, target, dir, file }
+) => {
   const filePath = join(modulePath, target, dir, file);
   if (!fs.existsSync(filePath)) return false;
 
   const middlewareCode = fs.readFileSync(filePath, 'utf-8');
-  const start = middlewareCode.indexOf(startFlag); // already injected ?
-  const end = middlewareCode.indexOf(endFlag) + endFlag.length;
+  let start = middlewareCode.indexOf(startFlag);
+  let end = middlewareCode.indexOf(endFlag) + endFlag.length;
+  // already injected
+  if (start > -1 && middlewareCode.indexOf(replaceFuncFlag) === -1) {
+    start = -1;
+    end = -1;
+  }
   if (start === -1) return false;
   fs.writeFileSync(
     filePath,

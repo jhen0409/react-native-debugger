@@ -1093,7 +1093,10 @@ function escapePath(pathname) {
   return \`\\"\${pathname}\\"\`;
 }
 
-function launchChromeDevTools(port, args = '') {
+function launchDevTools({
+  port,
+  watchFolders
+}, isDebuggerConnected) {
 
   // Explicit config always wins
   const customDebugger = process.env.REACT_DEBUGGER;
