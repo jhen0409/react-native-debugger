@@ -6,6 +6,8 @@ nvm install "$NODE_VERSION"
 nvm use --delete-prefix "$NODE_VERSION"
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  export DISPLAY=:99.0
+  Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   sleep 3
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
   brew update
@@ -15,9 +17,10 @@ fi
 node --version
 npm --version
 
+yarn global add xvfb-maybe
 yarn
 cd npm-package && yarn && cd ..
 yarn lint
 yarn test
 yarn build
-yarn test-e2e
+xvfb-maybe yarn test-e2e
