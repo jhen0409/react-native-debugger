@@ -95,7 +95,7 @@ describe('Application launch', () => {
     expect(exist).toBe(true);
   });
 
-  const customRNServerPort = 8088;
+  const customRNServerPort = 8098;
   const getURLFromConnection = server =>
     new Promise(resolve => {
       server.on('connection', (socket, req) => {
