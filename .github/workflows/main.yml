@@ -1,0 +1,43 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-10.14, ubuntu-18.04]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 9.x
+      - name: CI
+        run: |
+          if [[ "$OSTYPE" == "linux-gnu" ]]; then
+            export DISPLAY=:99.0
+            Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          fi
+          npm i -g xvfb-maybe
+          yarn
+          cd npm-package && yarn && cd ..
+          yarn lint
+          yarn test
+          yarn build
+          xvfb-maybe yarn test-e2e
+  build-test-windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 9.x
+      - name: CI
+        run: |
+          yarn
+          cd npm-package && yarn && cd ..
+          yarn lint
+          yarn build
+          yarn test
+          yarn test-e2e

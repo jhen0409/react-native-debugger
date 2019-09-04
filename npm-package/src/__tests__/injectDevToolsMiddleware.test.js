@@ -5,7 +5,7 @@ import { inject, revert } from '../injectDevToolsMiddleware';
 
 const getRemoteMiddlewarePath = version =>
   `https://raw.githubusercontent.com/facebook/react-native/${version}-stable/local-cli/server/middleware/getDevToolsMiddleware.js`;
-const versions = ['0.49', '0.50'];
+
 const modulePath = path.join(__dirname, 'tmp');
 
 const middlewareDir = 'local-cli/server/middleware';
@@ -15,7 +15,8 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
   afterEach(() => {
     fs.removeSync(path.join(__dirname, 'tmp'));
   });
-  versions.forEach(version => {
+  const oldVersions = ['0.49', '0.50'];
+  oldVersions.forEach(version => {
     test(`inject / revert in react-native ${version}`, async () => {
       const code = await fetch(getRemoteMiddlewarePath(version)).then(res => res.text());
       fs.ensureDirSync(path.join(modulePath, 'react-native', middlewareDir));
@@ -65,57 +66,44 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
     ).toMatchSnapshot();
   });
 
-  test('inject / revert in @react-native-commonunity/cli (RN ^0.59.0-rc.0)', async () => {
-    const mDir = 'build/commands/server/middleware';
-    const mPath = path.join(mDir, 'getDevToolsMiddleware.js');
-    const code = await fetch(
-      'https://unpkg.com/@react-native-community/cli@1.5.0/build/commands/server/middleware/getDevToolsMiddleware.js'
-    ).then(res => res.text());
-    fs.ensureDirSync(path.join(modulePath, '@react-native-community/cli', mDir));
-    fs.outputFileSync(path.join(modulePath, '@react-native-community/cli', mPath), code);
-    fs.outputFileSync(
-      path.join(modulePath, 'react-native', 'package.json'),
-      JSON.stringify({
-        version: '0.59.0-rc.0',
-        name: 'react-native',
-      })
-    );
+  const cliVersions = [
+    {
+      rn: '0.59.0-rc.0',
+      cli: ['1.5.0'],
+    },
+    {
+      rn: '0.60.0',
+      cli: ['2.8.3', '2.9.0'],
+    },
+  ];
+  cliVersions.forEach(({ rn, cli }) => {
+    cli.forEach(version => {
+      test(`inject / revert in @react-native-community/cli (${rn} - v${version})`, async () => {
+        const mDir = 'build/commands/server/middleware';
+        const mPath = path.join(mDir, 'getDevToolsMiddleware.js');
+        const code = await fetch(
+          `https://unpkg.com/@react-native-community/cli@${version}/build/commands/server/middleware/getDevToolsMiddleware.js`
+        ).then(res => res.text());
+        fs.ensureDirSync(path.join(modulePath, '@react-native-community/cli', mDir));
+        fs.outputFileSync(path.join(modulePath, '@react-native-community/cli', mPath), code);
+        fs.outputFileSync(
+          path.join(modulePath, 'react-native', 'package.json'),
+          JSON.stringify({
+            version: '0.60.0',
+            name: 'react-native',
+          })
+        );
 
-    expect(code).toMatchSnapshot();
-    inject(modulePath, 'react-native');
-    expect(
-      fs.readFileSync(path.join(modulePath, '@react-native-community/cli', mPath), 'utf-8')
-    ).toMatchSnapshot();
-    revert(modulePath, 'react-native');
-    expect(
-      fs.readFileSync(path.join(modulePath, '@react-native-community/cli', mPath), 'utf-8')
-    ).toMatchSnapshot();
-  });
-
-  test('inject / revert in @react-native-commonunity/cli (RN ^0.60.0)', async () => {
-    const mDir = 'build/commands/server/middleware';
-    const mPath = path.join(mDir, 'getDevToolsMiddleware.js');
-    const code = await fetch(
-      'https://unpkg.com/@react-native-community/cli@2.8.3/build/commands/server/middleware/getDevToolsMiddleware.js'
-    ).then(res => res.text());
-    fs.ensureDirSync(path.join(modulePath, '@react-native-community/cli', mDir));
-    fs.outputFileSync(path.join(modulePath, '@react-native-community/cli', mPath), code);
-    fs.outputFileSync(
-      path.join(modulePath, 'react-native', 'package.json'),
-      JSON.stringify({
-        version: '0.60.0',
-        name: 'react-native',
-      })
-    );
-
-    expect(code).toMatchSnapshot();
-    inject(modulePath, 'react-native');
-    expect(
-      fs.readFileSync(path.join(modulePath, '@react-native-community/cli', mPath), 'utf-8')
-    ).toMatchSnapshot();
-    revert(modulePath, 'react-native');
-    expect(
-      fs.readFileSync(path.join(modulePath, '@react-native-community/cli', mPath), 'utf-8')
-    ).toMatchSnapshot();
+        expect(code).toMatchSnapshot();
+        inject(modulePath, 'react-native');
+        expect(
+          fs.readFileSync(path.join(modulePath, '@react-native-community/cli', mPath), 'utf-8')
+        ).toMatchSnapshot();
+        revert(modulePath, 'react-native');
+        expect(
+          fs.readFileSync(path.join(modulePath, '@react-native-community/cli', mPath), 'utf-8')
+        ).toMatchSnapshot();
+      });
+    });
   });
 });
