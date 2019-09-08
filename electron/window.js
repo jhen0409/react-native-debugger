@@ -1,5 +1,4 @@
 import path from 'path';
-import qs from 'querystring';
 import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';

@@ -17,7 +17,7 @@
     "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.babel.js",
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
-    "test": "jest __tests__",
+    "test": "yarn lint && jest __tests__",
     "test-e2e": "jest __e2e__ --forceExit",
     "postinstall": "node ./scripts/postinstall.js"
   },
