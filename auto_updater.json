@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.12/rn-debugger-macos-x64.zip",
-  "name": "v0.9.12",
-  "notes": "1. Fix wrong version of react-devtools-core"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.13/rn-debugger-macos-x64.zip",
+  "name": "v0.9.13",
+  "notes": "1. [macOS] Add app notarization\n2. Add `defaultReactDevToolsPort` for config file"
 }
