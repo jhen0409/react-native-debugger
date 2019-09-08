@@ -19,7 +19,7 @@
     "lint": "eslint .",
     "test": "jest __tests__",
     "test-e2e": "jest __e2e__ --forceExit",
-    "postinstall": "node ./scripts/postinstall.js"
+    "postinstall": "patch-package && node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -82,6 +82,7 @@
     "json5": "^0.5.1",
     "multiline-template": "^0.1.2",
     "node-watch": "^0.5.6",
+    "patch-package": "^6.1.4",
     "portscanner": "^2.1.1",
     "prop-types": "^15.6.1",
     "react": "^15.6.1",
