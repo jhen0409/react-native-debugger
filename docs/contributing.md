@@ -36,7 +36,6 @@ $ yarn start
 Run lint and test, currently we just wrote E2E test for RNDebugger.
 
 ```bash
-$ yarn lint
 $ yarn test
 $ yarn test-e2e
 ```

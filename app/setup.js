@@ -1,16 +1,11 @@
-import url from 'url';
-import qs from 'querystring';
+import config from './utils/config';
 
-const query = qs.parse(url.parse(location.href).query);
-
-window.query = query;
-
-if (query.editor) {
-  process.env.EDITOR = query.editor;
+if (config.editor) {
+  process.env.EDITOR = config.editor;
 }
 
-if (query.fontFamily) {
+if (config.fontFamily) {
   const styleEl = document.createElement('style');
   document.head.appendChild(styleEl);
-  styleEl.sheet.insertRule(`div *, span * { font-family: ${query.fontFamily} !important; }`, 0);
+  styleEl.sheet.insertRule(`div *, span * { font-family: ${config.fontFamily} !important; }`, 0);
 }

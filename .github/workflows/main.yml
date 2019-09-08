@@ -22,7 +22,6 @@ jobs:
           npm i -g xvfb-maybe
           yarn
           cd npm-package && yarn && cd ..
-          yarn lint
           yarn test
           yarn build
           xvfb-maybe yarn test-e2e
@@ -37,7 +36,6 @@ jobs:
         run: |
           yarn
           cd npm-package && yarn && cd ..
-          yarn lint
           yarn build
           yarn test
           yarn test-e2e

@@ -35,6 +35,12 @@ module.exports = `{
   // see https://github.com/facebook/react-devtools/blob/master/frontend/Themes/Themes.js to get more
   defaultReactDevToolsTheme: 'RNDebugger',
 
+  // Set default react-devtools port (default is \`19567+\` if it is not being used).
+  // The devtools backend of React Native will use the port to connect to the devtools server.
+  // You should use that if you have some rules for binding port.
+  //   (like https://github.com/jhen0409/react-native-debugger/issues/397)
+  defaultReactDevToolsPort: 19567,
+
   // Enable Network Inspect by default
   // See https://github.com/jhen0409/react-native-debugger/blob/master/docs/network-inspect-of-chrome-devtools.md
   defaultNetworkInspect: false,
