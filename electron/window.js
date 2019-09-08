@@ -94,7 +94,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
-  const query = {
+  win.debuggerConfig = {
     port,
     editor: config.editor,
     fontFamily: config.fontFamily,
@@ -103,10 +103,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     networkInspect: config.defaultNetworkInspect && 1,
     isPortSettingRequired: isPortSettingRequired && 1,
   };
-  Object.keys(query).forEach(key => {
-    if (!query[key]) delete query[key];
-  });
-  win.loadURL(`file://${path.resolve(__dirname)}/app.html?${qs.stringify(query)}`);
+  win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
   win.webContents.on('did-finish-load', () => {
     win.webContents.setZoomLevel(config.zoomLevel || store.get('zoomLevel', 0));
     win.focus();

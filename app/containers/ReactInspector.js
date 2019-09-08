@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { shell } from 'electron';
 import { tryADBReverse } from '../utils/adb';
+import config from '../utils/config';
 
 let ReactServer;
 const getReactInspector = () => {
@@ -93,7 +94,7 @@ export default class ReactInspector extends Component {
   }
 
   setDefaultThemeName(themeName) {
-    const theme = window.query.defaultReactDevToolsTheme;
+    const theme = config.defaultReactDevToolsTheme;
     const inspector = getReactInspector();
     if (!theme || theme === 'RNDebugger') {
       inspector.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');

@@ -10,6 +10,7 @@ import configureStore from './store/configureStore';
 import { beforeWindowClose } from './actions/debugger';
 import { invokeDevMethod } from './utils/devMenu';
 import { client, tryADBReverse } from './utils/adb';
+import config from './utils/config';
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
 const currentWindow = remote.getCurrentWindow();
@@ -79,7 +80,7 @@ if (
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
 }
 
-const { defaultReactDevToolsPort = 19567 } = window.query;
+const { defaultReactDevToolsPort = 19567 } = config;
 findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
   window.reactDevToolsPort = port;
   render(
