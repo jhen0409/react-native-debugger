@@ -99,6 +99,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     editor: config.editor,
     fontFamily: config.fontFamily,
     defaultReactDevToolsTheme: config.defaultReactDevToolsTheme,
+    defaultReactDevToolsPort: config.defaultReactDevToolsPort,
     networkInspect: config.defaultNetworkInspect && 1,
     isPortSettingRequired: isPortSettingRequired && 1,
   };

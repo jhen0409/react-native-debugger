@@ -8,6 +8,7 @@ Object {
     "defaultRNPackagerPorts": Array [
       8081,
     ],
+    "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
     "windowBounds": Object {
@@ -25,6 +26,7 @@ Object {
     "defaultRNPackagerPorts": Array [
       8081,
     ],
+    "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
     "windowBounds": Object {
@@ -50,6 +52,7 @@ Object {
     "defaultRNPackagerPorts": Array [
       8081,
     ],
+    "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
     "windowBounds": Object {

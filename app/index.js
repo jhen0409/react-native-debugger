@@ -47,8 +47,8 @@ window.checkWindowInfo = () => {
 };
 
 window.beforeWindowClose = () =>
-  new Promise(
-    resolve => (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
+  new Promise(resolve =>
+    (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
   );
 
 // For security, we should disable nodeIntegration when user use this open a website
@@ -79,7 +79,8 @@ if (
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
 }
 
-findAPortNotInUse(19567).then(port => {
+const { defaultReactDevToolsPort = 19567 } = window.query;
+findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
   window.reactDevToolsPort = port;
   render(
     <Provider store={store}>
