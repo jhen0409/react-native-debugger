@@ -17,9 +17,9 @@
     "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.babel.js",
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
-    "test": "jest __tests__",
+    "test": "yarn lint && jest __tests__",
     "test-e2e": "jest __e2e__ --runInBand --forceExit",
-    "postinstall": "node ./scripts/postinstall.js"
+    "postinstall": "patch-package && node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     "electron-devtools-installer": "^2.2.3",
     "electron-installer-dmg": "^2.0.0",
     "electron-installer-windows": "^1.1.0",
-    "electron-packager": "^13.0.1",
+    "electron-packager": "^14.0.5",
     "electron-rebuild": "^1.7.3",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^10.0.0",
@@ -82,6 +82,7 @@
     "json5": "^0.5.1",
     "multiline-template": "^0.1.2",
     "node-watch": "^0.5.6",
+    "patch-package": "^6.1.4",
     "portscanner": "^2.1.1",
     "prop-types": "^15.6.1",
     "react": "^15.6.1",

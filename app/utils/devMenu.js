@@ -1,6 +1,7 @@
 import { remote } from 'electron';
 import contextMenu from 'electron-context-menu';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
+import config from './config';
 
 const { nativeImage } = remote;
 const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
@@ -33,7 +34,7 @@ const setTouchBar = () =>
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
-let networkInspectEnabled = !!window.query.networkInspect;
+let networkInspectEnabled = !!config.networkInspect;
 export const networkInspect = {
   isEnabled: () => !!networkInspectEnabled,
   getHighlightColor: () => (networkInspectEnabled ? '#7A7A7A' : '#363636'),

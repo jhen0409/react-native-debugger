@@ -16,6 +16,7 @@ import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
+import config from '../utils/config';
 import deltaUrlToBlobUrl from './delta/deltaUrlToBlobUrl';
 import checkDeltaAvailable from './delta/checkDeltaAvailable';
 
@@ -202,7 +203,7 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
   if (host === packagerHost && port === Number(packagerPort)) return;
 
   host = packagerHost || 'localhost';
-  port = packagerPort || window.query.port || 8081;
+  port = packagerPort || config.port || 8081;
   if (socket) {
     shutdownJSRuntime();
     socket.close();

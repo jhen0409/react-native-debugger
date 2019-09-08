@@ -10,6 +10,7 @@ import configureStore from './store/configureStore';
 import { beforeWindowClose } from './actions/debugger';
 import { invokeDevMethod } from './utils/devMenu';
 import { client, tryADBReverse } from './utils/adb';
+import config from './utils/config';
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
 const currentWindow = remote.getCurrentWindow();
@@ -47,8 +48,8 @@ window.checkWindowInfo = () => {
 };
 
 window.beforeWindowClose = () =>
-  new Promise(
-    resolve => (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
+  new Promise(resolve =>
+    (store.dispatch(beforeWindowClose()) ? setTimeout(resolve, 200) : resolve())
   );
 
 // For security, we should disable nodeIntegration when user use this open a website
@@ -79,7 +80,8 @@ if (
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
 }
 
-findAPortNotInUse(19567).then(port => {
+const { defaultReactDevToolsPort = 19567 } = config;
+findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
   window.reactDevToolsPort = port;
   render(
     <Provider store={store}>

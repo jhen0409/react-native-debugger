@@ -3,8 +3,7 @@ import {
   SET_DEBUGGER_WORKER,
   SET_DEBUGGER_LOCATION,
 } from '../actions/debugger';
-
-const { isPortSettingRequired } = window.query;
+import config from '../utils/config';
 
 function getStatusMessage(status, port) {
   let message;
@@ -35,12 +34,12 @@ function getStatusMessage(status, port) {
 const initialState = {
   worker: null,
   status: 'disconnected',
-  statusMessage: getStatusMessage(isPortSettingRequired ? 'new' : 'disconnected', 8081),
+  statusMessage: getStatusMessage(config.isPortSettingRequired ? 'new' : 'disconnected', 8081),
   location: {
     host: 'localhost',
-    port: window.query.port || 8081,
+    port: config.port || 8081,
   },
-  isPortSettingRequired,
+  isPortSettingRequired: config.isPortSettingRequired,
 };
 
 const actionsMap = {
