@@ -1,8 +1,5 @@
 {
-  "presets": [
-    ["env", { "targets": { "node": "7.6" } }],
-    "react"
-  ],
+  "presets": [["env", { "targets": { "node": "10.11" } }], "react"],
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",

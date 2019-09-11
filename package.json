@@ -43,13 +43,13 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.2.0",
     "devtron": "^1.4.0",
-    "electron": "~1.7.15",
+    "electron": "^6.0.8",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.3",
     "electron-installer-dmg": "^2.0.0",
     "electron-installer-windows": "^1.1.0",
     "electron-packager": "^14.0.5",
-    "electron-rebuild": "^1.7.3",
+    "electron-rebuild": "^1.8.6",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-plugin-import": "^1.12.0",
@@ -61,7 +61,7 @@
     "mobx-remotedev": "^0.2.8",
     "raw-loader": "^0.5.1",
     "shelljs": "^0.8.2",
-    "spectron": "^3.8.0",
+    "spectron": "^8.0.0",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.16.1",
@@ -74,7 +74,7 @@
   "dependencies": {
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "^2.2.3",
-    "electron-context-menu": "jhen0409/electron-context-menu#async-popup",
+    "electron-context-menu": "^0.11.0",
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",
     "electron-store": "^1.2.0",
@@ -101,8 +101,7 @@
   },
   "optionalDependencies": {
     "electron-installer-debian": "^1.1.0",
-    "electron-installer-redhat": "^1.0.0",
-    "electron-named-image": "^1.0.4"
+    "electron-installer-redhat": "^1.0.0"
   },
   "jest": {
     "testEnvironment": "node"

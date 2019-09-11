@@ -15,8 +15,5 @@
     "apollo-client-devtools": "^2.2.3",
     "electron-store": "^1.2.0",
     "react-devtools-core": "^3.6.2"
-  },
-  "optionalDependencies": {
-    "electron-named-image": "^1.0.4"
   }
 }
