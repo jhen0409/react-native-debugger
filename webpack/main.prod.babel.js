@@ -1,6 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './base.babel';
 
 export default {
@@ -22,9 +22,9 @@ export default {
   optimization: {
     minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         sourceMap: true,
-        uglifyOptions: { output: { comments: false } },
+        terserOptions: { output: { comments: false } },
       }),
     ],
   },
