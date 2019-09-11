@@ -1,5 +1,5 @@
 {
   "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.9.14/rn-debugger-macos-x64.zip",
   "name": "v0.9.14",
-  "notes": "1. [macOS] Fix app-bundle-id for release"
+  "notes": "1. [macOS] Fix app-bundle-id for release\n\nPlease note that if you are using v0.9.13, automatic updates may not work properly."
 }
