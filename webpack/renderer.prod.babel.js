@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './base.babel';
 
@@ -31,11 +31,9 @@ const baseProdConfig = {
   optimization: {
     minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         sourceMap: true,
-        uglifyOptions: {
-          output: { comments: false },
-        },
+        terserOptions: { output: { comments: false } },
       }),
     ],
   },
