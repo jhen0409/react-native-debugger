@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { observer } from 'mobx-react/native';
+import { observer } from 'mobx-react';
 
 const styles = StyleSheet.create({
   container: {
