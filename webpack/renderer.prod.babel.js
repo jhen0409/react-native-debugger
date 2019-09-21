@@ -16,7 +16,7 @@ const baseProdConfig = {
       ...baseConfig.module.rules,
       {
         test: /\.css?$/,
-        use: ['style-loader', 'raw-loader'],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
