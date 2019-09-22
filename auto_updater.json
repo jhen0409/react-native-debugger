@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.0/rn-debugger-macos-x64.zip",
-  "name": "v0.10.0",
-  "notes": "Upgrade Electron version to 6.0.8"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.1/rn-debugger-macos-x64.zip",
+  "name": "v0.10.1",
+  "notes": "1. Update Electron version to 6.0.10\n2. Fix raw tab empty issue of Redux DevTools"
 }
