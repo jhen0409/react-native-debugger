@@ -3,13 +3,12 @@ const path = require('path');
 const { rebuild } = require('electron-rebuild');
 
 function rebuildModules(buildPath) {
-  // electron-named-image is only for macOS
   if (process.platform === 'darwin') {
     return rebuild({
       buildPath,
       // eslint-disable-next-line
       electronVersion: require('electron/package.json').version,
-      extraModules: ['electron-named-image'],
+      extraModules: [],
       force: true,
       types: ['prod', 'optional'],
     });

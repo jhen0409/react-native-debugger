@@ -1,7 +1,5 @@
-import { observable, action, useStrict } from 'mobx';
+import { observable, action } from 'mobx';
 import remotedev from 'mobx-remotedev';
-
-useStrict(true);
 
 // Options: https://github.com/zalmoxisus/mobx-remotedev#api
 @remotedev({

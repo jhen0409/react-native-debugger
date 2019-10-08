@@ -20,11 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-@connect(
-  state => state,
-  dispatch => bindActionCreators(CounterActions, dispatch)
-)
-export default class Counter extends Component {
+class Counter extends Component {
   static propTypes = {
     incrementAsync: PropTypes.func.isRequired,
     increment: PropTypes.func.isRequired,
@@ -60,3 +56,8 @@ export default class Counter extends Component {
     );
   }
 }
+
+export default connect(
+  state => state,
+  dispatch => bindActionCreators(CounterActions, dispatch)
+)(Counter);

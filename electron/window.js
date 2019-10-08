@@ -89,6 +89,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
       : {}),
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
+    webPreferences: {
+      nodeIntegration: true,
+    },
     ...config.windowBounds,
   });
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;

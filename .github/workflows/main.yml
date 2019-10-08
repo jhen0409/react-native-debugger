@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 9.x
+          node-version: 10.x
       - name: CI
         run: |
           if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 9.x
+          node-version: 10.x
       - name: CI
         run: |
           yarn

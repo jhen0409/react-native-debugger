@@ -16,7 +16,6 @@ electron-packager dist/ \
   --protocol "rndebugger" \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
   --app-version $npm_package_version \
-  --app-bundle-id='com.rndebugger' \
   --osx-sign.identity='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
   --osx-sign.entitlements=scripts/mac/entitlements.plist \
   --osx-sign.entitlements-inherit=scripts/mac/entitlements.plist \

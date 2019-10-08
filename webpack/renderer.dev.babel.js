@@ -8,7 +8,7 @@ const baseDevConfig = {
   ...baseConfig,
   mode: 'development',
   devtool: 'inline-source-map',
-  devServer: { host, port },
+  devServer: { host, port, disableHostCheck: true },
   output: {
     ...baseConfig.output,
     publicPath: `http://localhost:${port}/js/`,
@@ -18,7 +18,7 @@ const baseDevConfig = {
       ...baseConfig.module.rules,
       {
         test: /\.css?$/,
-        use: ['style-loader', 'raw-loader'],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
