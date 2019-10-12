@@ -22,13 +22,6 @@ const styles = {
     height: '100%',
     justifyContent: 'center',
   },
-  tip: {
-    lineHeight: 1.5,
-  },
-  link: {
-    cursor: 'pointer',
-    color: '#777',
-  },
 };
 
 const isReactPanelOpen = props => props.setting.react;
@@ -146,13 +139,6 @@ export default class ReactInspector extends Component {
       <div id={containerId} style={styles.container}>
         <div id="waiting">
           <h2>{'Waiting for React to connect…'}</h2>
-          <h5 style={styles.tip}>
-            {"If you're using a real device, ensure you have read the "}
-            <span style={styles.link} onClick={this.handleDocLinkClick}>
-              `How to use it with a real device?`
-            </span>
-            {' section in the documentation.'}
-          </h5>
         </div>
       </div>
     );
