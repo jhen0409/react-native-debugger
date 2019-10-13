@@ -1,7 +1,7 @@
 import { remote, app, dialog, BrowserWindow } from 'electron';
 import multiline from 'multiline-template';
 
-const appName = (remote ? remote.app : app).getName();
+const appName = (remote ? remote.app : app).name;
 const detail = multiline`
   | Created by Jhen-Jie Hong
   | (https://github.com/jhen0409)
@@ -37,9 +37,13 @@ export const close = win => win && win.close();
 export const zoom = (win, val) => {
   if (!win) return;
   const contents = win.webContents;
-  contents.getZoomLevel(level => contents.setZoomLevel(level + val));
+  contents.zoomLevel += val;
 };
-export const resetZoom = win => win && win.webContents.setZoomLevel(0);
+export const resetZoom = win => {
+  if (win) {
+    win.webContents.zoomLevel = 0;
+  }
+};
 export const haveOpenedWindow = () => !!BrowserWindow.getAllWindows().length;
 export const toggleOpenInEditor = win =>
   win && win.webContents.executeJavaScript('window.toggleOpenInEditor()');
