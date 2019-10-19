@@ -13,7 +13,7 @@ const detail = multiline`
 `;
 
 export const showAboutDialog = iconPath =>
-  (remote ? remote.dialog : dialog).showMessageBox({
+  (remote ? remote.dialog : dialog).showMessageBoxSync({
     title: 'About',
     message: `${appName} ${app.getVersion()}`,
     detail,
