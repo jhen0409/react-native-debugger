@@ -1,0 +1,50 @@
+name: Release
+
+on: release
+
+jobs:
+  release-linux:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Package
+        run: |
+          yarn
+          yarn build
+          yarn pack-linux
+      - name: Upload zip file
+        uses: jhen0409/release-asset-action@master
+        with:
+          file: release/rn-debugger-linux-x64.zip
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload deb & rpm
+        uses: jhen0409/release-asset-action@master
+        with:
+          pattern: release/react-native-debugger*
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  release-windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Package
+        shell: bash
+        run: |
+          yarn
+          yarn build
+          yarn pack-windows
+      - name: Upload asset to release
+        uses: jhen0409/release-asset-action@master
+        with:
+          file: release/rn-debugger-windows-x64.zip
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload exe
+        uses: jhen0409/release-asset-action@master
+        with:
+          pattern: release/react_native_debugger*
+          github-token: ${{ secrets.GITHUB_TOKEN }}
