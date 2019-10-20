@@ -16,12 +16,7 @@ electron-packager dist/ \
   --app-version $PACKAGE_VERSION \
   --icon electron/logo.ico
 
-electron-installer-windows \
-  # TODO: Fix MSI issue
-  --noMsi \
-  --src release/React\ Native\ Debugger-win32-x64 \
-  --dest release/ \
-  --config scripts/config.json
+electron-installer-windows --src release/React\ Native\ Debugger-win32-x64 --dest release/ --config scripts/config.json
 
 cd release/React\ Native\ Debugger-win32-x64
 npx bestzip ../rn-debugger-windows-x64.zip *
