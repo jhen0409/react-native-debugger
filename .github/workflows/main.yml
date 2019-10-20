@@ -33,6 +33,7 @@ jobs:
         with:
           node-version: 10.x
       - name: CI
+        shell: bash
         run: |
           yarn
           cd npm-package && yarn && cd ..
