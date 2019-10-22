@@ -126,6 +126,7 @@ const flushQueuedMessages = () => {
 
 let reloadCount = 0;
 const checkJSReloadCount = () => {
+  reloadCount++;
   if (
     currentWindow.webContents.isDevToolsOpened() &&
     config.timesJSReloadToRefreshDevTools >= 0 &&
@@ -141,8 +142,6 @@ const checkJSReloadCount = () => {
       'Open `Debugger` -> `Open Config File` to change `timesJSReloadToRefreshDevTools` field.'
     );
     reloadCount = 0;
-  } else {
-    reloadCount++;
   }
 };
 
