@@ -127,7 +127,7 @@ const flushQueuedMessages = () => {
 let reloadCount = 0;
 const checkJSReloadCount = () => {
   if (
-    currentWindow.webContents.isDevToolsOpened &&
+    currentWindow.webContents.isDevToolsOpened() &&
     config.timesJSReloadToRefreshDevTools >= 0 &&
     reloadCount > 0 &&
     reloadCount % config.timesJSReloadToRefreshDevTools === 0
