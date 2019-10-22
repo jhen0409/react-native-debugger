@@ -124,6 +124,22 @@ const flushQueuedMessages = () => {
   queuedMessages = [];
 };
 
+let reloadCount = 0;
+const checkJSReloadCount = () => {
+  if (
+    currentWindow.webContents.isDevToolsOpened &&
+    config.timesJSReloadToRefreshDevTools >= 0 &&
+    reloadCount > 0 &&
+    reloadCount % config.timesJSReloadToRefreshDevTools === 0
+  ) {
+    currentWindow.webContents.closeDevTools();
+    currentWindow.webContents.openDevTools();
+    reloadCount = 0;
+  } else {
+    reloadCount++;
+  }
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
@@ -151,6 +167,7 @@ const connectToDebuggerProxy = async () => {
     } else {
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
+        checkJSReloadCount();
         object.networkInspect = networkInspect.isEnabled();
         object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {

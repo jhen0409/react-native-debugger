@@ -96,6 +96,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
+  const { timesJSReloadToRefreshDevTools = -1 } = config;
   win.debuggerConfig = {
     port,
     editor: config.editor,
@@ -104,6 +105,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     defaultReactDevToolsPort: config.defaultReactDevToolsPort,
     networkInspect: config.defaultNetworkInspect && 1,
     isPortSettingRequired: isPortSettingRequired && 1,
+    timesJSReloadToRefreshDevTools,
   };
   win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
   win.webContents.on('did-finish-load', () => {
