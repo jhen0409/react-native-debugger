@@ -134,6 +134,12 @@ const checkJSReloadCount = () => {
   ) {
     currentWindow.webContents.closeDevTools();
     currentWindow.webContents.openDevTools();
+    console.warn(
+      '[RNDebugger]',
+      `Refreshed the devtools panel as React Native app was reloaded ${reloadCount} times.`,
+      'If you want to update or disable this,',
+      'Open `Debugger` -> `Open Config File` to change `timesJSReloadToRefreshDevTools` field.'
+    );
     reloadCount = 0;
   } else {
     reloadCount++;
@@ -167,7 +173,6 @@ const connectToDebuggerProxy = async () => {
     } else {
       if (!worker) return;
       if (object.method === 'executeApplicationScript') {
-        checkJSReloadCount();
         object.networkInspect = networkInspect.isEnabled();
         object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {
@@ -192,6 +197,7 @@ const connectToDebuggerProxy = async () => {
           clearLogs();
           scriptExecuted = true;
         }
+        checkJSReloadCount();
       }
       if (scriptExecuted) {
         // Otherwise, pass through to the worker provided the
