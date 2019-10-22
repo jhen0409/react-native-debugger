@@ -3,6 +3,7 @@ import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
 import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
@@ -126,6 +127,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     if (config.showAllDevToolsTab !== true) {
       removeUnecessaryTabs(win);
     }
+    selectRNDebuggerWorkerContext(win);
   });
   win.on('show', () => {
     if (!win.isFocused()) return;
