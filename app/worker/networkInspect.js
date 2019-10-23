@@ -22,6 +22,7 @@ const toggleBlobOfFetchSupport = disabled => {
 
 export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
+    self.fetch = networkInspect.fetch;
     self.XMLHttpRequest = networkInspect.XMLHttpRequest;
     self.FormData = networkInspect.FormData;
     networkInspect = null;
@@ -42,9 +43,11 @@ export const toggleNetworkInspect = enabled => {
     return;
   }
   networkInspect = {
+    fetch: self.fetch,
     XMLHttpRequest: self.XMLHttpRequest,
     FormData: self.FormData,
   };
+  self.fetch = self.__ORIGINAL_FETCH__ ? self.__ORIGINAL_FETCH__ : self.fetch;
   self.XMLHttpRequest = self.originalXMLHttpRequest
     ? self.originalXMLHttpRequest
     : self.XMLHttpRequest;
