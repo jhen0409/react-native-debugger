@@ -38,6 +38,7 @@ const setupRNDebuggerBeforeImportScript = message => {
   self.__REACT_DEVTOOLS_PORT__ = message.reactDevToolsPort;
   if (message.networkInspect) {
     self.__NETWORK_INSPECT__ = toggleNetworkInspect;
+    toggleNetworkInspect(message.networkInspect);
   }
 };
 
