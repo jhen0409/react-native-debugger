@@ -129,9 +129,9 @@ const checkJSReloadCount = () => {
   reloadCount++;
   if (
     currentWindow.webContents.isDevToolsOpened() &&
-    config.timesJSReloadToRefreshDevTools >= 0 &&
+    config.timesJSLoadToRefreshDevTools >= 0 &&
     reloadCount > 0 &&
-    reloadCount % config.timesJSReloadToRefreshDevTools === 0
+    reloadCount % config.timesJSLoadToRefreshDevTools === 0
   ) {
     currentWindow.webContents.closeDevTools();
     currentWindow.webContents.openDevTools();
@@ -139,7 +139,7 @@ const checkJSReloadCount = () => {
       '[RNDebugger]',
       `Refreshed the devtools panel as React Native app was reloaded ${reloadCount} times.`,
       'If you want to update or disable this,',
-      'Open `Debugger` -> `Open Config File` to change `timesJSReloadToRefreshDevTools` field.'
+      'Open `Debugger` -> `Open Config File` to change `timesJSLoadToRefreshDevTools` field.'
     );
     reloadCount = 0;
   }
