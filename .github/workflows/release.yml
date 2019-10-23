@@ -15,14 +15,10 @@ jobs:
           yarn
           yarn build
           yarn pack-linux
-      - name: Upload zip file
+      - name: Upload assets to release
         uses: jhen0409/release-asset-action@master
         with:
           file: release/rn-debugger-linux-x64.zip
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload deb & rpm
-        uses: jhen0409/release-asset-action@master
-        with:
           pattern: release/react-native-debugger*
           github-token: ${{ secrets.GITHUB_TOKEN }}
   release-windows:
@@ -38,13 +34,9 @@ jobs:
           yarn
           yarn build
           yarn pack-windows
-      - name: Upload asset to release
+      - name: Upload assets to release
         uses: jhen0409/release-asset-action@master
         with:
           file: release/rn-debugger-windows-x64.zip
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload exe
-        uses: jhen0409/release-asset-action@master
-        with:
           pattern: release/react_native_debugger*.exe
           github-token: ${{ secrets.GITHUB_TOKEN }}
