@@ -124,6 +124,27 @@ const flushQueuedMessages = () => {
   queuedMessages = [];
 };
 
+let loadCount = 0;
+const checkJSLoadCount = () => {
+  loadCount++;
+  if (
+    currentWindow.webContents.isDevToolsOpened() &&
+    config.timesJSLoadToRefreshDevTools >= 0 &&
+    loadCount > 0 &&
+    loadCount % config.timesJSLoadToRefreshDevTools === 0
+  ) {
+    currentWindow.webContents.closeDevTools();
+    currentWindow.webContents.openDevTools();
+    console.warn(
+      '[RNDebugger]',
+      `Refreshed the devtools panel as React Native app was reloaded ${loadCount} times.`,
+      'If you want to update or disable this,',
+      'Open `Debugger` -> `Open Config File` to change `timesJSLoadToRefreshDevTools` field.'
+    );
+    loadCount = 0;
+  }
+};
+
 const connectToDebuggerProxy = async () => {
   const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
 
@@ -168,6 +189,7 @@ const connectToDebuggerProxy = async () => {
             scriptExecuted = true;
             worker.postMessage({ ...object, url });
             flushQueuedMessages();
+            checkJSLoadCount();
             return;
           }
         } finally {
@@ -175,6 +197,7 @@ const connectToDebuggerProxy = async () => {
           clearLogs();
           scriptExecuted = true;
         }
+        checkJSLoadCount();
       }
       if (scriptExecuted) {
         // Otherwise, pass through to the worker provided the

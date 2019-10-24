@@ -3,6 +3,7 @@ import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
 import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
@@ -95,6 +96,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
+  const { timesJSLoadToRefreshDevTools = -1 } = config;
   win.debuggerConfig = {
     port,
     editor: config.editor,
@@ -103,6 +105,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     defaultReactDevToolsPort: config.defaultReactDevToolsPort,
     networkInspect: config.defaultNetworkInspect && 1,
     isPortSettingRequired: isPortSettingRequired && 1,
+    timesJSLoadToRefreshDevTools,
   };
   win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
   win.webContents.on('did-finish-load', () => {
@@ -123,6 +126,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     if (config.showAllDevToolsTab !== true) {
       removeUnecessaryTabs(win);
     }
+    selectRNDebuggerWorkerContext(win);
   });
   win.on('show', () => {
     if (!win.isFocused()) return;

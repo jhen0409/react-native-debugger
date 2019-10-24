@@ -11,6 +11,7 @@ Object {
     "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
+    "timesJSLoadToRefreshDevTools": -1,
     "windowBounds": Object {
       "frame": true,
     },
@@ -29,6 +30,7 @@ Object {
     "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
+    "timesJSLoadToRefreshDevTools": -1,
     "windowBounds": Object {
       "frame": true,
     },
@@ -55,6 +57,7 @@ Object {
     "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
+    "timesJSLoadToRefreshDevTools": -1,
     "windowBounds": Object {
       "frame": true,
     },
