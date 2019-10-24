@@ -47,6 +47,11 @@ We could configure RNDebugger app in `~/.rndebuggerrc`, the file used [json5](ht
   // Enable Network Inspect by default
   // See https://github.com/jhen0409/react-native-debugger/blob/master/docs/network-inspect-of-chrome-devtools.md
   defaultNetworkInspect: false,
+
+  // Refresh devtools when doing JS reload every N times. (-1 for disabled)
+  // This can effectively avoid possible memory leaks (Like
+  // https://github.com/jhen0409/react-native-debugger/issues/405) in devtools.
+  timesJSLoadToRefreshDevTools: -1,
 }
 ```
 
