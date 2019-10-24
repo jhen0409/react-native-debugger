@@ -7,8 +7,7 @@ import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
 
-const executeJavaScript = (win, script) =>
-  new Promise(resolve => win.webContents.executeJavaScript(script, result => resolve(result)));
+const executeJavaScript = (win, script) => win.webContents.executeJavaScript(script);
 
 export const checkWindowInfo = win => executeJavaScript(win, 'window.checkWindowInfo()');
 
@@ -107,7 +106,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   };
   win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
   win.webContents.on('did-finish-load', () => {
-    win.webContents.setZoomLevel(config.zoomLevel || store.get('zoomLevel', 0));
+    win.webContents.zoomLevel = config.zoomLevel || store.get('zoomLevel', 0);
     win.focus();
     registerShortcuts(win);
     if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
@@ -137,7 +136,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   win.close = async () => {
     unregisterKeyboradShortcut();
     store.set('winBounds', win.getBounds());
-    win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
+    store.set('zoomLevel', win.webContents.zoomLevel);
     await executeJavaScript(win, 'window.beforeWindowClose && window.beforeWindowClose()');
     win.destroy();
   };
