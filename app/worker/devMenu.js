@@ -5,10 +5,7 @@ import { getClearAsyncStorageFn, getShowAsyncStorageFn, getSafeAsyncStorage } fr
 
 let availableDevMenuMethods = {};
 
-export const checkAvailableDevMenuMethods = async (
-  { NativeModules },
-  enableNetworkInspect = false
-) => {
+export const checkAvailableDevMenuMethods = ({ NativeModules }) => {
   // RN 0.43 use DevSettings, DevMenu will be deprecated
   const DevSettings = NativeModules.DevSettings || NativeModules.DevMenu;
   // Currently `show dev menu` is only on DevMenu
@@ -31,7 +28,6 @@ export const checkAvailableDevMenuMethods = async (
   const result = Object.keys(methods).filter(key => !!methods[key]);
   availableDevMenuMethods = methods;
 
-  toggleNetworkInspect(enableNetworkInspect);
   postMessage({ __AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__: result });
 };
 

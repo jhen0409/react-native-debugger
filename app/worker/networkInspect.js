@@ -1,32 +1,19 @@
+import getRNDebuggerFetchPolyfills from './polyfills/fetch';
+
 const isWorkerMethod = fn => String(fn).indexOf('[native code]') > -1;
 
 /* eslint-disable no-underscore-dangle */
 let networkInspect;
-
-// Disable `support.blob` in `whatwg-fetch` for use native XMLHttpRequest,
-// See https://github.com/jhen0409/react-native-debugger/issues/56
-const toggleBlobOfFetchSupport = disabled => {
-  // Ensure the initial script of `whatwg-fetch` is executed because it's lazy property,
-  // see https://github.com/facebook/react-native/blob/0.54-stable/Libraries/Core/InitializeCore.js#L89
-  self.fetch; // eslint-disable-line
-
-  if (!self.__FETCH_SUPPORT__) return;
-  if (disabled) {
-    self.__FETCH_SUPPORT__._blobBackup = self.__FETCH_SUPPORT__.blob;
-    self.__FETCH_SUPPORT__.blob = false;
-  } else {
-    self.__FETCH_SUPPORT__.blob = !!self.__FETCH_SUPPORT__._blobBackup;
-    delete self.__FETCH_SUPPORT__._blobBackup;
-  }
-};
 
 export const toggleNetworkInspect = enabled => {
   if (!enabled && networkInspect) {
     self.fetch = networkInspect.fetch;
     self.XMLHttpRequest = networkInspect.XMLHttpRequest;
     self.FormData = networkInspect.FormData;
+    self.Headers = networkInspect.Headers;
+    self.Request = networkInspect.Request;
+    self.Response = networkInspect.Response;
     networkInspect = null;
-    toggleBlobOfFetchSupport(false);
     return;
   }
   if (!enabled) return;
@@ -46,14 +33,21 @@ export const toggleNetworkInspect = enabled => {
     fetch: self.fetch,
     XMLHttpRequest: self.XMLHttpRequest,
     FormData: self.FormData,
+    Headers: self.Headers,
+    Request: self.Request,
+    Response: self.Response,
   };
-  self.fetch = self.__ORIGINAL_FETCH__ ? self.__ORIGINAL_FETCH__ : self.fetch;
+
   self.XMLHttpRequest = self.originalXMLHttpRequest
     ? self.originalXMLHttpRequest
     : self.XMLHttpRequest;
   self.FormData = self.originalFormData ? self.originalFormData : self.FormData;
+  const { fetch, Headers, Request, Response } = getRNDebuggerFetchPolyfills();
+  self.fetch = fetch;
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
 
-  toggleBlobOfFetchSupport(true);
   console.log(
     '[RNDebugger]',
     'Network Inspect is enabled,',

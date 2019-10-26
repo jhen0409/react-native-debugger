@@ -77,6 +77,7 @@
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",
     "electron-store": "^1.2.0",
+    "header-case-normalizer": "^1.0.3",
     "jsan": "^3.1.9",
     "json5": "^0.5.1",
     "multiline-template": "^0.1.2",

@@ -7,8 +7,6 @@
  * @format
  */
 
-import { checkFetchExists, patchFetchPolyfill } from './patchFetchPolyfill';
-
 /* eslint-disable no-underscore-dangle */
 
 /**
@@ -163,9 +161,10 @@ export default class DeltaPatcher {
         [this._lastBundle.pre],
         Array.from(this._lastBundle.modules.entries())
           .sort(([id1], [id2]) => id1 - id2)
-          // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
           .map(([id, contents]) => contents),
-        [this._lastBundle.post]);
+        [this._lastBundle.post]
+      );
   }
 
   getSizeOfAllModules() {
@@ -179,8 +178,6 @@ export default class DeltaPatcher {
     for (const [key, value] of patch) {
       if (value == null) {
         original.delete(key);
-      } else if (checkFetchExists(value)) {
-        original.set(key, patchFetchPolyfill(value));
       } else {
         original.set(key, value);
       }
