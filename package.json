@@ -67,8 +67,7 @@
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
-    "whatwg-fetch": "^2.0.3",
-    "ws": "^3.3.3"
+    "whatwg-fetch": "^2.0.3"
   },
   "dependencies": {
     "adbkit": "^2.11.0",
@@ -101,6 +100,9 @@
   "optionalDependencies": {
     "electron-installer-debian": "^2.0.1",
     "electron-installer-redhat": "^2.0.0"
+  },
+  "resolutions": {
+    "ws": "^7.2.0"
   },
   "jest": {
     "testEnvironment": "node"
