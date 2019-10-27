@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "[v$npm_package_version] Packaging win32..."
+PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
+
+echo "[v$PACKAGE_VERSION] Packaging win32..."
 
 electron-packager dist/ \
   --executable-name "react-native-debugger" \
@@ -11,10 +13,10 @@ electron-packager dist/ \
   --no-prune \
   --out release \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
-  --app-version $npm_package_version \
+  --app-version $PACKAGE_VERSION \
   --icon electron/logo.ico
 
 electron-installer-windows --src release/React\ Native\ Debugger-win32-x64 --dest release/ --config scripts/config.json
 
 cd release/React\ Native\ Debugger-win32-x64
-zip -ryq9 ../rn-debugger-windows-x64.zip *
+npx bestzip ../rn-debugger-windows-x64.zip *

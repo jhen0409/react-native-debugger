@@ -10,7 +10,7 @@ const getFeed = () =>
   );
 
 const showDialog = ({ icon, buttons, message, detail }) =>
-  dialog.showMessageBox({
+  dialog.showMessageBoxSync({
     type: 'info',
     buttons,
     title: 'React Native Debugger',
@@ -76,11 +76,13 @@ export default (icon, notify) => {
       notifyUpdateAvailable({ icon, detail })
     ) {
       updater.download();
+      console.log('[RNDebugger] Update downloading...');
     }
     checking = false;
   });
 
   updater.on('update-downloaded', () => {
+    console.log('[RNDebugger] Update downloaded');
     if (notifyUpdateDownloaded({ icon })) {
       updater.install();
     }

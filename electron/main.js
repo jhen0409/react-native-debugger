@@ -1,5 +1,6 @@
 import path from 'path';
 import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
+import normalizeHeaderCase from 'header-case-normalizer';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
 import { startListeningHandleURL } from './url-handle';
@@ -89,7 +90,7 @@ app.on('ready', async () => {
     delete details.requestHeaders.Origin;
     Object.entries(details.requestHeaders).forEach(([header, value]) => {
       if (header.startsWith(replaceHeaderPrefix)) {
-        const originalHeader = header.replace(replaceHeaderPrefix, '');
+        const originalHeader = normalizeHeaderCase(header.replace(replaceHeaderPrefix, ''));
         details.requestHeaders[originalHeader] = value;
         delete details.requestHeaders[header];
       }

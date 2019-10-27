@@ -3,12 +3,12 @@ import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
 import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
 
-const executeJavaScript = (win, script) =>
-  new Promise(resolve => win.webContents.executeJavaScript(script, result => resolve(result)));
+const executeJavaScript = (win, script) => win.webContents.executeJavaScript(script);
 
 export const checkWindowInfo = win => executeJavaScript(win, 'window.checkWindowInfo()');
 
@@ -96,6 +96,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
+  const { timesJSLoadToRefreshDevTools = -1 } = config;
   win.debuggerConfig = {
     port,
     editor: config.editor,
@@ -104,10 +105,11 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     defaultReactDevToolsPort: config.defaultReactDevToolsPort,
     networkInspect: config.defaultNetworkInspect && 1,
     isPortSettingRequired: isPortSettingRequired && 1,
+    timesJSLoadToRefreshDevTools,
   };
   win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
   win.webContents.on('did-finish-load', () => {
-    win.webContents.setZoomLevel(config.zoomLevel || store.get('zoomLevel', 0));
+    win.webContents.zoomLevel = config.zoomLevel || store.get('zoomLevel', 0);
     win.focus();
     registerShortcuts(win);
     if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
@@ -124,6 +126,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     if (config.showAllDevToolsTab !== true) {
       removeUnecessaryTabs(win);
     }
+    selectRNDebuggerWorkerContext(win);
   });
   win.on('show', () => {
     if (!win.isFocused()) return;
@@ -137,7 +140,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   win.close = async () => {
     unregisterKeyboradShortcut();
     store.set('winBounds', win.getBounds());
-    win.webContents.getZoomLevel(level => store.set('zoomLevel', level));
+    store.set('zoomLevel', win.webContents.zoomLevel);
     await executeJavaScript(win, 'window.beforeWindowClose && window.beforeWindowClose()');
     win.destroy();
   };

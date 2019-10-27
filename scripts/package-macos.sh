@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "[v$npm_package_version] Packaging darwin x64..."
+PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
+
+echo "[v$PACKAGE_VERSION] Packaging darwin x64..."
 
 echo -e "Apple ID: \c"
 read appleId
@@ -15,7 +17,7 @@ electron-packager dist/ \
   --protocol-name "React Native Debugger" \
   --protocol "rndebugger" \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
-  --app-version $npm_package_version \
+  --app-version $PACKAGE_VERSION \
   --osx-sign.identity='Developer ID Application: Jhen Jie Hong (C6EUM5DVB3)' \
   --osx-sign.entitlements=scripts/mac/entitlements.plist \
   --osx-sign.entitlements-inherit=scripts/mac/entitlements.plist \

@@ -22,5 +22,22 @@ if (self.Blob && self.Blob.toString() === 'function Blob() { [native code] }') {
   delete self.Blob;
 }
 
+if (
+  self.XMLHttpRequest &&
+  self.XMLHttpRequest.toString() === 'function XMLHttpRequest() { [native code] }'
+) {
+  self.originalXMLHttpRequest = self.XMLHttpRequest;
+}
+
+if (self.FormData && self.FormData.toString() === 'function FormData() { [native code] }') {
+  self.originalFormData = self.FormData;
+}
+
+// Catch native fetch
+if (self.fetch && self.fetch.toString() === 'function fetch() { [native code] }') {
+  /* eslint-disable-next-line no-underscore-dangle */
+  self.__ORIGINAL_FETCH__ = self.fetch;
+}
+
 replaceForbiddenHeadersForWorkerXHR();
 addURIWarningForWorkerFormData();

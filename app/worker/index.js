@@ -41,17 +41,19 @@ const setupRNDebuggerBeforeImportScript = message => {
   }
 };
 
+const noop = f => f;
 const setupRNDebugger = async message => {
   // We need to regularly update JS runtime
   // because the changes of worker message (Redux DevTools, DevMenu)
   // doesn't notify to the remote JS runtime
-  self.__RND_INTERVAL__ = setInterval(function() {}, 100); // eslint-disable-line
+  self.__RND_INTERVAL__ = setInterval(noop, 100); // eslint-disable-line
 
+  toggleNetworkInspect(message.networkInspect);
   const modules = await getRequiredModules(message.moduleSize);
   const apolloCheckInterval = handleApolloClient(modules);
   if (modules) {
     ignoreRNDIntervalSpy(modules, [apolloCheckInterval]);
-    checkAvailableDevMenuMethods(modules, message.networkInspect);
+    checkAvailableDevMenuMethods(modules);
     reportDefaultReactDevToolsPort(modules);
   }
 };
@@ -70,11 +72,12 @@ const messageHandlers = {
       error = err.message;
     }
 
-    sendReply(null /* result */, error);
-
     if (!error) {
       setupRNDebugger(message);
     }
+
+    sendReply(null /* result */, error);
+
     return false;
   },
   emitReduxMessage() {

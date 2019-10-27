@@ -27,7 +27,7 @@ Before:
 After:  
 <img width="704" alt="2017-09-19 5 41 27 pm" src="https://user-images.githubusercontent.com/3001525/30586302-29e0b268-9cf5-11e7-9206-e222bd753aa1.png">
 
-To avoid similar problems in the future, there is a way to restart the Chrome devtools (macOS: `CMD+OPTION+I`, Linux/Windows: `CTRL+ALT+I`), the same applies to official remote debugger on Chrome.
+To avoid similar problems in the future, there is a way to restart the Chrome devtools (macOS: `CMD+OPTION+I`, Linux/Windows: `CTRL+ALT+I`), the same applies to official remote debugger on Chrome. You can also consider to use [`timesJSLoadToRefreshDevTools` option in Config file in home directory](config-file-in-home-directory.md).
 
 ## [iOS] Debugger can't load bundle when I use real device
 
@@ -50,10 +50,6 @@ Also, sometimes it have timer problem between host machine and device (emulator)
 <img width="300" alt="2017-07-18 10 09 01" src="https://user-images.githubusercontent.com/3001525/28492059-3c6957ea-6f2e-11e7-8901-8f4431f67a71.png">
 
 Or try to restart your device (emulator).
-
-## Console thrown a lot of errors when I use React Inspector on Android
-
-If you're experiencing the issue like [this comment of #84](https://github.com/jhen0409/react-native-debugger/issues/84#issuecomment-304611817), this issue have been fixed in `react-devtools-core@^2.3.0`, please ensure the version is correct in your React Native project (Note that it's dependency of `react-native`).
 
 ## Other documentations
 
