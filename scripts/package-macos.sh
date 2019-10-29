@@ -4,8 +4,10 @@ PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
 
 echo "[v$PACKAGE_VERSION] Packaging darwin x64..."
 
-echo -e "Apple ID: \c"
-read appleId
+if [ -z "$APPLE_ID" ]; then
+  echo -e "Apple ID: \c"
+  read APPLE_ID
+fi
 
 electron-packager dist/ \
   --overwrite \
@@ -22,7 +24,7 @@ electron-packager dist/ \
   --osx-sign.entitlements=scripts/mac/entitlements.plist \
   --osx-sign.entitlements-inherit=scripts/mac/entitlements.plist \
   --osx-sign.hardenedRuntime \
-  --osx-notarize.appleId=$appleId \
+  --osx-notarize.appleId=$APPLE_ID \
   --osx-notarize.appleIdPassword='@keychain:AC_PASSWORD' \
   --osx-notarize.ascProvider='C6EUM5DVB3' \
   --icon electron/logo.icns \

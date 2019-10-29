@@ -245,7 +245,7 @@ export default ({ dispatch }) => {
       setDebuggerLoc(action.loc);
     }
     if (action.type === BEFORE_WINDOW_CLOSE) {
-      // Reture boolean instead of handle reducer
+      // Return boolean instead of handle reducer
       if (!worker) return false;
       worker.postMessage({ method: 'beforeTerminate' });
       return true;
