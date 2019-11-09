@@ -48,7 +48,7 @@
     "electron-devtools-installer": "^2.2.3",
     "electron-installer-dmg": "^3.0.0",
     "electron-installer-windows": "^2.0.0",
-    "electron-packager": "^14.0.6",
+    "electron-packager": "^14.1.0",
     "electron-rebuild": "^1.8.6",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^10.0.0",
@@ -103,6 +103,7 @@
     "electron-installer-redhat": "^2.0.0"
   },
   "resolutions": {
+    "electron-notarize": "^0.2.0",
     "ws": "^7.2.0"
   },
   "jest": {
