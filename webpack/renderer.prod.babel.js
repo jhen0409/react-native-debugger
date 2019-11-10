@@ -51,7 +51,7 @@ export default [
     plugins: [
       ...baseProdConfig.plugins,
       process.env.ANALYZE_BUNDLE ? new BundleAnalyzerPlugin() : null,
-    ].filter(p => p),
+    ].filter(Boolean),
   }),
   buildProdConfig({
     entry: './app/worker/index.js',

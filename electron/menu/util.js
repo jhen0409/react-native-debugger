@@ -6,7 +6,7 @@ const detail = multiline`
   | Created by Jhen-Jie Hong
   | (https://github.com/jhen0409)
 
-  | This software is included following project:
+  | This software includes the following projects:
 
   | https://github.com/facebook/react-devtools
   | https://github.com/zalmoxisus/remotedev-app
