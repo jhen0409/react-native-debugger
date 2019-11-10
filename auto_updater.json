@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.2/rn-debugger-macos-x64.zip",
-  "name": "v0.10.2",
-  "notes": "1. Update Electron version to 6.0.12\n2. Fix automatic updates issue of v0.10\n\nNOTE: If you're using v0.10.0 and 0.10.1, automatic updates may not work properly, please update it manually from https://github.com/jhen0409/react-native-debugger/releases or run `brew cask reinstall react-native-debugger`"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.3/rn-debugger-macos-x64.zip",
+  "name": "v0.10.3",
+  "notes": "1. Add timesJSLoadToRefreshDevTools config option\n2. Upgrade to Electron v7 (Chromium 78)\n3. Fix Network Inspect on latest version of react-native"
 }
