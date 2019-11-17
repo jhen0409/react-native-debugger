@@ -594,7 +594,7 @@ apollo-cache@1.3.2, apollo-cache@^1.1.26, apollo-cache@^1.3.2:
     apollo-utilities "^1.3.2"
     tslib "^1.9.3"
 
-apollo-client-devtools@^2.2.3:
+apollo-client-devtools@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/apollo-client-devtools/-/apollo-client-devtools-2.2.5.tgz#e12308eb6537ec09dc9b152fdb39c64e1f65b5b6"
   integrity sha512-oQa5beFRUp0ErXHkxx1b1WNisTBQgORMb0J3KaorbvuOMUX9KwL1tCGnMhebIwM4mOAz0s+5jVg7FpIk6HyPXQ==
