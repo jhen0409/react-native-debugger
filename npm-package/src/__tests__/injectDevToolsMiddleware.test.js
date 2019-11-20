@@ -77,7 +77,7 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
     },
     {
       rn: '0.61.0',
-      cli: ['3.0.1'],
+      cli: ['3.0.0-alpha.7', '3.0.1'],
     },
   ];
   cliVersions.forEach(({ rn, cli }) => {

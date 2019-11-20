@@ -46,7 +46,7 @@ const flags = {
         args: "'localhost&port=' + port + '&args=' + args",
       },
       {
-        target: '@react-native-community/cli',
+        target: '@react-native-community/cli', // 3.0.0 alpha
         dir: 'build/commands/server/middleware',
         file: 'getDevToolsMiddleware.js',
         keyFunc: 'launchDevTools',
@@ -58,10 +58,8 @@ const flags = {
         args: "'localhost&port=' + port + '&watchFolders=' + " +
             "watchFolders.map(f => `\"${f}\"`).join(',')",
       },
-    ],
-    '0.61.0': [
       {
-        target: '@react-native-community/cli',
+        target: '@react-native-community/cli', // 3.0.0
         dir: 'build/commands/server/middleware',
         file: 'getDevToolsMiddleware.js',
         keyFunc: 'launchDefaultDebugger',
