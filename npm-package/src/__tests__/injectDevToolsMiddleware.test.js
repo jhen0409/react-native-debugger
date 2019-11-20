@@ -75,6 +75,10 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
       rn: '0.60.0',
       cli: ['2.8.3', '2.9.0'],
     },
+    {
+      rn: '0.61.0',
+      cli: ['3.0.1'],
+    },
   ];
   cliVersions.forEach(({ rn, cli }) => {
     cli.forEach(version => {
@@ -89,7 +93,7 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
         fs.outputFileSync(
           path.join(modulePath, 'react-native', 'package.json'),
           JSON.stringify({
-            version: '0.60.0',
+            version: rn,
             name: 'react-native',
           })
         );

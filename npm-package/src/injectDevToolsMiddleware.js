@@ -22,7 +22,7 @@ const flags = {
       func: "function launchChromeDevTools(port, args = '') {",
       replaceFunc: "function launchChromeDevTools(port, args = '', skipRNDebugger) {",
       funcCall: '(port, args, true)',
-      args: "port + '&args=' + args",
+      args: "'localhost&port=' + port + '&args=' + args",
     },
     '0.53.0': {
       target: 'react-native',
@@ -32,7 +32,7 @@ const flags = {
       func: "function launchChromeDevTools(host, args = '') {",
       replaceFunc: "function launchChromeDevTools(host, args = '', skipRNDebugger) {",
       funcCall: '(host, args, true)',
-      args: "(host && host.split(':')[1] || '8081') + '&args=' + args",
+      args: "'localhost&port=' + (host && host.split(':')[1] || '8081') + '&args=' + args",
     },
     '0.59.0-rc.0': [
       {
@@ -43,7 +43,7 @@ const flags = {
         func: "function launchChromeDevTools(port, args = '') {",
         replaceFunc: "function launchChromeDevTools(port, args = '', skipRNDebugger) {",
         funcCall: '(port, args, true)',
-        args: "port + '&args=' + args",
+        args: "'localhost&port=' + port + '&args=' + args",
       },
       {
         target: '@react-native-community/cli',
@@ -55,7 +55,20 @@ const flags = {
           'function launchDevTools({port, watchFolders},' +
           ' isDebuggerConnected, skipRNDebugger) {',
         funcCall: '({port, watchFolders}, isDebuggerConnected, true)',
-        args: "port + '&watchFolders=' + watchFolders.map(f => `\"${f}\"`).join(',')",
+        args: "'localhost&port=' + port + '&watchFolders=' + " +
+            "watchFolders.map(f => `\"${f}\"`).join(',')",
+      },
+    ],
+    '0.61.0': [
+      {
+        target: '@react-native-community/cli',
+        dir: 'build/commands/server/middleware',
+        file: 'getDevToolsMiddleware.js',
+        keyFunc: 'launchDefaultDebugger',
+        func: "function launchDefaultDebugger(host, port, args = '') {",
+        replaceFunc: "function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {",
+        funcCall: '(host, port, args, true)',
+        args: "host + '&port=' + port + '&args=' + args",
       },
     ],
   },
@@ -68,7 +81,7 @@ const flags = {
       func: 'function launchChromeDevTools(port) {',
       replaceFunc: 'function launchChromeDevTools(port, skipRNDebugger) {',
       funcCall: '(port, true)',
-      args: 'port',
+      args: "'localhost&port=' + port",
     },
   },
   // react-native
@@ -80,7 +93,7 @@ const flags = {
     func: 'function launchChromeDevTools(port) {',
     replaceFunc: 'function launchChromeDevTools(port, skipRNDebugger) {',
     funcCall: '(port, true)',
-    args: 'port',
+    args: "'localhost&port=' + port",
   },
 };
 
