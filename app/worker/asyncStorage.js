@@ -20,12 +20,12 @@ function convertErrors(errs) {
 }
 
 export const getSafeAsyncStorage = NativeModules => {
-  // Use RocksDB if available, then SQLite, then file storage.
-  // Changed Name of SQLite DB, to not conflict with AsyncStorage from RN repo
   const RCTAsyncStorage =
     NativeModules &&
-    (NativeModules.AsyncRocksDBStorage ||
-      NativeModules.RNC_AsyncSQLiteDBStorage ||
+    (NativeModules.RNC_AsyncSQLiteDBStorage ||
+      NativeModules.RNCAsyncStorage ||
+      NativeModules.PlatformLocalStorage ||
+      NativeModules.AsyncRocksDBStorage ||
       NativeModules.AsyncSQLiteDBStorage ||
       NativeModules.AsyncLocalStorage);
 
@@ -35,7 +35,8 @@ export const getSafeAsyncStorage = NativeModules => {
       return new Promise((resolve, reject) => {
         RCTAsyncStorage.multiGet([key], (errors, result) => {
           // Unpack result to get value from [[key,value]]
-          const value = result && result[0] && result[0][1] ? result[0][1] : null;
+          const value =
+            result && result[0] && result[0][1] ? result[0][1] : null;
           const errs = convertErrors(errors);
           if (errs) {
             reject(errs[0]);
@@ -90,7 +91,9 @@ export const getShowAsyncStorageFn = AsyncStorage => {
   return async () => {
     const keys = await AsyncStorage.getAllKeys();
     if (keys && keys.length) {
-      const items = await Promise.all(keys.map(key => AsyncStorage.getItem(key)));
+      const items = await Promise.all(
+        keys.map(key => AsyncStorage.getItem(key)),
+      );
       const table = {};
       keys.forEach((key, index) => (table[key] = { content: items[index] }));
       console.table(table);
