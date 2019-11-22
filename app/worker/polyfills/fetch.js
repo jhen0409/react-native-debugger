@@ -9,7 +9,7 @@ export default function getRNDebuggerFetchPolyfills() {
   const support = {
     searchParams: 'URLSearchParams' in self,
     iterable: 'Symbol' in self && 'iterator' in Symbol,
-    blob: true, // NOTE: Default to true for RNDebugger
+    blob: false, // NOTE: Default for RNDebugger
     formData: 'FormData' in self,
     arrayBuffer: 'ArrayBuffer' in self,
   };

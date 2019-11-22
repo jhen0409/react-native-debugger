@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.3/rn-debugger-macos-x64.zip",
-  "name": "v0.10.3",
-  "notes": "1. Add timesJSLoadToRefreshDevTools config option\n2. Upgrade to Electron v7 (Chromium 78)\n3. Fix Network Inspect on latest version of react-native"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.4/rn-debugger-macos-x64.zip",
+  "name": "v0.10.4",
+  "notes": "1. [Network Inspect] Fix default blob support of RNDebugger fetch polyfil"
 }

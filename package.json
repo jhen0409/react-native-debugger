@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "productName": "React Native Debugger In Dev",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
@@ -43,7 +43,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^3.2.0",
     "devtron": "^1.4.0",
-    "electron": "^7.1.1",
+    "electron": "^7.1.2",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.3",
     "electron-installer-dmg": "^3.0.0",
@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "adbkit": "^2.11.0",
-    "apollo-client-devtools": "^2.2.3",
+    "apollo-client-devtools": "^2.2.5",
     "electron-context-menu": "^0.11.0",
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",

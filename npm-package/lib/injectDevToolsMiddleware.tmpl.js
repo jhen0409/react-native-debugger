@@ -45,7 +45,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 ${replaceFuncFlag}
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=localhost&port=' + ${args};
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + ${args};
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
