@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.4/rn-debugger-macos-x64.zip",
-  "name": "v0.10.4",
-  "notes": "1. [Network Inspect] Fix default blob support of RNDebugger fetch polyfil"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.5/rn-debugger-macos-x64.zip",
+  "name": "v0.10.5",
+  "notes": "1. Fix resolution of AsyncStorage for show AsyncStorage content feature\n2. Update Electron to v7.1.2\n3. Update apollo-client-devtools to v2.2.5"
 }
