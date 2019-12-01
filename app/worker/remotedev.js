@@ -94,7 +94,7 @@ export function connect(options = {}, machine) {
     ),
   };
   start();
-  if (options.xstate && machine) {
+  if (options.useXStateViz && machine) {
     const serviceId = uuid();
     postMessage({
       __IS_XSTATE_DEVTOOLS_MESSAGE__: true,
