@@ -1,6 +1,7 @@
 // Edit from https://github.com/zalmoxisus/remotedev/blob/master/src/devTools.js
 
 import { stringify, parse } from 'jsan';
+import uuid from 'uuid';
 import { generateId, getActionsArray } from 'redux-devtools-core/lib/utils';
 
 let listenerAdded;
@@ -63,7 +64,10 @@ export function send(action, state, type, options) {
   setTimeout(() => {
     const message = {
       payload: state ? stringify(state) : '',
-      action: type === 'ACTION' ? stringify(transformAction(action, options)) : action,
+      action:
+        type === 'ACTION'
+          ? stringify(transformAction(action, options))
+          : action,
       type: type || 'ACTION',
       id: options.instanceId,
       instanceId: options.instanceId,
@@ -79,15 +83,62 @@ export function send(action, state, type, options) {
   }, 0);
 }
 
-export function connect(options = {}) {
+export function connect(options = {}, machine) {
   const id = generateId(options.instanceId);
   const opts = {
     ...options,
     instanceId: id,
     name: options.name || id,
-    actionCreators: JSON.stringify(getActionsArray(options.actionCreators || {})),
+    actionCreators: JSON.stringify(
+      getActionsArray(options.actionCreators || {}),
+    ),
   };
   start();
+  if (options.xstate && machine) {
+    const serviceId = uuid();
+    postMessage({
+      __IS_XSTATE_DEVTOOLS_MESSAGE__: true,
+      content: {
+        type: 'connect',
+        payload: {
+          serviceId,
+          machine: JSON.stringify(machine.config),
+          state: JSON.stringify(machine.initialState),
+        },
+      },
+    });
+    return {
+      send: (event, state) => {
+        const formattedEvent = {
+          event,
+          time: Date.now(),
+        };
+        postMessage({
+          __IS_XSTATE_DEVTOOLS_MESSAGE__: true,
+          content: {
+            type: 'update',
+            payload: {
+              serviceId,
+              state: JSON.stringify(state),
+              event: JSON.stringify(formattedEvent),
+            },
+          },
+        });
+      },
+      disconnect: () => {
+        postMessage({
+          __IS_XSTATE_DEVTOOLS_MESSAGE__: true,
+          content: {
+            type: 'disconnect',
+            payload: {
+              serviceId,
+            },
+          },
+        });
+      },
+      init: () => {},
+    };
+  }
   return {
     init(state, action) {
       send(action || {}, state, 'INIT', opts);
