@@ -3,7 +3,9 @@ import path from 'path';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import electronPkg from 'electron/package.json';
 
-const babelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf-8'));
+const babelConfig = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf-8'),
+);
 // Webpack 2 have native import / export support
 babelConfig.presets = [
   [
@@ -28,7 +30,10 @@ export default {
     extensions: ['.mjs', '.js'],
     alias: {
       // From remotedev-app, but currently we don't need this
-      'socketcluster-client': path.resolve(__dirname, 'mock-socketcluster-client'),
+      'socketcluster-client': path.resolve(
+        __dirname,
+        'mock-socketcluster-client',
+      ),
     },
   },
   module: {
@@ -57,5 +62,6 @@ export default {
     'electron-store',
     'adbkit',
     'electron-named-image',
+    'electron-devtools-installer',
   ],
 };
