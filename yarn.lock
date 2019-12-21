@@ -8756,10 +8756,10 @@ react-dev-utils@^4.2.1:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-devtools-core@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.2.0.tgz#d8c445809dd9fc331f619e0a1f61a7accf432080"
-  integrity sha512-e3EcP63jYypZLPxxfEoYTk0L53wtphIxQD6/wVXQ9uBbYNqCd3/O9dbeBtC3v1VpZj/IcelTj6yisAdrfgxgWg==
+react-devtools-core@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.3.0.tgz#f0116ba9f6b5265f98e52d7d1de0db8538debe6a"
+  integrity sha512-Vh2ZGW1h/D1Xka2jHA4/WyH0dXRjeiPOJWOPKptj/EBTHKYaKRAOEPMLz6gx8WmRtcKcUkR9VZnh8Vel2xtwLg==
   dependencies:
     es6-symbol "^3"
     shell-quote "^1.6.1"
