@@ -17,7 +17,7 @@
     "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "yarn lint && jest __tests__",
-    "test-e2e": "jest __e2e__ --forceExit",
+    "test-e2e": "jest __e2e__ --runInBand  --forceExit",
     "postinstall": "node ./scripts/postinstall.js"
   },
   "repository": {
@@ -86,7 +86,7 @@
     "prop-types": "^15.6.1",
     "react": "^15.6.1",
     "react-dev-utils": "^4.2.1",
-    "react-devtools-core": "^3.6.2",
+    "react-devtools-core": "^4.3.0",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",

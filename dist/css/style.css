@@ -35,6 +35,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.redux-container * {
+  box-sizing: unset;
+}
+
 @media print {
   @page {
     size: auto;

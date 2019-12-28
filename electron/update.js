@@ -5,7 +5,7 @@ import fetch from 'electron-fetch';
 const repo = 'jhen0409/react-native-debugger';
 
 const getFeed = () =>
-  fetch(`https://raw.githubusercontent.com/${repo}/master/auto_updater.json`).then(res =>
+  fetch(`https://raw.githubusercontent.com/${repo}/master/auto_update.json`).then(res =>
     res.json()
   );
 
