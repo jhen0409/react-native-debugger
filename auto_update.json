@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.0-beta-0/rn-debugger-macos-x64.zip",
-  "name": "v0.11.0-beta-0",
-  "notes": "Upgrade react-devtools-core to v4"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.0-beta-1/rn-debugger-macos-x64.zip",
+  "name": "v0.11.0-beta-1",
+  "notes": "Update react-devtools-core to v4.4"
 }
