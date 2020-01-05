@@ -680,10 +680,10 @@ react-apollo@^2.5.0-rc.3:
     ts-invariant "^0.4.2"
     tslib "^1.9.3"
 
-react-devtools-core@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.3.0.tgz#f0116ba9f6b5265f98e52d7d1de0db8538debe6a"
-  integrity sha512-Vh2ZGW1h/D1Xka2jHA4/WyH0dXRjeiPOJWOPKptj/EBTHKYaKRAOEPMLz6gx8WmRtcKcUkR9VZnh8Vel2xtwLg==
+react-devtools-core@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.4.0.tgz#614cabe5f3d6fb69730dc76da10f8fa4eb033695"
+  integrity sha512-ayyz+clbjekj5rqTjieI/eE0xGZkgotklVnxfa4Pyk9se5+AHUAhUwMhLvK5N2+mR2PGOZkv159RDTmvgs+wZQ==
   dependencies:
     es6-symbol "^3"
     shell-quote "^1.6.1"
