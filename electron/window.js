@@ -81,7 +81,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     height: height && height >= minSize ? height : 750,
     minWidth: minSize,
     minHeight: minSize,
-    ...(increasePosition && winBounds.x && winBounds.y
+    ...(increasePosition && winBounds && winBounds.x && winBounds.y
       ? {
         x: winBounds.x + increasePosition,
         y: winBounds.y + increasePosition,
