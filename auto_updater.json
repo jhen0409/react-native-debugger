@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.5/rn-debugger-macos-x64.zip",
-  "name": "v0.10.5",
-  "notes": "1. Fix resolution of AsyncStorage for show AsyncStorage content feature\n2. Update Electron to v7.1.2\n3. Update apollo-client-devtools to v2.2.5"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.6/rn-debugger-macos-x64.zip",
+  "name": "v0.10.6",
+  "notes": "1. Fix runtime error when opening a window with empty Electron config\n2. Update Electron to v7.1.9"
 }
