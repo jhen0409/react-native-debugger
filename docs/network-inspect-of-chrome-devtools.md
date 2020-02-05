@@ -2,7 +2,13 @@
 
 **_WARNING_**: You should read [the limitations](#limitations) if you want to use this feature.
 
-You can enable this feature by the [context menu or Touch Bar](shortcut-references.md), then you can inspect network requests that use `XMLHttpRequest` or `fetch` on the `Network` tab of Chrome Developer Tools.
+When you have Network Inspect enabled you can inspect network requests that use `XMLHttpRequest` or `fetch` on the `Network` tab of Chrome Developer Tools.
+
+You can enable this feature by one of these ways:
+ 
+ - [context menu or Touch Bar](shortcut-references.md) (Network Inspect will be enabled while the RNDebugger is running, after closing it will reset to the default value);
+ - by the `defaultNetworkInspect` option in the [config file](config-file-in-home-directory.md) (Network Inspect will be enabled permanently).
+
 
 ## How it works
 

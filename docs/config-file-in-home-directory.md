@@ -1,6 +1,7 @@
 # Config file in home directory
 
-We could configure RNDebugger app in `~/.rndebuggerrc`, the file used [json5](https://github.com/json5/json5) as format, see the following default template:
+We could configure RNDebugger app in `~/.rndebuggerrc` (the config can be opened from the main menu: Debugger → Open Config File), the file used [json5](https://github.com/json5/json5) as format, see the following default template:
+
 
 ```json5
 {

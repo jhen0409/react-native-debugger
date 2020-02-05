@@ -4,72 +4,88 @@ import es6Template from 'es6-template';
 import semver from 'semver';
 
 const tmplPath = join(__dirname, 'injectDevToolsMiddleware.tmpl.js');
-const tmplPathInDev = join(__dirname, '../lib/injectDevToolsMiddleware.tmpl.js');
+const tmplPathInDev = join(
+  __dirname,
+  '../lib/injectDevToolsMiddleware.tmpl.js',
+);
 
-const template = fs.readFileSync(fs.existsSync(tmplPath) ? tmplPath : tmplPathInDev, 'utf-8');
+const template = fs.readFileSync(
+  fs.existsSync(tmplPath) ? tmplPath : tmplPathInDev,
+  'utf-8',
+);
 
 const name = 'react-native-debugger-patch';
 const startFlag = `/* ${name} start */`;
 const endFlag = `/* ${name} end */`;
 
-const flags = {
-  'react-native': {
-    '0.50.0-rc.0': {
-      target: 'react-native',
-      dir: 'local-cli/server/middleware',
+const rnFlags = {
+  '0.50.0-rc.0': {
+    target: 'react-native',
+    dir: 'local-cli/server/middleware',
+    file: 'getDevToolsMiddleware.js',
+    keyFunc: 'launchChromeDevTools',
+    func: "function launchChromeDevTools(port, args = '') {",
+    replaceFunc:
+      "function launchChromeDevTools(port, args = '', skipRNDebugger) {",
+    funcCall: '(port, args, true)',
+    args: "'localhost&port=' + port + '&args=' + args",
+  },
+  '0.53.0': {
+    target: 'react-native',
+    dir: 'local-cli/server/middleware',
+    file: 'getDevToolsMiddleware.js',
+    keyFunc: 'launchChromeDevTools',
+    func: "function launchChromeDevTools(host, args = '') {",
+    replaceFunc:
+      "function launchChromeDevTools(host, args = '', skipRNDebugger) {",
+    funcCall: '(host, args, true)',
+    args:
+      "'localhost&port=' + (host && host.split(':')[1] || '8081') + '&args=' + args",
+  },
+  '0.59.0-rc.0': [
+    {
+      target: '@react-native-community/cli',
+      dir: 'build/commands/server/middleware',
       file: 'getDevToolsMiddleware.js',
       keyFunc: 'launchChromeDevTools',
       func: "function launchChromeDevTools(port, args = '') {",
-      replaceFunc: "function launchChromeDevTools(port, args = '', skipRNDebugger) {",
+      replaceFunc:
+        "function launchChromeDevTools(port, args = '', skipRNDebugger) {",
       funcCall: '(port, args, true)',
       args: "'localhost&port=' + port + '&args=' + args",
     },
-    '0.53.0': {
-      target: 'react-native',
-      dir: 'local-cli/server/middleware',
+    {
+      target: '@react-native-community/cli', // 3.0.0 alpha
+      dir: 'build/commands/server/middleware',
       file: 'getDevToolsMiddleware.js',
-      keyFunc: 'launchChromeDevTools',
-      func: "function launchChromeDevTools(host, args = '') {",
-      replaceFunc: "function launchChromeDevTools(host, args = '', skipRNDebugger) {",
-      funcCall: '(host, args, true)',
-      args: "'localhost&port=' + (host && host.split(':')[1] || '8081') + '&args=' + args",
+      keyFunc: 'launchDevTools',
+      func:
+        'function launchDevTools({\n  port,\n  watchFolders\n}, isDebuggerConnected) {',
+      replaceFunc:
+        'function launchDevTools({port, watchFolders},' +
+        ' isDebuggerConnected, skipRNDebugger) {',
+      funcCall: '({port, watchFolders}, isDebuggerConnected, true)',
+      args:
+        "'localhost&port=' + port + '&watchFolders=' + " +
+        'watchFolders.map(f => `"${f}"`).join(\',\')',
     },
-    '0.59.0-rc.0': [
-      {
-        target: '@react-native-community/cli',
-        dir: 'build/commands/server/middleware',
-        file: 'getDevToolsMiddleware.js',
-        keyFunc: 'launchChromeDevTools',
-        func: "function launchChromeDevTools(port, args = '') {",
-        replaceFunc: "function launchChromeDevTools(port, args = '', skipRNDebugger) {",
-        funcCall: '(port, args, true)',
-        args: "'localhost&port=' + port + '&args=' + args",
-      },
-      {
-        target: '@react-native-community/cli', // 3.0.0 alpha
-        dir: 'build/commands/server/middleware',
-        file: 'getDevToolsMiddleware.js',
-        keyFunc: 'launchDevTools',
-        func: 'function launchDevTools({\n  port,\n  watchFolders\n}, isDebuggerConnected) {',
-        replaceFunc:
-          'function launchDevTools({port, watchFolders},' +
-          ' isDebuggerConnected, skipRNDebugger) {',
-        funcCall: '({port, watchFolders}, isDebuggerConnected, true)',
-        args: "'localhost&port=' + port + '&watchFolders=' + " +
-            "watchFolders.map(f => `\"${f}\"`).join(',')",
-      },
-      {
-        target: '@react-native-community/cli', // 3.0.0
-        dir: 'build/commands/server/middleware',
-        file: 'getDevToolsMiddleware.js',
-        keyFunc: 'launchDefaultDebugger',
-        func: "function launchDefaultDebugger(host, port, args = '') {",
-        replaceFunc: "function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {",
-        funcCall: '(host, port, args, true)',
-        args: "host + '&port=' + port + '&args=' + args",
-      },
-    ],
-  },
+    {
+      target: '@react-native-community/cli', // 3.0.0
+      dir: 'build/commands/server/middleware',
+      file: 'getDevToolsMiddleware.js',
+      keyFunc: 'launchDefaultDebugger',
+      func: "function launchDefaultDebugger(host, port, args = '') {",
+      replaceFunc:
+        "function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {",
+      funcCall: '(host, port, args, true)',
+      args: "host + '&port=' + port + '&args=' + args",
+    },
+  ],
+};
+
+const flags = {
+  'react-native': rnFlags,
+  'react-native-tvos': rnFlags,
   'react-native-macos': {
     '0.0.0': {
       target: 'react-native-macos',
@@ -96,7 +112,9 @@ const flags = {
 };
 
 const getModuleInfo = (modulePath, moduleName) => {
-  const pkg = JSON.parse(fs.readFileSync(join(modulePath, moduleName, 'package.json'))); // eslint-disable-line
+  const pkg = JSON.parse(
+    fs.readFileSync(join(modulePath, moduleName, 'package.json')),
+  ); // eslint-disable-line
   return { version: pkg.version, name: pkg.name };
 };
 
@@ -114,7 +132,16 @@ function getFlag(moduleName, version) {
 
 const injectCode = (
   modulePath,
-  { keyFunc, func: funcFlag, replaceFunc: replaceFuncFlag, funcCall, args, target, dir, file }
+  {
+    keyFunc,
+    func: funcFlag,
+    replaceFunc: replaceFuncFlag,
+    funcCall,
+    args,
+    target,
+    dir,
+    file,
+  },
 ) => {
   const filePath = join(modulePath, target, dir, file);
   if (!fs.existsSync(filePath)) return false;
@@ -142,7 +169,9 @@ const injectCode = (
   if (start === -1) return false;
   fs.writeFileSync(
     filePath,
-    middlewareCode.substr(0, start) + code + middlewareCode.substr(end, middlewareCode.length)
+    middlewareCode.substr(0, start) +
+      code +
+      middlewareCode.substr(end, middlewareCode.length),
   );
   return true;
 };
@@ -160,7 +189,7 @@ export const inject = (modulePath, moduleName) => {
 
 const revertCode = (
   modulePath,
-  { func: funcFlag, replaceFunc: replaceFuncFlag, target, dir, file }
+  { func: funcFlag, replaceFunc: replaceFuncFlag, target, dir, file },
 ) => {
   const filePath = join(modulePath, target, dir, file);
   if (!fs.existsSync(filePath)) return false;
@@ -176,7 +205,9 @@ const revertCode = (
   if (start === -1) return false;
   fs.writeFileSync(
     filePath,
-    middlewareCode.substr(0, start) + funcFlag + middlewareCode.substr(end, middlewareCode.length)
+    middlewareCode.substr(0, start) +
+      funcFlag +
+      middlewareCode.substr(end, middlewareCode.length),
   );
   return true;
 };
