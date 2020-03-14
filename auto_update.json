@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.0-beta-2/rn-debugger-macos-x64.zip",
-  "name": "v0.11.0-beta-2",
-  "notes": "1. Fix runtime error when opening a window with empty Electron config\n2. Update Electron to v7.1.9"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/0.11.0-beta-3/rn-debugger-macos-x64.zip",
+  "name": "0.11.0-beta-3",
+  "notes": "1. Fix `Requiring unknown module \"0\"` error"
 }
