@@ -5,10 +5,9 @@
 When you have Network Inspect enabled you can inspect network requests that use `XMLHttpRequest` or `fetch` on the `Network` tab of Chrome Developer Tools.
 
 You can enable this feature by one of these ways:
- 
- - [context menu or Touch Bar](shortcut-references.md) (Network Inspect will be enabled while the RNDebugger is running, after closing it will reset to the default value);
- - by the `defaultNetworkInspect` option in the [config file](config-file-in-home-directory.md) (Network Inspect will be enabled permanently).
 
+- [context menu or Touch Bar](shortcut-references.md) (Network Inspect will be enabled while the RNDebugger is running, after closing it will reset to the default value);
+- by the `defaultNetworkInspect` option in the [config file](config-file-in-home-directory.md) (Network Inspect will be enabled permanently).
 
 ## How it works
 
@@ -17,25 +16,25 @@ See [the comments of `react-native/Libraries/Utilities/PolyfillFunctions#L15-L27
 ```js
 global.XMLHttpRequest = global.originalXMLHttpRequest
   ? global.originalXMLHttpRequest
-  : global.XMLHttpRequest
+  : global.XMLHttpRequest;
 global.FormData = global.originalFormData
   ? global.originalFormData
-  : global.FormData
+  : global.FormData;
 
-fetch // Ensure to get the lazy property
+fetch; // Ensure to get the lazy property
 
 if (window.__FETCH_SUPPORT__) {
   // it's RNDebugger only to have
-  window.__FETCH_SUPPORT__.blob = false
+  window.__FETCH_SUPPORT__.blob = false;
 } else {
   /*
    * Set __FETCH_SUPPORT__ to false is just work for `fetch`.
    * If you're using another way you can just use the native Blob and remove the `else` statement
    */
-  global.Blob = global.originalBlob ? global.originalBlob : global.Blob
+  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
   global.FileReader = global.originalFileReader
     ? global.originalFileReader
-    : global.FileReader
+    : global.FileReader;
 }
 ```
 
@@ -53,6 +52,7 @@ You can also do this on the official remote debugger, but it has two differences
 There are some limitations of debugging network requests using Network Inspect:
 
 - [iOS] Requests pass `NSExceptionDomains` checks. If you forget to set a domain name, the requests will break in production. You should be clear about the difference.
+- [Android] If your network request would have caused `java.security.cert.CertPathValidatorException`, the Network Inpsect will skip that because it uses Debugger's network client.
 - React Native `FormData` supports the `uri` property. You can use files from `CameraRoll`, but `originalFormData` isn't supported.
 - It can't inspect request like `Image`s loaded from urls for `src`, so if your `Image` source has a set session, the session can't apply to `fetch` and `XMLHttpRequest`.
 
