@@ -11,7 +11,9 @@ const avoidWarnForRequire = moduleNames => {
       console.warn = (...args) => {
         if (
           args[0] &&
-          moduleNames.some(name => args[0].indexOf(`Requiring module '${name}' by name`) > -1)
+          moduleNames.some(
+            name => args[0].indexOf(`Requiring module '${name}' by name`) > -1,
+          )
         ) {
           return;
         }
@@ -20,7 +22,7 @@ const avoidWarnForRequire = moduleNames => {
       resolve(() => {
         console.warn = originalWarn;
       });
-    })
+    }),
   );
 };
 
@@ -35,8 +37,20 @@ const getRequireMethod = () => {
 
 const lookupForRNModules = (size = 999) => {
   const metroRequire = getRequireMethod();
-  for (let moduleId = 0; moduleId <= size - 1; moduleId++) {
-    const rn = metroRequire(moduleId);
+  let actualSize = size;
+  let getModule = metroRequire;
+  if (metroRequire.getModules) {
+    const mods = metroRequire.getModules();
+    actualSize = Object.keys(mods).length;
+    getModule = moduleId => {
+      const mod = mods && mods[moduleId];
+      return (mod && mod.publicModule && mod.publicModule.exports) || null;
+    };
+  } else {
+    getModule = moduleId => metroRequire(moduleId);
+  }
+  for (let moduleId = 0; moduleId <= actualSize - 1; moduleId++) {
+    const rn = getModule(moduleId);
     if (rn.requireNativeComponent && rn.NativeModules) {
       return rn;
     }
@@ -50,7 +64,8 @@ const getModule = (name, size) => {
     const metroRequire = getRequireMethod();
     // RN >= 0.56
     if (metroRequire.name === 'metroRequire') {
-      reactNative = global.$reactNative = reactNative || lookupForRNModules(size);
+      reactNative = global.$reactNative =
+        reactNative || lookupForRNModules(size);
       result = reactNative && reactNative[name];
     } else if (metroRequire.name === '_require') {
       result = metroRequire(name);
@@ -61,7 +76,8 @@ const getModule = (name, size) => {
 
 const requiredModules = {
   MessageQueue: size =>
-    (self.__fbBatchedBridge && Object.getPrototypeOf(self.__fbBatchedBridge).constructor) ||
+    (self.__fbBatchedBridge &&
+      Object.getPrototypeOf(self.__fbBatchedBridge).constructor) ||
     getModule('MessageQueue', size),
   NativeModules: size => getModule('NativeModules', size),
   Platform: size => getModule('Platform', size),
@@ -88,7 +104,10 @@ const isIntervalMatch = (intervalIdList, info) =>
   info.args[0] &&
   intervalIdList.includes(info.args[0][0]);
 
-export const ignoreRNDIntervalSpy = async ({ MessageQueue }, intervals = []) => {
+export const ignoreRNDIntervalSpy = async (
+  { MessageQueue },
+  intervals = [],
+) => {
   if (MessageQueue.__empty) return;
   // Wrap spy function if it already set
   const intervalIdList = [self.__RND_INTERVAL__].concat(intervals);
@@ -106,7 +125,7 @@ export const ignoreRNDIntervalSpy = async ({ MessageQueue }, intervals = []) => 
         console.log(
           `${info.type === TO_JS ? 'N->JS' : 'JS->N'} : ` +
             `${info.module ? `${info.module}.` : ''}${info.method}` +
-            `(${JSON.stringify(info.args)})`
+            `(${JSON.stringify(info.args)})`,
         );
       };
     } else if (spyOrToggle === false) {
