@@ -51,6 +51,10 @@ Also, sometimes it have timer problem between host machine and device (emulator)
 
 Or try to restart your device (emulator).
 
+## [Windows 10] React native debugger process starts but no visible window ([#459](https://github.com/jhen0409/react-native-debugger/issues/459))  
+
+This issue is caused by Windows 10 dark mode, for a workaround please disable dark mode and enable it again after launching react-native-debugger
+
 ## Other documentations
 
 - [Getting Started](getting-started.md)
