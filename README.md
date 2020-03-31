@@ -4,12 +4,12 @@
 
 ![React Native Debugger](https://user-images.githubusercontent.com/3001525/29451479-6621bf1a-83c8-11e7-8ebb-b4e98b1af91c.png)
 
-> Run the redux example of [react-navigation](https://github.com/react-navigation/react-navigation/tree/master/examples) with Redux DevTools setup
+> Run the redux example of [react-navigation](https://github.com/react-navigation/react-navigation/tree/master/example) with Redux DevTools setup
 
 This is a standalone app for debugging React Native apps:
 
 - Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide more functionally.
-- Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react-devtools/tree/master/packages/react-devtools-core).
+- Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react/tree/master/packages/react-devtools-core).
 - Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
 
 ## Installation
@@ -40,7 +40,7 @@ This puts `React Native Debugger.app` in your `/applications/` folder.
 
 ## Credits
 
-- Great work of [React DevTools](https://github.com/facebook/react-devtools)
+- Great work of [React DevTools](https://github.com/facebook/react/tree/master/packages/react-devtools)
 - Great work of [Redux DevTools](https://github.com/gaearon/redux-devtools) / [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) and all third-party monitors.
 
 ## Backers
