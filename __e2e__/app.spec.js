@@ -6,8 +6,7 @@ import electronPath from 'electron';
 import { Application } from 'spectron';
 import buildTestBundle, { bundlePath } from './buildTestBundle';
 import createMockRNServer from './mockRNServer';
-// TODO: Change to auto_update.json
-import autoUpdateFeed from '../auto_updater.json';
+import autoUpdateFeed from '../auto_update.json';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
