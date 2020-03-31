@@ -15,7 +15,10 @@ import { checkPortStatus } from 'portscanner';
 import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
 import { tryADBReverse } from '../utils/adb';
-import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
+import {
+  clearNetworkLogs,
+  selectRNDebuggerWorkerContext,
+} from '../utils/devtools';
 import config from '../utils/config';
 import deltaUrlToBlobUrl from './delta/deltaUrlToBlobUrl';
 import checkDeltaAvailable from './delta/checkDeltaAvailable';
@@ -37,6 +40,11 @@ const APOLLO_PROXY = 'apollo-devtools-proxy';
 const workerOnMessage = message => {
   const { data } = message;
 
+  if (data && data.__IS_XSTATE_DEVTOOLS_MESSAGE__) {
+    postMessage(data.content, '*');
+    return false;
+  }
+
   if (data && data.source === APOLLO_BACKEND) {
     if (!window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__) {
       window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__ = true;
@@ -47,12 +55,15 @@ const workerOnMessage = message => {
         source: APOLLO_BACKEND,
         payload: data,
       },
-      '*'
+      '*',
     );
     return false;
   }
 
-  if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
+  if (
+    data &&
+    (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)
+  ) {
     return true;
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
@@ -66,7 +77,8 @@ const workerOnMessage = message => {
 const onWindowMessage = e => {
   const { data } = e;
   if (data && data.source === APOLLO_PROXY) {
-    const message = typeof data.payload === 'string' ? { event: data.payload } : data.payload;
+    const message =
+      typeof data.payload === 'string' ? { event: data.payload } : data.payload;
     worker.postMessage({
       method: 'emitApolloMessage',
       source: APOLLO_PROXY,
@@ -99,7 +111,8 @@ const shutdownJSRuntime = () => {
 };
 
 const isScriptBuildForAndroid = url =>
-  url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
+  url &&
+  (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
 let preconnectTimeout;
 const preconnect = async (fn, firstTimeout) => {
@@ -139,14 +152,16 @@ const checkJSLoadCount = () => {
       '[RNDebugger]',
       `Refreshed the devtools panel as React Native app was reloaded ${loadCount} times.`,
       'If you want to update or disable this,',
-      'Open `Debugger` -> `Open Config File` to change `timesJSLoadToRefreshDevTools` field.'
+      'Open `Debugger` -> `Open Config File` to change `timesJSLoadToRefreshDevTools` field.',
     );
     loadCount = 0;
   }
 };
 
 const connectToDebuggerProxy = async () => {
-  const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
+  const ws = new WebSocket(
+    `ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`,
+  );
 
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
@@ -182,7 +197,7 @@ const connectToDebuggerProxy = async () => {
         try {
           if (await checkDeltaAvailable(host, port)) {
             const { url, moduleSize } = await deltaUrlToBlobUrl(
-              object.url.replace('.bundle', '.delta')
+              object.url.replace('.bundle', '.delta'),
             );
             object.moduleSize = moduleSize;
             clearLogs();
