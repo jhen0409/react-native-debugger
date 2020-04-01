@@ -49,6 +49,10 @@ We used different auto-update feed for `v0.10` and `v0.11`, so you won't see upd
 - [Troubleshooting](docs/troubleshooting.md)
 - [Contributing](docs/contributing.md)
 
+## Documentation (v0.10)
+
+Please visit [`v0.10 branch`](https://github.com/jhen0409/react-native-debugger/tree/v0.10).
+
 ## Credits
 
 - Great work of [React DevTools](https://github.com/facebook/react/tree/master/packages/react-devtools)
