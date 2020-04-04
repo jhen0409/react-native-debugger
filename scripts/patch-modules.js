@@ -5,11 +5,8 @@ console.log('Patch react-devtools-core');
 
 const rdStandalone = path.join(
   __dirname,
-  '../dist/node_modules/react-devtools-core/build/standalone.js'
+  '../dist/node_modules/react-devtools-core/dist/standalone.js'
 );
-// Hide source map of react-devtools-core
-// for optimize chrome devtools
-shell.sed('-i', '//# sourceMappingURL=standalone.js.map', '', rdStandalone);
 // Avoid logging from react-devtools-core
 // log: connected, disconnected
 // error: listening error (can be seen directly in the panel)

@@ -24,6 +24,17 @@ $ brew update && brew cask install react-native-debugger
 
 This puts `React Native Debugger.app` in your `/applications/` folder.
 
+### NOTICE: React Native Compatibility
+
+To use this app you need to ensure you are using the correct version of React Native Debugger and react-native:
+
+| React Native Debugger | react-native |
+| --------------------- | ------------ |
+| >= 0.11               | >= 0.62      |
+| <= 0.10               | <= 0.61      |
+
+We used different auto-update feed for `v0.10` and `v0.11`, so you won't see update tips of `v0.11` from `v0.10`.
+
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
@@ -37,6 +48,10 @@ This puts `React Native Debugger.app` in your `/applications/` folder.
 - [Config file in home directory](docs/config-file-in-home-directory.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Contributing](docs/contributing.md)
+
+## Documentation (v0.10)
+
+Please visit [`v0.10 branch`](https://github.com/jhen0409/react-native-debugger/tree/v0.10).
 
 ## Credits
 

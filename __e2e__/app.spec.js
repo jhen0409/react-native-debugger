@@ -6,7 +6,7 @@ import electronPath from 'electron';
 import { Application } from 'spectron';
 import buildTestBundle, { bundlePath } from './buildTestBundle';
 import createMockRNServer from './mockRNServer';
-import autoUpdateFeed from '../auto_updater.json';
+import autoUpdateFeed from '../auto_update.json';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
@@ -42,7 +42,7 @@ describe('Application launch', () => {
     // Check auto update feed is expected
     expect(version).toBe(process.env.npm_package_version);
     expect(autoUpdateFeed.url).toBe(
-      `https://github.com/jhen0409/react-native-debugger/releases/download/v${version}/rn-debugger-macos-x64.zip`
+      `https://github.com/jhen0409/react-native-debugger/releases/download/v${version}/rn-debugger-macos-x64.zip`,
     );
     expect(autoUpdateFeed.name).toBe(`v${version}`);
     expect(typeof autoUpdateFeed.notes).toBe('string');
@@ -56,11 +56,16 @@ describe('Application launch', () => {
     await client.waitUntilWindowLoaded();
     await delay(2000);
     const title = await browserWindow.getTitle();
-    expect(title).toBe('React Native Debugger - Attempting reconnection (port 8081)');
+    expect(title).toBe(
+      'React Native Debugger - Attempting reconnection (port 8081)',
+    );
   });
 
   it('should portfile (for debugger-open usage) always exists in home dir', async () => {
-    const portFile = path.join(process.env.USERPROFILE || process.env.HOME, '.rndebugger_port');
+    const portFile = path.join(
+      process.env.USERPROFILE || process.env.HOME,
+      '.rndebugger_port',
+    );
 
     expect(fs.existsSync(portFile)).toBe(true);
     fs.unlinkSync(portFile);
@@ -78,20 +83,26 @@ describe('Application launch', () => {
   it("should contain Inspector monitor's component on Redux DevTools", async () => {
     const { client } = app;
 
-    const val = await client.element('//div[contains(@class, "inspector-")]').getText();
+    const val = await client
+      .element('//div[contains(@class, "inspector-")]')
+      .getText();
     expect(val).not.toBeNull();
   });
 
   it('should contain an empty actions list on Redux DevTools', async () => {
     const { client } = app;
 
-    const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
+    const val = await client
+      .element('//div[contains(@class, "actionListRows-")]')
+      .getText();
     expect(val).toBe('');
   });
 
   it('should show waiting message on React DevTools', async () => {
     const { client } = app;
-    const exist = await client.isExisting('//h2[text()="Waiting for React to connect…"]');
+    const exist = await client.isExisting(
+      '//h2[text()="Waiting for React to connect…"]',
+    );
     expect(exist).toBe(true);
   });
 
@@ -110,7 +121,9 @@ describe('Application launch', () => {
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
     const title = await app.browserWindow.getTitle();
-    expect(title).toBe('React Native Debugger - Waiting for client connection (port 8081)');
+    expect(title).toBe(
+      'React Native Debugger - Waiting for client connection (port 8081)',
+    );
     server.close();
     wss.close();
   });
@@ -143,7 +156,7 @@ describe('Application launch', () => {
 
     const title = await app.browserWindow.getTitle();
     expect(title).toBe(
-      `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`
+      `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`,
     );
     server.close();
     wss.close();
@@ -183,7 +196,7 @@ describe('Application launch', () => {
                     method: 'executeApplicationScript',
                     inject: [],
                     url: `../../${bundlePath}`,
-                  })
+                  }),
                 );
                 break;
               case 'sendFakeScript':
@@ -196,12 +209,14 @@ describe('Application launch', () => {
             JSON.stringify({
               id: 'createJSRuntime',
               method: 'prepareJSRuntime',
-            })
+            }),
           );
         });
       });
       const title = await app.browserWindow.getTitle();
-      expect(title).toBe(`React Native Debugger - Connected (port ${customRNServerPort})`);
+      expect(title).toBe(
+        `React Native Debugger - Connected (port ${customRNServerPort})`,
+      );
     });
 
     afterAll(() => {
@@ -218,7 +233,9 @@ describe('Application launch', () => {
 
     it('should have @@INIT action on Redux DevTools', async () => {
       const { client } = app;
-      const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
+      const val = await client
+        .element('//div[contains(@class, "actionListRows-")]')
+        .getText();
       expect(val).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
     });
 
@@ -246,7 +263,11 @@ describe('Application launch', () => {
 
     const expectActions = {
       'Redux store instance 1': {
-        expt: [/@@INIT/, /TEST_PASS_FOR_REDUX_STORE_1/, /SHOW_FOR_REDUX_STORE_1/],
+        expt: [
+          /@@INIT/,
+          /TEST_PASS_FOR_REDUX_STORE_1/,
+          /SHOW_FOR_REDUX_STORE_1/,
+        ],
         notExpt: [/NOT_SHOW_FOR_REDUX_STORE_1/, /TEST_PASS_FOR_REDUX_STORE_2/],
       },
       'Redux store instance 2': {
@@ -287,7 +308,9 @@ describe('Application launch', () => {
       const { client } = app;
 
       await selectInstance(name);
-      const val = await client.element('//div[contains(@class, "actionListRows-")]').getText();
+      const val = await client
+        .element('//div[contains(@class, "actionListRows-")]')
+        .getText();
       runExpectActions(name, val);
       await commit();
     };
@@ -311,21 +334,29 @@ describe('Application launch', () => {
       const logs = await client.getRenderProcessLogs();
       // Print renderer process logs
       logs.forEach(log =>
-        console.log(`Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`)
+        console.log(
+          `Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`,
+        ),
       );
       expect(logs.length).toEqual(1);
       const [formDataWarning] = logs;
       expect(formDataWarning.source).toBe('worker');
       expect(formDataWarning.level).toBe('WARNING');
       expect(
-        formDataWarning.message.indexOf("Detected you're enabled Network Inspect") > 0
+        formDataWarning.message.indexOf(
+          "Detected you're enabled Network Inspect",
+        ) > 0,
       ).toBeTruthy();
     });
 
     it('should show apollo devtools panel', async () => {
       const { client } = app;
       expect(
-        (await client.execute(() => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__)).value
+        (
+          await client.execute(
+            () => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__,
+          )
+        ).value,
       ).toBeTruthy();
     });
   });
