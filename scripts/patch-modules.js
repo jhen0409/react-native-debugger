@@ -11,9 +11,9 @@ const rdStandalone = path.join(
 // for optimize chrome devtools
 shell.sed(
   '-i',
-  'DevTools v3 is incompatible with this version of React',
+  'DevTools v3 is incompatible with this version of React"',
   'DevTools v3 is incompatible with this version of React' +
-    ', you need manually upgrade React Native Debugger to v0.11. (Please visit the Release page)',
+    ', you need manually upgrade React Native Debugger to v0.11. (Please visit the Release page)"',
   rdStandalone,
 );
 shell.sed('-i', '//# sourceMappingURL=standalone.js.map', '', rdStandalone);
