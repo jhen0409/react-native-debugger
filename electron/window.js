@@ -96,9 +96,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     minHeight: minSize,
     ...(increasePosition && winBounds && winBounds.x && winBounds.y
       ? {
-          x: winBounds.x + increasePosition,
-          y: winBounds.y + increasePosition,
-        }
+        x: winBounds.x + increasePosition,
+        y: winBounds.y + increasePosition,
+      }
       : {}),
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
