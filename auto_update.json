@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.0-beta-4/rn-debugger-macos-x64.zip",
-  "name": "v0.11.0-beta-4",
-  "notes": "1. Update Electron to v8.2.0\n2. Update react-devtools-core to v4.6.0"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.0/rn-debugger-macos-x64.zip",
+  "name": "v0.11.0",
+  "notes": "1. Update Electron to v8.2.0\n2. Update react-devtools-core to v4.6.0\n3. Drop support for React Native <= 0.61"
 }
