@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.7/rn-debugger-macos-x64.zip",
-  "name": "v0.10.7",
-  "notes": "1. Fix `Requiring unknown module \"0\"` error"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.8/rn-debugger-macos-x64.zip",
+  "name": "v0.10.8",
+  "notes": "* Add more message for DevTools v3 incompatible message\n\nNOTE: If you got react-devtools v3 incompatible message, you need manually upgrade React Native Debugger to v0.11."
 }
