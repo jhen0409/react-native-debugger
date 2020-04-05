@@ -8,11 +8,14 @@ import { readConfig, filePath as configFile } from './config';
 
 const store = new Store();
 
-const executeJavaScript = (win, script) => win.webContents.executeJavaScript(script);
+const executeJavaScript = (win, script) =>
+  win.webContents.executeJavaScript(script);
 
-export const checkWindowInfo = win => executeJavaScript(win, 'window.checkWindowInfo()');
+export const checkWindowInfo = win =>
+  executeJavaScript(win, 'window.checkWindowInfo()');
 
-const checkIsOpenInEditorEnabled = win => executeJavaScript(win, 'window.isOpenInEditorEnabled()');
+const checkIsOpenInEditorEnabled = win =>
+  executeJavaScript(win, 'window.isOpenInEditorEnabled()');
 
 const changeMenuItems = menus => {
   const rootMenuItems = Menu.getApplicationMenu().items;
@@ -21,7 +24,9 @@ const changeMenuItems = menus => {
     if (!rootMenuItem || !rootMenuItem.submenu) return;
 
     Object.entries(subMenu).forEach(([subKey, menuSet]) => {
-      const menuItem = rootMenuItem.submenu.items.find(({ label }) => label === subKey);
+      const menuItem = rootMenuItem.submenu.items.find(
+        ({ label }) => label === subKey,
+      );
       if (!menuItem) return;
 
       Object.assign(menuItem, menuSet);
@@ -30,16 +35,24 @@ const changeMenuItems = menus => {
 };
 
 const invokeDevMethod = (win, name) =>
-  executeJavaScript(win, `window.invokeDevMethod && window.invokeDevMethod('${name}')`);
+  executeJavaScript(
+    win,
+    `window.invokeDevMethod && window.invokeDevMethod('${name}')`,
+  );
 
 const registerKeyboradShortcut = win => {
   const prefix = process.platform === 'darwin' ? 'Command' : 'Ctrl';
   // If another window focused, register a new shortcut
-  if (globalShortcut.isRegistered(`${prefix}+R`) || globalShortcut.isRegistered(`${prefix}+I`)) {
+  if (
+    globalShortcut.isRegistered(`${prefix}+R`) ||
+    globalShortcut.isRegistered(`${prefix}+I`)
+  ) {
     globalShortcut.unregisterAll();
   }
   globalShortcut.register(`${prefix}+R`, () => invokeDevMethod(win, 'reload'));
-  globalShortcut.register(`${prefix}+I`, () => invokeDevMethod(win, 'toggleElementInspector'));
+  globalShortcut.register(`${prefix}+I`, () =>
+    invokeDevMethod(win, 'toggleElementInspector'),
+  );
 };
 
 const unregisterKeyboradShortcut = () => globalShortcut.unregisterAll();
@@ -68,7 +81,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
       `Parse root config failed, please checkout \`${configFile}\`, the error trace:\n\n` +
         `${error}\n\n` +
         'RNDebugger will load default config instead. ' +
-        'You can click `Debugger` -> `Open Config File` in application menu.'
+        'You can click `Debugger` -> `Open Config File` in application menu.',
     );
   }
 
@@ -83,9 +96,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     minHeight: minSize,
     ...(increasePosition && winBounds && winBounds.x && winBounds.y
       ? {
-        x: winBounds.x + increasePosition,
-        y: winBounds.y + increasePosition,
-      }
+          x: winBounds.x + increasePosition,
+          y: winBounds.y + increasePosition,
+        }
       : {}),
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
@@ -127,6 +140,14 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
       removeUnecessaryTabs(win);
     }
     selectRNDebuggerWorkerContext(win);
+    setTimeout(
+      () =>
+        executeJavaScript(
+          win,
+          'window.logWelcomeMessage && window.logWelcomeMessage()',
+        ),
+      1e3,
+    );
   });
   win.on('show', () => {
     if (!win.isFocused()) return;
@@ -141,7 +162,10 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     unregisterKeyboradShortcut();
     store.set('winBounds', win.getBounds());
     store.set('zoomLevel', win.webContents.zoomLevel);
-    await executeJavaScript(win, 'window.beforeWindowClose && window.beforeWindowClose()');
+    await executeJavaScript(
+      win,
+      'window.beforeWindowClose && window.beforeWindowClose()',
+    );
     win.destroy();
   };
   win.on('close', event => {
