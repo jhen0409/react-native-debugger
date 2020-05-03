@@ -35,6 +35,10 @@ To use this app you need to ensure you are using the correct version of React Na
 
 We used different auto-update feed for `v0.10` and `v0.11`, so you won't see update tips of `v0.11` from `v0.10`.
 
+Install last release of v0.10 (0.10.7)
+
+`brew update && brew cask install https://raw.githubusercontent.com/caskroom/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
+
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
