@@ -41,6 +41,10 @@ const containerStyle = {
   fontSize: 12,
 };
 
+const devtoolsStyle = {
+  height: '100%', overflow: 'auto',
+};
+
 @enhance
 @connect(
   state => {
@@ -98,13 +102,15 @@ export default class ReduxDevTools extends Component {
           <MonitorSelector selected={monitor} />
           <Instances selected={selected} />
         </div>
-        <DevTools
-          monitor={monitor}
-          liftedState={liftedState}
-          monitorState={monitorState}
-          dispatch={liftedDispatch}
-          lib={options.lib}
-        />
+        <div style={devtoolsStyle}>
+          <DevTools
+            monitor={monitor}
+            liftedState={liftedState}
+            monitorState={monitorState}
+            dispatch={liftedDispatch}
+            lib={options.lib}
+          />
+        </div>
         <Notification />
         {isSliderOpen && (
           <SliderMonitor
