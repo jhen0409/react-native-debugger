@@ -21,6 +21,21 @@ const styles = {
     display: 'flex',
     height: '100%',
     justifyContent: 'center',
+    position: 'relative',
+  },
+  waiting: {
+    height: '100%',
+    display: 'flex',
+    webkitUserSelect: 'none',
+    textAlign: 'center',
+    color: '#aaa',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 };
 
@@ -137,7 +152,7 @@ export default class ReactInspector extends Component {
   render() {
     return (
       <div id={containerId} style={styles.container}>
-        <div id="waiting">
+        <div id="waiting" style={styles.waiting}>
           <h2>{'Waiting for React to connect…'}</h2>
         </div>
       </div>
