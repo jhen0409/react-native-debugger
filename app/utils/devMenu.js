@@ -23,10 +23,14 @@ const getBarItems = bar =>
     .map(key => bar[key])
     .filter(barItem => !!barItem);
 const setTouchBar = () =>
-  currentWindow.setTouchBar([
-    ...getBarItems(leftBar),
-    ...(isSliderEnabled ? getBarItems(rightBar) : []),
-  ]);
+  currentWindow.setTouchBar(
+    new remote.TouchBar({
+      items: [
+        ...getBarItems(leftBar),
+        ...(isSliderEnabled ? getBarItems(rightBar) : []),
+      ],
+    })
+  );
 
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
