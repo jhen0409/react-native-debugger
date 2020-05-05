@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.1/rn-debugger-macos-x64.zip",
-  "name": "v0.11.1",
-  "notes": "1. Use `--disable-http-cache` by default\n2. Update Electron to v8.2.1"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.2/rn-debugger-macos-x64.zip",
+  "name": "v0.11.2",
+  "notes": "1. ReduxDevTools: Fix inspector style issue on Electron v8.0\n2. Update Electron to v8.2.5"
 }
