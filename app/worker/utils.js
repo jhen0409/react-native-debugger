@@ -51,7 +51,7 @@ const lookupForRNModules = (size = 999) => {
   }
   for (let moduleId = 0; moduleId <= actualSize - 1; moduleId++) {
     const rn = getModule(moduleId);
-    if (rn.requireNativeComponent && rn.NativeModules) {
+    if (rn && rn.requireNativeComponent && rn.NativeModules) {
       return rn;
     }
   }
