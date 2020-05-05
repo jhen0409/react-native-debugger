@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.8/rn-debugger-macos-x64.zip",
-  "name": "v0.10.9",
-  "notes": "1. Use --disable-http-cache by default"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.10.10/rn-debugger-macos-x64.zip",
+  "name": "v0.10.10",
+  "notes": "1. Fix TouchBar items not shown\n2. Check module isn't null on lookupForRNModules"
 }
