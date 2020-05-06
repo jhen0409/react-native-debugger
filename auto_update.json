@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.2/rn-debugger-macos-x64.zip",
-  "name": "v0.11.2",
-  "notes": "1. ReduxDevTools: Fix inspector style issue on Electron v8.0\n2. Update Electron to v8.2.5"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.3/rn-debugger-macos-x64.zip",
+  "name": "v0.11.3",
+  "notes": "1. Fix TouchBar items not shown\n2. Check module isn't null on lookupForRNModules\n3. ReactInspector: Fix layout update issue if backend try to reconnect"
 }
