@@ -5,13 +5,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { shell } from 'electron';
 import { tryADBReverse } from '../utils/adb';
-import config from '../utils/config';
 
 let ReactServer;
 const getReactInspector = () => {
   if (ReactServer) return ReactServer;
   // eslint-disable-next-line
-  ReactServer = ReactServer || require('react-devtools-core/standalone');
+  ReactServer = ReactServer || require('react-devtools-core/standalone').default;
 
   return ReactServer;
 };
@@ -22,13 +21,21 @@ const styles = {
     display: 'flex',
     height: '100%',
     justifyContent: 'center',
+    position: 'relative',
   },
-  tip: {
-    lineHeight: 1.5,
-  },
-  link: {
-    cursor: 'pointer',
-    color: '#777',
+  waiting: {
+    height: '100%',
+    display: 'flex',
+    webkitUserSelect: 'none',
+    textAlign: 'center',
+    color: '#aaa',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 };
 
@@ -66,14 +73,10 @@ export default class ReactInspector extends Component {
       this.closeServerIfExists();
       if (isReactPanelOpen(this.props)) {
         this.server = this.startServer();
-        this.setDefaultThemeName(nextProps.setting.themeName);
       }
       nextWorker.addEventListener('message', this.workerOnMessage);
     } else if (!nextWorker) {
       this.closeServerIfExists();
-    }
-    if (this.props.setting.themeName !== nextProps.setting.themeName) {
-      this.setDefaultThemeName(nextProps.setting.themeName);
     }
     // Open / Close server when react panel opened / hidden
     if (!worker && !nextWorker) return;
@@ -91,16 +94,6 @@ export default class ReactInspector extends Component {
 
   componentWillUnmount() {
     this.closeServerIfExists();
-  }
-
-  setDefaultThemeName(themeName) {
-    const theme = config.defaultReactDevToolsTheme;
-    const inspector = getReactInspector();
-    if (!theme || theme === 'RNDebugger') {
-      inspector.setDefaultThemeName(themeName === 'dark' ? 'ChromeDark' : 'ChromeDefault');
-    } else {
-      inspector.setDefaultThemeName(theme);
-    }
   }
 
   listeningPort = window.reactDevToolsPort;
@@ -123,8 +116,8 @@ export default class ReactInspector extends Component {
 
   startServer(port = this.listeningPort) {
     let loggedWarn = false;
+
     return getReactInspector()
-      .setBrowserName('RNDebugger DevTools')
       .setStatusListener(status => {
         if (!loggedWarn && status === 'Failed to start the server.') {
           const message =
@@ -159,15 +152,8 @@ export default class ReactInspector extends Component {
   render() {
     return (
       <div id={containerId} style={styles.container}>
-        <div id="waiting">
+        <div id="waiting" style={styles.waiting}>
           <h2>{'Waiting for React to connect…'}</h2>
-          <h5 style={styles.tip}>
-            {"If you're using a real device, ensure you have read the "}
-            <span style={styles.link} onClick={this.handleDocLinkClick}>
-              `How to use it with a real device?`
-            </span>
-            {' section in the documentation.'}
-          </h5>
         </div>
       </div>
     );

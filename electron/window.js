@@ -137,6 +137,14 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
       removeUnecessaryTabs(win);
     }
     selectRNDebuggerWorkerContext(win);
+    setTimeout(
+      () =>
+        executeJavaScript(
+          win,
+          'window.logWelcomeMessage && window.logWelcomeMessage()',
+        ),
+      1e3,
+    );
   });
   win.on('show', () => {
     if (!win.isFocused()) return;

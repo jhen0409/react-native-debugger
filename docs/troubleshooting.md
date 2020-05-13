@@ -1,5 +1,11 @@
 # Troubleshooting
 
+## Debugger causes app to load stale JS bundle ([#423](https://github.com/jhen0409/react-native-debugger/issues/423))
+
+This issue was fixed by [v0.10.9](https://github.com/jhen0409/react-native-debugger/releases/tag/v0.10.9) and [v0.11.1](https://github.com/jhen0409/react-native-debugger/releases/tag/v0.11.1). If you are still using the old version for some reason, you can turn off Network cache manually on devtools:
+
+![image](https://user-images.githubusercontent.com/848589/69504219-b0d46d00-0f85-11ea-99ed-de5e4e2e59c0.png)
+
 ## Some shortcuts (e.g. `Reload` / `Clear AsyncStorage`) are missing on the Debugger
 
 - For Android and React Native version less than v0.60, you need to add and link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) package
@@ -50,6 +56,10 @@ Also, sometimes it have timer problem between host machine and device (emulator)
 <img width="300" alt="2017-07-18 10 09 01" src="https://user-images.githubusercontent.com/3001525/28492059-3c6957ea-6f2e-11e7-8901-8f4431f67a71.png">
 
 Or try to restart your device (emulator).
+
+## [Windows 10] React native debugger process starts but no visible window ([#459](https://github.com/jhen0409/react-native-debugger/issues/459))  
+
+This issue is caused by Windows 10 dark mode, for a workaround please disable dark mode and enable it again after launching react-native-debugger
 
 ## Other documentations
 

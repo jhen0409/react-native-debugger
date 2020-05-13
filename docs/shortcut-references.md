@@ -41,17 +41,6 @@ If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https:
 
 You can also read [Keyboard Shortcuts Reference of Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools/shortcuts).
 
-## Android support for all features on React Native version < 0.60
-
-You could link [`react-native-devsettings-android`](https://github.com/jhen0409/react-native-devsettings-android) in your project to enable the features:
-
-```bash
-$ npm install --save react-native-devsettings-android
-$ react-native link react-native-devsettings-android
-```
-
-Note that it only for regular RN project, so it doesn't support CRNA without eject.
-
 ## Known issues
 
 - Currently most features doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).

@@ -8,6 +8,8 @@ import { createMenuTemplate } from './menu';
 import { readConfig } from './config';
 import { sendSyncState } from './sync-state';
 
+app.commandLine.appendSwitch('disable-http-cache');
+
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 1;
 
 const iconPath = path.resolve(__dirname, 'logo.png');
