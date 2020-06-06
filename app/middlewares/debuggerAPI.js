@@ -14,8 +14,11 @@ import { bindActionCreators } from 'redux';
 import { checkPortStatus } from 'portscanner';
 import * as debuggerActions from '../actions/debugger';
 import { setDevMenuMethods, networkInspect } from '../utils/devMenu';
-import { tryADBReverse } from '../utils/adb';
-import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
+import { client as adbClient } from '../utils/adb';
+import {
+  clearNetworkLogs,
+  selectRNDebuggerWorkerContext,
+} from '../utils/devtools';
 import config from '../utils/config';
 
 const currentWindow = remote.getCurrentWindow();
@@ -32,7 +35,7 @@ let socket;
 const APOLLO_BACKEND = 'apollo-devtools-backend';
 const APOLLO_PROXY = 'apollo-devtools-proxy';
 
-const workerOnMessage = message => {
+const workerOnMessage = (message) => {
   const { data } = message;
 
   if (data && data.source === APOLLO_BACKEND) {
@@ -45,12 +48,15 @@ const workerOnMessage = message => {
         source: APOLLO_BACKEND,
         payload: data,
       },
-      '*'
+      '*',
     );
     return false;
   }
 
-  if (data && (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)) {
+  if (
+    data &&
+    (data.__IS_REDUX_NATIVE_MESSAGE__ || data.__REPORT_REACT_DEVTOOLS_PORT__)
+  ) {
     return true;
   }
   const list = data && data.__AVAILABLE_METHODS_CAN_CALL_BY_RNDEBUGGER__;
@@ -61,10 +67,11 @@ const workerOnMessage = message => {
   socket.send(JSON.stringify(data));
 };
 
-const onWindowMessage = e => {
+const onWindowMessage = (e) => {
   const { data } = e;
   if (data && data.source === APOLLO_PROXY) {
-    const message = typeof data.payload === 'string' ? { event: data.payload } : data.payload;
+    const message =
+      typeof data.payload === 'string' ? { event: data.payload } : data.payload;
     worker.postMessage({
       method: 'emitApolloMessage',
       source: APOLLO_PROXY,
@@ -96,8 +103,9 @@ const shutdownJSRuntime = () => {
   setDebuggerWorker(null, 'disconnected');
 };
 
-const isScriptBuildForAndroid = url =>
-  url && (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
+const isScriptBuildForAndroid = (url) =>
+  url &&
+  (url.indexOf('.android.bundle') > -1 || url.indexOf('platform=android') > -1);
 
 let preconnectTimeout;
 const preconnect = async (fn, firstTimeout) => {
@@ -118,7 +126,7 @@ const clearLogs = () => {
 const flushQueuedMessages = () => {
   if (!worker) return;
   // Flush any messages queued up and clear them
-  queuedMessages.forEach(message => worker.postMessage(message));
+  queuedMessages.forEach((message) => worker.postMessage(message));
   queuedMessages = [];
 };
 
@@ -137,18 +145,20 @@ const checkJSLoadCount = () => {
       '[RNDebugger]',
       `Refreshed the devtools panel as React Native app was reloaded ${loadCount} times.`,
       'If you want to update or disable this,',
-      'Open `Debugger` -> `Open Config File` to change `timesJSLoadToRefreshDevTools` field.'
+      'Open `Debugger` -> `Open Config File` to change `timesJSLoadToRefreshDevTools` field.',
     );
     loadCount = 0;
   }
 };
 
 const connectToDebuggerProxy = async () => {
-  const ws = new WebSocket(`ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`);
+  const ws = new WebSocket(
+    `ws://${host}:${port}/debugger-proxy?role=debugger&name=Chrome`,
+  );
 
   const { setDebuggerStatus } = actions;
   ws.onopen = () => setDebuggerStatus('waiting');
-  ws.onmessage = async message => {
+  ws.onmessage = async (message) => {
     if (!message.data) return;
 
     const object = JSON.parse(message.data);
@@ -174,7 +184,7 @@ const connectToDebuggerProxy = async () => {
         object.reactDevToolsPort = window.reactDevToolsPort;
         if (isScriptBuildForAndroid(object.url)) {
           // Reserve React Inspector port for debug via USB on Android real device
-          tryADBReverse(window.reactDevToolsPort).catch(() => {});
+          adbClient.reverseAll(window.reactDevToolsPort).catch(() => {});
         }
         // Clear logs even if no error catched
         clearLogs();
@@ -194,7 +204,7 @@ const connectToDebuggerProxy = async () => {
   };
 
   ws.onerror = () => {};
-  ws.onclose = e => {
+  ws.onclose = (e) => {
     shutdownJSRuntime();
     if (e.reason) {
       console.warn(e.reason);
@@ -222,7 +232,7 @@ const setDebuggerLoc = ({ host: packagerHost, port: packagerPort }) => {
 export default ({ dispatch }) => {
   actions = bindActionCreators(debuggerActions, dispatch);
 
-  return next => action => {
+  return (next) => (action) => {
     if (action.type === SET_DEBUGGER_LOCATION) {
       setDebuggerLoc(action.loc);
     }

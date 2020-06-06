@@ -2,9 +2,21 @@ import adb from 'adbkit';
 
 export const client = adb.createClient();
 
-const reverse = (device, port) => client.reverse(device, `tcp:${port}`, `tcp:${port}`);
+const getDevices = () =>
+  client.listDevices().filter((device) => device.type === 'device');
 
-export const tryADBReverse = async port => {
-  const devices = await client.listDevices().filter(device => device.type === 'device');
-  return Promise.all(devices.map(device => reverse(device.id, port)));
+client.reverseAll = async (port) => {
+  const devices = await getDevices();
+  return Promise.all(
+    devices.map((device) =>
+      client.reverse(device.id, `tcp:${port}`, `tcp:${port}`),
+    ),
+  );
 };
+
+client.shellAll = async (command) => {
+  const devices = await getDevices();
+  return Promise.all(devices.map((device) => client.shell(device.id, command)));
+};
+
+client.openMenuAll = async () => client.shellAll('input keyevent 82');
