@@ -29,7 +29,7 @@ const argv = require('minimist')(process.argv.slice(2), {
     // Use expo packager port (getExpoPort) instead of RN packager default port (8081)
     'expo',
   ],
-  string: ['port'],
+  string: ['port', 'host'],
   default: {
     inject: true,
   },
@@ -37,7 +37,7 @@ const argv = require('minimist')(process.argv.slice(2), {
 
 let moduleName;
 argv.port = Number(argv.port) || (argv.expo ? getExpoPort() : defaultPort);
-if (argv.open && argv.port) {
+if (argv.open && (argv.port || argv.host)) {
   moduleName = '../lib/open';
 } else {
   moduleName = '../lib/main';
