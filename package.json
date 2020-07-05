@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "adbkit": "^2.11.0",
-    "apollo-client-devtools": "^2.2.5",
+    "apollo-client-devtools": "^2.3.1",
     "electron-context-menu": "^0.11.0",
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",
