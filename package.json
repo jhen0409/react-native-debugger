@@ -18,7 +18,7 @@
     "lint": "eslint .",
     "test": "yarn lint && jest __tests__",
     "test-e2e": "jest __e2e__ --runInBand  --forceExit",
-    "postinstall": "node ./scripts/postinstall.js"
+    "postinstall": "patch-package && node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
