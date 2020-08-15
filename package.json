@@ -59,6 +59,7 @@
     "lodash-webpack-plugin": "^0.11.5",
     "mobx": "^3.6.2",
     "mobx-remotedev": "^0.2.8",
+    "patch-package": "^6.2.2",
     "shelljs": "^0.8.2",
     "spectron": "^10.0.1",
     "style-loader": "^1.0.0",
