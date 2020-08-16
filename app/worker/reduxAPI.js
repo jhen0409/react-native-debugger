@@ -15,6 +15,7 @@ import {
   filterStagedActions,
   filterState,
 } from 'redux-devtools-core/lib/utils/filters';
+import { updateStackWithSourceMap } from './utils';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
@@ -62,7 +63,7 @@ function getStackTrace(config, toExcludeFromTrace) {
         .join('\n');
     }
   }
-  return stack;
+  return updateStackWithSourceMap(stack);
 }
 
 function getLiftedState(store, filters) {
