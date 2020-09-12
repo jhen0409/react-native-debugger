@@ -35,6 +35,6 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "fs-extra": "^4.0.2",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^2.6.1"
   }
 }
