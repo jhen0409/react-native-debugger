@@ -1,10 +1,10 @@
 diff --git a/node_modules/redux-devtools-trace-monitor/lib/openFile.js b/node_modules/redux-devtools-trace-monitor/lib/openFile.js
-index 3d6cc6a..e4d1f87 100644
+index 3d6cc6a..5bb3434 100644
 --- a/node_modules/redux-devtools-trace-monitor/lib/openFile.js
 +++ b/node_modules/redux-devtools-trace-monitor/lib/openFile.js
 @@ -97,33 +97,5 @@ function openInEditor(editor, path, stackFrame) {
  }
-
+ 
  function openFile(fileName, lineNumber, stackFrame) {
 -  if (process.env.NODE_ENV === 'development') // eslint-disable-next-line no-console
 -    console.log(fileName, lineNumber, stackFrame);
@@ -35,5 +35,6 @@ index 3d6cc6a..e4d1f87 100644
 -      }
 -    }
 -  });
-+  window.openInEditor(fileName, lineNumber)
++  window.openInEditor && window.openInEditor(fileName, lineNumber);
  }
+\ No newline at end of file
