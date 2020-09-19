@@ -15,6 +15,7 @@ import {
   filterStagedActions,
   filterState,
 } from 'redux-devtools-core/lib/utils/filters';
+import { updateStackWithSourceMap } from './utils';
 
 function configureStore(next, subscriber, options) {
   return instrument(subscriber, options)(next);
@@ -29,6 +30,41 @@ let isExcess;
 let listenerAdded;
 let locked;
 let paused;
+
+function getStackTrace(config, toExcludeFromTrace) {
+  if (!config.trace) return undefined;
+  if (typeof config.trace === 'function') return config.trace();
+
+  let stack;
+  let extraFrames = 0;
+  let prevStackTraceLimit;
+  const traceLimit = config.traceLimit;
+  const error = Error();
+  if (Error.captureStackTrace) {
+    if (Error.stackTraceLimit < traceLimit) {
+      prevStackTraceLimit = Error.stackTraceLimit;
+      Error.stackTraceLimit = traceLimit;
+    }
+    Error.captureStackTrace(error, toExcludeFromTrace);
+  } else {
+    extraFrames = 3;
+  }
+  stack = error.stack;
+  if (prevStackTraceLimit) Error.stackTraceLimit = prevStackTraceLimit;
+  if (
+    extraFrames ||
+    typeof Error.stackTraceLimit !== 'number' ||
+    Error.stackTraceLimit > traceLimit
+  ) {
+    const frames = stack.split('\n');
+    if (frames.length > traceLimit) {
+      stack = frames
+        .slice(0, traceLimit + extraFrames + (frames[0] === 'Error' ? 1 : 0))
+        .join('\n');
+    }
+  }
+  return updateStackWithSourceMap(stack);
+}
 
 function getLiftedState(store, filters) {
   return filterStagedActions(store.liftedStore.getState(), filters);
@@ -67,6 +103,7 @@ function relay(type, state, instance, action, nextActionId) {
         );
   }
   if (type === 'ACTION') {
+    action.stack = getStackTrace(instance, true);
     message.action = stringify(
       !actionSanitizer ? action : actionSanitizer(action.action, nextActionId - 1),
       serializeAction
@@ -236,6 +273,8 @@ export default function devToolsEnhancer(options = {}) {
     deserializeAction,
     serialize,
     predicate,
+    trace,
+    traceLimit,
   } = options;
   const id = generateId(options.instanceId);
 
@@ -269,6 +308,8 @@ export default function devToolsEnhancer(options = {}) {
       serializeAction,
       serialize,
       predicate,
+      trace,
+      traceLimit,
     };
 
     start(instances[id]);

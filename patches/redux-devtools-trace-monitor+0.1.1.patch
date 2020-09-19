@@ -1,0 +1,39 @@
+diff --git a/node_modules/redux-devtools-trace-monitor/lib/openFile.js b/node_modules/redux-devtools-trace-monitor/lib/openFile.js
+index 3d6cc6a..e4d1f87 100644
+--- a/node_modules/redux-devtools-trace-monitor/lib/openFile.js
++++ b/node_modules/redux-devtools-trace-monitor/lib/openFile.js
+@@ -97,33 +97,5 @@ function openInEditor(editor, path, stackFrame) {
+ }
+
+ function openFile(fileName, lineNumber, stackFrame) {
+-  if (process.env.NODE_ENV === 'development') // eslint-disable-next-line no-console
+-    console.log(fileName, lineNumber, stackFrame);
+-  if (!chrome || !chrome.storage) return; // TODO: Pass editor settings for using outside of browser extension
+-
+-  var storage = isFF ? chrome.storage.local : chrome.storage.sync || chrome.storage.local;
+-  storage.get(['useEditor', 'editor', 'projectPath'], function (_ref) {
+-    var useEditor = _ref.useEditor,
+-        editor = _ref.editor,
+-        projectPath = _ref.projectPath;
+-
+-    if (useEditor && projectPath && typeof editor === 'string' && /^\w{1,30}$/.test(editor)) {
+-      openInEditor(editor.toLowerCase(), projectPath, stackFrame);
+-    } else {
+-      if (chrome.devtools && chrome.devtools.panels && chrome.devtools.panels.openResource) {
+-        openResource(fileName, lineNumber, stackFrame);
+-      } else if (chrome.runtime && (chrome.runtime.openOptionsPage || isFF)) {
+-        if (chrome.devtools && isFF) {
+-          chrome.devtools.inspectedWindow.eval('confirm("Set the editor to open the file in?")', function (result) {
+-            if (!result) return;
+-            chrome.runtime.sendMessage({
+-              type: 'OPEN_OPTIONS'
+-            });
+-          });
+-        } else if (confirm('Set the editor to open the file in?')) {
+-          chrome.runtime.openOptionsPage();
+-        }
+-      }
+-    }
+-  });
++  window.openInEditor(fileName, lineNumber)
+ }
