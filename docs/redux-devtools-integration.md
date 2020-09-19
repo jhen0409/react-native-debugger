@@ -20,6 +20,10 @@ See also:
 
 You can ignore the browser extension specified things.
 
+## About `trace` feature
+
+- The debugger app might be slow down if you enabled `trace` feature and visited the `Trace` tab, because it will load and parse the source map for every you selected action.
+
 ## Other documentations
 
 - [Getting Started](getting-started.md)
