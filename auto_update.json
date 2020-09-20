@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.4/rn-debugger-macos-x64.zip",
-  "name": "v0.11.4",
-  "notes": "1. Update apollo-client-devtools to v2.3.1\n2. Update Electron to v8.5.0"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.5/rn-debugger-macos-x64.zip",
+  "name": "v0.11.5",
+  "notes": "1. Fix auto updater for v0.11\n2. Implement trace feature of redux-devtools\n3. Update Electron to v8.5.1"
 }
