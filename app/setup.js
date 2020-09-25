@@ -15,7 +15,7 @@ if (config.fontFamily) {
 
 window.logWelcomeMessage = () => {
   console.warn(
-    '[RNDebugger] Welcome! Before use this app, ' +
+    '[RNDebugger] Welcome! Before using this app, ' +
       'you need to ensure you are using the correct version of ' +
       'React Native Debugger and react-native:',
   );
