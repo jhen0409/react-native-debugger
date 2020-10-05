@@ -18,11 +18,11 @@ See also:
     - [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) - See [`the counter example`](../examples/counter-with-mobx/src/stores/counter), make sure `remote` option is `false`.
     - [`mobx-state-tree`](https://github.com/mobxjs/mobx-state-tree) - Use [`connectReduxDevtools`](https://github.com/mobxjs/mobx-state-tree/blob/a3c59ac816026f3c2d3d5621d8f74be2b95e2891/middleware/README.md#connectreduxdevtools) middleware.
 
-You can ignore the browser extension specified things.
+You can ignore the things specified by the browser extension.
 
 ## About `trace` feature
 
-- The debugger app might be slow down if you enabled `trace` feature and visited the `Trace` tab, because it will load and parse the source map for every you selected action.
+- The debugger app might be slowed down if you enabled the `trace` feature and visited the `Trace` tab, because it will load and parse the source map for every selected action.
 
 ## Other documentations
 
