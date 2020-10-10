@@ -44,8 +44,8 @@ function connectToRND(rndPath, log, cb) {
   });
 }
 
-export default ({ port }, cb) => {
-  const rndPath = `rndebugger://set-debugger-loc?host=localhost&port=${port}`;
+export default ({ port, host = 'localhost' }, cb) => {
+  const rndPath = `rndebugger://set-debugger-loc?host=${host}&port=${port}`;
 
   if (process.platform === 'darwin') {
     const env = Object.assign({}, process.env);

@@ -138,3 +138,19 @@ export const ignoreRNDIntervalSpy = async (
     }
   };
 };
+
+
+const RN_DEBUGGER_URL_PART = 'RNDebuggerWorker.js';
+const BUNDLE_URL_REGEXP = /(http[\S]*?index\.bundle\?[\S]*?)(:\d+:?\d?)/;
+
+const addInlineSourceMap = (_, urlGroup1, urlGroup2) =>
+  `${urlGroup1}&inlineSourceMap=true${urlGroup2}`;
+const mapStackLines = line => line.replace(BUNDLE_URL_REGEXP, addInlineSourceMap);
+const filterRnDebuggerLines = line => !line.includes(RN_DEBUGGER_URL_PART);
+
+export function updateStackWithSourceMap(stack) {
+  const lines = stack.split('\n');
+  const linesWithoutRNDebugger = lines.filter(filterRnDebuggerLines);
+  const lineWithSourceMap = linesWithoutRNDebugger.map(mapStackLines);
+  return lineWithSourceMap.join('\n');
+}

@@ -1,0 +1,15 @@
+diff --git a/node_modules/electron-gh-releases/src/GhReleases.js b/node_modules/electron-gh-releases/src/GhReleases.js
+index 4403f0e..610e0dd 100644
+--- a/node_modules/electron-gh-releases/src/GhReleases.js
++++ b/node_modules/electron-gh-releases/src/GhReleases.js
+@@ -65,8 +65,8 @@ export default class GhReleases extends events.EventEmitter {
+       })
+     }
+ 
+-    // On Mac we need to use the `auto_updater.json`
+-    feedUrl = 'https://raw.githubusercontent.com/' + this.repo + '/master/auto_updater.json'
++    // On Mac we need to use the `auto_update.json`
++    feedUrl = 'https://raw.githubusercontent.com/' + this.repo + '/master/auto_update.json'
+ 
+     // Make sure feedUrl exists
+     return got.get(feedUrl)

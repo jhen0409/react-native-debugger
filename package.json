@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.11.3",
+  "version": "0.11.5",
   "productName": "React Native Debugger In Dev",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "electron/main.js",
@@ -18,7 +18,7 @@
     "lint": "eslint .",
     "test": "yarn lint && jest __tests__",
     "test-e2e": "jest __e2e__ --runInBand  --forceExit",
-    "postinstall": "node ./scripts/postinstall.js"
+    "postinstall": "patch-package && node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^3.2.0",
     "devtron": "^1.4.0",
-    "electron": "^9.3.0",
+    "electron": "^9.3.2",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^3.1.0",
     "electron-installer-dmg": "^3.0.0",
@@ -59,6 +59,7 @@
     "lodash-webpack-plugin": "^0.11.5",
     "mobx": "^3.6.2",
     "mobx-remotedev": "^0.2.8",
+    "patch-package": "^6.2.2",
     "shelljs": "^0.8.2",
     "spectron": "^11.0.0",
     "style-loader": "^1.0.0",
@@ -72,7 +73,7 @@
   },
   "dependencies": {
     "adbkit": "^2.11.0",
-    "apollo-client-devtools": "^2.2.5",
+    "apollo-client-devtools": "^2.3.1",
     "electron-context-menu": "^0.11.0",
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",
@@ -90,11 +91,11 @@
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "redux-devtools": "^3.4.1",
+    "redux-devtools": "^3.5.0",
     "redux-devtools-core": "^0.2.1",
-    "redux-devtools-instrument": "^1.9.0",
+    "redux-devtools-instrument": "^1.9.4",
     "redux-persist": "^4.10.2",
-    "remotedev-app": "^0.10.8",
+    "remotedev-app": "^0.10.13-beta",
     "remotedev-monitor-components": "^0.0.5",
     "remotedev-slider": "^1.1.3"
   },
