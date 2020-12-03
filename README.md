@@ -18,8 +18,16 @@ To install the app, you can download a prebuilt binary from the [release page](h
 
 For **macOS**, you can use [Homebrew Cask](https://caskroom.github.io) to install:
 
+### < Homebrew 2.6.0
+
 ```bash
 $ brew update && brew cask install react-native-debugger
+```
+
+### >= Homebrew 2.6.0
+
+```bash
+$ brew install [--cask] react-native-debugger
 ```
 
 This puts `React Native Debugger.app` in your `/applications/` folder.
@@ -37,7 +45,13 @@ We used different auto-update feed for `v0.10` and `v0.11`, so you won't see upd
 
 Install last release of v0.10 (0.10.7)
 
+### < Homebrew 2.6.0
+
 `brew update && brew cask install https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
+
+### >= Homebrew 2.6.0
+
+`brew install [--cask] https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
 
 ## Documentation
 
