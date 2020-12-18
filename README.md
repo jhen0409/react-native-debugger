@@ -27,7 +27,7 @@ $ brew update && brew cask install react-native-debugger
 ### >= Homebrew 2.6.0
 
 ```bash
-$ brew install [--cask] react-native-debugger
+$ brew install --cask react-native-debugger
 ```
 
 This puts `React Native Debugger.app` in your `/applications/` folder.
@@ -51,7 +51,7 @@ Install last release of v0.10 (0.10.7)
 
 ### >= Homebrew 2.6.0
 
-`brew install [--cask] https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
+`brew install --cask https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
 
 ## Documentation
 
