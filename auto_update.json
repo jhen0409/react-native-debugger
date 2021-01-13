@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.6/rn-debugger-macos-x64.zip",
-  "name": "v0.11.6",
-  "notes": "Update apollo-client-devtools to 2.3.3"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.7/rn-debugger-macos-x64.zip",
+  "name": "v0.11.7",
+  "notes": "1. Update apollo-client-devtools to 2.3.3\n2. Update react-devtools-core to v4.10.1"
 }
