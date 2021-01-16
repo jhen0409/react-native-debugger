@@ -11,6 +11,7 @@ This is a standalone app for debugging React Native apps:
 - Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide more functionality.
 - Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react/tree/master/packages/react-devtools-core).
 - Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
+- Includes [Apollo Client DevTools](docs/apollo-client-devtools-integration.md) ([`apollographql/apollo-client-devtools`](https://github.com/apollographql/apollo-client-devtools)) as devtools extension.
 
 ## Installation
 
@@ -75,6 +76,7 @@ Please visit [`v0.10 branch`](https://github.com/jhen0409/react-native-debugger/
 
 - Great work of [React DevTools](https://github.com/facebook/react/tree/master/packages/react-devtools)
 - Great work of [Redux DevTools](https://github.com/gaearon/redux-devtools) / [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) and all third-party monitors.
+- Great work of [Apollo Client DevTools](https://github.com/apollographql/apollo-client-devtools)). (Special thanks to [@Gongreg](https://github.com/Gongreg) for integrating this!)
 
 ## Backers
 
