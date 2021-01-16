@@ -11,6 +11,7 @@ This is a standalone app for debugging React Native apps:
 - Based on official [Remote Debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools) and provide more functionality.
 - Includes [React Inspector](docs/react-devtools-integration.md) from [`react-devtools-core`](https://github.com/facebook/react/tree/master/packages/react-devtools-core).
 - Includes Redux DevTools, made [the same API](docs/redux-devtools-integration.md) with [`redux-devtools-extension`](https://github.com/zalmoxisus/redux-devtools-extension).
+- Includes [Apollo Client DevTools](docs/apollo-client-devtools-integration.md) ([`apollographql/apollo-client-devtools`](https://github.com/apollographql/apollo-client-devtools)) as devtools extension.
 
 ## Installation
 
@@ -18,8 +19,16 @@ To install the app, you can download a prebuilt binary from the [release page](h
 
 For **macOS**, you can use [Homebrew Cask](https://caskroom.github.io) to install:
 
+### < Homebrew 2.6.0
+
 ```bash
 $ brew update && brew cask install react-native-debugger
+```
+
+### >= Homebrew 2.6.0
+
+```bash
+$ brew install --cask react-native-debugger
 ```
 
 This puts `React Native Debugger.app` in your `/applications/` folder.
@@ -37,7 +46,13 @@ We used different auto-update feed for `v0.10` and `v0.11`, so you won't see upd
 
 Install last release of v0.10 (0.10.7)
 
+### < Homebrew 2.6.0
+
 `brew update && brew cask install https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
+
+### >= Homebrew 2.6.0
+
+`brew install --cask https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
 
 ## Documentation
 
@@ -61,6 +76,7 @@ Please visit [`v0.10 branch`](https://github.com/jhen0409/react-native-debugger/
 
 - Great work of [React DevTools](https://github.com/facebook/react/tree/master/packages/react-devtools)
 - Great work of [Redux DevTools](https://github.com/gaearon/redux-devtools) / [Remote Redux DevTools](https://github.com/zalmoxisus/remote-redux-devtools) and all third-party monitors.
+- Great work of [Apollo Client DevTools](https://github.com/apollographql/apollo-client-devtools)). (Special thanks to [@Gongreg](https://github.com/Gongreg) for integrating this!)
 
 ## Backers
 

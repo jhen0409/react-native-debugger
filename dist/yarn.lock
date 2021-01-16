@@ -64,10 +64,10 @@ apollo-cache@1.3.1, apollo-cache@^1.3.1:
     apollo-utilities "^1.3.1"
     tslib "^1.9.3"
 
-apollo-client-devtools@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/apollo-client-devtools/-/apollo-client-devtools-2.2.5.tgz#e12308eb6537ec09dc9b152fdb39c64e1f65b5b6"
-  integrity sha512-oQa5beFRUp0ErXHkxx1b1WNisTBQgORMb0J3KaorbvuOMUX9KwL1tCGnMhebIwM4mOAz0s+5jVg7FpIk6HyPXQ==
+apollo-client-devtools@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/apollo-client-devtools/-/apollo-client-devtools-2.3.5.tgz#5c8eec550091d3048a192dc9d1bfab8cdbb69fa2"
+  integrity sha512-ccK+zgFtMfkPh64+uLEuiauxt/nymPOdHw5petfuimfs4CqwaoqP6TG1XNuFDB/HsQCmOswNcHa2WqOnSi8FMg==
   dependencies:
     apollo-cache-inmemory "^1.4.0-alpha.12"
     apollo-client "^2.5.0-rc.3"
@@ -641,10 +641,10 @@ react-apollo@^2.5.0-rc.3:
     ts-invariant "^0.4.2"
     tslib "^1.9.3"
 
-react-devtools-core@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.6.0.tgz#2443b3c6fac78b801702af188abc6d83d56224e6"
-  integrity sha512-sjR3KC5VvGV7X6vzR3OTutPT5VeBcSKwoIXUwihpl1Nb4dkmweEbzCTPx2PYMVAqc+NZ5tPGhqBzXV+iGg5CNA==
+react-devtools-core@^4.10.1:
+  version "4.10.1"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.10.1.tgz#6d57db291aeac9cc45ef9fb4636dd2ab97490daf"
+  integrity sha512-sXbBjGAWcf9HAblTP/zMtFhGHqxAfIR+GPxONZsSGN9FHnF4635dx1s2LdQWG9rJ+Ehr3nWg+BUAB6P78my5PA==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"

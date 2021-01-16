@@ -56,7 +56,7 @@ There are some limitations of debugging network requests using Network Inspect:
 - React Native `FormData` supports the `uri` property. You can use files from `CameraRoll`, but `originalFormData` isn't supported.
 - It can't inspect request like `Image`s loaded from urls for `src`, so if your `Image` source has a set session, the session can't apply to `fetch` and `XMLHttpRequest`.
 
-If you want to inspect deeper network requests (like requests made with `Image`), use tools like [Charles](https://www.charlesproxy.com) or [Stetho](https://facebook.github.io/stetho).
+If you want to inspect deeper network requests (like requests made with `Image`), use tools like [Charles](https://www.charlesproxy.com) or [Flipper](https://github.com/facebook/flipper).
 
 ## Other documentations
 
