@@ -1,5 +1,9 @@
 # Troubleshooting
 
+## Network fetch got issue like [`SyntaxError: Unexpected token o in JSON at position 1`](https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529) if Network Inspect enabled
+
+This may be caused by some library used / made fetch polyfills, it may used `Blob` but RNDebugger does not support it. If you got this issue, try to use global `fetch` / `XMLHttpRequest` instead, or try [#382#issuecomment-544226529](https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529).
+
 ## Debugger causes app to load stale JS bundle ([#423](https://github.com/jhen0409/react-native-debugger/issues/423))
 
 This issue was fixed by [v0.10.9](https://github.com/jhen0409/react-native-debugger/releases/tag/v0.10.9) and [v0.11.1](https://github.com/jhen0409/react-native-debugger/releases/tag/v0.11.1). If you are still using the old version for some reason, you can turn off Network cache manually on devtools:
