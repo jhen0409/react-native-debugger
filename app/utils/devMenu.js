@@ -140,7 +140,8 @@ const setDevMenuMethodsForTouchBar = () => {
       click: devMenuMethods.toggleElementInspector,
     });
   }
-  setTouchBar();
+  // TDOD: Fix crash issue
+  // setTouchBar();
 };
 
 // Reset TouchBar when reload the app
