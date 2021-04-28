@@ -8815,10 +8815,10 @@ react-dev-utils@^4.2.1:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-devtools-core@^4.10.1:
-  version "4.10.1"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.10.1.tgz#6d57db291aeac9cc45ef9fb4636dd2ab97490daf"
-  integrity sha512-sXbBjGAWcf9HAblTP/zMtFhGHqxAfIR+GPxONZsSGN9FHnF4635dx1s2LdQWG9rJ+Ehr3nWg+BUAB6P78my5PA==
+react-devtools-core@~4.10.3:
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.10.3.tgz#30580721d7e9a1568a55b7107f2b6cdce6502e63"
+  integrity sha512-2CtceOczycfR1Th5B+lIPA1NnGODdbeTLTLZVCYmdXfdmvR5h1+cgr0f+R7HtWbTeIcG5PXUK1/YDnELP5opQA==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"
