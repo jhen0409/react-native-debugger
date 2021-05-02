@@ -641,10 +641,10 @@ react-apollo@^2.5.0-rc.3:
     ts-invariant "^0.4.2"
     tslib "^1.9.3"
 
-react-devtools-core@~4.10.3:
-  version "4.10.3"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.10.3.tgz#30580721d7e9a1568a55b7107f2b6cdce6502e63"
-  integrity sha512-2CtceOczycfR1Th5B+lIPA1NnGODdbeTLTLZVCYmdXfdmvR5h1+cgr0f+R7HtWbTeIcG5PXUK1/YDnELP5opQA==
+react-devtools-core@~4.12.4:
+  version "4.12.4"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.12.4.tgz#50ed121d467f44b051d1f7d19694849db0365d52"
+  integrity sha512-hVCT7wRtA5xWclgLb3oA51RNBAlbuTauEYkqFX+qRAkPLVJoX8qdJnO7r+47SSUckD5vkBm3kaAhg6597m7gDA==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"
