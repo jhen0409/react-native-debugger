@@ -14,22 +14,26 @@ export default async () => {
     }
     await session.defaultSession.loadExtension(
       path.resolve('dist/devtools-helper/'),
+      { allowFileAccess: true }
     );
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
         '../node_modules/apollo-client-devtools/shells/webextension/',
       ),
+      { allowFileAccess: true }
     );
   } else {
     await session.defaultSession.loadExtension(
       path.join(__dirname, 'devtools-helper/'),
+      { allowFileAccess: true }
     );
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
         'node_modules/apollo-client-devtools/shells/webextension/',
       ),
+      { allowFileAccess: true }
     );
   }
 };
