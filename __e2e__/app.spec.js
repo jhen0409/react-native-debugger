@@ -101,7 +101,7 @@ describe('Application launch', () => {
     const el = await client.$(
       '//h2[text()="Waiting for React to connect…"]',
     );
-    const exist = el.isExisting();
+    const exist = await el.isExisting();
     expect(exist).toBe(true);
   });
 
@@ -343,11 +343,9 @@ describe('Application launch', () => {
     it('should show apollo devtools panel', async () => {
       const { client } = app;
       expect(
-        (
-          await client.execute(
-            () => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__,
-          )
-        ).value,
+        await app.webContents.executeJavaScript(
+          'window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__'
+        ),
       ).toBeTruthy();
     });
   });
