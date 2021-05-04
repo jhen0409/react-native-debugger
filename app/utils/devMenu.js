@@ -22,15 +22,17 @@ const getBarItems = bar =>
   Object.keys(bar)
     .map(key => bar[key])
     .filter(barItem => !!barItem);
-const setTouchBar = () =>
-  currentWindow.setTouchBar(
-    new remote.TouchBar({
-      items: [
-        ...getBarItems(leftBar),
-        ...(isSliderEnabled ? getBarItems(rightBar) : []),
-      ],
-    })
-  );
+const setTouchBar = () => {
+  // TDOD: Fix crash issue
+  // currentWindow.setTouchBar(
+  //   new remote.TouchBar({
+  //     items: [
+  //       ...getBarItems(leftBar),
+  //       ...(isSliderEnabled ? getBarItems(rightBar) : []),
+  //     ],
+  //   })
+  // );
+}
 
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
@@ -140,8 +142,7 @@ const setDevMenuMethodsForTouchBar = () => {
       click: devMenuMethods.toggleElementInspector,
     });
   }
-  // TDOD: Fix crash issue
-  // setTouchBar();
+  setTouchBar();
 };
 
 // Reset TouchBar when reload the app
