@@ -341,7 +341,6 @@ describe('Application launch', () => {
     });
 
     it('should show apollo devtools panel', async () => {
-      const { client } = app;
       expect(
         await app.webContents.executeJavaScript(
           'window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__'
