@@ -169,9 +169,5 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     event.preventDefault();
     win.close();
   });
-
-  // https://github.com/electron/electron/issues/10442
-  win._setEscapeTouchBarItem = () => {}; // eslint-disable-line
-
   return win;
 };
