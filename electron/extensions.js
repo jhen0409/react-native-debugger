@@ -9,31 +9,34 @@ export default async () => {
     const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
     for (const name of extensions) {
       try {
-        await installer.default(installer[name], forceDownload);
+        await installer.default(installer[name], {
+          forceDownload,
+          loadExtensionOptions: { allowFileAccess: true },
+        });
       } catch (e) {} // eslint-disable-line
     }
     await session.defaultSession.loadExtension(
       path.resolve('dist/devtools-helper/'),
-      { allowFileAccess: true }
+      { allowFileAccess: true },
     );
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
         '../node_modules/apollo-client-devtools/shells/webextension/',
       ),
-      { allowFileAccess: true }
+      { allowFileAccess: true },
     );
   } else {
     await session.defaultSession.loadExtension(
       path.join(__dirname, 'devtools-helper/'),
-      { allowFileAccess: true }
+      { allowFileAccess: true },
     );
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
         'node_modules/apollo-client-devtools/shells/webextension/',
       ),
-      { allowFileAccess: true }
+      { allowFileAccess: true },
     );
   }
 };
