@@ -13,7 +13,7 @@ electron-packager dist/ \
   --overwrite \
   --platform darwin \
   --arch x64 \
-  --asar \
+  # --asar \
   --no-prune \
   --out release \
   --protocol-name "React Native Debugger" \

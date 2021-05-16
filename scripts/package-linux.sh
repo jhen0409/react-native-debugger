@@ -9,7 +9,7 @@ electron-packager dist/ \
   --overwrite \
   --platform linux \
   --arch x64 \
-  --asar \
+  # --asar \
   --no-prune \
   --out release \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
