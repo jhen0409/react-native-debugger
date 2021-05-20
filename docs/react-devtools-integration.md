@@ -14,6 +14,15 @@ For Android, we have the built-in `adb` util and it will reverse the port automa
 
 Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 
+## __*Question*__: I got `Unsupported` meesage from React DevTools
+
+If you're using React Native version >= 0.62 and keep React Native Debugger as the latest version, here is what you can do:
+
+In your app project, upgrade `react-devtools-core` dependency to match the React DevTools version:
+
+- OPTION 1: Just `yarn upgrade react-native`
+- OPTION 2: Delete `react-devtools-core` block in yarn.lock, then re-install dependencies by `yarn`
+
 ## Other documentations
 
 - [Getting Started](getting-started.md)
