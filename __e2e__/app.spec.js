@@ -23,6 +23,7 @@ describe('Application launch', () => {
       args: ['--user-dir=__e2e__/tmp', 'dist'],
       env: {
         E2E_TEST: 1,
+        PACKAGE: 'no',
       },
     });
     return app.start();
