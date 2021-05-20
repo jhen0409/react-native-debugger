@@ -9,7 +9,7 @@
     "pack-linux": "./scripts/package-linux.sh",
     "pack-windows": "./scripts/package-windows.sh",
     "pack": "yarn build && ./scripts/package-linux.sh && ./scripts/package-windows.sh && ./scripts/package-macos.sh",
-    "start": "cd dist && cross-env NODE_ENV=production electron ./",
+    "start": "cd dist && cross-env NODE_ENV=production PACKAGE=no electron ./",
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.babel.js --progress --profile --colors",
     "build:renderer": "cross-env NODE_ENV=production webpack --config webpack/renderer.prod.babel.js --progress --profile --colors",
     "build": "yarn build:main && yarn build:renderer",
