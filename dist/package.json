@@ -1,6 +1,6 @@
 {
   "name": "react-native-debugger",
-  "version": "0.11.8",
+  "version": "0.11.9",
   "productName": "React Native Debugger",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
   "main": "main.js",
@@ -17,9 +17,7 @@
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "^2.3.5",
     "electron-store": "^1.2.0",
-    "react-devtools-core": "~4.12.4"
-  },
-  "devDependencies": {
-    "patch-package": "^6.2.2"
+    "patch-package": "^6.2.2",
+    "react-devtools-core": "~4.13.3"
   }
 }

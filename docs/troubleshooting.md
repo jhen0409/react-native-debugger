@@ -1,5 +1,14 @@
 # Troubleshooting
 
+## I got `Unsupported` meesage from React DevTools
+
+If you're using React Native version >= 0.62 and keep React Native Debugger as the latest version, here is what you can do:
+
+In your app project, upgrade `react-devtools-core` dependency to match the React DevTools version:
+
+- OPTION 1: Just `yarn upgrade react-native`
+- OPTION 2: Delete `react-devtools-core` block in yarn.lock, then re-install dependencies by `yarn`
+
 ## Network fetch got issue like [`SyntaxError: Unexpected token o in JSON at position 1`](https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529) if Network Inspect enabled
 
 This may be caused by some library used / made fetch polyfills, it may used `Blob` but RNDebugger does not support it. If you got this issue, try to use global `fetch` / `XMLHttpRequest` instead, or try [#382#issuecomment-544226529](https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529).
