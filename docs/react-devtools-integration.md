@@ -20,11 +20,9 @@ If you're using React Native version >= 0.62 and keep React Native Debugger as t
 
 In your app project, upgrade `react-devtools-core` dependency to match the React DevTools version:
 
-- OPTION 1: Just `yarn upgrade react-native`, the `react-devtools-core` dependency should be updated to latest version.
-- OPTION 2: Delete `react-devtools-core` block in `yarn.lock`, then re-install dependencies by `yarn`
-- OPTION 3: Use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/), just add `"react-devtools-core": "~4.13.5"` (Depends on the display version of React DevTools) to resolutions of `package.json`.
+- Use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/), just add `"react-devtools-core": "~4.13.5"` (Depends on the display version of React DevTools) to resolutions of `package.json`.
 
-Reference: [Unsupported DevTools backend version](https://gist.github.com/bvaughn/4bc90775530873fdf8e7ade4a039e579#react-native-debugger)
+Reference: [Unsupported DevTools backend version - # React Native Debugger](https://gist.github.com/bvaughn/4bc90775530873fdf8e7ade4a039e579#react-native-debugger)
 
 ## Other documentations
 
