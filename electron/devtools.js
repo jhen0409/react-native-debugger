@@ -49,6 +49,7 @@ export const removeUnecessaryTabs = win => {
         tabbedPane.closeTab('security');
         tabbedPane.closeTab('audits');
         tabbedPane.closeTab('audits2');
+        tabbedPane.closeTab('lighthouse');
 
         tabbedPane._leftToolbar._contentElement.remove();
       }

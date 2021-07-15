@@ -3,7 +3,7 @@ import path from 'path';
 
 jest.mock('electron', () => ({
   shell: {
-    openItem: jest.fn(),
+    openPath: jest.fn(),
   },
 }));
 
@@ -31,8 +31,8 @@ test('openConfigFile', () => {
   const { shell } = require('electron');
 
   openConfigFile(testFile);
-  expect(shell.openItem).toBeCalledWith(testFile);
-  shell.openItem.mockClear();
+  expect(shell.openPath).toBeCalledWith(testFile);
+  shell.openPath.mockClear();
 
   fs.unlinkSync(testFile);
   openConfigFile(testFile);

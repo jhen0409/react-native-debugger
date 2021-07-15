@@ -1,5 +1,5 @@
 import path from 'path';
-import { BrowserWindow } from 'electron';
+import { session } from 'electron';
 
 export default async () => {
   if (process.env.NODE_ENV === 'development') {
@@ -9,17 +9,46 @@ export default async () => {
     const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
     for (const name of extensions) {
       try {
-        await installer.default(installer[name], forceDownload);
+        await installer.default(installer[name], {
+          forceDownload,
+          loadExtensionOptions: { allowFileAccess: true },
+        });
       } catch (e) {} // eslint-disable-line
     }
-    BrowserWindow.addDevToolsExtension(path.resolve('dist/devtools-helper/'));
-    BrowserWindow.addDevToolsExtension(
-      path.join(__dirname, '../node_modules/apollo-client-devtools/shells/webextension/')
+    await session.defaultSession.loadExtension(
+      path.resolve('dist/devtools-helper/'),
+      { allowFileAccess: true },
+    );
+    await session.defaultSession.loadExtension(
+      path.join(
+        __dirname,
+        '../node_modules/apollo-client-devtools/shells/webextension/',
+      ),
+      { allowFileAccess: true },
+    );
+  } else if (process.env.PACKAGE === 'no') {
+    await session.defaultSession.loadExtension(
+      path.join(__dirname, 'devtools-helper/'),
+      { allowFileAccess: true },
+    );
+    await session.defaultSession.loadExtension(
+      path.join(
+        __dirname,
+        'node_modules/apollo-client-devtools/shells/webextension/',
+      ),
+      { allowFileAccess: true },
     );
   } else {
-    BrowserWindow.addDevToolsExtension(path.join(__dirname, 'devtools-helper/'));
-    BrowserWindow.addDevToolsExtension(
-      path.join(__dirname, 'node_modules/apollo-client-devtools/shells/webextension/')
+    await session.defaultSession.loadExtension(
+      path.join(__dirname, '../devtools-helper/'),
+      { allowFileAccess: true },
+    );
+    await session.defaultSession.loadExtension(
+      path.join(
+        __dirname,
+        '../webextension/',
+      ),
+      { allowFileAccess: true },
     );
   }
 };

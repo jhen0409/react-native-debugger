@@ -26,5 +26,5 @@ export const readConfig = (configFile = filePath) => {
 
 export const openConfigFile = (configFile = filePath) => {
   readConfig();
-  shell.openItem(configFile);
+  shell.openPath(configFile);
 };

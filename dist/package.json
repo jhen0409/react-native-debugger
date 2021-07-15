@@ -10,10 +10,14 @@
   },
   "author": "Jhen <developer@jhen.me>",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "patch-package"
+  },
   "dependencies": {
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "^2.3.5",
     "electron-store": "^1.2.0",
+    "patch-package": "^6.2.2",
     "react-devtools-core": "~4.13.3"
   }
 }

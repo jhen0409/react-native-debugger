@@ -14,6 +14,8 @@ electron-packager dist/ \
   --platform darwin \
   --arch x64 \
   --asar \
+  --extra-resource=dist/devtools-helper \
+  --extra-resource=dist/node_modules/apollo-client-devtools/shells/webextension \
   --no-prune \
   --out release \
   --protocol-name "React Native Debugger" \

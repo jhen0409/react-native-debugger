@@ -85,25 +85,22 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     );
   }
 
-  const winBounds = store.get('winBounds');
-  const increasePosition = BrowserWindow.getAllWindows().length * 10;
-  const { width, height } = winBounds || {};
+  const winBounds = store.get('winBounds') || {};
+  const increasePosition = BrowserWindow.getAllWindows().length * 10 || 0;
+  const { width, height, x = 0, y = 0 } = winBounds;
   const win = new BrowserWindow({
     ...winBounds,
     width: width && width >= minSize ? width : 1024,
     height: height && height >= minSize ? height : 750,
     minWidth: minSize,
     minHeight: minSize,
-    ...(increasePosition && winBounds && winBounds.x && winBounds.y
-      ? {
-        x: winBounds.x + increasePosition,
-        y: winBounds.y + increasePosition,
-      }
-      : {}),
+    x: x + increasePosition,
+    y: y + increasePosition,
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
     ...config.windowBounds,
   });
@@ -172,9 +169,5 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     event.preventDefault();
     win.close();
   });
-
-  // https://github.com/electron/electron/issues/10442
-  win._setEscapeTouchBarItem = () => {}; // eslint-disable-line
-
   return win;
 };
