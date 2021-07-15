@@ -6,8 +6,9 @@ If you're using React Native version >= 0.62 and keep React Native Debugger as t
 
 In your app project, upgrade `react-devtools-core` dependency to match the React DevTools version:
 
-- OPTION 1: Just `yarn upgrade react-native`
-- OPTION 2: Delete `react-devtools-core` block in yarn.lock, then re-install dependencies by `yarn`
+- Use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/), just add `"react-devtools-core": "~4.13.5"` (Depends on the display version of React DevTools) to resolutions of `package.json`.
+
+Reference: [Unsupported DevTools backend version - # React Native Debugger](https://gist.github.com/bvaughn/4bc90775530873fdf8e7ade4a039e579#react-native-debugger)
 
 ## Network fetch got issue like [`SyntaxError: Unexpected token o in JSON at position 1`](https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529) if Network Inspect enabled
 
