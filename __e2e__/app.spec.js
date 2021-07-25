@@ -8,7 +8,7 @@ import buildTestBundle, { bundlePath } from './buildTestBundle';
 import createMockRNServer from './mockRNServer';
 import autoUpdateFeed from '../auto_update.json';
 
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
+const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 // eslint-disable-next-line
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 6e4;
@@ -23,6 +23,7 @@ describe('Application launch', () => {
       args: ['--user-dir=__e2e__/tmp', 'dist'],
       env: {
         E2E_TEST: 1,
+        PACKAGE: 'no',
       },
     });
     return app.start();
@@ -83,32 +84,31 @@ describe('Application launch', () => {
   it("should contain Inspector monitor's component on Redux DevTools", async () => {
     const { client } = app;
 
-    const val = await client
-      .element('//div[contains(@class, "inspector-")]')
-      .getText();
+    const el = await client.$('//div[contains(@class, "inspector-")]');
+    const val = await el.getText();
     expect(val).not.toBeNull();
   });
 
   it('should contain an empty actions list on Redux DevTools', async () => {
     const { client } = app;
 
-    const val = await client
-      .element('//div[contains(@class, "actionListRows-")]')
-      .getText();
+    const el = await client.$('//div[contains(@class, "actionListRows-")]');
+    const val = await el.getText();
     expect(val).toBe('');
   });
 
   it('should show waiting message on React DevTools', async () => {
     const { client } = app;
-    const exist = await client.isExisting(
+    const el = await client.$(
       '//h2[text()="Waiting for React to connect…"]',
     );
+    const exist = await el.isExisting();
     expect(exist).toBe(true);
   });
 
   const customRNServerPort = 8098;
-  const getURLFromConnection = server =>
-    new Promise(resolve => {
+  const getURLFromConnection = (server) =>
+    new Promise((resolve) => {
       server.on('connection', (socket, req) => {
         resolve(req.url);
       });
@@ -136,12 +136,12 @@ describe('Application launch', () => {
     const portFile = path.join(process.env[homeEnv], '.rndebugger_port');
     const rndPort = fs.readFileSync(portFile, 'utf-8');
 
-    const sendSuccess = await new Promise(resolve => {
+    const sendSuccess = await new Promise((resolve) => {
       const socket = net.createConnection({ port: rndPort }, () => {
         let pass;
         socket.setEncoding('utf-8');
         socket.write(JSON.stringify({ path: rndPath }));
-        socket.on('data', data => {
+        socket.on('data', (data) => {
           pass = data === 'success';
           socket.end();
         });
@@ -163,8 +163,8 @@ describe('Application launch', () => {
   });
 
   describe('Import fake script after', () => {
-    const getOneRequestHeaders = port =>
-      new Promise(resolve => {
+    const getOneRequestHeaders = (port) =>
+      new Promise((resolve) => {
         const server = http.createServer((req, res) => {
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end('');
@@ -184,9 +184,9 @@ describe('Application launch', () => {
 
       headersPromise = getOneRequestHeaders(8099);
 
-      await new Promise(resolve => {
-        wss.on('connection', socket => {
-          socket.on('message', message => {
+      await new Promise((resolve) => {
+        wss.on('connection', (socket) => {
+          socket.on('message', (message) => {
             const data = JSON.parse(message);
             switch (data.replyID) {
               case 'createJSRuntime':
@@ -233,32 +233,25 @@ describe('Application launch', () => {
 
     it('should have @@INIT action on Redux DevTools', async () => {
       const { client } = app;
-      const val = await client
-        .element('//div[contains(@class, "actionListRows-")]')
-        .getText();
+      const el = await client.$('//div[contains(@class, "actionListRows-")]');
+      const val = await el.getText();
       expect(val).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
     });
 
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
-    const selectInstance = async instance => {
+    const selectInstance = async (instance) => {
       const { client } = app;
-      await client
-        .element(`//div[text()="${currentInstance}"]`)
-        .click()
-        .then(wait);
+      let el = await client.$(`//div[text()="${currentInstance}"]`);
+      await el.click().then(wait);
       currentInstance = instance;
-      return client
-        .element(`//div[text()="${instance}"]`)
-        .click()
-        .then(wait);
+      el = await client.$(`//div[text()="${instance}"]`);
+      return el.click().then(wait);
     };
-    const commit = () => {
+    const commit = async () => {
       const { client } = app;
-      client
-        .element('//div[text()="Commit"]')
-        .click()
-        .then(delay(100));
+      const el = await client.$('//div[text()="Commit"]');
+      await el.click().then(delay(100));
     };
 
     const expectActions = {
@@ -304,13 +297,12 @@ describe('Application launch', () => {
       }
     };
 
-    const checkInstance = async name => {
+    const checkInstance = async (name) => {
       const { client } = app;
 
       await selectInstance(name);
-      const val = await client
-        .element('//div[contains(@class, "actionListRows-")]')
-        .getText();
+      const el = await client.$('//div[contains(@class, "actionListRows-")]');
+      const val = await el.getText();
       runExpectActions(name, val);
       await commit();
     };
@@ -333,7 +325,7 @@ describe('Application launch', () => {
       const { client } = app;
       const logs = await client.getRenderProcessLogs();
       // Print renderer process logs
-      logs.forEach(log =>
+      logs.forEach((log) =>
         console.log(
           `Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`,
         ),
@@ -350,13 +342,10 @@ describe('Application launch', () => {
     });
 
     it('should show apollo devtools panel', async () => {
-      const { client } = app;
       expect(
-        (
-          await client.execute(
-            () => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__,
-          )
-        ).value,
+        await app.webContents.executeJavaScript(
+          'window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__'
+        ),
       ).toBeTruthy();
     });
   });
