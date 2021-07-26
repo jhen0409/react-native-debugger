@@ -19,35 +19,39 @@ if [ -z "$APPLE_TEAM_ID" ]; then
   read APPLE_TEAM_ID
 fi
 
-electron-packager dist/ \
-  --overwrite \
-  --platform darwin \
-  --arch x64 \
-  --asar \
-  --extra-resource=dist/devtools-helper \
-  --extra-resource=dist/node_modules/apollo-client-devtools/shells/webextension \
-  --no-prune \
-  --out release \
-  --protocol-name "React Native Debugger" \
-  --protocol "rndebugger" \
-  --electron-version $(node -e "console.log(require('electron/package').version)") \
-  --app-version $PACKAGE_VERSION \
-  --osx-sign.identity="Developer ID Application: ${APPLE_DEVELOPER_NAME} (${APPLE_TEAM_ID})" \
-  --osx-sign.entitlements=scripts/mac/entitlements.plist \
-  --osx-sign.entitlements-inherit=scripts/mac/entitlements.plist \
-  --osx-sign.hardenedRuntime \
-  --osx-notarize.appleId=$APPLE_ID \
-  --osx-notarize.appleIdPassword='@keychain:AC_PASSWORD' \
-  --osx-notarize.ascProvider="${APPLE_TEAM_ID}" \
-  --icon electron/logo.icns \
-  --darwin-dark-mode-support
+function build_with_arch() {
+  electron-packager dist/ \
+    --overwrite \
+    --platform darwin \
+    --arch $1 \
+    --asar \
+    --extra-resource=dist/devtools-helper \
+    --extra-resource=dist/node_modules/apollo-client-devtools/shells/webextension \
+    --no-prune \
+    --out release \
+    --protocol-name "React Native Debugger" \
+    --protocol "rndebugger" \
+    --electron-version $(node -e "console.log(require('electron/package').version)") \
+    --app-version $PACKAGE_VERSION \
+    --icon electron/logo.icns \
+    --darwin-dark-mode-support
+}
 
+build_with_arch x64
+build_with_arch arm64
+
+node scripts/mac/createUniversalApp.js
 node scripts/mac/createDMG.js
 
-cd release/React\ Native\ Debugger-darwin-x64
+cd release
+zip -ryq9 rn-debugger-macos-universal.zip React\ Native\ Debugger.app
+cd React\ Native\ Debugger-darwin-arm64
+zip -ryq9 ../rn-debugger-macos-arm64.zip React\ Native\ Debugger.app
+cd ../React\ Native\ Debugger-darwin-x64
 zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app
+cd ..
 
 # Print codesign information
 codesign -dv --verbose=4 React\ Native\ Debugger.app
 
-echo sha256: `shasum -a 256 ../rn-debugger-macos-x64.zip`
+echo sha256: `shasum -a 256 rn-debugger-macos-universal.zip`

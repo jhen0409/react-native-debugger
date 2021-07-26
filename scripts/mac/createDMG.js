@@ -2,10 +2,7 @@ const path = require('path');
 const createDMG = require('electron-installer-dmg');
 const pkg = require('../../package.json');
 
-const appPath = path.join(
-  __dirname,
-  '../../release/React Native Debugger-darwin-x64/React Native Debugger.app'
-);
+const appPath = path.join(__dirname, '../../release/React Native Debugger.app');
 
 createDMG(
   {
@@ -30,9 +27,12 @@ createDMG(
         path: '/Applications',
       },
     ],
-    dmgPath: path.join(__dirname, `../../release/react-native-debugger_${pkg.version}.dmg`),
+    dmgPath: path.join(
+      __dirname,
+      `../../release/react-native-debugger_${pkg.version}_universal.dmg`,
+    ),
   },
-  err => {
+  (err) => {
     if (err) console.log(err);
-  }
+  },
 );
