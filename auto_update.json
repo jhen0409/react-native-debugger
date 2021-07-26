@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.11.9/rn-debugger-macos-x64.zip",
-  "name": "v0.11.9",
-  "notes": "1. Update react-devtools-core to v4.13.3"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.12.0/rn-debugger-macos-x64.zip",
+  "name": "v0.12.0",
+  "notes": "1. Update app icon for macOS\n2. Upgrade Electron to v11\nUpdate react-devtools-core to v4.14"
 }
