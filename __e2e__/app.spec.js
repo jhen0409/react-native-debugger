@@ -43,7 +43,7 @@ describe('Application launch', () => {
     // Check auto update feed is expected
     expect(version).toBe(process.env.npm_package_version);
     expect(autoUpdateFeed.url).toBe(
-      `https://github.com/jhen0409/react-native-debugger/releases/download/v${version}/rn-debugger-macos-x64.zip`,
+      `https://github.com/jhen0409/react-native-debugger/releases/download/v${version}/rn-debugger-macos-universal.zip`,
     );
     expect(autoUpdateFeed.name).toBe(`v${version}`);
     expect(typeof autoUpdateFeed.notes).toBe('string');
