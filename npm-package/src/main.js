@@ -49,7 +49,7 @@ export default (argv, cb) => {
           false,
           '[RNDebugger] The `rndebugger://` URI scheme seems not registered, ' +
             "maybe you haven't install the app? " +
-            'Run `brew update && brew cask install react-native-debugger` ' +
+            'Run `brew update && brew install --cask react-native-debugger` ' +
             'or download from https://github.com/jhen0409/react-native-debugger/releases ' +
             'then open it to register the URI scheme.'
         );
