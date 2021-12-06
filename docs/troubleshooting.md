@@ -31,7 +31,7 @@ This issue was fixed by [v0.10.9](https://github.com/jhen0409/react-native-debug
 
 You may have got a problem when you often reload JS, devtools process takes your RAM even more than 1G, it does not seem to clean.
 
-In case of using [official remote debugger](https://facebook.github.io/react-native/docs/debugging.html#chrome-developer-tools), tested a initial project with remote debugging mode on Chrome 62 (beta), continuous reload JS 30 times:
+In case of using [official remote debugger](https://reactnative.dev/docs/debugging#chrome-developer-tools), tested a initial project with remote debugging mode on Chrome 62 (beta), continuous reload JS 30 times:
 
 Before:  
 <img width="600" alt="2017-09-19 5 32 05 pm" src="https://user-images.githubusercontent.com/3001525/30585922-ed1e557a-9cf3-11e7-9730-3b941618924f.png">

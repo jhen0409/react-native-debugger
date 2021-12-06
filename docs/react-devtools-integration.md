@@ -2,7 +2,7 @@
 
 **_NOTE_** Supported React Native version is `>= 0.62`. Please downgrade RNDebugger version to `0.10` if you're using older versions of React Native.
 
-The [React DevTools](https://facebook.github.io/react-native/docs/debugging#react-developer-tools) is built by [`facebook/react/packages/react-devtools-core`](https://github.com/facebook/react/tree/master/packages/react-devtools-core).
+The [React DevTools](https://reactnative.dev/docs/debugging#react-developer-tools) is built by [`facebook/react/packages/react-devtools-core`](https://github.com/facebook/react/tree/master/packages/react-devtools-core).
 
 It will open a WebSocket server to waiting React Native connection. The connection is already included in React Native (see [`setUpReactDevTools.js`](https://github.com/facebook/react-native/blob/0.62-stable/Libraries/Core/setUpReactDevTools.js)), it will keep trying to connect the React DevTools server in development mode, it should work well without any specification.
 
