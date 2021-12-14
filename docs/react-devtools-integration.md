@@ -14,7 +14,7 @@ For Android, we have the built-in `adb` util and it will reverse the port automa
 
 Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 
-## __*Question*__: I got `Unsupported` meesage from React DevTools
+## __*Question*__: I got `Unsupported` message from React DevTools
 
 If you're using React Native version >= 0.62 and keep React Native Debugger as the latest version, here is what you can do:
 
