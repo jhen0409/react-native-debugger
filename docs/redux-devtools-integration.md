@@ -11,8 +11,8 @@ If you've enabled `Debug JS remotely` with React Native Debugger, the following 
 
 See also:
 
-- [API Reference](http://extension.remotedev.io/docs/API/)
-- [Troubleshooting](http://extension.remotedev.io/docs/Troubleshooting.html)
+- [API Reference](https://github.com/zalmoxisus/redux-devtools-extension/tree/master/docs/API)
+- [Troubleshooting](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md)
 - Other Integrations
   - [MobX](https://github.com/mobxjs/mobx)
     - [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) - See [`the counter example`](../examples/counter-with-mobx/src/stores/counter), make sure `remote` option is `false`.
