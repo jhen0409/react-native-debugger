@@ -7,7 +7,7 @@
   "scripts": {
     "pack-macos": "./scripts/package-macos.sh",
     "pack-linux": "./scripts/package-linux.sh",
-    "pack-windows": "./scripts/package-windows.sh",
+    "pack-windows": "sh ./scripts/package-windows.sh",
     "pack": "yarn build && ./scripts/package-linux.sh && ./scripts/package-windows.sh && ./scripts/package-macos.sh",
     "start": "cd dist && cross-env NODE_ENV=production PACKAGE=no electron ./",
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.babel.js --progress --profile --colors",
