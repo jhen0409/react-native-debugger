@@ -14,15 +14,33 @@ For Android, we have the built-in `adb` util and it will reverse the port automa
 
 Refer to [`Debugger Integration`](debugger-integration.md#debugging-tips).
 
-## __*Question*__: I got `Unsupported` message from React DevTools
+## **_Question_**: I got `Unsupported` message from React DevTools
 
 If you're using React Native version >= 0.62 and keep React Native Debugger as the latest version, here is what you can do:
 
-In your app project, upgrade `react-devtools-core` dependency to match the React DevTools version:
+In your app project, make sure the `react-devtools-core` dependency to match the React DevTools version. Add resolutions in your `package.json` for Yarn:
 
-- Use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/), just add `"react-devtools-core": "~4.13.5"` (Depends on the display version of React DevTools) to resolutions of `package.json`.
+```json
+{
+  "resolutions": {
+    "react-devtools-core": "~4.25.0"
+  }
+}
+```
+
+or NPM:
+
+```json
+{
+  "overrides": {
+    "react-devtools-core": "~4.25.0"
+  }
+}
+```
 
 Reference: [Unsupported DevTools backend version - # React Native Debugger](https://gist.github.com/bvaughn/4bc90775530873fdf8e7ade4a039e579#react-native-debugger)
+
+If the React Native version of your project doesn't support `react-devtools-core@4.25`, please consider downgrade React Native Debugger version to v0.12.
 
 ## Other documentations
 

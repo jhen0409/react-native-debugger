@@ -4,11 +4,29 @@
 
 If you're using React Native version >= 0.62 and keep React Native Debugger as the latest version, here is what you can do:
 
-In your app project, upgrade `react-devtools-core` dependency to match the React DevTools version:
+In your app project, make sure the `react-devtools-core` dependency to match the React DevTools version. Add resolutions in your `package.json` for Yarn:
 
-- Use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/), just add `"react-devtools-core": "~4.13.5"` (Depends on the display version of React DevTools) to resolutions of `package.json`.
+```json
+{
+  "resolutions": {
+    "react-devtools-core": "~4.25.0"
+  }
+}
+```
+
+or NPM:
+
+```json
+{
+  "overrides": {
+    "react-devtools-core": "~4.25.0"
+  }
+}
+```
 
 Reference: [Unsupported DevTools backend version - # React Native Debugger](https://gist.github.com/bvaughn/4bc90775530873fdf8e7ade4a039e579#react-native-debugger)
+
+If the React Native version of your project doesn't support `react-devtools-core@4.25`, please consider downgrade React Native Debugger version to v0.12.
 
 ## Network fetch got issue like [`SyntaxError: Unexpected token o in JSON at position 1`](https://github.com/jhen0409/react-native-debugger/issues/382#issuecomment-544226529) if Network Inspect enabled
 
@@ -71,7 +89,7 @@ Also, sometimes it have timer problem between host machine and device (emulator)
 
 Or try to restart your device (emulator).
 
-## [Windows 10] React native debugger process starts but no visible window ([#459](https://github.com/jhen0409/react-native-debugger/issues/459))  
+## [Windows 10] React native debugger process starts but no visible window ([#459](https://github.com/jhen0409/react-native-debugger/issues/459))
 
 This issue is caused by Windows 10 dark mode, for a workaround please disable dark mode and enable it again after launching react-native-debugger
 
