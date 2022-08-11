@@ -1,5 +1,5 @@
 {
-  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.12.1/rn-debugger-macos-universal.zip",
-  "name": "v0.12.1",
-  "notes": "Provide universal binary for macOS"
+  "url": "https://github.com/jhen0409/react-native-debugger/releases/download/v0.13.0/rn-debugger-macos-universal.zip",
+  "name": "v0.13.0",
+  "notes": "Update react-devtools-core to v4.25.0"
 }
