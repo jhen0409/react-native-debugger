@@ -11,13 +11,13 @@ const store = new Store();
 const executeJavaScript = (win, script) =>
   win.webContents.executeJavaScript(script);
 
-export const checkWindowInfo = win =>
+export const checkWindowInfo = (win) =>
   executeJavaScript(win, 'window.checkWindowInfo()');
 
-const checkIsOpenInEditorEnabled = win =>
+const checkIsOpenInEditorEnabled = (win) =>
   executeJavaScript(win, 'window.isOpenInEditorEnabled()');
 
-const changeMenuItems = menus => {
+const changeMenuItems = (menus) => {
   const rootMenuItems = Menu.getApplicationMenu().items;
   Object.entries(menus).forEach(([key, subMenu]) => {
     const rootMenuItem = rootMenuItems.find(({ label }) => label === key);
@@ -40,7 +40,7 @@ const invokeDevMethod = (win, name) =>
     `window.invokeDevMethod && window.invokeDevMethod('${name}')`,
   );
 
-const registerKeyboradShortcut = win => {
+const registerKeyboradShortcut = (win) => {
   const prefix = process.platform === 'darwin' ? 'Command' : 'Ctrl';
   // If another window focused, register a new shortcut
   if (
@@ -57,7 +57,7 @@ const registerKeyboradShortcut = win => {
 
 const unregisterKeyboradShortcut = () => globalShortcut.unregisterAll();
 
-const registerShortcuts = async win => {
+const registerShortcuts = async (win) => {
   registerKeyboradShortcut(win);
   changeMenuItems({
     Debugger: {
@@ -137,14 +137,6 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
       removeUnecessaryTabs(win);
     }
     selectRNDebuggerWorkerContext(win);
-    setTimeout(
-      () =>
-        executeJavaScript(
-          win,
-          'window.logWelcomeMessage && window.logWelcomeMessage()',
-        ),
-      1e3,
-    );
   });
   win.on('show', () => {
     if (!win.isFocused()) return;
@@ -165,7 +157,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     );
     win.destroy();
   };
-  win.on('close', event => {
+  win.on('close', (event) => {
     event.preventDefault();
     win.close();
   });
