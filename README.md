@@ -54,6 +54,19 @@ Install last release of v0.10 (0.10.7)
 
 `brew install --cask https://raw.githubusercontent.com/Homebrew/homebrew-cask/b6ac3795c1df9f97242481c0817b1165e3e6306a/Casks/react-native-debugger.rb`
 
+### Arch-based distributions
+
+You can install [react-native-debugger-bin][1] from Arch User Repository:
+
+```shell
+git clone https://aur.archlinux.org/react-native-debugger-bin.git
+cd react-native-debugger-bin
+makepkg -si
+
+# or using AUR helper
+paru -S react-native-debugger-bin
+```
+
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
@@ -93,3 +106,5 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 ## LICENSE
 
 [MIT](LICENSE.md)
+
+[1]: https://aur.archlinux.org/packages/react-native-debugger-bin
