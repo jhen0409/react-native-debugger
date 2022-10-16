@@ -19,17 +19,23 @@ const filterPaths = list => {
   return filteredList;
 };
 
-const handleURL = async (getWindow, path) => {
-  const route = url.parse(path);
-
+export const parseUrl = _url => {
+  const route = url.parse(_url);
   if (route.host !== 'set-debugger-loc') return;
-
   const { host, port, projectRoots } = qs.parse(route.query);
   const query = {
     host: host || 'localhost',
     port: Number(port) || 8081,
     projectRoots: Array.isArray(projectRoots) ? filterPaths(projectRoots.split(',')) : undefined,
   };
+  return query;
+}
+
+export const handleURL = async (getWindow, path) => {
+  const query = parseUrl(path);
+  if (!query) {
+    return;
+  }
   const payload = JSON.stringify(query);
 
   // This env will be get by new debugger window

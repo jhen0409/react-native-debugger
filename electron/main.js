@@ -3,7 +3,7 @@ import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
 import normalizeHeaderCase from 'header-case-normalizer';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
-import { startListeningHandleURL } from './url-handle';
+import { startListeningHandleURL, handleURL, parseUrl } from './url-handle';
 import { createMenuTemplate } from './menu';
 import { readConfig } from './config';
 import { sendSyncState } from './sync-state';
@@ -15,17 +15,45 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 1;
 const iconPath = path.resolve(__dirname, 'logo.png');
 const defaultOptions = { iconPath };
 
-startListeningHandleURL(async (host, port) => {
+
+const findWindow = async (host, port) => {
   const wins = BrowserWindow.getAllWindows();
   for (const win of wins) {
-    const { isWorkerRunning, isPortSettingRequired, location } = await checkWindowInfo(win);
-    if ((!isWorkerRunning || location.port === port) && !isPortSettingRequired) {
+    const { isWorkerRunning, isPortSettingRequired, location } =
+      await checkWindowInfo(win);
+    if (
+      (!isWorkerRunning || location.port === port) &&
+      !isPortSettingRequired
+    ) {
+      if (win.isMinimized()) win.restore();
+      win.focus();
       return win;
     }
   }
   createWindow(defaultOptions);
   return null;
-});
+};
+
+const handleCommandLine = async (commandLine) => {
+  const url = commandLine.find((arg) => arg.startsWith('rndebugger://'));
+  if (!url) {
+    return;
+  }
+  await handleURL(findWindow, url);
+};
+
+if (process.platform === 'linux') {
+  const singleInstanceLock = app.requestSingleInstanceLock();
+  if (!singleInstanceLock) {
+    process.exit();
+  } else {
+    app.on('second-instance', async (event, commandLine, workingDirectory) => {
+      await handleCommandLine(commandLine);
+    });
+  }
+}
+
+startListeningHandleURL(findWindow);
 
 ipcMain.on('check-port-available', async (event, arg) => {
   const port = Number(arg);
@@ -79,6 +107,14 @@ app.on('ready', async () => {
     defaultRNPackagerPorts = [8081];
   }
 
+  if (process.platform === 'linux') {
+    const url = process.argv.find((arg) => arg.startsWith('rndebugger://'));
+    const query = url ? parseUrl(url) : undefined;
+    if (query && query.port) {
+      defaultRNPackagerPorts = [query.port];
+    }
+  }
+  
   defaultRNPackagerPorts.forEach(port => {
     createWindow({ port, ...defaultOptions });
   });
@@ -103,6 +139,6 @@ app.on('ready', async () => {
 
 // Pass all certificate errors in favor of Network Inspect feature
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  event.preventDefault();
-  callback(true);
+    event.preventDefault();
+    callback(true);
 });
