@@ -47,7 +47,7 @@ if (process.platform === 'linux') {
   if (!singleInstanceLock) {
     process.exit();
   } else {
-    app.on('second-instance', async (event, commandLine, workingDirectory) => {
+    app.on('second-instance', async (event, commandLine) => {
       await handleCommandLine(commandLine);
     });
   }
@@ -114,7 +114,7 @@ app.on('ready', async () => {
       defaultRNPackagerPorts = [query.port];
     }
   }
-  
+
   defaultRNPackagerPorts.forEach(port => {
     createWindow({ port, ...defaultOptions });
   });
@@ -139,6 +139,6 @@ app.on('ready', async () => {
 
 // Pass all certificate errors in favor of Network Inspect feature
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-    event.preventDefault();
-    callback(true);
+  event.preventDefault();
+  callback(true);
 });

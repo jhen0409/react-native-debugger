@@ -29,7 +29,7 @@ export const parseUrl = _url => {
     projectRoots: Array.isArray(projectRoots) ? filterPaths(projectRoots.split(',')) : undefined,
   };
   return query;
-}
+};
 
 export const handleURL = async (getWindow, path) => {
   const query = parseUrl(path);
