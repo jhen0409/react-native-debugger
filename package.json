@@ -83,7 +83,7 @@
     "electron-store": "^1.2.0",
     "header-case-normalizer": "^1.0.3",
     "jsan": "^3.1.9",
-    "json5": "^0.5.1",
+    "json5": "^2.2.2",
     "multiline-template": "^0.1.2",
     "node-watch": "^0.5.6",
     "portscanner": "^2.1.1",
