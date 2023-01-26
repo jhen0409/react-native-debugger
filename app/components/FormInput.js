@@ -65,7 +65,18 @@ export default class FormInput extends PureComponent {
       <div>
         <div>{title}</div>
         <div style={styles.form}>
-          <input {...inputProps} value={val} style={styles.input} onChange={this.handleOnChange} />
+          <input
+            onKeyDown={e => {
+            // Enter/Return key pressed
+              if (e.keyCode === 13) {
+                this.handleOnClick();
+              }
+            }}
+            {...inputProps}
+            value={val}
+            style={styles.input}
+            onChange={this.handleOnChange}
+          />
           <button style={styles.button} onClick={this.handleOnClick}>
             {button}
           </button>
