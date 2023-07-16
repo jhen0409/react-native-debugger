@@ -3,11 +3,8 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macOS-latest, ubuntu-18.04]
+  build-test-macos:
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -15,10 +12,22 @@ jobs:
           node-version: 10.x
       - name: CI
         run: |
-          if [[ "$OSTYPE" == "linux-gnu" ]]; then
-            export DISPLAY=:99.0
-            Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          fi
+          yarn
+          cd npm-package && yarn && cd ..
+          yarn test
+          yarn build
+          yarn test-e2e
+  build-test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: CI
+        run: |
+          export DISPLAY=:99.0
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
           npm i -g xvfb-maybe
           yarn
           cd npm-package && yarn && cd ..
