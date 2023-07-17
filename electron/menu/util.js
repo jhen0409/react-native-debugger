@@ -1,7 +1,11 @@
-import { remote, app, dialog, BrowserWindow } from 'electron';
+import { app, dialog, BrowserWindow } from 'electron';
 import multiline from 'multiline-template';
 
-const appName = (remote ? remote.app : app).name;
+const remote = null; // TODO
+
+console.log(app)
+
+const appName = (remote ? remote.app : app || {}).name;
 const detail = multiline`
   | Created by Jhen-Jie Hong
   | (https://github.com/jhen0409)

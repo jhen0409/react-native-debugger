@@ -1,11 +1,10 @@
-import { remote } from 'electron';
-import contextMenu from 'electron-context-menu';
+import { TouchBar, nativeImage, getCurrentWindow } from '@electron/remote';
+// import contextMenu from 'electron-context-menu';
 import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
 import config from './config';
 
-const { nativeImage } = remote;
-const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
-const currentWindow = remote.getCurrentWindow();
+const { TouchBarButton, TouchBarSlider } = TouchBar || {};
+const currentWindow = getCurrentWindow();
 
 let worker;
 let availableMethods = [];
@@ -24,7 +23,7 @@ const getBarItems = bar =>
     .filter(barItem => !!barItem);
 const setTouchBar = () =>
   currentWindow.setTouchBar(
-    new remote.TouchBar({
+    new TouchBar({
       items: [
         ...getBarItems(leftBar),
         ...(isSliderEnabled ? getBarItems(rightBar) : []),
@@ -75,25 +74,25 @@ const defaultContextMenuItems = [
   item('Toggle Redux DevTools', n, () => toggleDevTools(currentWindow, 'redux')),
 ];
 
-contextMenu({
-  window: currentWindow,
-  showInspectElement: process.env.NODE_ENV === 'development',
-  prepend: () =>
-    [
-      availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
-      availableMethods.includes('toggleElementInspector') &&
-        item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
-      availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
-      item(networkInspect.label(), n, devMenuMethods.networkInspect),
-      availableMethods.includes('showAsyncStorage') &&
-        item('Log AsyncStorage content', n, devMenuMethods.showAsyncStorage),
-      availableMethods.includes('clearAsyncStorage') &&
-        item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
-      separator,
-    ]
-      .filter(menuItem => !!menuItem)
-      .concat(defaultContextMenuItems),
-});
+// contextMenu({
+//   window: currentWindow,
+//   showInspectElement: process.env.NODE_ENV === 'development',
+//   prepend: () =>
+//     [
+//       availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
+//       availableMethods.includes('toggleElementInspector') &&
+//         item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
+//       availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
+//       item(networkInspect.label(), n, devMenuMethods.networkInspect),
+//       availableMethods.includes('showAsyncStorage') &&
+//         item('Log AsyncStorage content', n, devMenuMethods.showAsyncStorage),
+//       availableMethods.includes('clearAsyncStorage') &&
+//         item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
+//       separator,
+//     ]
+//       .filter(menuItem => !!menuItem)
+//       .concat(defaultContextMenuItems),
+// });
 
 export const invokeDevMethod = name => () => {
   if (availableMethods.includes(name)) {

@@ -1,5 +1,6 @@
 import { findAPortNotInUse } from 'portscanner';
-import { webFrame, remote } from 'electron';
+import { webFrame } from 'electron';
+import { getCurrentWindow } from '@electron/remote';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -13,7 +14,7 @@ import { client, tryADBReverse } from './utils/adb';
 import config from './utils/config';
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools';
 
-const currentWindow = remote.getCurrentWindow();
+const currentWindow = getCurrentWindow();
 
 webFrame.setZoomFactor(1);
 webFrame.setVisualZoomLevelLimits(1, 1);

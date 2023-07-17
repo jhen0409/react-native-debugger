@@ -1,4 +1,5 @@
-import { ipcRenderer, remote } from 'electron';
+import { ipcRenderer } from 'electron';
+import { getCurrentWindow } from '@electron/remote';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -11,7 +12,7 @@ import FormInput from '../components/FormInput';
 import Draggable from '../components/Draggable';
 import { catchConsoleLogLink } from '../../electron/devtools';
 
-const currentWindow = remote.getCurrentWindow();
+const currentWindow = getCurrentWindow();
 
 const styles = {
   container: {

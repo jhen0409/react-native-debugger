@@ -1,6 +1,7 @@
 import path from 'path';
 import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
+import { enable } from '@electron/remote/main';
 import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
 import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
@@ -99,11 +100,14 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
     webPreferences: {
+      contextIsolation: false,
       nodeIntegration: true,
-      enableRemoteModule: true,
+      // enableRemoteModule: true,
     },
     ...config.windowBounds,
   });
+  enable(win.webContents);
+
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
   const { timesJSLoadToRefreshDevTools = -1 } = config;
