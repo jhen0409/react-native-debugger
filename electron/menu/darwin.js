@@ -15,7 +15,7 @@ import {
   resetZoom,
   haveOpenedWindow,
   toggleOpenInEditor,
-} from './util';
+} from './common';
 import { openConfigFile } from '../config';
 import { isSyncState, toggleSyncState } from '../sync-state';
 

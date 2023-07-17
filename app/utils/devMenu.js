@@ -1,6 +1,6 @@
 import { TouchBar, nativeImage, getCurrentWindow } from '@electron/remote';
 // import contextMenu from 'electron-context-menu';
-import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
+import { item, n, toggleDevTools, separator } from '../../electron/menu/common';
 import config from './config';
 
 const { TouchBarButton, TouchBarSlider } = TouchBar || {};
