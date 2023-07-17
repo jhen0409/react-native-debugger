@@ -15,11 +15,12 @@ export const isOpenInEditorEnabled = () => enabled;
 
 export const clearNetworkLogs = win => {
   if (win.devToolsWebContents) {
-    return win.devToolsWebContents.executeJavaScript(`(() => {
-      if (typeof SDK === 'object' && SDK.networkLog) {
-        SDK.networkLog.reset()
+    return win.devToolsWebContents.executeJavaScript(`setTimeout(() => {
+      const { network } = UI.panels;
+      if (network && network.networkLogView && network.networkLogView.reset) {
+        network.networkLogView.reset()
       }
-    })()`);
+    }, 100)`);
   }
 };
 
@@ -27,10 +28,10 @@ export const selectRNDebuggerWorkerContext = win => {
   if (win.devToolsWebContents) {
     return win.devToolsWebContents.executeJavaScript(`setTimeout(() => {
       const { console } = UI.panels;
-      if (console && console._view && console._view._consoleContextSelector) {
-        const selector = console._view._consoleContextSelector;
-        const item = selector._items._items.find(
-          item => item._label === 'RNDebuggerWorker.js'
+      if (console && console.view && console.view.consoleContextSelector) {
+        const selector = console.view.consoleContextSelector;
+        const item = selector.items.items.find(
+          item => item.label() === 'RNDebuggerWorker.js'
         );
         if (item) {
           selector.itemSelected(item);

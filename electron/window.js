@@ -3,7 +3,7 @@ import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
 import { enable } from '@electron/remote/main';
 import autoUpdate from './update';
-import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { catchConsoleLogLink, removeUnecessaryTabs, activeTabs } from './devtools';
 import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
 import { readConfig, filePath as configFile } from './config';
 
@@ -136,6 +136,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   win.webContents.on('devtools-opened', async () => {
     const { location } = await checkWindowInfo(win);
+    activeTabs(win);
     catchConsoleLogLink(win, location.host, location.port);
     if (config.showAllDevToolsTab !== true) {
       removeUnecessaryTabs(win);
