@@ -6,6 +6,7 @@ import autoUpdate from './update';
 import { catchConsoleLogLink, removeUnecessaryTabs, activeTabs } from './devtools';
 import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
 import { readConfig, filePath as configFile } from './config';
+import { registerContextMenu } from './context-menu';
 
 const store = new Store();
 
@@ -122,9 +123,11 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     timesJSLoadToRefreshDevTools,
   };
   win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
+  let unregisterContextMenu;
   win.webContents.on('did-finish-load', () => {
     win.webContents.zoomLevel = config.zoomLevel || store.get('zoomLevel', 0);
     win.focus();
+    unregisterContextMenu = registerContextMenu(win);
     registerShortcuts(win);
     if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
       win.openDevTools();
@@ -165,6 +168,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   win.on('close', (event) => {
     event.preventDefault();
     win.close();
+    if (unregisterContextMenu) unregisterContextMenu();
   });
   return win;
 };
