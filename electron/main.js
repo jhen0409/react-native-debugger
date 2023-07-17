@@ -11,6 +11,9 @@ import { sendSyncState } from './sync-state';
 
 initialize();
 
+// Uncomment if want to debug devtools backend
+// app.commandLine.appendSwitch('remote-debugging-port', '9222');
+
 app.commandLine.appendSwitch('disable-http-cache');
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 1;
