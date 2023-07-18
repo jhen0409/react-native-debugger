@@ -1,8 +1,10 @@
 const path = require('path');
 const { version: electronVersion } = require('electron/package.json');
 const { makeUniversalApp } = require('@electron/universal');
-const { signAsync } = require('electron-osx-sign');
-const { notarize } = require('electron-notarize');
+const { signAsync } = require('@electron/osx-sign');
+const { notarize } = require('@electron/notarize');
+
+const noNotarize = process.argv.includes('--no-notarize');
 
 const developerId = `${process.env.APPLE_DEVELOPER_NAME} (${process.env.APPLE_TEAM_ID})`;
 
@@ -25,16 +27,20 @@ async function run() {
     arm64AppPath,
     outAppPath: appPath,
   });
+
+  if (noNotarize) return;
+
   const pathes = [appPath, x64AppPath, arm64AppPath];
   for (const p of pathes) {
     try {
       await signAsync({
-        identity: `Developer ID Application: ${developerId}`,
-        entitlements: 'scripts/mac/entitlements.plist',
-        'entitlements-inherit': 'scripts/mac/entitlements.plist',
-        hardenedRuntime: true,
-        platform: 'darwin',
         app: p,
+        identity: `Developer ID Application: ${developerId}`,
+        optionsForFile: (filePath) => ({
+          hardenedRuntime: true,
+          entitlements: `${filePath}scripts/mac/entitlements.plist`,
+        }),
+        platform: 'darwin',
         version: electronVersion,
       });
     } catch (e) {
@@ -43,7 +49,7 @@ async function run() {
     await notarize({
       appleId: process.env.APPLE_ID,
       appleIdPassword: '@keychain:AC_PASSWORD',
-      ascProvider: process.env.APPLE_TEAM_ID,
+      teamId: process.env.APPLE_TEAM_ID,
       appBundleId: 'com.electron.react-native-debugger',
       appPath: p,
     });
