@@ -43,6 +43,7 @@ jobs:
       - name: Test
         shell: bash
         run: |
+          yarn config set network-timeout 500000 -g
           yarn
           cd npm-package && yarn && cd ..
           yarn build
