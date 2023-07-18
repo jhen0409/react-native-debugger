@@ -1,5 +1,6 @@
 import path from 'path';
 import { app, ipcMain, session, BrowserWindow, Menu } from 'electron';
+import { initialize } from '@electron/remote/main';
 import normalizeHeaderCase from 'header-case-normalizer';
 import installExtensions from './extensions';
 import { checkWindowInfo, createWindow } from './window';
@@ -7,6 +8,11 @@ import { startListeningHandleURL, handleURL, parseUrl } from './url-handle';
 import { createMenuTemplate } from './menu';
 import { readConfig } from './config';
 import { sendSyncState } from './sync-state';
+
+initialize();
+
+// Uncomment if want to debug devtools backend
+// app.commandLine.appendSwitch('remote-debugging-port', '9222');
 
 app.commandLine.appendSwitch('disable-http-cache');
 

@@ -9,7 +9,7 @@
 
 // Take from https://github.com/facebook/react-native/blob/master/local-cli/server/util/debugger.html
 
-import { remote } from 'electron';
+import { getCurrentWindow } from '@electron/remote';
 import { bindActionCreators } from 'redux';
 import { checkPortStatus } from 'portscanner';
 import * as debuggerActions from '../actions/debugger';
@@ -18,7 +18,7 @@ import { tryADBReverse } from '../utils/adb';
 import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools';
 import config from '../utils/config';
 
-const currentWindow = remote.getCurrentWindow();
+const currentWindow = getCurrentWindow();
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions;
 
 let worker;

@@ -1,3 +1,3 @@
-import { remote } from 'electron';
+import { getCurrentWindow } from '@electron/remote';
 
-export default remote.getCurrentWindow().debuggerConfig || {};
+export default getCurrentWindow().debuggerConfig || {};

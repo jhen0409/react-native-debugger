@@ -1,7 +1,7 @@
 export const getCatchConsoleLogScript = (host, port) => `
   window.__RN_PACKAGER_PREFIX__ = 'http://${host}:${port}';
   if (!window.__INJECT_OPEN_IN_EDITOR_SCRIPT__) {
-    const rndHelperQuery = "iframe[src*='chrome-extension://rndebugger-devtools-helper/main.html']";
+    const rndHelperQuery = 'iframe[data-devtools-extension="RNDebugger devtools helper"]';
     document.addEventListener('click', event => {
       if (!window.__IS_OPEN_IN_EDITOR_ENABLED__) {
         return;
@@ -43,7 +43,7 @@ export const removeUnecessaryTabs = win => {
     win.devToolsWebContents
   ) {
     return win.devToolsWebContents.executeJavaScript(`(() => {
-      const tabbedPane = UI.inspectorView._tabbedPane;
+      const tabbedPane = UI.inspectorView.tabbedPane;
       if (tabbedPane) {
         tabbedPane.closeTab('elements');
         tabbedPane.closeTab('security');
@@ -53,6 +53,16 @@ export const removeUnecessaryTabs = win => {
 
         tabbedPane._leftToolbar._contentElement.remove();
       }
+    })()`);
+  }
+};
+
+export const activeTabs = win => {
+  if (win.devToolsWebContents) {
+    // Active network tab so we can do clearNetworkLogs
+    return win.devToolsWebContents.executeJavaScript(`(() => {
+      DevToolsAPI.showPanel('network');
+      DevToolsAPI.showPanel('console');
     })()`);
   }
 };

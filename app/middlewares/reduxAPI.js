@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux';
-import { remote, ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron';
+import { getGlobal } from '@electron/remote';
 import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
 import { DISCONNECTED } from 'remotedev-app/lib/constants/socketActionTypes';
 import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
@@ -79,7 +80,7 @@ const removeWorker = () => {
 };
 
 const syncLiftedState = liftedState => {
-  if (!remote.getGlobal('isSyncState')()) return;
+  if (!getGlobal('isSyncState')()) return;
 
   const actionsById = liftedState.actionsById;
   const payload = [];

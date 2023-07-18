@@ -2,48 +2,52 @@ name: CI
 
 on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-test-macos:
-    runs-on: macOS-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
-      - name: CI
-        run: |
-          yarn
-          cd npm-package && yarn && cd ..
-          yarn test
-          yarn build
-          yarn test-e2e
   build-test-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 10.x
-      - name: CI
+          node-version: 16.x
+      - name: Setup
+        run: sudo apt-get install -y libgbm-dev
+      - name: Test
         run: |
-          export DISPLAY=:99.0
-          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          npm i -g xvfb-maybe
           yarn
           cd npm-package && yarn && cd ..
           yarn test
           yarn build
-          xvfb-maybe yarn test-e2e
-  build-test-windows:
-    runs-on: windows-2019
+          xvfb-run --auto-servernum yarn test-e2e
+  build-test-macos:
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 10.x
-      - name: CI
+          node-version: 16.x
+      - name: Test
+        run: |
+          yarn
+          cd npm-package && yarn && cd ..
+          yarn test
+          yarn build
+          yarn test-e2e
+  build-test-windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Test
         shell: bash
         run: |
+          yarn config set network-timeout 500000 -g
           yarn
           cd npm-package && yarn && cd ..
           yarn build

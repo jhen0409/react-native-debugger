@@ -6,16 +6,15 @@ import {
   item,
   separator,
   n,
-  showAboutDialog,
   toggleDevTools,
   toggleFullscreen,
   setAlwaysOnTop,
   reload,
   zoom,
   resetZoom,
-  haveOpenedWindow,
   toggleOpenInEditor,
-} from './util';
+} from './common';
+import { haveOpenedWindow, showAboutDialog } from './dialog';
 import { openConfigFile } from '../config';
 import { isSyncState, toggleSyncState } from '../sync-state';
 

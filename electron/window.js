@@ -1,10 +1,12 @@
 import path from 'path';
 import { BrowserWindow, Menu, globalShortcut, dialog } from 'electron';
 import Store from 'electron-store';
+import { enable } from '@electron/remote/main';
 import autoUpdate from './update';
-import { catchConsoleLogLink, removeUnecessaryTabs } from './devtools';
+import { catchConsoleLogLink, removeUnecessaryTabs, activeTabs } from './devtools';
 import { selectRNDebuggerWorkerContext } from '../app/utils/devtools';
 import { readConfig, filePath as configFile } from './config';
+import { registerContextMenu } from './context-menu';
 
 const store = new Store();
 
@@ -99,11 +101,16 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     backgroundColor: '#272c37',
     tabbingIdentifier: 'rndebugger',
     webPreferences: {
+      contextIsolation: false,
       nodeIntegration: true,
-      enableRemoteModule: true,
+      // experimentalFeatures: true,
+      // webSecurity: false,
+      // webviewTag: true, // Use this for new inspector in the future
     },
     ...config.windowBounds,
   });
+  enable(win.webContents);
+
   const isFirstWindow = BrowserWindow.getAllWindows().length === 1;
 
   const { timesJSLoadToRefreshDevTools = -1 } = config;
@@ -118,9 +125,11 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     timesJSLoadToRefreshDevTools,
   };
   win.loadURL(`file://${path.resolve(__dirname)}/app.html`);
+  let unregisterContextMenu;
   win.webContents.on('did-finish-load', () => {
     win.webContents.zoomLevel = config.zoomLevel || store.get('zoomLevel', 0);
     win.focus();
+    unregisterContextMenu = registerContextMenu(win);
     registerShortcuts(win);
     if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
       win.openDevTools();
@@ -132,6 +141,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   });
   win.webContents.on('devtools-opened', async () => {
     const { location } = await checkWindowInfo(win);
+    activeTabs(win);
     catchConsoleLogLink(win, location.host, location.port);
     if (config.showAllDevToolsTab !== true) {
       removeUnecessaryTabs(win);
@@ -160,6 +170,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
   win.on('close', (event) => {
     event.preventDefault();
     win.close();
+    if (unregisterContextMenu) unregisterContextMenu();
   });
   return win;
 };

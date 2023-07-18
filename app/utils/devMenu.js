@@ -1,11 +1,10 @@
-import { remote } from 'electron';
-import contextMenu from 'electron-context-menu';
-import { item, n, toggleDevTools, separator } from '../../electron/menu/util';
+import { TouchBar, nativeImage, getCurrentWindow } from '@electron/remote';
+
+import { ipcRenderer } from 'electron';
 import config from './config';
 
-const { nativeImage } = remote;
-const { TouchBarButton, TouchBarSlider } = remote.TouchBar || {};
-const currentWindow = remote.getCurrentWindow();
+const { TouchBarButton, TouchBarSlider } = TouchBar || {};
+const currentWindow = getCurrentWindow();
 
 let worker;
 let availableMethods = [];
@@ -18,41 +17,50 @@ let storeLiftedState;
 /* slider, prev, next */
 let rightBar = {};
 
-const getBarItems = bar =>
+const getBarItems = (bar) =>
   Object.keys(bar)
-    .map(key => bar[key])
-    .filter(barItem => !!barItem);
+    .map((key) => bar[key])
+    .filter((barItem) => !!barItem);
 const setTouchBar = () =>
   currentWindow.setTouchBar(
-    new remote.TouchBar({
+    new TouchBar({
       items: [
         ...getBarItems(leftBar),
         ...(isSliderEnabled ? getBarItems(rightBar) : []),
       ],
-    })
+    }),
   );
 
 const invokeDevMenuMethod = ({ name, args }) =>
   worker && worker.postMessage({ method: 'invokeDevMenuMethod', name, args });
 
 let networkInspectEnabled = !!config.networkInspect;
+const sendContextMenuUpdate = () => {
+  ipcRenderer.send(`context-menu-available-methods-update-${currentWindow.id}`, {
+    availableMethods,
+    networkInspectEnabled,
+  });
+};
+
 export const networkInspect = {
   isEnabled: () => !!networkInspectEnabled,
   getHighlightColor: () => (networkInspectEnabled ? '#7A7A7A' : '#363636'),
   toggle() {
     networkInspectEnabled = !networkInspectEnabled;
+    sendContextMenuUpdate();
   },
-  label: () => (networkInspectEnabled ? 'Disable Network Inspect' : 'Enable Network Inspect'),
 };
 
 const devMenuMethods = {
   reload: () => invokeDevMenuMethod({ name: 'reload' }),
-  toggleElementInspector: () => invokeDevMenuMethod({ name: 'toggleElementInspector' }),
+  toggleElementInspector: () =>
+    invokeDevMenuMethod({ name: 'toggleElementInspector' }),
   show: () => invokeDevMenuMethod({ name: 'show' }),
   networkInspect: () => {
     networkInspect.toggle();
     if (leftBar.networkInspect) {
-      leftBar.networkInspect.backgroundColor = networkInspect.getHighlightColor();
+      leftBar.networkInspect.backgroundColor =
+        networkInspect.getHighlightColor();
     }
     invokeDevMenuMethod({
       name: 'networkInspect',
@@ -63,46 +71,24 @@ const devMenuMethods = {
     invokeDevMenuMethod({ name: 'showAsyncStorage' });
   },
   clearAsyncStorage: () => {
-    if (confirm('Call `AsyncStorage.clear()` in current React Native debug session?')) {
+    if (
+      confirm(
+        'Call `AsyncStorage.clear()` in current React Native debug session?',
+      )
+    ) {
       invokeDevMenuMethod({ name: 'clearAsyncStorage' });
     }
   },
 };
 
-const defaultContextMenuItems = [
-  item('Toggle Developer Tools', n, () => toggleDevTools(currentWindow, 'chrome')),
-  item('Toggle React DevTools', n, () => toggleDevTools(currentWindow, 'react')),
-  item('Toggle Redux DevTools', n, () => toggleDevTools(currentWindow, 'redux')),
-];
-
-contextMenu({
-  window: currentWindow,
-  showInspectElement: process.env.NODE_ENV === 'development',
-  prepend: () =>
-    [
-      availableMethods.includes('reload') && item('Reload JS', n, devMenuMethods.reload),
-      availableMethods.includes('toggleElementInspector') &&
-        item('Toggle Element Inspector', n, devMenuMethods.toggleElementInspector),
-      availableMethods.includes('show') && item('Show Developer Menu', n, devMenuMethods.show),
-      item(networkInspect.label(), n, devMenuMethods.networkInspect),
-      availableMethods.includes('showAsyncStorage') &&
-        item('Log AsyncStorage content', n, devMenuMethods.showAsyncStorage),
-      availableMethods.includes('clearAsyncStorage') &&
-        item('Clear AsyncStorage', n, devMenuMethods.clearAsyncStorage),
-      separator,
-    ]
-      .filter(menuItem => !!menuItem)
-      .concat(defaultContextMenuItems),
-});
-
-export const invokeDevMethod = name => () => {
+export const invokeDevMethod = (name) => () => {
   if (availableMethods.includes(name)) {
     return devMenuMethods[name]();
   }
 };
 
 const hslShift = [0.5, 0.2, 0.8];
-const icon = name => nativeImage.createFromNamedImage(name, hslShift);
+const icon = (name) => nativeImage.createFromNamedImage(name, hslShift);
 
 let namedImages;
 const initNamedImages = () => {
@@ -149,7 +135,7 @@ setDevMenuMethodsForTouchBar([]);
 export const setDevMenuMethods = (list, wkr) => {
   worker = wkr;
   availableMethods = list;
-
+  sendContextMenuUpdate();
   setDevMenuMethodsForTouchBar();
 };
 

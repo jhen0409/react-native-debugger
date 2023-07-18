@@ -4,19 +4,22 @@ PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
 
 echo "[v$PACKAGE_VERSION] Packaging darwin x64..."
 
-if [ -z "$APPLE_ID" ]; then
-  echo -e "Apple ID: \c"
-  read APPLE_ID
+# Check arg no-notarize
+if [ "$1" == "--no-notarize" ]; then
+  echo "Notarization skipped."
+  NOTARIZE=0
 fi
 
-if [ -z "$APPLE_DEVELOPER_NAME" ]; then
-  echo -e "Apple Developer Name: \c"
-  read APPLE_DEVELOPER_NAME
-fi
+if [ "$NOTARIZE" != "0" ]; then
+  if [ -z "$APPLE_DEVELOPER_NAME" ]; then
+    echo -e "Apple Developer Name: \c"
+    read APPLE_DEVELOPER_NAME
+  fi
 
-if [ -z "$APPLE_TEAM_ID" ]; then
-  echo -e "Apple Team ID: \c"
-  read APPLE_TEAM_ID
+  if [ -z "$APPLE_TEAM_ID" ]; then
+    echo -e "Apple Team ID: \c"
+    read APPLE_TEAM_ID
+  fi
 fi
 
 function build_with_arch() {
@@ -40,7 +43,12 @@ function build_with_arch() {
 build_with_arch x64
 build_with_arch arm64
 
-node scripts/mac/createUniversalApp.js
+if [ "$NOTARIZE" != "0" ]; then
+  node scripts/mac/createUniversalApp.js
+else
+  node scripts/mac/createUniversalApp.js --no-notarize
+fi
+
 node scripts/mac/createDMG.js
 
 cd release
