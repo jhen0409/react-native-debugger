@@ -11,11 +11,6 @@ if [ "$1" == "--no-notarize" ]; then
 fi
 
 if [ "$NOTARIZE" != "0" ]; then
-  if [ -z "$APPLE_ID" ]; then
-    echo -e "Apple ID: \c"
-    read APPLE_ID
-  fi
-
   if [ -z "$APPLE_DEVELOPER_NAME" ]; then
     echo -e "Apple Developer Name: \c"
     read APPLE_DEVELOPER_NAME

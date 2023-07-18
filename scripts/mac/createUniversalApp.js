@@ -36,9 +36,9 @@ async function run() {
       await signAsync({
         app: p,
         identity: `Developer ID Application: ${developerId}`,
-        optionsForFile: (filePath) => ({
+        optionsForFile: () => ({
           hardenedRuntime: true,
-          entitlements: `${filePath}scripts/mac/entitlements.plist`,
+          entitlements: 'scripts/mac/entitlements.plist',
         }),
         platform: 'darwin',
         version: electronVersion,
@@ -47,10 +47,10 @@ async function run() {
       console.log(e);
     }
     await notarize({
-      appleId: process.env.APPLE_ID,
-      appleIdPassword: '@keychain:AC_PASSWORD',
-      teamId: process.env.APPLE_TEAM_ID,
-      appBundleId: 'com.electron.react-native-debugger',
+      tool: 'notarytool',
+      // xcrun notarytool store-credentials "AC_PASSWORD"
+      //  --apple-id "xxx" --team-id "xxx" --password "<app-specific-password>"
+      keychainProfile: 'AC_PASSWORD',
       appPath: p,
     });
   }
