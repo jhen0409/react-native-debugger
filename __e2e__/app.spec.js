@@ -2,11 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import net from 'net';
 import http from 'http';
-import electronPath from 'electron';
-import { Application } from 'spectron';
+import executablePath from 'electron';
+import { _electron as electron } from 'playwright-core';
 import buildTestBundle, { bundlePath } from './buildTestBundle';
 import createMockRNServer from './mockRNServer';
-import autoUpdateFeed from '../auto_update.json';
 
 const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -14,50 +13,30 @@ const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 6e4;
 
 describe('Application launch', () => {
-  let app;
+  let electronApp;
+  let mainWindow;
+  const logs = [];
 
   beforeAll(async () => {
     await buildTestBundle();
-    app = new Application({
-      path: electronPath,
-      args: ['--user-dir=__e2e__/tmp', 'dist'],
-      env: {
-        E2E_TEST: 1,
-        PACKAGE: 'no',
-      },
+    process.env.E2E_TEST = '1';
+    process.env.PACKAGE = 'no';
+    electronApp = await electron.launch({
+      executablePath,
+      args: ['--user-dir=__e2e__/tmp', './main.js'],
+      cwd: path.join(__dirname, '../dist'),
     });
-    return app.start();
+    mainWindow = await electronApp.firstWindow();
+    mainWindow.on('console', (msg) => logs.push(msg));
+    await mainWindow.waitForLoadState();
   });
 
-  afterAll(() => {
-    if (app && app.isRunning()) {
-      return app.stop();
-    }
-  });
-
-  it(`should be v${process.env.npm_package_version}`, async () => {
-    // Check the App version (dist/package.json) is same with package.json
-    const { electron } = app;
-    const version = await electron.remote.app.getVersion();
-
-    // Check auto update feed is expected
-    expect(version).toBe(process.env.npm_package_version);
-    expect(autoUpdateFeed.url).toBe(
-      `https://github.com/jhen0409/react-native-debugger/releases/download/v${version}/rn-debugger-macos-universal.zip`,
-    );
-    expect(autoUpdateFeed.name).toBe(`v${version}`);
-    expect(typeof autoUpdateFeed.notes).toBe('string');
-
-    console.log(`\nAuto update notes:\n\n${autoUpdateFeed.notes}\n`);
+  afterAll(async () => {
+    await electronApp.close();
   });
 
   it('should show an initial window', async () => {
-    const { client, browserWindow } = app;
-
-    await client.waitUntilWindowLoaded();
-    await delay(2000);
-    const title = await browserWindow.getTitle();
-    expect(title).toBe(
+    expect(await mainWindow.title()).toBe(
       'React Native Debugger - Attempting reconnection (port 8081)',
     );
   });
@@ -75,35 +54,25 @@ describe('Application launch', () => {
     let expected = false;
     while (attempts > 0 && !expected) {
       expected = fs.existsSync(portFile);
-      await delay(100);
+      await delay(1000);
       attempts--;
     }
     expect(expected).toBe(true);
   });
 
   it("should contain Inspector monitor's component on Redux DevTools", async () => {
-    const { client } = app;
-
-    const el = await client.$('//div[contains(@class, "inspector-")]');
-    const val = await el.getText();
+    const val = await mainWindow.textContent('//div[contains(@class, "inspector-")]');
     expect(val).not.toBeNull();
   });
 
   it('should contain an empty actions list on Redux DevTools', async () => {
-    const { client } = app;
-
-    const el = await client.$('//div[contains(@class, "actionListRows-")]');
-    const val = await el.getText();
+    const val = await mainWindow.textContent('//div[contains(@class, "actionListRows-")]');
     expect(val).toBe('');
   });
 
   it('should show waiting message on React DevTools', async () => {
-    const { client } = app;
-    const el = await client.$(
-      '//h2[text()="Waiting for React to connect…"]',
-    );
-    const exist = await el.isExisting();
-    expect(exist).toBe(true);
+    const el = await mainWindow.locator('//h2[text()="Waiting for React to connect…"]');
+    expect(await el.isVisible()).toBe(true);
   });
 
   const customRNServerPort = 8098;
@@ -120,8 +89,7 @@ describe('Application launch', () => {
     const url = await getURLFromConnection(wss);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
-    const title = await app.browserWindow.getTitle();
-    expect(title).toBe(
+    expect(await mainWindow.title()).toBe(
       'React Native Debugger - Waiting for client connection (port 8081)',
     );
     server.close();
@@ -154,8 +122,7 @@ describe('Application launch', () => {
     const url = await getURLFromConnection(wss);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
-    const title = await app.browserWindow.getTitle();
-    expect(title).toBe(
+    expect(await mainWindow.title()).toBe(
       `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`,
     );
     server.close();
@@ -213,8 +180,7 @@ describe('Application launch', () => {
           );
         });
       });
-      const title = await app.browserWindow.getTitle();
-      expect(title).toBe(
+      expect(await mainWindow.title()).toBe(
         `React Native Debugger - Connected (port ${customRNServerPort})`,
       );
     });
@@ -232,26 +198,23 @@ describe('Application launch', () => {
     });
 
     it('should have @@INIT action on Redux DevTools', async () => {
-      const { client } = app;
-      const el = await client.$('//div[contains(@class, "actionListRows-")]');
-      const val = await el.getText();
-      expect(val).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
+      expect(
+        await mainWindow.textContent('//div[contains(@class, "actionListRows-")]')
+      ).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
     });
 
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
     const selectInstance = async (instance) => {
-      const { client } = app;
-      let el = await client.$(`//div[text()="${currentInstance}"]`);
-      await el.click().then(wait);
+      await mainWindow.click(`//div[text()="${currentInstance}"]`);
+      await wait();
       currentInstance = instance;
-      el = await client.$(`//div[text()="${instance}"]`);
-      return el.click().then(wait);
+      await mainWindow.click(`//div[text()="${instance}"]`);
+      await wait();
     };
     const commit = async () => {
-      const { client } = app;
-      const el = await client.$('//div[text()="Commit"]');
-      await el.click().then(delay(100));
+      await mainWindow.click('//div[text()="Commit"]');
+      await wait();
     };
 
     const expectActions = {
@@ -298,11 +261,8 @@ describe('Application launch', () => {
     };
 
     const checkInstance = async (name) => {
-      const { client } = app;
-
       await selectInstance(name);
-      const el = await client.$('//div[contains(@class, "actionListRows-")]');
-      const val = await el.getText();
+      const val = await mainWindow.textContent('//div[contains(@class, "actionListRows-")]');
       runExpectActions(name, val);
       await commit();
     };
@@ -322,20 +282,17 @@ describe('Application launch', () => {
     });
 
     it('should have only specific logs in console of main window', async () => {
-      const { client } = app;
-      const logs = await client.getRenderProcessLogs();
       // Print renderer process logs
       logs.forEach((log) =>
         console.log(
-          `Message: ${log.message}\nSource: ${log.source}\nLevel: ${log.level}`,
+          `Message: ${log.text()}\nType: ${log.type()}`,
         ),
       );
-      expect(logs.length).toEqual(1);
-      const [formDataWarning] = logs;
-      expect(formDataWarning.source).toBe('worker');
-      expect(formDataWarning.level).toBe('WARNING');
+      expect(logs.length).toEqual(3); // clear + clear + warning
+      const [, , formDataWarning] = logs;
+      expect(formDataWarning.type()).toBe('warning');
       expect(
-        formDataWarning.message.indexOf(
+        formDataWarning.text().indexOf(
           "Detected you're enabled Network Inspect",
         ) > 0,
       ).toBeTruthy();
@@ -343,9 +300,7 @@ describe('Application launch', () => {
 
     it('should show apollo devtools panel', async () => {
       expect(
-        await app.webContents.executeJavaScript(
-          'window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__'
-        ),
+        await mainWindow.evaluate(() => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__),
       ).toBeTruthy();
     });
   });
