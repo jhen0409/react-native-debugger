@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import watch from 'node-watch';
 
 const homeEnv = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
 const portFile = path.join(process.env[homeEnv], '.rndebugger_port');
@@ -24,9 +23,7 @@ export const unlink = () => {
 export const watchExists = port => {
   if (isWatching) return;
   isWatching = true;
-  watch(portFile, (evt, file) => {
-    if (!fs.existsSync(file) || read() !== port) {
-      write(port);
-    }
+  fs.watchFile(portFile, (curr, prev) => {
+    if (curr.mtime !== prev.mtime) write(port);
   });
 };
