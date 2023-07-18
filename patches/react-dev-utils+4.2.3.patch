@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-dev-utils/launchEditor.js b/node_modules/react-dev-utils/launchEditor.js
+index 3bb1d55..b78289e 100644
+--- a/node_modules/react-dev-utils/launchEditor.js
++++ b/node_modules/react-dev-utils/launchEditor.js
+@@ -10,7 +10,7 @@ const fs = require('fs');
+ const path = require('path');
+ const child_process = require('child_process');
+ const os = require('os');
+-const chalk = require('chalk');
++const chalk = {red:f=>f,cyan:f=>f,green:f=>f};
+ const shellQuote = require('shell-quote');
+ 
+ function isTerminalEditor(editor) {
