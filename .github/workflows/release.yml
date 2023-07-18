@@ -4,12 +4,12 @@ on: release
 
 jobs:
   release-linux:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: 16.x
       - name: Package
         run: |
           yarn
@@ -22,12 +22,12 @@ jobs:
           pattern: release/react-native-debugger*
           github-token: ${{ secrets.GITHUB_TOKEN }}
   release-windows:
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: 16.x
       - name: Package
         shell: bash
         run: |
