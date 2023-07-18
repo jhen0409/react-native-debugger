@@ -55,6 +55,17 @@ $ yarn run pack # all
 
 If you want to build binaries yourself, please remove [../electron/update.js](electron/update.js) (and [electon/main.js usage](electon/main.js)), `osx-sign` in [../scripts/package-macos.sh](scripts/package-macos.sh).
 
+### [Optional] Prerequisites for packaging Linux / Windows app on macOS
+
+```bash
+# Linux
+brew install fakeroot dpkg rpm
+
+# Windows
+brew tap homebrew/cask-versions
+brew install wine-stable mono
+```
+
 ## Financial contributions
 
 We also welcome financial contributions in full transparency on our [open collective](https://opencollective.com/react-native-debugger).
