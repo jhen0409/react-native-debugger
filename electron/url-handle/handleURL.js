@@ -70,7 +70,7 @@ const createHandleURLServer = getWindow =>
         }
       });
     })
-    .listen(0, 'localhost')
+    .listen(0, '127.0.0.1')
     .on('listening', function server() {
       const { port } = this.address();
       portfile.write(port);
