@@ -103,7 +103,9 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
-      // enableRemoteModule: true,
+      // experimentalFeatures: true,
+      // webSecurity: false,
+      // webviewTag: true, // Use this for new inspector in the future
     },
     ...config.windowBounds,
   });
