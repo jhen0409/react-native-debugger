@@ -4,6 +4,7 @@ import net from 'net';
 import http from 'http';
 import executablePath from 'electron';
 import { _electron as electron } from 'playwright-core';
+import waitForExpect from 'wait-for-expect';
 import buildTestBundle, { bundlePath } from './buildTestBundle';
 import createMockRNServer from './mockRNServer';
 
@@ -122,9 +123,11 @@ describe('Application launch', () => {
     const url = await getURLFromConnection(wss);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
-    expect(await mainWindow.title()).toBe(
-      `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`,
-    );
+    await waitForExpect(async () => {
+      expect(await mainWindow.title()).toBe(
+        `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`,
+      );
+    });
     server.close();
     wss.close();
   });
