@@ -2,6 +2,8 @@
 
 [![Backers on Open Collective](https://opencollective.com/react-native-debugger/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/react-native-debugger/sponsors/badge.svg)](#sponsors) [![CI Status](https://github.com/jhen0409/react-native-debugger/workflows/CI/badge.svg)](https://github.com/jhen0409/react-native-debugger)
 
+⚠️ This app is currently only supported old [Remote Debugger](https://reactnative.dev/docs/debugging#chrome-developer-tools), if you're looking for new debugger support of React Native Debugger, please follow [discussion#774](https://github.com/jhen0409/react-native-debugger/discussions/774).
+
 ![React Native Debugger](https://user-images.githubusercontent.com/3001525/29451479-6621bf1a-83c8-11e7-8ebb-b4e98b1af91c.png)
 
 > Run the redux example of [react-navigation](https://github.com/react-navigation/react-navigation/tree/master/example) with Redux DevTools setup
