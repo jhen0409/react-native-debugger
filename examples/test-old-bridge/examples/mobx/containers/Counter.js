@@ -10,6 +10,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  title: {
+    marginBottom: 20,
+    fontSize: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
   text: {
     fontSize: 20,
     textAlign: 'center',
@@ -43,6 +49,7 @@ export default class Counter extends Component {
     const { store } = this.props;
     return (
       <View style={styles.container}>
+        <Text style={styles.title}>MobX example</Text>
         <Text style={styles.text}>Clicked: {store.counter} times</Text>
         <TouchableHighlight onPress={this.increment}>
           <Text style={styles.text}>+</Text>

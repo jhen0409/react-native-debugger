@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  title: {
+    marginBottom: 20,
+    fontSize: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
   text: {
     fontSize: 20,
     textAlign: 'center',
@@ -39,6 +45,7 @@ class Counter extends Component {
     const { increment, decrement, incrementIfOdd, counter } = this.props;
     return (
       <View style={styles.container}>
+        <Text style={styles.title}>Redux example</Text>
         <Text style={styles.text}>Clicked: {counter} times</Text>
         <TouchableHighlight onPress={increment}>
           <Text style={styles.text}>+</Text>
