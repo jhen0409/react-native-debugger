@@ -10,11 +10,5 @@ const enhancer = composeWithDevTools({
 })(applyMiddleware(...middlewares));
 
 export default function configureStore(initialState) {
-  const store = createStore(reducer, initialState, enhancer);
-  if (module.hot) {
-    module.hot.accept(() => {
-      store.replaceReducer(require('./reducers').default);
-    });
-  }
-  return store;
+  return createStore(reducer, initialState, enhancer);
 }
