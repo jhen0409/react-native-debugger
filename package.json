@@ -70,7 +70,7 @@
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
     "whatwg-fetch": "^2.0.3",
-    "ws": "^7.4.6"
+    "ws": "^7.5.9"
   },
   "dependencies": {
     "@electron/remote": "^2.0.10",
@@ -105,7 +105,7 @@
     "electron-installer-redhat": "^2.0.0"
   },
   "resolutions": {
-    "ws": "^7.2.0"
+    "ws": "^7.5.9"
   },
   "jest": {
     "testEnvironment": "node"
