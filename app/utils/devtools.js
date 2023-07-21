@@ -1,11 +1,11 @@
 import { getCatchConsoleLogScript } from '../../electron/devtools';
 
 let enabled = false;
-export const toggleOpenInEditor = (win, host, port) => {
+export const toggleOpenInEditor = (win, port) => {
   if (win.devToolsWebContents) {
     enabled = !enabled;
     return win.devToolsWebContents.executeJavaScript(`(() => {
-      ${getCatchConsoleLogScript(host, port)}
+      ${getCatchConsoleLogScript(port)}
       window.__IS_OPEN_IN_EDITOR_ENABLED__ = ${enabled};
     })()`);
   }

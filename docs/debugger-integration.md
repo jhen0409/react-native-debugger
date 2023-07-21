@@ -23,11 +23,11 @@ When you enabled remote debugging, RNDebugger should switched context to `RNDebu
 
 - `$r`: You selected element on react-devtools.
 - `showAsyncStorageContentInDev()` - Log AsyncStorage content
-- `require(...)` (RN < 0.56) or `$reactNative.*` (RN >= 0.56) - Get react-native modules. For example, you can get `$reactNative.AsyncStorage`
+- `$reactNative.*` - Get react-native modules. For example, you can get `$reactNative.AsyncStorage`
 
-#### [iOS only] Force your app on debug mode
+#### Enable `Debug Remotely` programmatically
 
-For enable `Debug Remotely` in real device, you may fatigued to shake device to show developer menu, you can use the built-in `DevSettings` native module on iOS:
+For enable `Debug Remotely` without using dev menu, you can use the built-in `DevSettings` native module:
 
 ```js
 import { NativeModules } from 'react-native'
@@ -35,12 +35,9 @@ import { NativeModules } from 'react-native'
 if (__DEV__) {
   NativeModules.DevSettings.setIsDebuggingRemotely(true)
 }
-
-// For RN < 0.43
-if (__DEV__) {
-  NativeModules.DevMenu.debugRemotely(true)
-}
 ```
+
+If you're using Expo, you can still use the method, but it probably only works with `jsEngine: jsc` in `app.json`, `jsEngine: hermes` may not works.
 
 ## Other documentations
 
