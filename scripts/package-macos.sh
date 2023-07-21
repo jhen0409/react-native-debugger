@@ -5,12 +5,11 @@ PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
 echo "[v$PACKAGE_VERSION] Packaging darwin x64..."
 
 # Check arg no-notarize
-if [ "$1" == "--no-notarize" ]; then
-  echo "Notarization skipped."
-  NOTARIZE=0
+if [ "$1" == "--notarize" ]; then
+  NOTARIZE=1
 fi
 
-if [ "$NOTARIZE" != "0" ]; then
+if [ "$NOTARIZE" == "1" ]; then
   if [ -z "$APPLE_DEVELOPER_NAME" ]; then
     echo -e "Apple Developer Name: \c"
     read APPLE_DEVELOPER_NAME
@@ -43,10 +42,10 @@ function build_with_arch() {
 build_with_arch x64
 build_with_arch arm64
 
-if [ "$NOTARIZE" != "0" ]; then
-  node scripts/mac/createUniversalApp.js
+if [ "$NOTARIZE" == "1" ]; then
+  node scripts/mac/createUniversalApp.js --notarize
 else
-  node scripts/mac/createUniversalApp.js --no-notarize
+  node scripts/mac/createUniversalApp.js
 fi
 
 node scripts/mac/createDMG.js
