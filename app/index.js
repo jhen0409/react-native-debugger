@@ -60,8 +60,8 @@ window.open = (url, frameName, features = '') => {
 
 window.openInEditor = (file, lineNumber) => launchEditor(file, lineNumber);
 window.toggleOpenInEditor = () => {
-  const { host, port } = store.getState().debugger.location;
-  return toggleOpenInEditor(currentWindow, host, port);
+  const { port } = store.getState().debugger.location;
+  return toggleOpenInEditor(currentWindow, port);
 };
 window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow);
 
