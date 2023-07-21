@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "rndebugger-open"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
@@ -14,7 +15,7 @@
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-debugger-open": "^0.3.25",
+    "react-native-debugger-open": "^0.4.0",
     "react-redux": "^8.1.1",
     "redux": "^4.2.1"
   },
