@@ -1,5 +1,5 @@
-export const getCatchConsoleLogScript = (host, port) => `
-  window.__RN_PACKAGER_PREFIX__ = 'http://${host}:${port}';
+export const getCatchConsoleLogScript = (port) => `
+  window.__RN_PACKAGER_MATCHER__ = /^http:\\/\\/[^:]+:${port}/;
   if (!window.__INJECT_OPEN_IN_EDITOR_SCRIPT__) {
     const rndHelperQuery = 'iframe[data-devtools-extension="RNDebugger devtools helper"]';
     document.addEventListener('click', event => {
@@ -9,13 +9,13 @@ export const getCatchConsoleLogScript = (host, port) => `
       const { target } = event;
       if (target.className === 'devtools-link') {
         const source = target.title;
-        if (source && source.startsWith(window.__RN_PACKAGER_PREFIX__)) {
+        if (source && source.match(window.__RN_PACKAGER_MATCHER__)) {
           const rndHelper = document.querySelector(rndHelperQuery);
           if (rndHelper && rndHelper.contentWindow) {
             rndHelper.contentWindow.postMessage(
               {
                 type: 'open-in-editor',
-                source: source.replace(window.__RN_PACKAGER_PREFIX__, ''),
+                source: source.replace(window.__RN_PACKAGER_MATCHER__, '')
               },
               '*'
             );
