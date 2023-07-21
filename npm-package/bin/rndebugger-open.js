@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const defaultPort = 8081;
-const expoDefaultPort = 19001;
+const expoDefaultPort = 19000;
 
 const expoInfoPath = path.join(process.cwd(), '.expo/packager-info.json');
 

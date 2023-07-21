@@ -166,7 +166,7 @@ export default class App extends Component {
           button="Confirm"
           inputProps={{
             type: 'input',
-            value: 19001,
+            value: 19000,
           }}
           onInputChange={value => Number(value.replace(/\D/g, '').substr(0, 5)) || ''}
           onSubmit={this.handlePortOnSubmit}
