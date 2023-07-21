@@ -19,12 +19,16 @@ const filterPaths = list => {
   return filteredList;
 };
 
+const resolveHost = (host) => (
+  !host || host === 'undefined' || host === 'null' ? 'localhost' : host
+);
+
 export const parseUrl = _url => {
   const route = url.parse(_url);
   if (route.host !== 'set-debugger-loc') return;
   const { host, port, projectRoots } = qs.parse(route.query);
   const query = {
-    host: host || 'localhost',
+    host: resolveHost(host),
     port: Number(port) || 8081,
     projectRoots: Array.isArray(projectRoots) ? filterPaths(projectRoots.split(',')) : undefined,
   };
