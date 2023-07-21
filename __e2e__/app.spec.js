@@ -92,7 +92,7 @@ describe('Application launch', () => {
 
     await waitForExpect(async () => {
       expect(await mainWindow.title()).toBe(
-        `React Native Debugger - Waiting for client connection (port ${customRNServerPort})`,
+        'React Native Debugger - Waiting for client connection (port 8081)',
       );
     });
     server.close();

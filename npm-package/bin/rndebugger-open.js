@@ -2,19 +2,7 @@
 
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-
 const defaultPort = 8081;
-const expoDefaultPort = 19001;
-
-const expoInfoPath = path.join(process.cwd(), '.expo/packager-info.json');
-
-/* eslint-disable global-require */
-const getExpoPort = () =>
-  (fs.existsSync(expoInfoPath)
-    ? require(expoInfoPath).packagerPort || expoDefaultPort
-    : expoDefaultPort);
 
 const argv = require('minimist')(process.argv.slice(2), {
   boolean: [
@@ -26,8 +14,6 @@ const argv = require('minimist')(process.argv.slice(2), {
     'macos',
     // Open directly instead of Inject code
     'open',
-    // Use expo packager port (getExpoPort) instead of RN packager default port (8081)
-    'expo',
   ],
   string: ['port', 'host'],
   default: {
@@ -36,7 +22,7 @@ const argv = require('minimist')(process.argv.slice(2), {
 });
 
 let moduleName;
-argv.port = Number(argv.port) || (argv.expo ? getExpoPort() : defaultPort);
+argv.port = Number(argv.port) || defaultPort;
 if (argv.open && (argv.port || argv.host)) {
   moduleName = '../lib/open';
 } else {
