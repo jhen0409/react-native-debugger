@@ -81,6 +81,19 @@ const rnFlags = {
       args: "host + '&port=' + port + '&args=' + args",
     },
   ],
+  '0.62.0-rc.0': [ // Tested ~ 0.71.x
+    {
+      target: '@react-native-community/cli-server-api',
+      dir: 'build',
+      file: 'devToolsMiddleware.js',
+      keyFunc: 'launchDefaultDebugger',
+      func: "function launchDefaultDebugger(host, port, args = '') {",
+      replaceFunc:
+        "function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {",
+      funcCall: '(host, port, args, true)',
+      args: "(host || 'localhost') + '&port=' + port + '&args=' + args",
+    },
+  ],
 };
 
 const flags = {

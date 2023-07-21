@@ -47,6 +47,8 @@ $ REACT_DEBUGGER="rndebugger-open --open --port 8081" npm start
 $ set REACT_DEBUGGER="rndebugger-open --open --port 8081" && npm start
 ```
 
+If you're using Expo <= 48, use port 19000 instead of 8081.
+
 #### Options (--option)
 
 Name                  | Description
@@ -55,7 +57,6 @@ Name                  | Description
 `revert`              | Revert rndebugger-open injection. Default is `false`
 `open`                | Run open directly instead of inject patch
 `port`                | Specified react-native packager port with `--open` option. Default is `8081`
-`expo`                | Use [Expo](https://github.com/expo)'s RN packager port if you're not specified port.
 
 You can also [`Launch by CLI or React Native packager`](https://github.com/jhen0409/react-native-debugger/blob/master/docs/getting-started.md#launch-by-cli-or-react-native-packager-macos-only) instead of this package.
 

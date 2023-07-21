@@ -90,9 +90,11 @@ describe('Application launch', () => {
     const url = await getURLFromConnection(wss);
     expect(url).toBe('/debugger-proxy?role=debugger&name=Chrome');
 
-    expect(await mainWindow.title()).toBe(
-      'React Native Debugger - Waiting for client connection (port 8081)',
-    );
+    await waitForExpect(async () => {
+      expect(await mainWindow.title()).toBe(
+        'React Native Debugger - Waiting for client connection (port 8081)',
+      );
+    });
     server.close();
     wss.close();
   });

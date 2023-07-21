@@ -4,7 +4,7 @@ const { makeUniversalApp } = require('@electron/universal');
 const { signAsync } = require('@electron/osx-sign');
 const { notarize } = require('@electron/notarize');
 
-const noNotarize = process.argv.includes('--no-notarize');
+const isNotarizeNeeded = process.argv.includes('--notarize');
 
 const developerId = `${process.env.APPLE_DEVELOPER_NAME} (${process.env.APPLE_TEAM_ID})`;
 
@@ -28,7 +28,7 @@ async function run() {
     outAppPath: appPath,
   });
 
-  if (noNotarize) return;
+  if (!isNotarizeNeeded) return;
 
   const pathes = [appPath, x64AppPath, arm64AppPath];
   for (const p of pathes) {
