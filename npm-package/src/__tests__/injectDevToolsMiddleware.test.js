@@ -157,8 +157,8 @@ describe('Inject to devtoolsMiddleware of React Native packager', () => {
   newCliVersions.forEach(({ rn, cli }) => {
     cli.forEach((version) => {
       test(`inject / revert in ${newPkgName} (${rn} - v${version})`, async () => {
-        const mDir = 'build/commands/server/middleware';
-        const mPath = path.join(mDir, 'getDevToolsMiddleware.js');
+        const mDir = 'build/';
+        const mPath = path.join(mDir, 'devToolsMiddleware.js');
         const code = await fetch(
           `https://unpkg.com/${newPkgName}@${version}/build/devToolsMiddleware.js`,
         ).then((res) => res.text());

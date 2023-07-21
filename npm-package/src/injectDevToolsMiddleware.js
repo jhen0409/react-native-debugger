@@ -91,7 +91,7 @@ const rnFlags = {
       replaceFunc:
         "function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {",
       funcCall: '(host, port, args, true)',
-      args: "host + '&port=' + port + '&args=' + args",
+      args: "(host || 'localhost') + '&port=' + port + '&args=' + args",
     },
   ],
 };
