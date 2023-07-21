@@ -4,4 +4,4 @@ This is example created by `npx create-expo-app -t blank@48`,  `"jsEngine": "jsc
 
 The main purpose is for test functionality of React Native Debugger in old bridge.
 
-Currently it included two simple counter example for Redux and MobX.
+Currently it included a simple counter example for Redux.

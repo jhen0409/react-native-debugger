@@ -62,13 +62,6 @@ See [`Redux DevTools Integration`](redux-devtools-integration.md) section for mo
 - [React Native for macOS](https://github.com/ptmt/react-native-macos) (formerly react-native-desktop) >= 0.14.0
 - [React Native for Windows](https://github.com/Microsoft/react-native-windows)
 
-## Examples for use RNDebugger
-
-- [`Redux counter`](../examples/counter-with-redux)
-- [`MobX counter`](../examples/counter-with-mobx) - with [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev).
-
-The examples were bootstrapped with [`create-react-native-app`](https://github.com/react-community/create-react-native-app).
-
 ## Auto-update RNDebugger app (Supported v0.5.0 after)
 
 Currently auto-update is only supported for macOS. Linux and Windows will show a dialog of new versions available for download.

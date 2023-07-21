@@ -14,9 +14,7 @@ See also:
 - [API Reference](https://github.com/zalmoxisus/redux-devtools-extension/tree/master/docs/API)
 - [Troubleshooting](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md)
 - Other Integrations
-  - [MobX](https://github.com/mobxjs/mobx)
-    - [`mobx-remotedev`](https://github.com/zalmoxisus/mobx-remotedev) - See [`the counter example`](../examples/counter-with-mobx/src/stores/counter), make sure `remote` option is `false`.
-    - [`mobx-state-tree`](https://github.com/mobxjs/mobx-state-tree) - Use [`connectReduxDevtools`](https://github.com/mobxjs/mobx-state-tree/blob/a3c59ac816026f3c2d3d5621d8f74be2b95e2891/middleware/README.md#connectreduxdevtools) middleware.
+  - [`mobx-state-tree`](https://github.com/mobxjs/mobx-state-tree) - Use [`connectReduxDevtools`](https://github.com/mobxjs/mobx-state-tree/tree/3fc79b0b3ce7ad3e26d6bd5745fd9412d35c431c/packages/mst-middlewares#connectreduxdevtools) middleware.
 
 You can ignore the things specified by the browser extension.
 
