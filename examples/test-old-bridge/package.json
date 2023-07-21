@@ -9,14 +9,13 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@redux-devtools/extension": "^3.2.5",
+    "@reduxjs/toolkit": "^1.9.5",
     "expo": "~48.0.18",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-redux": "^7.2.9",
-    "redux": "^4.2.1",
-    "redux-thunk": "^2.3.0"
+    "react-redux": "^8.1.1",
+    "redux": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
