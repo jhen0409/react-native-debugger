@@ -1,14 +1,12 @@
 const webpack = require('webpack');
 const baseConfig = require('./base');
 
-const host = 'localhost';
 const port = 3000;
 
 const baseDevConfig = {
   ...baseConfig,
   mode: 'development',
   devtool: 'inline-source-map',
-  devServer: { host, port, disableHostCheck: true },
   output: {
     ...baseConfig.output,
     publicPath: `http://localhost:${port}/js/`,
@@ -30,7 +28,7 @@ const baseDevConfig = {
   ],
 };
 
-const buildDevConfig = config => ({
+const buildDevConfig = (config) => ({
   ...baseDevConfig,
   ...config,
 });

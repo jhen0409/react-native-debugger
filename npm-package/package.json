@@ -7,7 +7,7 @@
   },
   "main": "lib/open.js",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore __tests__",
+    "build": "babel src --out-dir lib --ignore **/__tests__",
     "prepublish": "npm run build"
   },
   "files": [
