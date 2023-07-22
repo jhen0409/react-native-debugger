@@ -10,8 +10,7 @@ import createMockRNServer from './mockRNServer';
 
 const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
-// eslint-disable-next-line
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 6e4;
+jest.setTimeout(6e4);
 
 describe('Application launch', () => {
   let electronApp;

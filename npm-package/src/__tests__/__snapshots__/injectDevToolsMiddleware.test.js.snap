@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.59.0-rc.0 - v1.5.0) 1`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
-var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+var _launchChrome = _interopRequireDefault(require("../launchChrome"));
 
-var _logger = _interopRequireDefault(require(\\"../../../tools/logger\\"));
+var _logger = _interopRequireDefault(require("../../../tools/logger"));
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -41,8 +41,8 @@ function launchChromeDevTools(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -99,19 +99,19 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.59.0-rc.0 - v1.5.0) 2`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
-var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+var _launchChrome = _interopRequireDefault(require("../launchChrome"));
 
-var _logger = _interopRequireDefault(require(\\"../../../tools/logger\\"));
+var _logger = _interopRequireDefault(require("../../../tools/logger"));
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -144,9 +144,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -160,14 +160,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -192,9 +192,9 @@ function launchChromeDevTools(port, args = '', skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -223,8 +223,8 @@ function launchChromeDevTools(port, args = '', skipRNDebugger) {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -281,19 +281,19 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.59.0-rc.0 - v1.5.0) 3`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
-var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+var _launchChrome = _interopRequireDefault(require("../launchChrome"));
 
-var _logger = _interopRequireDefault(require(\\"../../../tools/logger\\"));
+var _logger = _interopRequireDefault(require("../../../tools/logger"));
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -322,8 +322,8 @@ function launchChromeDevTools(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -380,17 +380,17 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.60.0 - v2.8.3) 1`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
-var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+var _launchChrome = _interopRequireDefault(require("../launchChrome"));
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -400,7 +400,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -428,8 +428,8 @@ function launchChromeDevTools(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -479,17 +479,17 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.60.0 - v2.8.3) 2`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
-var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+var _launchChrome = _interopRequireDefault(require("../launchChrome"));
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -499,7 +499,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -532,9 +532,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -548,14 +548,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -580,9 +580,9 @@ function launchChromeDevTools(port, args = '', skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -611,8 +611,8 @@ function launchChromeDevTools(port, args = '', skipRNDebugger) {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -662,17 +662,17 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.60.0 - v2.8.3) 3`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
-var _launchChrome = _interopRequireDefault(require(\\"../launchChrome\\"));
+var _launchChrome = _interopRequireDefault(require("../launchChrome"));
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -682,7 +682,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -711,8 +711,8 @@ function launchChromeDevTools(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -762,15 +762,15 @@ function getDevToolsMiddleware(options, isChromeConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.60.0 - v2.9.0) 1`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -780,7 +780,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -789,7 +789,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -810,8 +810,8 @@ function launchDefaultDebugger(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -861,15 +861,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.60.0 - v2.9.0) 2`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -879,7 +879,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -888,7 +888,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -909,8 +909,8 @@ function launchDefaultDebugger(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 /* react-native-debugger-patch start */
@@ -927,9 +927,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -943,14 +943,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -960,7 +960,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 function launchDevTools({port, watchFolders}, isDebuggerConnected, skipRNDebugger) {
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + 'localhost&port=' + port + '&watchFolders=' + watchFolders.map(f => \`\\"\${f}\\"\`).join(',');
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + 'localhost&port=' + port + '&watchFolders=' + watchFolders.map(f => \`"\${f}"\`).join(',');
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
@@ -975,9 +975,9 @@ function launchDevTools({port, watchFolders}, isDebuggerConnected, skipRNDebugge
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -1041,15 +1041,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.60.0 - v2.9.0) 3`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1059,7 +1059,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1068,7 +1068,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1089,8 +1089,8 @@ function launchDefaultDebugger(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -1141,15 +1141,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.61.0 - v3.0.0-alpha.7) 1`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1159,7 +1159,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1168,7 +1168,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1187,8 +1187,8 @@ function launchDefaultDebugger(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -1238,15 +1238,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.61.0 - v3.0.0-alpha.7) 2`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1256,7 +1256,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1265,7 +1265,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1284,8 +1284,8 @@ function launchDefaultDebugger(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 /* react-native-debugger-patch start */
@@ -1302,9 +1302,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -1318,14 +1318,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -1335,7 +1335,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 function launchDevTools({port, watchFolders}, isDebuggerConnected, skipRNDebugger) {
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + 'localhost&port=' + port + '&watchFolders=' + watchFolders.map(f => \`\\"\${f}\\"\`).join(',');
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + 'localhost&port=' + port + '&watchFolders=' + watchFolders.map(f => \`"\${f}"\`).join(',');
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
@@ -1350,9 +1350,9 @@ function launchDevTools({port, watchFolders}, isDebuggerConnected, skipRNDebugge
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -1416,15 +1416,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.61.0 - v3.0.0-alpha.7) 3`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1434,7 +1434,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1443,7 +1443,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1462,8 +1462,8 @@ function launchDefaultDebugger(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -1514,15 +1514,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.61.0 - v3.0.1) 1`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1532,7 +1532,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1541,7 +1541,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1561,8 +1561,8 @@ function launchDefaultDebugger(host, port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -1613,15 +1613,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.61.0 - v3.0.1) 2`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1631,7 +1631,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1640,7 +1640,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1664,9 +1664,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -1680,14 +1680,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -1712,9 +1712,9 @@ function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -1744,8 +1744,8 @@ function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -1796,15 +1796,15 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli (0.61.0 - v3.0.1) 3`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
 
   _cliTools = function () {
     return data;
@@ -1814,7 +1814,7 @@ function _cliTools() {
 }
 
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
 
   _child_process = function () {
     return data;
@@ -1823,7 +1823,7 @@ function _child_process() {
   return data;
 }
 
-var _launchDebugger = _interopRequireDefault(require(\\"../launchDebugger\\"));
+var _launchDebugger = _interopRequireDefault(require("../launchDebugger"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1844,8 +1844,8 @@ function launchDefaultDebugger(host, port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 
 function launchDevTools({
@@ -1896,21 +1896,21 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli-server-api (0.71.8 - v10.1.1) 1`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
   _cliTools = function () {
     return data;
   };
   return data;
 }
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
   _child_process = function () {
     return data;
   };
@@ -1930,8 +1930,8 @@ function launchDefaultDebugger(host, port, args = '') {
   (0, _cliTools().launchDebugger)(debuggerURL);
 }
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 function launchDevTools({
   host,
@@ -1974,21 +1974,21 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli-server-api (0.71.8 - v10.1.1) 2`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
   _cliTools = function () {
     return data;
   };
   return data;
 }
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
   _child_process = function () {
     return data;
   };
@@ -2015,9 +2015,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -2031,14 +2031,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -2063,9 +2063,9 @@ function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -2092,8 +2092,8 @@ function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {
   (0, _cliTools().launchDebugger)(debuggerURL);
 }
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 function launchDevTools({
   host,
@@ -2136,21 +2136,21 @@ function getDevToolsMiddleware(options, isDebuggerConnected) {
 `;
 
 exports[`Inject to devtoolsMiddleware of React Native packager inject / revert in @react-native-community/cli-server-api (0.71.8 - v10.1.1) 3`] = `
-"\\"use strict\\";
+""use strict";
 
-Object.defineProperty(exports, \\"__esModule\\", {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = getDevToolsMiddleware;
 function _cliTools() {
-  const data = require(\\"@react-native-community/cli-tools\\");
+  const data = require("@react-native-community/cli-tools");
   _cliTools = function () {
     return data;
   };
   return data;
 }
 function _child_process() {
-  const data = require(\\"child_process\\");
+  const data = require("child_process");
   _child_process = function () {
     return data;
   };
@@ -2171,8 +2171,8 @@ function launchDefaultDebugger(host, port, args = '') {
   (0, _cliTools().launchDebugger)(debuggerURL);
 }
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return \`\\"\${pathname}\\"\`;
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return \`"\${pathname}"\`;
 }
 function launchDevTools({
   host,
@@ -2238,7 +2238,7 @@ function launchChromeDevTools(port) {
 }
 
 function escapePath(pathname) {
-  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"'; // " Can escape paths with spaces in OS X, Windows, and *nix
 }
 
 function launchDevTools({port, projectRoots}, isChromeConnected) {
@@ -2326,9 +2326,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -2342,14 +2342,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -2374,9 +2374,9 @@ function launchChromeDevTools(port, skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -2403,7 +2403,7 @@ function launchChromeDevTools(port, skipRNDebugger) {
 }
 
 function escapePath(pathname) {
-  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"'; // " Can escape paths with spaces in OS X, Windows, and *nix
 }
 
 function launchDevTools({port, projectRoots}, isChromeConnected) {
@@ -2485,7 +2485,7 @@ function launchChromeDevTools(port) {
 }
 
 function escapePath(pathname) {
-  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"'; // " Can escape paths with spaces in OS X, Windows, and *nix
 }
 
 function launchDevTools({port, projectRoots}, isChromeConnected) {
@@ -2566,8 +2566,8 @@ function launchChromeDevTools(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return '\\"' + pathname + '\\"';
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"';
 }
 
 function launchDevTools(
@@ -2651,9 +2651,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -2667,14 +2667,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -2699,9 +2699,9 @@ function launchChromeDevTools(port, args = '', skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -2728,8 +2728,8 @@ function launchChromeDevTools(port, args = '', skipRNDebugger) {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return '\\"' + pathname + '\\"';
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"';
 }
 
 function launchDevTools(
@@ -2807,8 +2807,8 @@ function launchChromeDevTools(port, args = '') {
 }
 
 function escapePath(pathname) {
-  // \\" Can escape paths with spaces in OS X, Windows, and *nix
-  return '\\"' + pathname + '\\"';
+  // " Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"';
 }
 
 function launchDevTools(
@@ -2885,7 +2885,7 @@ function launchChromeDevTools(port) {
 }
 
 function escapePath(pathname) {
-  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"'; // " Can escape paths with spaces in OS X, Windows, and *nix
 }
 
 function launchDevTools({port, projectRoots}, isChromeConnected) {
@@ -2973,9 +2973,9 @@ function __connectToRND(rndPath, log, cb) {
     __port = __fs.readFileSync(__port_file, 'utf-8');
   } catch (e) {
     log && console.log(
-      '\\\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\\\n' +
-      'Maybe the React Native Debugger (^0.3) is not open?\\\\n' +
-      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n'
+      '\\n[RNDebugger] The port file \`$HOME/.rndebugger_port\` not found\\n' +
+      'Maybe the React Native Debugger (^0.3) is not open?\\n' +
+      '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n'
     );
     return cb(false);
   }
@@ -2989,14 +2989,14 @@ function __connectToRND(rndPath, log, cb) {
     });
     const __timeoutId = setTimeout(() => {
       log && console.log(
-        '\\\\n[RNDebugger] Cannot connect to port ' + __port + '.\\\\n'
+        '\\n[RNDebugger] Cannot connect to port ' + __port + '.\\n'
       );
       __c.end();
     }, 1000);
     __c.on('end', () => {
       clearTimeout(__timeoutId);
       !pass && log && console.log(
-        '\\\\n[RNDebugger] Try to set port of React Native server failed.\\\\n'
+        '\\n[RNDebugger] Try to set port of React Native server failed.\\n'
       );
       cb(pass);
     });
@@ -3021,9 +3021,9 @@ function launchChromeDevTools(port, skipRNDebugger) {
           __connectToRND(__rnd_path, false, pass => {
             if (!pass) {
               console.log(
-                '\\\\n[RNDebugger] Cannot open the app, maybe not install?\\\\n' +
-                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\\\n' +
-                'Or it\\\\'s never started. (Not registered URI Scheme)\\\\n'
+                '\\n[RNDebugger] Cannot open the app, maybe not install?\\n' +
+                '(Please visit https://github.com/jhen0409/react-native-debugger#installation)\\n' +
+                'Or it\\'s never started. (Not registered URI Scheme)\\n'
               );
             }
             __rndebuggerIsOpening = false;
@@ -3050,7 +3050,7 @@ function launchChromeDevTools(port, skipRNDebugger) {
 }
 
 function escapePath(pathname) {
-  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"'; // " Can escape paths with spaces in OS X, Windows, and *nix
 }
 
 function launchDevTools({port, projectRoots}, isChromeConnected) {
@@ -3132,7 +3132,7 @@ function launchChromeDevTools(port) {
 }
 
 function escapePath(pathname) {
-  return '\\"' + pathname + '\\"'; // \\" Can escape paths with spaces in OS X, Windows, and *nix
+  return '"' + pathname + '"'; // " Can escape paths with spaces in OS X, Windows, and *nix
 }
 
 function launchDevTools({port, projectRoots}, isChromeConnected) {
