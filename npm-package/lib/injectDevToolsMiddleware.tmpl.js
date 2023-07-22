@@ -18,7 +18,7 @@ function __connectToRND(rndPath, log, cb) {
     );
     return cb(false);
   }
-  var __c = __net.createConnection({ port: __port }, () => {
+  var __c = __net.createConnection({ host: '127.0.0.1', port: __port }, () => {
     let pass = false;
     __c.setEncoding('utf-8');
     __c.write(JSON.stringify({ path: rndPath }));

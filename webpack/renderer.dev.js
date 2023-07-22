@@ -1,5 +1,5 @@
-import webpack from 'webpack';
-import baseConfig from './base.babel';
+const webpack = require('webpack');
+const baseConfig = require('./base');
 
 const host = 'localhost';
 const port = 3000;
@@ -35,7 +35,7 @@ const buildDevConfig = config => ({
   ...config,
 });
 
-export default [
+module.exports = [
   buildDevConfig({
     entry: './app/index',
     target: 'electron-renderer',

@@ -20,7 +20,7 @@ function connectToRND(rndPath, log, cb) {
     }
     return cb(false);
   }
-  const connection = net.createConnection({ port }, () => {
+  const connection = net.createConnection({ host: '127.0.0.1', port }, () => {
     let pass = false;
     connection.setEncoding('utf-8');
     connection.write(JSON.stringify({ path: rndPath }));

@@ -1,0 +1,13 @@
+diff --git a/node_modules/graphql/package.json b/node_modules/graphql/package.json
+index c453d2f..7b3b772 100644
+--- a/node_modules/graphql/package.json
++++ b/node_modules/graphql/package.json
+@@ -4,7 +4,7 @@
+   "description": "A Query Language and Runtime which can target any service.",
+   "license": "MIT",
+   "main": "index",
+-  "module": "index.mjs",
++  "module": "index.js",
+   "types": "index.d.ts",
+   "sideEffects": false,
+   "homepage": "https://github.com/graphql/graphql-js",
