@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`openConfigFile 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "autoUpdate": true,
     "defaultNetworkInspect": false,
-    "defaultRNPackagerPorts": Array [
+    "defaultRNPackagerPorts": [
       8081,
     ],
     "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
     "timesJSLoadToRefreshDevTools": -1,
-    "windowBounds": Object {
+    "windowBounds": {
       "frame": true,
     },
   },
@@ -20,18 +20,18 @@ Object {
 `;
 
 exports[`readConfig 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "autoUpdate": true,
     "defaultNetworkInspect": false,
-    "defaultRNPackagerPorts": Array [
+    "defaultRNPackagerPorts": [
       8081,
     ],
     "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
     "timesJSLoadToRefreshDevTools": -1,
-    "windowBounds": Object {
+    "windowBounds": {
       "frame": true,
     },
   },
@@ -39,26 +39,26 @@ Object {
 `;
 
 exports[`readConfig 2`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "autoUpdate": false,
   },
 }
 `;
 
 exports[`readConfig 3`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "autoUpdate": true,
     "defaultNetworkInspect": false,
-    "defaultRNPackagerPorts": Array [
+    "defaultRNPackagerPorts": [
       8081,
     ],
     "defaultReactDevToolsPort": 19567,
     "defaultReactDevToolsTheme": "RNDebugger",
     "editor": "",
     "timesJSLoadToRefreshDevTools": -1,
-    "windowBounds": Object {
+    "windowBounds": {
       "frame": true,
     },
   },

@@ -3,7 +3,7 @@ export const getClearAsyncStorageFn = AsyncStorage => {
   return () => AsyncStorage.clear().catch(f => f);
 };
 
-function convertError(error): ?Error {
+function convertError(error) {
   if (!error) {
     return null;
   }

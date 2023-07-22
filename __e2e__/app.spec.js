@@ -10,8 +10,7 @@ import createMockRNServer from './mockRNServer';
 
 const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
-// eslint-disable-next-line
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 6e4;
+jest.setTimeout(6e4);
 
 describe('Application launch', () => {
   let electronApp;
@@ -108,7 +107,7 @@ describe('Application launch', () => {
     const rndPort = fs.readFileSync(portFile, 'utf-8');
 
     const sendSuccess = await new Promise((resolve) => {
-      const socket = net.createConnection({ port: rndPort }, () => {
+      const socket = net.createConnection({ host: '127.0.0.1', port: rndPort }, () => {
         let pass;
         socket.setEncoding('utf-8');
         socket.write(JSON.stringify({ path: rndPath }));

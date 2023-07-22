@@ -44,19 +44,7 @@ const styles = {
 
 const shortcutPrefix = process.platform === 'darwin' ? '⌥⌘' : 'Ctrl+Alt+';
 
-@connect(
-  state => ({
-    debugger: state.debugger,
-    setting: state.setting,
-  }),
-  dispatch => ({
-    actions: {
-      debugger: bindActionCreators(debuggerActions, dispatch),
-      setting: bindActionCreators(settingActions, dispatch),
-    },
-  })
-)
-export default class App extends Component {
+class App extends Component {
   static propTypes = {
     setting: PropTypes.object.isRequired,
     debugger: PropTypes.object.isRequired,
@@ -207,3 +195,16 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    debugger: state.debugger,
+    setting: state.setting,
+  }),
+  dispatch => ({
+    actions: {
+      debugger: bindActionCreators(debuggerActions, dispatch),
+      setting: bindActionCreators(settingActions, dispatch),
+    },
+  })
+)(App);

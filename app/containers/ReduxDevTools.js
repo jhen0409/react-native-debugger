@@ -45,27 +45,7 @@ const devtoolsStyle = {
   height: '100%', overflow: 'auto',
 };
 
-@enhance
-@connect(
-  state => {
-    const instances = state.instances;
-    const id = getActiveInstance(instances);
-    return {
-      selected: instances.selected,
-      liftedState: instances.states[id],
-      monitorState: state.monitor.monitorState,
-      options: instances.options[id],
-      monitor: state.monitor.selected,
-      dispatcherIsOpen: state.monitor.dispatcherIsOpen,
-      sliderIsOpen: state.monitor.sliderIsOpen,
-    };
-  },
-  dispatch => ({
-    liftedDispatch: bindActionCreators(liftedDispatchAction, dispatch),
-    dispatch,
-  })
-)
-export default class ReduxDevTools extends Component {
+class ReduxDevTools extends Component {
   static propTypes = {
     style: PropTypes.object,
     debugger: PropTypes.object,
@@ -141,3 +121,23 @@ export default class ReduxDevTools extends Component {
     );
   }
 }
+
+export default connect(
+  state => {
+    const instances = state.instances;
+    const id = getActiveInstance(instances);
+    return {
+      selected: instances.selected,
+      liftedState: instances.states[id],
+      monitorState: state.monitor.monitorState,
+      options: instances.options[id],
+      monitor: state.monitor.selected,
+      dispatcherIsOpen: state.monitor.dispatcherIsOpen,
+      sliderIsOpen: state.monitor.sliderIsOpen,
+    };
+  },
+  dispatch => ({
+    liftedDispatch: bindActionCreators(liftedDispatchAction, dispatch),
+    dispatch,
+  })
+)(enhance(ReduxDevTools));
