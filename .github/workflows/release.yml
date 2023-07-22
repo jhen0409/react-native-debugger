@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: Package
         run: |
           yarn
@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: Package
         shell: bash
         run: |
