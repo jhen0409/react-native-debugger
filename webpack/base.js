@@ -1,5 +1,4 @@
 const path = require('path');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const electronPkg = require('electron/package.json');
 const babelConfig = require('../babel.config')({ cache: () => {} });
 
@@ -22,9 +21,7 @@ module.exports = {
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
-  plugins: [
-    // new LodashModuleReplacementPlugin()
-  ],
+  plugins: [],
   resolve: {
     extensions: ['.js'],
     alias: {
