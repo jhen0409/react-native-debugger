@@ -51,7 +51,7 @@ export const removeUnecessaryTabs = win => {
         tabbedPane.closeTab('audits2');
         tabbedPane.closeTab('lighthouse');
 
-        tabbedPane._leftToolbar._contentElement.remove();
+        tabbedPane.leftToolbar().element.remove();
       }
     })()`);
   }
