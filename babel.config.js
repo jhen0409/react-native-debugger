@@ -9,7 +9,6 @@ module.exports = (api) => {
           '@babel/plugin-transform-react-inline-elements',
           '@babel/plugin-transform-react-constant-elements',
           'transform-react-remove-prop-types',
-          'closure-elimination',
         ],
       },
     },

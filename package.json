@@ -38,7 +38,6 @@
     "apollo-boost": "^0.1.27",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^9.1.3",
-    "babel-plugin-closure-elimination": "^1.3.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.10",
     "cross-env": "^5.2.0",
     "css-loader": "^6.8.1",
