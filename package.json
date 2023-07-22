@@ -13,8 +13,8 @@
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.js --progress --profile",
     "build:renderer": "cross-env NODE_ENV=production webpack --config webpack/renderer.prod.js --progress --profile",
     "build": "yarn build:main && yarn build:renderer",
-    "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.js",
-    "dev:electron": "cross-env NODE_ENV=development electron -r babel-core/register -r ./electron/debug .",
+    "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.js --port 3000 --allowed-hosts all",
+    "dev:electron": "cross-env NODE_ENV=development electron -r @babel/register -r ./electron/debug .",
     "lint": "eslint .",
     "test": "yarn lint && jest __tests__",
     "test-e2e": "jest __e2e__ --runInBand  --forceExit",
@@ -69,6 +69,7 @@
     "ws": "^7.5.9"
   },
   "dependencies": {
+    "@babel/register": "^7.22.5",
     "@electron/remote": "^2.0.10",
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "^2.3.5",
