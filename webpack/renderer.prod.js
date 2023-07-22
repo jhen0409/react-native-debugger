@@ -1,7 +1,7 @@
-import webpack from 'webpack';
-import TerserPlugin from 'terser-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import baseConfig from './base.babel';
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const baseConfig = require('./base');
 
 const baseProdConfig = {
   ...baseConfig,
@@ -32,7 +32,7 @@ const baseProdConfig = {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        sourceMap: true,
+        // sourceMap: true,
         terserOptions: { output: { comments: false } },
       }),
     ],
@@ -44,7 +44,7 @@ const buildProdConfig = config => ({
   ...config,
 });
 
-export default [
+module.exports = [
   buildProdConfig({
     entry: './app/index',
     target: 'electron-renderer',

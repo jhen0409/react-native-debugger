@@ -1,9 +1,9 @@
-import path from 'path';
-import webpack from 'webpack';
-import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig from './base.babel';
+const path = require('path');
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const baseConfig = require('./base');
 
-export default {
+module.exports = {
   ...baseConfig,
   mode: 'production',
   devtool: 'hidden-source-map',

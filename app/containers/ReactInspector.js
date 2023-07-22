@@ -41,14 +41,7 @@ const styles = {
 
 const isReactPanelOpen = props => props.setting.react;
 
-@connect(
-  state => ({
-    debugger: state.debugger,
-    setting: state.setting,
-  }),
-  dispatch => ({ dispatch })
-)
-export default class ReactInspector extends Component {
+class ReactInspector extends Component {
   static propTypes = {
     debugger: PropTypes.object,
     setting: PropTypes.object,
@@ -159,3 +152,12 @@ export default class ReactInspector extends Component {
     );
   }
 }
+
+
+export default connect(
+  state => ({
+    debugger: state.debugger,
+    setting: state.setting,
+  }),
+  dispatch => ({ dispatch })
+)(ReactInspector);

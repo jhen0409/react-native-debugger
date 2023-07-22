@@ -1,31 +1,32 @@
-import fs from 'fs';
-import path from 'path';
-import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
-import electronPkg from 'electron/package.json';
+const path = require('path');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const electronPkg = require('electron/package.json');
+const babelConfig = require('../babel.config')({ cache: () => {} });
 
-const babelConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../.babelrc'), 'utf-8'));
 // Webpack 2 have native import / export support
 babelConfig.presets = [
   [
-    'env',
+    '@babel/preset-env',
     {
       targets: { electron: electronPkg.version },
       modules: false,
     },
   ],
-  'react',
+  '@babel/preset-react',
 ];
 babelConfig.babelrc = false;
 
-export default {
+module.exports = {
   output: {
     path: path.join(__dirname, '../dist/js'),
     filename: 'bundle.js',
     libraryTarget: 'commonjs2',
   },
-  plugins: [new LodashModuleReplacementPlugin()],
+  plugins: [
+    // new LodashModuleReplacementPlugin()
+  ],
   resolve: {
-    extensions: ['.mjs', '.js'],
+    extensions: ['.js'],
     alias: {
       // From remotedev-app, but currently we don't need this
       'socketcluster-client': path.resolve(__dirname, 'mock-socketcluster-client'),
@@ -33,18 +34,12 @@ export default {
   },
   module: {
     rules: [
-      // https://github.com/graphql/graphql-js#using-in-a-browser
-      {
-        test: /\.mjs$/,
-        include: /node_modules\/graphql/,
-        type: 'javascript/auto',
-      },
       {
         test: /\.js$/,
         use: [
           {
             loader: 'babel-loader',
-            query: babelConfig,
+            options: babelConfig,
           },
         ],
         exclude: /node_modules/,
