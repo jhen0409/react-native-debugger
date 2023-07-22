@@ -6,10 +6,11 @@ jobs:
   release-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.7.0
         with:
           node-version: 18.x
+          cache: 'yarn'
       - name: Package
         run: |
           yarn
@@ -24,10 +25,11 @@ jobs:
   release-windows:
     runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.7.0
         with:
           node-version: 18.x
+          cache: 'yarn'
       - name: Package
         shell: bash
         run: |
