@@ -1,7 +1,7 @@
 module.exports = (api) => {
   api.cache(true);
   return {
-    presets: [['@babel/preset-env', { targets: { node: '12.8' } }], '@babel/preset-react'],
+    presets: [['@babel/preset-env', { targets: { node: '18.5' } }], '@babel/preset-react'],
     plugins: [],
     env: {
       production: {
