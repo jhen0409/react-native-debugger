@@ -32,7 +32,6 @@ const baseProdConfig = {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        // sourceMap: true,
         terserOptions: { output: { comments: false } },
       }),
     ],
