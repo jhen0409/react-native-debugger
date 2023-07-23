@@ -2048,7 +2048,7 @@ function __connectToRND(rndPath, log, cb) {
 
 var __rndebuggerIsOpening = false;
 function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {
-  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + (host || 'localhost') + '&port=' + port + '&args=' + args;
+  var __rnd_path = 'rndebugger://set-debugger-loc?host=' + (host || 'localhost') + '&port=' + port + '&projectRoots=' + process.cwd() + '&args=' + args;
 
   if (__rndebuggerIsOpening) return;
   __rndebuggerIsOpening = true;
