@@ -30,7 +30,7 @@ export const parseUrl = _url => {
   const query = {
     host: resolveHost(host),
     port: Number(port) || 8081,
-    projectRoots: Array.isArray(projectRoots) ? filterPaths(projectRoots.split(',')) : undefined,
+    projectRoots: filterPaths(Array.isArray(projectRoots) ? projectRoots : [projectRoots]),
   };
   return query;
 };
