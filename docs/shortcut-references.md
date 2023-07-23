@@ -21,14 +21,6 @@ We have context menu (right-click) for provides useful features:
 
 It includes the developer menu features, these would be useful for real device, instead of open developer menu in device manually.
 
-## Touch Bar in macOS
-
-<img alt="touch-bar" src="https://user-images.githubusercontent.com/3001525/27730359-8565810a-5dbb-11e7-9052-9fd4feb72181.png">
-
-The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devtools-integration.md),
-
-If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https://github.com/sindresorhus/touch-bar-simulator), the features are still very useful.
-
 ## Keyboard shortcuts
 
 - Reload JS (macOS: `Command+R`, Windows / Linux: `Ctrl+R`)
@@ -41,9 +33,13 @@ If your Mac haven't TouchBar support, you can use [`touch-bar-simulator`](https:
 
 You can also read [Keyboard Shortcuts Reference of Chrome Developer Tools](https://developers.google.com/web/tools/chrome-devtools/shortcuts).
 
-## Known issues
+## Touch Bar in macOS
 
-- Currently most features doesn't work with Haul bundler, please tracking [issue #141](https://github.com/jhen0409/react-native-debugger/issues/141).
+<img alt="touch-bar" src="https://user-images.githubusercontent.com/3001525/27730359-8565810a-5dbb-11e7-9052-9fd4feb72181.png">
+
+The `Redux Slider` will shown on right if you're using [`Redux API`](redux-devtools-integration.md),
+
+If your Mac haven't TouchBar support and you still want to use the feature, you can use [Touché](https://redsweater.com/touche/).
 
 ## Other documentations
 
