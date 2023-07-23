@@ -8,7 +8,9 @@ Just these steps will let you start RNDebugger out of box:
 - RNDebugger will try connect to debugger proxy, use port `8081` by default, you can create a new debugger window (macOS: `Command+T`, Linux/Windows: `Ctrl+T`) to specify the port if you want.
 - Enable `Debug JS Remotely` of [developer menu](https://reactnative.dev/docs/debugging#accessing-the-in-app-developer-menu) on your app
 
-## Launch by CLI or React Native packager (`macOS` only)
+## Launch by CLI or React Native packager
+
+Platform: macOS / Linux
 
 ### The `rndebugger:` URI scheme
 
@@ -16,6 +18,12 @@ Launch RNDebugger by typing the following command:
 
 ```bash
 $ open "rndebugger://set-debugger-loc?host=localhost&port=8081"
+```
+
+Or `xdg-open` for Linux:
+
+```bash
+$ xdg-open "rndebugger://set-debugger-loc?host=localhost&port=8081"
 ```
 
 The `host` / `port` means React Native packager. You may need to set `port` if you customize the packager port. (`8081` by default)
