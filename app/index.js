@@ -29,7 +29,21 @@ document.addEventListener('dragover', e => {
   e.stopPropagation();
 });
 
-const store = configureStore();
+let store
+const handleReady = () => {
+  const { defaultReactDevToolsPort = 19567 } = config;
+  findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
+    window.reactDevToolsPort = port;
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      document.getElementById('root')
+    );
+  });
+};
+
+({ store } = configureStore(handleReady));
 
 // Provide for user
 window.adb = client;
@@ -77,14 +91,3 @@ if (
 ) {
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
 }
-
-const { defaultReactDevToolsPort = 19567 } = config;
-findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
-  window.reactDevToolsPort = port;
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root')
-  );
-});

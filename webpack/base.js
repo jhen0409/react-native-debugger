@@ -26,7 +26,7 @@ module.exports = {
     extensions: ['.js'],
     alias: {
       // From remotedev-app, but currently we don't need this
-      'socketcluster-client': path.resolve(__dirname, 'mock-socketcluster-client'),
+      // 'socketcluster-client': path.resolve(__dirname, 'mock-socketcluster-client'),
     },
   },
   module: {

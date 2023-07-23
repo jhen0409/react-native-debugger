@@ -1,20 +1,16 @@
-// Edit from https://github.com/zalmoxisus/remote-redux-devtools/blob/master/src/devTools.js
-
-import instrument from 'redux-devtools-instrument';
+import { instrument } from '@redux-devtools/instrument';
 import {
   evalAction,
   getActionsArray,
   generateId,
   stringify,
   getSeralizeParameter,
-} from 'redux-devtools-core/lib/utils';
-import importState from 'redux-devtools-core/lib/utils/importState';
-import {
+  importState,
   getLocalFilter,
   isFiltered,
   filterStagedActions,
   filterState,
-} from 'redux-devtools-core/lib/utils/filters';
+} from '@redux-devtools/utils';
 import { updateStackWithSourceMap } from './utils';
 
 function configureStore(next, subscriber, options) {

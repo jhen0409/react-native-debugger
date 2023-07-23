@@ -1,11 +1,13 @@
 import { bindActionCreators } from 'redux';
 import { ipcRenderer } from 'electron';
 import { getGlobal } from '@electron/remote';
-import { UPDATE_STATE, LIFTED_ACTION } from 'remotedev-app/lib/constants/actionTypes';
-import { DISCONNECTED } from 'remotedev-app/lib/constants/socketActionTypes';
-import { nonReduxDispatch } from 'remotedev-app/lib/utils/monitorActions';
-import { showNotification, liftedDispatch } from 'remotedev-app/lib/actions';
-import { getActiveInstance } from 'remotedev-app/lib/reducers/instances';
+
+import { UPDATE_STATE, LIFTED_ACTION } from '@redux-devtools/app/lib/esm/constants/actionTypes';
+import { DISCONNECTED } from '@redux-devtools/app/lib/esm/constants/socketActionTypes';
+import { nonReduxDispatch } from '@redux-devtools/app/lib/esm/utils/monitorActions';
+import { showNotification, liftedDispatch } from '@redux-devtools/app/lib/esm/actions';
+import { getActiveInstance } from '@redux-devtools/app/lib/esm/reducers/instances';
+
 import { SET_DEBUGGER_WORKER, SYNC_STATE } from '../actions/debugger';
 import { setReduxDevToolsMethods, updateSliderContent } from '../utils/devMenu';
 
