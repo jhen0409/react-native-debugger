@@ -37,6 +37,7 @@ const Header = (props) => {
         tabs={tabs}
         onClick={handleChangeSection}
         selected={section || 'Actions'}
+        style={{ flex: 'unset' }}
       />
       <WindowDraggable />
       <Divider />
