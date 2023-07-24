@@ -88,17 +88,20 @@ export const invokeDevMethod = (name) => () => {
 };
 
 const hslShift = [0.5, 0.2, 0.8];
-const icon = (name) => nativeImage.createFromNamedImage(name, hslShift);
+const icon = (name, resizeOpts) => {
+  const image = nativeImage.createFromNamedImage(name, hslShift);
+  return image.resize(resizeOpts);
+};
 
 let namedImages;
 const initNamedImages = () => {
   if (process.platform !== 'darwin' || namedImages) return;
   namedImages = {
-    reload: icon('NSTouchBarRefreshTemplate'),
-    toggleElementInspector: icon('NSTouchBarQuickLookTemplate'),
-    networkInspect: icon('NSTouchBarRecordStartTemplate'),
-    prev: icon('NSTouchBarGoBackTemplate'),
-    next: icon('NSTouchBarGoForwardTemplate'),
+    reload: icon('NSTouchBarRefreshTemplate', { height: 20 }),
+    toggleElementInspector: icon('NSTouchBarQuickLookTemplate', { height: 18 }),
+    networkInspect: icon('NSTouchBarRecordStartTemplate', { height: 20 }),
+    prev: icon('NSTouchBarGoBackTemplate', { height: 20 }),
+    next: icon('NSTouchBarGoForwardTemplate', { height: 20 }),
   };
 };
 
