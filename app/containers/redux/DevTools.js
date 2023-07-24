@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Notification } from '@redux-devtools/ui';
 import { clearNotification } from '@redux-devtools/app/lib/esm/actions';
 import Actions from '@redux-devtools/app/lib/esm/containers/Actions';
-import Settings from '@redux-devtools/app/lib/esm/components/Settings';
-import Header from './ReduxHeader';
+import Settings from './Settings';
+import Header from './Header';
 
 const App = () => {
   const section = useSelector(state => state.section);

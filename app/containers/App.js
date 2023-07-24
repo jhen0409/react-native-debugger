@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as debuggerActions from '../actions/debugger';
 import * as settingActions from '../actions/setting';
-import ReduxDevTools from './ReduxDevTools';
+import ReduxDevTools from './redux/DevTools';
 import ReactInspector from './ReactInspector';
 import FormInput from '../components/FormInput';
 import Draggable from '../components/Draggable';
