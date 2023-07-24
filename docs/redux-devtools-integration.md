@@ -1,6 +1,6 @@
 # Redux DevTools Integration
 
-We used [RemoteDev App](https://github.com/zalmoxisus/remotedev-app) and made the API same with [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension).
+We used [@redux-devtools/app](https://github.com/reduxjs/redux-devtools/tree/main/packages/redux-devtools-app) and made the API same with [Redux DevTools Extension](https://github.com/reduxjs/redux-devtools/tree/main/extension).
 
 If you've enabled `Debug JS remotely` with React Native Debugger, the following API is already included in global:
 
@@ -11,8 +11,9 @@ If you've enabled `Debug JS remotely` with React Native Debugger, the following 
 
 See also:
 
-- [API Reference](https://github.com/zalmoxisus/redux-devtools-extension/tree/master/docs/API)
-- [Troubleshooting](https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md)
+- [Redux DevTools main repository]](https://github.com/reduxjs/redux-devtools/blob/main/README.md)
+- [API Reference](https://github.com/reduxjs/redux-devtools/tree/main/extension/docs/API)
+- [Troubleshooting](https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/Troubleshooting.md)
 - Other Integrations
   - [`mobx-state-tree`](https://github.com/mobxjs/mobx-state-tree) - Use [`connectReduxDevtools`](https://github.com/mobxjs/mobx-state-tree/tree/3fc79b0b3ce7ad3e26d6bd5745fd9412d35c431c/packages/mst-middlewares#connectreduxdevtools) middleware.
 
