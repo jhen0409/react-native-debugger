@@ -1,40 +1,40 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs'
+import path from 'path'
 
 jest.mock('electron', () => ({
   shell: {
     openPath: jest.fn(),
   },
-}));
+}))
 
-const testFile = path.join(__dirname, 'config_test');
+const testFile = path.join(__dirname, 'config_test')
 
-beforeAll(() => fs.existsSync(testFile) && fs.unlinkSync(testFile));
+beforeAll(() => fs.existsSync(testFile) && fs.unlinkSync(testFile))
 
 /* eslint-disable global-require */
 test('readConfig', () => {
-  const { readConfig } = require('..');
+  const { readConfig } = require('..')
 
-  expect(readConfig(testFile)).toMatchSnapshot();
+  expect(readConfig(testFile)).toMatchSnapshot()
 
   // User custom config
-  fs.writeFileSync(testFile, '{ autoUpdate: false, }');
-  expect(readConfig(testFile)).toMatchSnapshot();
+  fs.writeFileSync(testFile, '{ autoUpdate: false, }')
+  expect(readConfig(testFile)).toMatchSnapshot()
 
   // Broken config
-  fs.writeFileSync(testFile, '{ autoUpdate: is_broken, }');
-  expect(readConfig(testFile)).toMatchSnapshot();
-});
+  fs.writeFileSync(testFile, '{ autoUpdate: is_broken, }')
+  expect(readConfig(testFile)).toMatchSnapshot()
+})
 
 test('openConfigFile', () => {
-  const { readConfig, openConfigFile } = require('..');
-  const { shell } = require('electron');
+  const { readConfig, openConfigFile } = require('..')
+  const { shell } = require('electron')
 
-  openConfigFile(testFile);
-  expect(shell.openPath).toBeCalledWith(testFile);
-  shell.openPath.mockClear();
+  openConfigFile(testFile)
+  expect(shell.openPath).toBeCalledWith(testFile)
+  shell.openPath.mockClear()
 
-  fs.unlinkSync(testFile);
-  openConfigFile(testFile);
-  expect(readConfig(testFile)).toMatchSnapshot();
-});
+  fs.unlinkSync(testFile)
+  openConfigFile(testFile)
+  expect(readConfig(testFile)).toMatchSnapshot()
+})

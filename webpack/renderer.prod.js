@@ -1,7 +1,7 @@
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const baseConfig = require('./base');
+const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const baseConfig = require('./base')
 
 const baseProdConfig = {
   ...baseConfig,
@@ -36,12 +36,12 @@ const baseProdConfig = {
       }),
     ],
   },
-};
+}
 
-const buildProdConfig = config => ({
+const buildProdConfig = (config) => ({
   ...baseProdConfig,
   ...config,
-});
+})
 
 module.exports = [
   buildProdConfig({
@@ -65,4 +65,4 @@ module.exports = [
     },
     target: 'webworker',
   }),
-];
+]

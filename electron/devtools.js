@@ -26,21 +26,21 @@ export const getCatchConsoleLogScript = (port) => `
     }, true);
     window.__INJECT_OPEN_IN_EDITOR_SCRIPT__ = true;
   }
-`;
+`
 
 export const catchConsoleLogLink = (win, host = 'localhost', port = 8081) => {
   if (win.devToolsWebContents) {
     return win.devToolsWebContents.executeJavaScript(`(() => {
       ${getCatchConsoleLogScript(host, port)}
-    })()`);
+    })()`)
   }
-};
+}
 
-export const removeUnecessaryTabs = win => {
+export const removeUnecessaryTabs = (win) => {
   if (
-    process.env.NODE_ENV === 'production' &&
-    !process.env.DEBUG_RNDEBUGGER &&
-    win.devToolsWebContents
+    process.env.NODE_ENV === 'production'
+    && !process.env.DEBUG_RNDEBUGGER
+    && win.devToolsWebContents
   ) {
     return win.devToolsWebContents.executeJavaScript(`(() => {
       const tabbedPane = UI.inspectorView.tabbedPane;
@@ -53,16 +53,16 @@ export const removeUnecessaryTabs = win => {
 
         tabbedPane.leftToolbar().element.remove();
       }
-    })()`);
+    })()`)
   }
-};
+}
 
-export const activeTabs = win => {
+export const activeTabs = (win) => {
   if (win.devToolsWebContents) {
     // Active network tab so we can do clearNetworkLogs
     return win.devToolsWebContents.executeJavaScript(`(() => {
       DevToolsAPI.showPanel('network');
       DevToolsAPI.showPanel('console');
-    })()`);
+    })()`)
   }
-};
+}

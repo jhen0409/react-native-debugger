@@ -1,22 +1,22 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow } from 'electron'
 
-let syncState = false;
+let syncState = false
 
-export const isSyncState = () => syncState;
+export const isSyncState = () => syncState
 
 // Take by renderer
-global.isSyncState = isSyncState;
+global.isSyncState = isSyncState
 
 export const toggleSyncState = () => {
-  syncState = !syncState;
-};
+  syncState = !syncState
+}
 
 export const sendSyncState = (event, payload) => {
-  if (!isSyncState) return;
+  if (!isSyncState) return
 
   BrowserWindow.getAllWindows()
-    .filter(win => Number(win.webContents.id) !== event.sender.id)
-    .forEach(win => {
-      win.webContents.send('sync-state', payload);
-    });
-};
+    .filter((win) => Number(win.webContents.id) !== event.sender.id)
+    .forEach((win) => {
+      win.webContents.send('sync-state', payload)
+    })
+}

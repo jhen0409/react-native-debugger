@@ -1,20 +1,17 @@
-/* eslint import/no-extraneous-dependencies: 0 import/no-unresolved: 0 */
+import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { tryADBReverse } from '../utils/adb'
 
-import { connect } from 'react-redux';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { shell } from 'electron';
-import { tryADBReverse } from '../utils/adb';
-
-let ReactServer;
+let ReactServer
 const getReactInspector = () => {
-  if (ReactServer) return ReactServer;
+  if (ReactServer) return ReactServer
   // eslint-disable-next-line
   ReactServer = ReactServer || require('react-devtools-core/standalone').default;
 
-  return ReactServer;
-};
-const containerId = 'react-devtools-container';
+  return ReactServer
+}
+const containerId = 'react-devtools-container'
 
 const styles = {
   container: {
@@ -37,127 +34,125 @@ const styles = {
     right: 0,
     bottom: 0,
   },
-};
+}
 
-const isReactPanelOpen = props => props.setting.react;
+const isReactPanelOpen = (props) => props.settingState.react
 
 class ReactInspector extends Component {
-  static propTypes = {
-    debugger: PropTypes.object,
-    setting: PropTypes.object,
-  };
-
   static setProjectRoots(projectRoots) {
-    getReactInspector().setProjectRoots(projectRoots);
+    getReactInspector().setProjectRoots(projectRoots)
   }
+
+  listeningPort = window.reactDevToolsPort
 
   componentDidMount() {
-    const { worker } = this.props.debugger;
+    const { debuggerState } = this.props
+    const { worker } = debuggerState
     if (worker) {
-      this.server = this.startServer();
-      worker.addEventListener('message', this.workerOnMessage);
+      this.server = this.startServer()
+      worker.addEventListener('message', this.workerOnMessage)
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { worker } = this.props.debugger;
-    const { worker: nextWorker } = nextProps.debugger;
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { debuggerState } = this.props
+    const { worker } = debuggerState
+    const { worker: nextWorker } = nextProps.debuggerState
     if (nextWorker && nextWorker !== worker) {
-      this.closeServerIfExists();
+      this.closeServerIfExists()
       if (isReactPanelOpen(this.props)) {
-        this.server = this.startServer();
+        this.server = this.startServer()
       }
-      nextWorker.addEventListener('message', this.workerOnMessage);
+      nextWorker.addEventListener('message', this.workerOnMessage)
     } else if (!nextWorker) {
-      this.closeServerIfExists();
+      this.closeServerIfExists()
     }
     // Open / Close server when react panel opened / hidden
-    if (!worker && !nextWorker) return;
+    if (!worker && !nextWorker) return
     if (isReactPanelOpen(this.props) && !isReactPanelOpen(nextProps)) {
-      this.closeServerIfExists();
+      this.closeServerIfExists()
     } else if (!isReactPanelOpen(this.props) && isReactPanelOpen(nextProps)) {
-      this.closeServerIfExists();
-      this.server = this.startServer();
+      this.closeServerIfExists()
+      this.server = this.startServer()
     }
   }
 
   shouldComponentUpdate() {
-    return false;
+    return false
   }
 
   componentWillUnmount() {
-    this.closeServerIfExists();
+    this.closeServerIfExists()
   }
 
-  listeningPort = window.reactDevToolsPort;
+  workerOnMessage = (message) => {
+    const { data } = message
+    if (!data || !data.__REPORT_REACT_DEVTOOLS_PORT__) return
 
-  workerOnMessage = message => {
-    const { data } = message;
-    if (!data || !data.__REPORT_REACT_DEVTOOLS_PORT__) return;
-
-    const port = Number(data.__REPORT_REACT_DEVTOOLS_PORT__);
-    const platform = data.platform;
+    const port = Number(data.__REPORT_REACT_DEVTOOLS_PORT__)
+    const { platform } = data
     if (port && port !== this.listeningPort) {
-      this.listeningPort = port;
-      this.closeServerIfExists();
+      this.listeningPort = port
+      this.closeServerIfExists()
       if (isReactPanelOpen(this.props)) {
-        this.server = this.startServer(port);
+        this.server = this.startServer(port)
       }
-      if (platform === 'android') tryADBReverse(port).catch(() => {});
+      if (platform === 'android') tryADBReverse(port).catch(() => {})
     }
-  };
-
-  startServer(port = this.listeningPort) {
-    let loggedWarn = false;
-
-    return getReactInspector()
-      .setStatusListener(status => {
-        if (!loggedWarn && status === 'Failed to start the server.') {
-          const message =
-            port !== 8097
-              ? 're-open the debugger window might be helpful.'
-              : 'we recommended to upgrade React Native version to 0.39+ for random port support.';
-          console.error(
-            '[RNDebugger]',
-            `Failed to start React DevTools server with port \`${port}\`,`,
-            'because another server is listening,',
-            message
-          );
-          loggedWarn = true;
-        }
-      })
-      .setContentDOMNode(document.getElementById(containerId))
-      .startServer(port);
   }
 
   closeServerIfExists = () => {
     if (this.server) {
-      this.server.close();
-      this.server = null;
+      this.server.close()
+      this.server = null
     }
-  };
+  }
 
-  handleDocLinkClick = () =>
-    shell.openExternal(
-      'https://github.com/jhen0409/react-native-debugger/blob/master/docs/react-devtools-integration.md#how-to-use-it-with-real-device'
-    );
+  startServer(port = this.listeningPort) {
+    let loggedWarn = false
+
+    return getReactInspector()
+      .setStatusListener((status) => {
+        if (!loggedWarn && status === 'Failed to start the server.') {
+          const message = port !== 8097
+            ? 're-open the debugger window might be helpful.'
+            : 'we recommended to upgrade React Native version to 0.39+ for random port support.'
+          console.error(
+            '[RNDebugger]',
+            `Failed to start React DevTools server with port \`${port}\`,`,
+            'because another server is listening,',
+            message,
+          )
+          loggedWarn = true
+        }
+      })
+      .setContentDOMNode(document.getElementById(containerId))
+      .startServer(port)
+  }
 
   render() {
     return (
       <div id={containerId} style={styles.container}>
         <div id="waiting" style={styles.waiting}>
-          <h2>{'Waiting for React to connect…'}</h2>
+          <h2>Waiting for React to connect…</h2>
         </div>
       </div>
-    );
+    )
   }
 }
 
+ReactInspector.propTypes = {
+  debuggerState: PropTypes.shape({
+    worker: PropTypes.shape({
+      addEventListener: PropTypes.func.isRequired,
+    }),
+  }).isRequired,
+}
 
 export default connect(
-  state => ({
-    debugger: state.debugger,
-    setting: state.setting,
+  (state) => ({
+    settingState: state.setting,
+    debuggerState: state.debugger,
   }),
-  dispatch => ({ dispatch })
-)(ReactInspector);
+  (dispatch) => ({ dispatch }),
+)(ReactInspector)

@@ -1,48 +1,48 @@
-import Bridge from 'apollo-client-devtools/src/bridge';
-import { initBackend, sendBridgeReady } from 'apollo-client-devtools/src/backend';
-import { version as devToolsVersion } from 'apollo-client-devtools/package.json';
-import { getSafeAsyncStorage } from './asyncStorage';
+import Bridge from 'apollo-client-devtools/src/bridge'
+import { initBackend, sendBridgeReady } from 'apollo-client-devtools/src/backend'
+import { version as devToolsVersion } from 'apollo-client-devtools/package.json'
+import { getSafeAsyncStorage } from './asyncStorage'
 
 export function handleApolloClient({ NativeModules } = {}) {
   const interval = setInterval(() => {
     if (!self.__APOLLO_CLIENT__) {
-      return;
+      return
     }
 
-    clearInterval(interval);
+    clearInterval(interval)
 
     const hook = {
       ApolloClient: self.__APOLLO_CLIENT__,
       devToolsVersion,
-    };
+    }
 
-    let listener;
+    let listener
 
     const bridge = new Bridge({
       listen(fn) {
-        listener = self.addEventListener('message', evt => {
+        listener = self.addEventListener('message', (evt) => {
           if (evt.data.source === 'apollo-devtools-proxy') {
-            return fn(evt.data);
+            return fn(evt.data)
           }
-        });
+        })
       },
       send(data) {
         postMessage({
           ...data,
           source: 'apollo-devtools-backend',
-        });
+        })
       },
-    });
+    })
 
     bridge.on('init', () => {
-      sendBridgeReady();
-    });
+      sendBridgeReady()
+    })
 
     bridge.on('shutdown', () => {
-      self.removeEventListener('message', listener);
-    });
+      self.removeEventListener('message', listener)
+    })
 
-    initBackend(bridge, hook, getSafeAsyncStorage(NativeModules));
-  }, 1000);
-  return interval;
+    initBackend(bridge, hook, getSafeAsyncStorage(NativeModules))
+  }, 1000)
+  return interval
 }
