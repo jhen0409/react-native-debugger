@@ -202,72 +202,76 @@ describe('Application launch', () => {
     });
 
     it('should have @@INIT action on Redux DevTools', async () => {
-      expect(
-        await mainWindow.textContent('//div[contains(@class, "actionListRows-")]')
-      ).toMatch(/@@redux\/INIT/); // Last store is `RemoteDev store instance 1`
+      const el = await mainWindow.locator('div').filter({ hasText: '@@redux/INIT' }).first();
+      expect(await el.isVisible()).toBeTruthy(); // Last store is `RemoteDev store instance 1`
     });
 
     let currentInstance = 'Autoselect instances'; // Default instance
     const wait = () => delay(750);
     const selectInstance = async (instance) => {
-      await mainWindow.click(`//div[text()="${currentInstance}"]`);
+      let el = mainWindow.locator(`//div[text()="${currentInstance}"]`);
+      expect(await el.isVisible()).toBeTruthy();
+      await el.click({ force: true });
       await wait();
       currentInstance = instance;
-      await mainWindow.click(`//div[text()="${instance}"]`);
+      el = mainWindow.locator(`//div[text()="${instance}"]`);
+      expect(await el.isVisible()).toBeTruthy();
+      await el.click({ force: true });
       await wait();
     };
     const commit = async () => {
-      await mainWindow.click('//div[text()="Commit"]');
+      await mainWindow.click('//button[text()="Commit"]', { force: true });
       await wait();
     };
 
     const expectActions = {
       'Redux store instance 1': {
         expt: [
-          /@@INIT/,
-          /TEST_PASS_FOR_REDUX_STORE_1/,
-          /SHOW_FOR_REDUX_STORE_1/,
+          '@@INIT',
+          'TEST_PASS_FOR_REDUX_STORE_1',
+          'SHOW_FOR_REDUX_STORE_1',
         ],
-        notExpt: [/NOT_SHOW_FOR_REDUX_STORE_1/, /TEST_PASS_FOR_REDUX_STORE_2/],
+        notExpt: ['NOT_SHOW_FOR_REDUX_STORE_1', 'TEST_PASS_FOR_REDUX_STORE_2'],
       },
       'Redux store instance 2': {
-        expt: [/@@INIT/, /TEST_PASS_FOR_REDUX_STORE_2/],
+        expt: ['@@INIT', 'TEST_PASS_FOR_REDUX_STORE_2'],
         notExpt: [
-          /TEST_PASS_FOR_REDUX_STORE_1/,
-          /NOT_SHOW_1_FOR_REDUX_STORE_2/,
-          /NOT_SHOW_2_FOR_REDUX_STORE_2/,
-          /NOT_SHOW_3_FOR_REDUX_STORE_2/,
+          'TEST_PASS_FOR_REDUX_STORE_1',
+          'NOT_SHOW_1_FOR_REDUX_STORE_2',
+          'NOT_SHOW_2_FOR_REDUX_STORE_2',
+          'NOT_SHOW_3_FOR_REDUX_STORE_2',
         ],
       },
       'MobX store instance 1': {
-        expt: [/@@INIT/, /testPassForMobXStore1/],
-        notExpt: [/TEST_PASS_FOR_REDUX_STORE_2/],
+        expt: ['@@INIT', 'testPassForMobXStore1'],
+        notExpt: ['TEST_PASS_FOR_REDUX_STORE_2'],
       },
       'MobX store instance 2': {
-        expt: [/@@INIT/, /testPassForMobXStore2/],
-        notExpt: [/testPassForMobXStore1/],
+        expt: ['@@INIT', 'testPassForMobXStore2'],
+        notExpt: ['testPassForMobXStore1'],
       },
       'RemoteDev store instance 1': {
-        expt: [/@@redux\/INIT/, /TEST_PASS_FOR_REMOTEDEV_STORE_1/],
-        notExpt: [/testPassForMobXStore2/],
+        expt: ['@@redux/INIT', 'TEST_PASS_FOR_REMOTEDEV_STORE_1'],
+        notExpt: ['testPassForMobXStore2'],
       },
     };
 
-    const runExpectActions = (name, val) => {
+    const runExpectActions = async (name) => {
       const { expt, notExpt } = expectActions[name];
 
       for (const action of expt) {
-        expect(val).toMatch(action);
+        const el = await mainWindow.locator('div').filter({ hasText: action }).first();
+        expect(await el.isVisible()).toBeTruthy();
       }
       for (const action of notExpt) {
-        expect(val).not.toMatch(action);
+        const el = await mainWindow.locator('div').filter({ hasText: action }).first();
+        expect(await el.isVisible()).toBeFalsy();
       }
     };
 
     const checkInstance = async (name) => {
       await selectInstance(name);
-      const val = await mainWindow.textContent('//div[contains(@class, "actionListRows-")]');
-      runExpectActions(name, val);
+      await runExpectActions(name);
       await commit();
     };
 
