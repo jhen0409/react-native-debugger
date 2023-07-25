@@ -5,6 +5,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import launchEditor from 'react-dev-utils/launchEditor';
+import { PersistGate } from 'redux-persist/integration/react';
 import './setup';
 import App from './containers/App';
 import configureStore from './store/configureStore';
@@ -29,7 +30,24 @@ document.addEventListener('dragover', e => {
   e.stopPropagation();
 });
 
-const store = configureStore();
+let store;
+let persistor;
+const handleReady = () => {
+  const { defaultReactDevToolsPort = 19567 } = config;
+  findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
+    window.reactDevToolsPort = port;
+    render(
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>,
+      document.getElementById('root')
+    );
+  });
+};
+
+({ store, persistor } = configureStore(handleReady));
 
 // Provide for user
 window.adb = client;
@@ -77,14 +95,3 @@ if (
 ) {
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`;
 }
-
-const { defaultReactDevToolsPort = 19567 } = config;
-findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
-  window.reactDevToolsPort = port;
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root')
-  );
-});

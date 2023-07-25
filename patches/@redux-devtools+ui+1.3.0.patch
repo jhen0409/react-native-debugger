@@ -1,0 +1,21 @@
+diff --git a/node_modules/@redux-devtools/ui/lib/esm/Tabs/Tabs.js b/node_modules/@redux-devtools/ui/lib/esm/Tabs/Tabs.js
+index 5454804..df65ca0 100644
+--- a/node_modules/@redux-devtools/ui/lib/esm/Tabs/Tabs.js
++++ b/node_modules/@redux-devtools/ui/lib/esm/Tabs/Tabs.js
+@@ -88,12 +88,14 @@ var Tabs = /*#__PURE__*/function (_Component) {
+ 
+       if (!this.SelectedComponent) {
+         return /*#__PURE__*/React.createElement(TabsContainer, {
+-          position: this.props.position
++          position: this.props.position,
++          style: this.props.style,
+         }, tabsHeader);
+       }
+ 
+       return /*#__PURE__*/React.createElement(TabsContainer, {
+-        position: this.props.position
++        position: this.props.position,
++        style: this.props.style,
+       }, tabsHeader, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(this.SelectedComponent, this.selector && this.selector())));
+     }
+   }]);

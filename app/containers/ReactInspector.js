@@ -26,7 +26,7 @@ const styles = {
   waiting: {
     height: '100%',
     display: 'flex',
-    webkitUserSelect: 'none',
+    WebkitUserSelect: 'none',
     textAlign: 'center',
     color: '#aaa',
     justifyContent: 'center',
