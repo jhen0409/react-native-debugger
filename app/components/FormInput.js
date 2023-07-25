@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 
 const styles = {
   form: {
@@ -24,64 +24,69 @@ const styles = {
     border: 0,
     borderRadius: 2,
   },
-};
+}
 
 export default class FormInput extends PureComponent {
-  static propTypes = {
-    title: PropTypes.string,
-    inputProps: PropTypes.object,
-    button: PropTypes.string,
-    onInputChange: PropTypes.func,
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-  static defaultValue = {
-    button: 'Confirm',
-    inputProps: {
-      type: 'input',
-    },
-  };
-
   constructor(props) {
-    super(props);
-    this.state = { value: undefined };
+    super(props)
+    this.state = { value: undefined }
   }
 
-  handleOnChange = evt => {
-    const { onInputChange } = this.props;
-    let { value } = evt.target;
+  handleOnChange = (evt) => {
+    const { onInputChange } = this.props
+    let { value } = evt.target
     if (onInputChange) {
-      value = onInputChange(value);
+      value = onInputChange(value)
     }
-    this.setState({ value });
-  };
-  handleOnClick = evt => this.props.onSubmit(evt, this.state.value || this.props.inputProps.value);
+    this.setState({ value })
+  }
+
+  handleClick = (evt) => {
+    const { inputProps, onSubmit } = this.props
+    const { value } = this.state
+    onSubmit(evt, value || inputProps.value)
+  }
 
   render() {
-    const { title, inputProps, button } = this.props;
-    const { value } = this.state;
-    const val = typeof value !== 'undefined' ? value : inputProps.value;
+    const { title, inputProps, button } = this.props
+    const { value } = this.state
+    const val = typeof value !== 'undefined' ? value : inputProps.value
     return (
       <div>
         <div>{title}</div>
         <div style={styles.form}>
           <input
-            onKeyDown={e => {
-            // Enter/Return key pressed
-              if (e.keyCode === 13) {
-                this.handleOnClick();
-              }
+            onKeyDown={(e) => {
+              // Enter/Return key pressed
+              if (e.key === 'Enter') this.handleClick()
             }}
-            {...inputProps}
+            type={inputProps.type}
             value={val}
             style={styles.input}
             onChange={this.handleOnChange}
           />
-          <button style={styles.button} onClick={this.handleOnClick}>
+          <button type="button" style={styles.button} onClick={this.handleClick}>
             {button}
           </button>
         </div>
       </div>
-    );
+    )
   }
+}
+
+FormInput.propTypes = {
+  title: PropTypes.string.isRequired,
+  inputProps: PropTypes.shape({
+    type: PropTypes.string,
+    value: PropTypes.string,
+  }),
+  button: PropTypes.string,
+  onInputChange: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
+}
+
+FormInput.defaultProps = {
+  inputProps: { type: 'input' },
+  button: 'Confirm',
+  onInputChange: null,
 }

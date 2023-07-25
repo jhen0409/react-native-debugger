@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
-'use strict';
+'use strict'
 
-const defaultPort = 8081;
+const defaultPort = 8081
 
 const argv = require('minimist')(process.argv.slice(2), {
   boolean: [
@@ -19,16 +19,17 @@ const argv = require('minimist')(process.argv.slice(2), {
   default: {
     inject: true,
   },
-});
+})
 
-let moduleName;
-argv.port = Number(argv.port) || defaultPort;
+argv.port = Number(argv.port) || defaultPort
+
+let mod
 if (argv.open && (argv.port || argv.host)) {
-  moduleName = '../lib/open';
+  mod = require('../lib/open')
 } else {
-  moduleName = '../lib/main';
+  mod = require('../lib/main')
 }
 
-require(moduleName).default(argv, (pass, dontError) => {
-  if (!pass && !dontError) process.exit(1);
-});
+mod.default(argv, (pass, dontError) => {
+  if (!pass && !dontError) process.exit(1)
+})

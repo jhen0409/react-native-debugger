@@ -1,13 +1,15 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react'
+import {
+  StyleSheet, View, Text, TouchableHighlight,
+} from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   decrement,
   increment,
   incrementAsync,
   incrementIfOdd,
   selectCount,
-} from './counterSlice';
+} from './counterSlice'
 
 const styles = StyleSheet.create({
   container: {
@@ -27,16 +29,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-});
-
+})
 
 export function Counter() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
+  const count = useSelector(selectCount)
+  const dispatch = useDispatch()
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Redux example</Text>
-      <Text style={styles.text}>Clicked: {count} times</Text>
+      <Text style={styles.text}>
+        Clicked:
+        {count}
+        {' '}
+        times
+      </Text>
       <TouchableHighlight onPress={() => dispatch(increment())}>
         <Text style={styles.text}>+</Text>
       </TouchableHighlight>
@@ -50,7 +56,7 @@ export function Counter() {
         <Text style={styles.text}>Increment async</Text>
       </TouchableHighlight>
     </View>
-  );
+  )
 }
 
-export default Counter;
+export default Counter

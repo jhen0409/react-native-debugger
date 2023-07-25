@@ -1,22 +1,22 @@
-import fs from 'fs';
-import { join } from 'path';
-import es6Template from 'es6-template';
-import semver from 'semver';
+import fs from 'fs'
+import { join } from 'path'
+import es6Template from 'es6-template'
+import semver from 'semver'
 
-const tmplPath = join(__dirname, 'injectDevToolsMiddleware.tmpl.js');
+const tmplPath = join(__dirname, 'injectDevToolsMiddleware.tmpl.js')
 const tmplPathInDev = join(
   __dirname,
   '../lib/injectDevToolsMiddleware.tmpl.js',
-);
+)
 
 const template = fs.readFileSync(
   fs.existsSync(tmplPath) ? tmplPath : tmplPathInDev,
   'utf-8',
-);
+)
 
-const name = 'react-native-debugger-patch';
-const startFlag = `/* ${name} start */`;
-const endFlag = `/* ${name} end */`;
+const name = 'react-native-debugger-patch'
+const startFlag = `/* ${name} start */`
+const endFlag = `/* ${name} end */`
 
 const rnFlags = {
   '0.50.0-rc.0': {
@@ -62,12 +62,13 @@ const rnFlags = {
       func:
         'function launchDevTools({\n  port,\n  watchFolders\n}, isDebuggerConnected) {',
       replaceFunc:
-        'function launchDevTools({port, watchFolders},' +
-        ' isDebuggerConnected, skipRNDebugger) {',
+        'function launchDevTools({port, watchFolders},'
+        + ' isDebuggerConnected, skipRNDebugger) {',
       funcCall: '({port, watchFolders}, isDebuggerConnected, true)',
       args:
-        "'localhost&port=' + port + '&watchFolders=' + " +
-        'watchFolders.map(f => `"${f}"`).join(\',\')',
+        "'localhost&port=' + port + '&watchFolders=' + "
+        // eslint-disable-next-line no-template-curly-in-string
+        + 'watchFolders.map(f => `"${f}"`).join(\',\')',
     },
     {
       target: '@react-native-community/cli', // 3.0.0
@@ -91,11 +92,11 @@ const rnFlags = {
       replaceFunc:
         "function launchDefaultDebugger(host, port, args = '', skipRNDebugger) {",
       funcCall: '(host, port, args, true)',
-      args: "(host || 'localhost') + '&port=' + port + '&projectRoots=' + process.cwd() + " +
-        "'&args=' + args",
+      args: "(host || 'localhost') + '&port=' + port + '&projectRoots=' + process.cwd() + "
+        + "'&args=' + args",
     },
   ],
-};
+}
 
 const flags = {
   'react-native': rnFlags,
@@ -123,25 +124,25 @@ const flags = {
     funcCall: '(port, true)',
     args: "'localhost&port=' + port",
   },
-};
+}
 
 const getModuleInfo = (modulePath, moduleName) => {
   const pkg = JSON.parse(
     fs.readFileSync(join(modulePath, moduleName, 'package.json')),
   ); // eslint-disable-line
-  return { version: pkg.version, name: pkg.name };
-};
+  return { version: pkg.version, name: pkg.name }
+}
 
 function getFlag(moduleName, version) {
-  const list = flags[moduleName || 'react-native'] || {};
-  const versions = Object.keys(list);
-  let flag = flags.default;
-  for (let i = 0; i < versions.length; i++) {
+  const list = flags[moduleName || 'react-native'] || {}
+  const versions = Object.keys(list)
+  let flag = flags.default
+  for (let i = 0; i < versions.length; i += 1) {
     if (semver.gte(version, versions[i])) {
-      flag = list[versions[i]];
+      flag = list[versions[i]]
     }
   }
-  return flag;
+  return flag
 }
 
 const injectCode = (
@@ -157,8 +158,8 @@ const injectCode = (
     file,
   },
 ) => {
-  const filePath = join(modulePath, target, dir, file);
-  if (!fs.existsSync(filePath)) return false;
+  const filePath = join(modulePath, target, dir, file)
+  if (!fs.existsSync(filePath)) return false
   const code = es6Template(template, {
     startFlag,
     replaceFuncFlag,
@@ -166,73 +167,75 @@ const injectCode = (
     funcCall,
     endFlag,
     args,
-  });
+  })
 
-  const middlewareCode = fs.readFileSync(filePath, 'utf-8');
-  let start = middlewareCode.indexOf(startFlag);
-  let end = middlewareCode.indexOf(endFlag) + endFlag.length;
+  const middlewareCode = fs.readFileSync(filePath, 'utf-8')
+  let start = middlewareCode.indexOf(startFlag)
+  let end = middlewareCode.indexOf(endFlag) + endFlag.length
   // already injected
   if (start > -1 && middlewareCode.indexOf(replaceFuncFlag) === -1) {
-    start = -1;
-    end = -1;
+    start = -1
+    end = -1
   }
   if (start === -1) {
-    start = middlewareCode.indexOf(funcFlag);
-    end = start + funcFlag.length;
+    start = middlewareCode.indexOf(funcFlag)
+    end = start + funcFlag.length
   }
-  if (start === -1) return false;
+  if (start === -1) return false
   fs.writeFileSync(
     filePath,
-    middlewareCode.substr(0, start) +
-      code +
-      middlewareCode.substr(end, middlewareCode.length),
-  );
-  return true;
-};
+    middlewareCode.substr(0, start)
+      + code
+      + middlewareCode.substr(end, middlewareCode.length),
+  )
+  return true
+}
 
 export const inject = (modulePath, moduleName) => {
-  const info = getModuleInfo(modulePath, moduleName);
-  const flagList = getFlag(info.name, info.version);
+  const info = getModuleInfo(modulePath, moduleName)
+  const flagList = getFlag(info.name, info.version)
   if (Array.isArray(flagList)) {
-    flagList.some(flag => injectCode(modulePath, flag));
+    flagList.some((flag) => injectCode(modulePath, flag))
   } else {
-    injectCode(modulePath, flagList);
+    injectCode(modulePath, flagList)
   }
-  return true;
-};
+  return true
+}
 
 const revertCode = (
   modulePath,
-  { func: funcFlag, replaceFunc: replaceFuncFlag, target, dir, file },
+  {
+    func: funcFlag, replaceFunc: replaceFuncFlag, target, dir, file,
+  },
 ) => {
-  const filePath = join(modulePath, target, dir, file);
-  if (!fs.existsSync(filePath)) return false;
+  const filePath = join(modulePath, target, dir, file)
+  if (!fs.existsSync(filePath)) return false
 
-  const middlewareCode = fs.readFileSync(filePath, 'utf-8');
-  let start = middlewareCode.indexOf(startFlag);
-  let end = middlewareCode.indexOf(endFlag) + endFlag.length;
+  const middlewareCode = fs.readFileSync(filePath, 'utf-8')
+  let start = middlewareCode.indexOf(startFlag)
+  let end = middlewareCode.indexOf(endFlag) + endFlag.length
   // already injected
   if (start > -1 && middlewareCode.indexOf(replaceFuncFlag) === -1) {
-    start = -1;
-    end = -1;
+    start = -1
+    end = -1
   }
-  if (start === -1) return false;
+  if (start === -1) return false
   fs.writeFileSync(
     filePath,
-    middlewareCode.substr(0, start) +
-      funcFlag +
-      middlewareCode.substr(end, middlewareCode.length),
-  );
-  return true;
-};
+    middlewareCode.substr(0, start)
+      + funcFlag
+      + middlewareCode.substr(end, middlewareCode.length),
+  )
+  return true
+}
 
 export const revert = (modulePath, moduleName) => {
-  const info = getModuleInfo(modulePath, moduleName);
-  const flagList = getFlag(info.name, info.version);
+  const info = getModuleInfo(modulePath, moduleName)
+  const flagList = getFlag(info.name, info.version)
   if (Array.isArray(flagList)) {
-    flagList.some(flag => revertCode(modulePath, flag));
+    flagList.some((flag) => revertCode(modulePath, flag))
   } else {
-    revertCode(modulePath, flagList);
+    revertCode(modulePath, flagList)
   }
-  return true;
-};
+  return true
+}

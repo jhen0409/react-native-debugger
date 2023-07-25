@@ -1,6 +1,6 @@
-const path = require('path');
-const electronPkg = require('electron/package.json');
-const babelConfig = require('../babel.config')({ cache: () => {} });
+const path = require('path')
+const electronPkg = require('electron/package.json')
+const babelConfig = require('../babel.config')({ cache: () => {} })
 
 // Webpack 2 have native import / export support
 babelConfig.presets = [
@@ -12,8 +12,8 @@ babelConfig.presets = [
     },
   ],
   '@babel/preset-react',
-];
-babelConfig.babelrc = false;
+]
+babelConfig.babelrc = false
 
 module.exports = {
   output: {
@@ -47,4 +47,4 @@ module.exports = {
     'adbkit',
     'electron-named-image',
   ],
-};
+}

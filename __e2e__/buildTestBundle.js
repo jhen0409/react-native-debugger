@@ -1,15 +1,15 @@
-import path from 'path';
-import webpack from 'webpack';
+import path from 'path'
+import webpack from 'webpack'
 
-const outputPath = '__e2e__/fixture';
-const filename = 'app.bundle.js';
+const outputPath = '__e2e__/fixture'
+const filename = 'app.bundle.js'
 
-export const bundlePath = path.join(outputPath, filename);
+export const bundlePath = path.join(outputPath, filename)
 
 // Build a bundle for simulate RNDebugger worker run react-native bundle,
 // it included redux, mobx, remotedev tests
 export default function buildTestBundle() {
-  return new Promise(resolve =>
+  return new Promise((resolve) => {
     webpack({
       mode: 'development',
       entry: './__e2e__/fixture/app',
@@ -21,5 +21,5 @@ export default function buildTestBundle() {
         mainFields: ['main', 'browser'],
       },
     }).run(resolve)
-  );
+  })
 }

@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { Tabs, Toolbar, Button, Divider } from '@redux-devtools/ui';
-import { GoBook } from 'react-icons/go';
-import styled from 'styled-components';
-import { changeSection } from '@redux-devtools/app/lib/esm/actions';
-import { shell } from 'electron';
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import {
+  Tabs, Toolbar, Button, Divider,
+} from '@redux-devtools/ui'
+import { GoBook } from 'react-icons/go'
+import styled from 'styled-components'
+import { changeSection } from '@redux-devtools/app/lib/esm/actions'
+import { shell } from 'electron'
 
 const WindowDraggable = styled.div`
   display: flex;
@@ -13,21 +15,21 @@ const WindowDraggable = styled.div`
   height: 100%;
   -webkit-app-region: drag;
   -webkit-user-select: none;
-`;
+`
 
-const tabs = [{ name: 'Actions' }, { name: 'Settings' }];
+const tabs = [{ name: 'Actions' }, { name: 'Settings' }]
 
-const Header = (props) => {
-  const { section } = props;
+function Header(props) {
+  const { section } = props
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleChangeSection = useCallback(
     (sec) => dispatch(changeSection(sec)),
     [dispatch, changeSection],
-  );
+  )
 
-  const openHelp = useCallback(() => shell.openExternal('https://goo.gl/SHU4yL'), []);
+  const openHelp = useCallback(() => shell.openExternal('https://goo.gl/SHU4yL'), [])
 
   return (
     <Toolbar compact noBorder borderPosition="bottom">
@@ -49,11 +51,11 @@ const Header = (props) => {
         <GoBook />
       </Button>
     </Toolbar>
-  );
-};
+  )
+}
 
 Header.propTypes = {
-  section: PropTypes.string,
-};
+  section: PropTypes.string.isRequired,
+}
 
-export default Header;
+export default Header

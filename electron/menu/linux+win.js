@@ -1,6 +1,6 @@
-import { shell, BrowserWindow } from 'electron';
-import { createWindow } from '../window';
-import checkUpdate from '../update';
+import { shell, BrowserWindow } from 'electron'
+import { createWindow } from '../window'
+import checkUpdate from '../update'
 import {
   menu,
   item,
@@ -14,19 +14,18 @@ import {
   zoom,
   resetZoom,
   toggleOpenInEditor,
-} from './common';
+} from './common'
 import {
   showAboutDialog,
   haveOpenedWindow,
-} from './dialog';
-import { openConfigFile } from '../config';
-import { toggleSyncState, isSyncState } from '../sync-state';
+} from './dialog'
+import { openConfigFile } from '../config'
+import { toggleSyncState, isSyncState } from '../sync-state'
 
-const getWin = () => BrowserWindow.getFocusedWindow();
-const viewItems =
-  process.env.NODE_ENV === 'developemnt'
-    ? [item('Reload Window', 'Alt+CTRL+R', () => reload(getWin()))]
-    : [];
+const getWin = () => BrowserWindow.getFocusedWindow()
+const viewItems = process.env.NODE_ENV === 'developemnt'
+  ? [item('Reload Window', 'Alt+CTRL+R', () => reload(getWin()))]
+  : []
 
 export default ({ iconPath }) => [
   menu('RND', [
@@ -41,9 +40,7 @@ export default ({ iconPath }) => [
   menu(
     'Debugger',
     [
-      item('New Window', 'Ctrl+T', () =>
-        createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })
-      ),
+      item('New Window', 'Ctrl+T', () => createWindow({ iconPath, isPortSettingRequired: haveOpenedWindow() })),
       item('Enable Open in Editor for Console Log', n, () => toggleOpenInEditor(getWin()), {
         type: 'checkbox',
         checked: false,
@@ -56,7 +53,7 @@ export default ({ iconPath }) => [
       separator,
       item('Close', 'Ctrl+W', () => close(getWin())),
     ],
-    'window'
+    'window',
   ),
   menu('Edit', [
     item('Undo', 'Ctrl+Z', n, { selector: 'undo:' }),
@@ -78,17 +75,11 @@ export default ({ iconPath }) => [
       item('Zoom In', 'Ctrl+=', () => zoom(getWin(), 1)),
       item('Zoom Out', 'Ctrl+-', () => zoom(getWin(), -1)),
       item('Reset Zoom', 'Ctrl+0', () => resetZoom(getWin())),
-    ])
+    ]),
   ),
   menu('Help', [
-    item('Documentation', n, () =>
-      shell.openExternal('https://github.com/jhen0409/react-native-debugger/tree/master/docs')
-    ),
-    item('Issues', n, () =>
-      shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues')
-    ),
-    item('Open Collective', n, () =>
-      shell.openExternal('https://opencollective.com/react-native-debugger')
-    ),
+    item('Documentation', n, () => shell.openExternal('https://github.com/jhen0409/react-native-debugger/tree/master/docs')),
+    item('Issues', n, () => shell.openExternal('https://github.com/jhen0409/react-native-debugger/issues')),
+    item('Open Collective', n, () => shell.openExternal('https://opencollective.com/react-native-debugger')),
   ]),
-];
+]

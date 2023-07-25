@@ -1,25 +1,25 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Container, Notification } from '@redux-devtools/ui';
-import { clearNotification } from '@redux-devtools/app/lib/esm/actions';
-import Actions from '@redux-devtools/app/lib/esm/containers/Actions';
-import Settings from './Settings';
-import Header from './Header';
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Container, Notification } from '@redux-devtools/ui'
+import { clearNotification } from '@redux-devtools/app/lib/esm/actions'
+import Actions from '@redux-devtools/app/lib/esm/containers/Actions'
+import Settings from './Settings'
+import Header from './Header'
 
-const App = () => {
-  const section = useSelector(state => state.section);
-  const theme = useSelector(state => state.theme);
-  const notification = useSelector(state => state.notification);
+function App() {
+  const section = useSelector((state) => state.section)
+  const theme = useSelector((state) => state.theme)
+  const notification = useSelector((state) => state.notification)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  let body;
+  let body
   switch (section) {
     case 'Settings':
-      body = <Settings />;
-      break;
+      body = <Settings />
+      break
     default:
-      body = <Actions />;
+      body = <Actions />
   }
 
   return (
@@ -35,7 +35,7 @@ const App = () => {
         </Notification>
       )}
     </Container>
-  );
-};
+  )
+}
 
-export default App;
+export default App

@@ -50,4 +50,4 @@ module.exports = `{
   // https://github.com/jhen0409/react-native-debugger/issues/405) in devtools.
   timesJSLoadToRefreshDevTools: -1,
 }
-`;
+`

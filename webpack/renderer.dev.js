@@ -1,7 +1,7 @@
-const webpack = require('webpack');
-const baseConfig = require('./base');
+const webpack = require('webpack')
+const baseConfig = require('./base')
 
-const port = 3000;
+const port = 3000
 
 const baseDevConfig = {
   ...baseConfig,
@@ -26,12 +26,12 @@ const baseDevConfig = {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
-};
+}
 
 const buildDevConfig = (config) => ({
   ...baseDevConfig,
   ...config,
-});
+})
 
 module.exports = [
   buildDevConfig({
@@ -51,4 +51,4 @@ module.exports = [
     },
     target: 'webworker',
   }),
-];
+]

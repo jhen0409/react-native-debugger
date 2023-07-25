@@ -1,7 +1,7 @@
-const path = require('path');
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-const baseConfig = require('./base');
+const path = require('path')
+const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
+const baseConfig = require('./base')
 
 module.exports = {
   ...baseConfig,
@@ -32,4 +32,4 @@ module.exports = {
     __dirname: false,
     __filename: false,
   },
-};
+}
