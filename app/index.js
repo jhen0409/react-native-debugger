@@ -34,6 +34,7 @@ let store;
 let persistor;
 const handleReady = () => {
   const { defaultReactDevToolsPort = 19567 } = config;
+  window.store = store;
   findAPortNotInUse(Number(defaultReactDevToolsPort)).then(port => {
     window.reactDevToolsPort = port;
     render(
