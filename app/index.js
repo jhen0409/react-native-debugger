@@ -43,7 +43,6 @@ const handleReady = () => {
           <App />
         </PersistGate>
       </Provider>,
-      document.getElementById('root'),
     )
   })
 };
