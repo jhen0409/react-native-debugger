@@ -15,9 +15,11 @@
   },
   "dependencies": {
     "adbkit": "^2.11.0",
-    "apollo-client-devtools": "^2.3.5",
+    "apollo-client-devtools": "^4.1.4",
     "electron-store": "^1.2.0",
-    "patch-package": "^6.2.2",
     "react-devtools-core": "^4.28.0"
+  },
+  "devDependencies": {
+    "patch-package": "^6.2.2"
   }
 }

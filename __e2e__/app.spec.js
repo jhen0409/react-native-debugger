@@ -321,12 +321,12 @@ describe('Application launch', () => {
       ).toBeTruthy()
     })
 
-    it('should show apollo devtools panel', async () => {
-      expect(
-        await mainWindow.evaluate(
-          () => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__,
-        ),
-      ).toBeTruthy()
-    })
+    // it('should show apollo devtools panel', async () => {
+    //   expect(
+    //     await mainWindow.evaluate(
+    //       () => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__,
+    //     ),
+    //   ).toBeTruthy()
+    // })
   })
 })

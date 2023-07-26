@@ -10,7 +10,7 @@ export default async () => {
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
-        '../node_modules/apollo-client-devtools/shells/webextension/',
+        '../node_modules/apollo-client-devtools/build',
       ),
       { allowFileAccess: true },
     )
@@ -22,7 +22,7 @@ export default async () => {
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
-        'node_modules/apollo-client-devtools/shells/webextension/',
+        'node_modules/apollo-client-devtools/build',
       ),
       { allowFileAccess: true },
     )
@@ -34,7 +34,7 @@ export default async () => {
     await session.defaultSession.loadExtension(
       path.join(
         __dirname,
-        '../webextension/',
+        '../ac-devtools-ext-build/', // See package script for why
       ),
       { allowFileAccess: true },
     )

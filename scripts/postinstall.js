@@ -13,7 +13,7 @@ async function run() {
   // Remove unnecessary files in apollo-client-devtools
   shell.rm(
     '-rf',
-    'node_modules/apollo-client-devtools/{assets,build,development,shells/dev,src}',
+    'node_modules/apollo-client-devtools/{assets,development/dev,src}',
   )
 }
 
