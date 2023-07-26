@@ -29,24 +29,13 @@ let host
 let port
 let socket
 
-const APOLLO_BACKEND = 'apollo-devtools-backend'
-const APOLLO_PROXY = 'apollo-devtools-proxy'
+const APOLLO_MESSAGE_PREFIX = 'ac-devtools:'
 
 const workerOnMessage = (message) => {
   const { data } = message
 
-  if (data && data.source === APOLLO_BACKEND) {
-    if (!window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__) {
-      window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__ = true
-    }
-
-    postMessage(
-      {
-        source: APOLLO_BACKEND,
-        payload: data,
-      },
-      '*',
-    )
+  if (data && data.message?.startsWith(APOLLO_MESSAGE_PREFIX)) {
+    postMessage(data, '*')
     return false
   }
 
@@ -63,12 +52,10 @@ const workerOnMessage = (message) => {
 
 const onWindowMessage = (e) => {
   const { data } = e
-  if (data && data.source === APOLLO_PROXY) {
-    const message = typeof data.payload === 'string' ? { event: data.payload } : data.payload
+  if (data && data.message?.startsWith(APOLLO_MESSAGE_PREFIX)) {
     worker.postMessage({
       method: 'emitApolloMessage',
-      source: APOLLO_PROXY,
-      ...message,
+      ...data,
     })
   }
 }
