@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 const styles = {
+  title: { textAlign: 'center' },
   form: {
     display: 'flex',
     flexDirection: 'row',
@@ -53,7 +54,7 @@ export default class FormInput extends PureComponent {
     const val = typeof value !== 'undefined' ? value : inputProps.value
     return (
       <div>
-        <div>{title}</div>
+        <div style={styles.title}>{title}</div>
         <div style={styles.form}>
           <input
             onKeyDown={(e) => {
