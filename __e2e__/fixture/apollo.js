@@ -16,10 +16,9 @@ client.query({
   query: gql`
     query ExampleQuery {
       company {
+        name
         ceo
-      }
-      roadster {
-        apoapsis_au
+        employees
       }
     }
   `,
