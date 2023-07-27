@@ -33,6 +33,11 @@ describe('Application launch', () => {
     await mainWindow.waitForLoadState()
   })
 
+  afterEach(async () => {
+    const state = expect.getState()
+    await mainWindow.screenshot({ path: `./artifacts/${state.currentTestName}.png` })
+  })
+
   afterAll(async () => {
     await electronApp.close()
   })

@@ -9,3 +9,4 @@ release/
 tmp/
 config_test
 .idea/
+artifacts/
