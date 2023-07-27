@@ -12,14 +12,16 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-client.query({
-  query: gql`
-    query ExampleQuery {
-      company {
-        name
-        ceo
-        employees
+export default async function run() {
+  return client.query({
+    query: gql`
+      query ExampleQuery {
+        company {
+          name
+          ceo
+          employees
+        }
       }
-    }
-  `,
-})
+    `,
+  })
+}
