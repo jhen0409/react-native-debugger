@@ -21,7 +21,6 @@ describe('Application launch', () => {
 
   beforeAll(async () => {
     await buildTestBundle()
-    process.env.E2E_TEST = '1'
     process.env.PACKAGE = 'no'
     electronApp = await electron.launch({
       executablePath,
@@ -36,6 +35,15 @@ describe('Application launch', () => {
   afterEach(async () => {
     const state = expect.getState()
     await mainWindow.screenshot({ path: `./artifacts/${state.currentTestName}.png` })
+    const devtoolsWindow = electronApp.windows()[2]
+    if (devtoolsWindow) {
+      try {
+        await delay(100)
+        await devtoolsWindow.screenshot({ path: `./artifacts/devtools:${state.currentTestName}.png` })
+      } catch (e) {
+        console.error(e)
+      }
+    }
   })
 
   afterAll(async () => {
