@@ -82,7 +82,7 @@ index 165495f..8290715 100644
  /***/ }),
  
 diff --git a/node_modules/apollo-client-devtools/build/hook.js b/node_modules/apollo-client-devtools/build/hook.js
-index 63aa181..9fa1be9 100644
+index 63aa181..d6539a7 100644
 --- a/node_modules/apollo-client-devtools/build/hook.js
 +++ b/node_modules/apollo-client-devtools/build/hook.js
 @@ -4712,21 +4712,21 @@ exports["default"] = EventTarget;
@@ -122,6 +122,15 @@ index 63aa181..9fa1be9 100644
  
  
  /***/ }),
+@@ -4859,7 +4859,7 @@ function initializeHook() {
+     });
+     const clientRelay = new Relay_1.default();
+     clientRelay.addConnection("tab", (message) => {
+-        window.postMessage(message, "*");
++        window.postMessage(message);
+     });
+     window.addEventListener("message", ({ data }) => {
+         clientRelay.broadcast(data);
 diff --git a/node_modules/apollo-client-devtools/build/panel.js b/node_modules/apollo-client-devtools/build/panel.js
 index 4b3ad6e..f7e021e 100644
 --- a/node_modules/apollo-client-devtools/build/panel.js
@@ -164,7 +173,7 @@ index 4b3ad6e..f7e021e 100644
  
  /***/ }),
 diff --git a/node_modules/apollo-client-devtools/build/tab.js b/node_modules/apollo-client-devtools/build/tab.js
-index 9ed84be..350ae3c 100644
+index 9ed84be..702f76c 100644
 --- a/node_modules/apollo-client-devtools/build/tab.js
 +++ b/node_modules/apollo-client-devtools/build/tab.js
 @@ -135,21 +135,21 @@ exports["default"] = EventTarget;
@@ -204,3 +213,42 @@ index 9ed84be..350ae3c 100644
  
  
  /***/ }),
+@@ -260,22 +260,22 @@ __webpack_require__(/*! ./tabRelay */ "./src/extension/tab/tabRelay.ts");
+   A common workaround for this issue is to inject an inlined function
+   into the inspected tab.
+ */
+-if (typeof document === "object" && document instanceof HTMLDocument) {
+-    const script = document.createElement("script");
+-    script.setAttribute("type", "module");
+-    script.setAttribute("src", chrome.extension.getURL("hook.js"));
+-    document.addEventListener("DOMContentLoaded", () => {
+-        var _a;
+-        const importMap = document.querySelector("script[type=\"importmap\"]");
+-        if (importMap != null) {
+-            (_a = importMap.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(script, importMap.nextSibling);
+-        }
+-        else {
+-            const head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+-            head.insertBefore(script, head.lastChild);
+-        }
+-    });
+-}
++// if (typeof document === "object" && document instanceof HTMLDocument) {
++//     const script = document.createElement("script");
++//     script.setAttribute("type", "module");
++//     script.setAttribute("src", chrome.extension.getURL("hook.js"));
++//     document.addEventListener("DOMContentLoaded", () => {
++//         var _a;
++//         const importMap = document.querySelector("script[type=\"importmap\"]");
++//         if (importMap != null) {
++//             (_a = importMap.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(script, importMap.nextSibling);
++//         }
++//         else {
++//             const head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
++//             head.insertBefore(script, head.lastChild);
++//         }
++//     });
++// }
+ 
+ })();
+ 

@@ -15,7 +15,7 @@ import { checkAvailableDevMenuMethods, invokeDevMenuMethodIfAvailable } from './
 import { reportDefaultReactDevToolsPort } from './reactDevTools'
 import devToolsEnhancer, { composeWithDevTools } from './reduxAPI'
 import * as RemoteDev from './remotedev'
-import { getRequiredModules, ignoreRNDIntervalSpy } from './utils'
+import { getRequiredModules } from './utils'
 import { toggleNetworkInspect } from './networkInspect'
 import { handleApolloClient } from './apollo'
 
@@ -48,11 +48,10 @@ const setupRNDebugger = async (message) => {
   // doesn't notify to the remote JS runtime
   self.__RND_INTERVAL__ = setInterval(noop, 100); // eslint-disable-line
 
+  handleApolloClient()
   toggleNetworkInspect(message.networkInspect)
   const modules = await getRequiredModules(message.moduleSize)
-  const apolloCheckInterval = handleApolloClient(modules)
   if (modules) {
-    ignoreRNDIntervalSpy(modules, [apolloCheckInterval])
     checkAvailableDevMenuMethods(modules)
     reportDefaultReactDevToolsPort(modules)
   }

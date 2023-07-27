@@ -35,6 +35,7 @@ const workerOnMessage = (message) => {
   const { data } = message
 
   if (data && data.message?.startsWith(APOLLO_MESSAGE_PREFIX)) {
+    data.__FROM_DEBUGGER_WORKER__ = true
     postMessage(data, '*')
     return false
   }
@@ -52,11 +53,15 @@ const workerOnMessage = (message) => {
 
 const onWindowMessage = (e) => {
   const { data } = e
-  if (data && data.message?.startsWith(APOLLO_MESSAGE_PREFIX)) {
+  if (
+    !data?.__FROM_DEBUGGER_WORKER__ &&
+    data?.message?.startsWith(APOLLO_MESSAGE_PREFIX)
+  ) {
     worker.postMessage({
       method: 'emitApolloMessage',
       ...data,
     })
+    return false
   }
 }
 
