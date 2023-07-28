@@ -81,7 +81,7 @@ const shutdownJSRuntime = () => {
   scriptExecuted = false
   if (worker) {
     worker.terminate()
-    window.removeEventListener('messsage', onWindowMessage)
+    window.removeEventListener('message', onWindowMessage)
     setDevMenuMethods([])
   }
   worker = null
