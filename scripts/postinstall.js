@@ -15,6 +15,8 @@ async function run() {
     '-rf',
     'node_modules/apollo-client-devtools/{assets,build,development,shells/dev,src}',
   )
+  // eslint-disable-next-line
+  require('./patch-modules')
 }
 
 run()
