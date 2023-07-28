@@ -8,7 +8,7 @@ const rdStandalone = path.join(
   '../dist/node_modules/react-devtools-core/dist/standalone.js',
 )
 
-// Avoid source map not found war
+// Avoid source map not found warning
 shell.sed(
   '-i',
   /sourceMappingURL=importFile\.worker\.worker\.js\.map'\]\)\),\{name:"\[name\]\.worker\.js/g,
