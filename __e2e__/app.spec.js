@@ -8,9 +8,10 @@ import waitForExpect from 'wait-for-expect'
 import buildTestBundle, { bundlePath } from './buildTestBundle'
 import createMockRNServer from './mockRNServer'
 
-const delay = (time) => new Promise((resolve) => {
-  setTimeout(resolve, time)
-})
+const delay = (time) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
 
 jest.setTimeout(6e4)
 
@@ -21,7 +22,6 @@ describe('Application launch', () => {
 
   beforeAll(async () => {
     await buildTestBundle()
-    process.env.E2E_TEST = '1'
     process.env.PACKAGE = 'no'
     electronApp = await electron.launch({
       executablePath,
@@ -31,6 +31,24 @@ describe('Application launch', () => {
     mainWindow = await electronApp.firstWindow()
     mainWindow.on('console', (msg) => logs.push(msg))
     await mainWindow.waitForLoadState()
+  })
+
+  afterEach(async () => {
+    const state = expect.getState()
+    await mainWindow.screenshot({
+      path: `./artifacts/${state.currentTestName}.png`,
+    })
+    const devtoolsWindow = electronApp.windows()[2]
+    if (devtoolsWindow) {
+      try {
+        await delay(100)
+        await devtoolsWindow.screenshot({
+          path: `./artifacts/devtools:${state.currentTestName}.png`,
+        })
+      } catch (e) {
+        console.error(e)
+      }
+    }
   })
 
   afterAll(async () => {
@@ -79,11 +97,12 @@ describe('Application launch', () => {
   })
 
   const customRNServerPort = 8098
-  const getURLFromConnection = (server) => new Promise((resolve) => {
-    server.on('connection', (socket, req) => {
-      resolve(req.url)
+  const getURLFromConnection = (server) =>
+    new Promise((resolve) => {
+      server.on('connection', (socket, req) => {
+        resolve(req.url)
+      })
     })
-  })
 
   it('should connect to fake RN server', async () => {
     const { wss, server } = createMockRNServer()
@@ -139,15 +158,16 @@ describe('Application launch', () => {
   })
 
   describe('Import fake script after', () => {
-    const getOneRequestHeaders = (port) => new Promise((resolve) => {
-      const server = http.createServer((req, res) => {
-        res.writeHead(200, { 'Content-Type': 'text/plain' })
-        res.end('')
-        resolve(req.headers)
-        server.close()
+    const getOneRequestHeaders = (port) =>
+      new Promise((resolve) => {
+        const server = http.createServer((req, res) => {
+          res.writeHead(200, { 'Content-Type': 'text/plain' })
+          res.end('')
+          resolve(req.headers)
+          server.close()
+        })
+        server.listen(port)
       })
-      server.listen(port)
-    })
 
     let headersPromise
     let server
@@ -263,10 +283,11 @@ describe('Application launch', () => {
       },
     }
 
-    const eachAsync = (entries, fn) => entries.reduce(
-      (promise, entry, index) => promise.then(() => fn(entry, index)),
-      Promise.resolve(),
-    )
+    const eachAsync = (entries, fn) =>
+      entries.reduce(
+        (promise, entry, index) => promise.then(() => fn(entry, index)),
+        Promise.resolve(),
+      )
 
     const runExpectActions = async (name) => {
       const { expt, notExpt } = expectActions[name]
@@ -310,7 +331,9 @@ describe('Application launch', () => {
 
     it('should have only specific logs in console of main window', async () => {
       // Print renderer process logs
-      logs.forEach((log) => console.log(`Message: ${log.text()}\nType: ${log.type()}`))
+      logs.forEach((log) =>
+        console.log(`Message: ${log.text()}\nType: ${log.type()}`),
+      )
       expect(logs.length).toEqual(3) // clear + clear + warning
       const [, , formDataWarning] = logs
       expect(formDataWarning.type()).toBe('warning')
@@ -322,9 +345,14 @@ describe('Application launch', () => {
     })
 
     it('should show apollo devtools panel', async () => {
+      const devtoolsWindow = electronApp.windows()[2]
       expect(
-        await mainWindow.evaluate(
-          () => window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__,
+        await devtoolsWindow.evaluate(() =>
+          // eslint-disable-next-line no-undef
+          Object.keys(UI.panels).some(
+            (key) =>
+              key.startsWith('chrome-extension://') && key.endsWith('Apollo'),
+          ),
         ),
       ).toBeTruthy()
     })

@@ -129,9 +129,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     win.focus()
     unregisterContextMenu = registerContextMenu(win)
     registerShortcuts(win)
-    if (process.env.E2E_TEST !== '1' && !isPortSettingRequired) {
-      win.openDevTools()
-    }
+    if (!isPortSettingRequired) win.openDevTools()
     const checkUpdate = config.autoUpdate !== false
     if (checkUpdate && isFirstWindow) {
       autoUpdate(iconPath)

@@ -21,6 +21,9 @@ if [ "$NOTARIZE" == "1" ]; then
   fi
 fi
 
+# cp apollo-client-devtools/build to ac-devtools-ext
+cp -r dist/node_modules/apollo-client-devtools/build dist/node_modules/apollo-client-devtools/ac-devtools-ext-build
+
 function build_with_arch() {
   electron-packager dist/ \
     --overwrite \
@@ -28,7 +31,7 @@ function build_with_arch() {
     --arch $1 \
     --asar \
     --extra-resource=dist/devtools-helper \
-    --extra-resource=dist/node_modules/apollo-client-devtools/shells/webextension \
+    --extra-resource=dist/node_modules/apollo-client-devtools/ac-devtools-ext-build \
     --no-prune \
     --out release \
     --protocol-name "React Native Debugger" \

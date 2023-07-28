@@ -4,6 +4,9 @@ PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
 
 echo "[v$PACKAGE_VERSION] Packaging linux x64..."
 
+# cp apollo-client-devtools/build to ac-devtools-ext
+cp -r dist/node_modules/apollo-client-devtools/build dist/node_modules/apollo-client-devtools/ac-devtools-ext-build
+
 electron-packager dist/ \
   --executable-name "react-native-debugger" \
   --overwrite \
@@ -11,7 +14,7 @@ electron-packager dist/ \
   --arch x64 \
   --asar \
   --extra-resource=dist/devtools-helper \
-  --extra-resource=dist/node_modules/apollo-client-devtools/shells/webextension \
+  --extra-resource=dist/node_modules/apollo-client-devtools/ac-devtools-ext-build \
   --no-prune \
   --out release \
   --electron-version $(node -e "console.log(require('electron/package').version)") \

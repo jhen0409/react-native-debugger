@@ -18,7 +18,7 @@ export default function buildTestBundle() {
         filename,
       },
       resolve: {
-        mainFields: ['main', 'browser'],
+        mainFields: ['react-native', 'main', 'browser'],
       },
     }).run(resolve)
   })

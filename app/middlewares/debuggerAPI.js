@@ -29,24 +29,14 @@ let host
 let port
 let socket
 
-const APOLLO_BACKEND = 'apollo-devtools-backend'
-const APOLLO_PROXY = 'apollo-devtools-proxy'
+const APOLLO_MESSAGE_PREFIX = 'ac-devtools:'
 
 const workerOnMessage = (message) => {
   const { data } = message
 
-  if (data && data.source === APOLLO_BACKEND) {
-    if (!window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__) {
-      window.__APOLLO_DEVTOOLS_SHOULD_DISPLAY_PANEL__ = true
-    }
-
-    postMessage(
-      {
-        source: APOLLO_BACKEND,
-        payload: data,
-      },
-      '*',
-    )
+  if (data && data.message?.startsWith(APOLLO_MESSAGE_PREFIX)) {
+    data.__FROM_DEBUGGER_WORKER__ = true
+    postMessage(data, '*')
     return false
   }
 
@@ -63,13 +53,15 @@ const workerOnMessage = (message) => {
 
 const onWindowMessage = (e) => {
   const { data } = e
-  if (data && data.source === APOLLO_PROXY) {
-    const message = typeof data.payload === 'string' ? { event: data.payload } : data.payload
+  if (
+    !data?.__FROM_DEBUGGER_WORKER__ &&
+    data?.message?.startsWith(APOLLO_MESSAGE_PREFIX)
+  ) {
     worker.postMessage({
       method: 'emitApolloMessage',
-      source: APOLLO_PROXY,
-      ...message,
+      ...data,
     })
+    return false
   }
 }
 
@@ -89,7 +81,7 @@ const shutdownJSRuntime = () => {
   scriptExecuted = false
   if (worker) {
     worker.terminate()
-    window.removeEventListener('messsage', onWindowMessage)
+    window.removeEventListener('message', onWindowMessage)
     setDevMenuMethods([])
   }
   worker = null

@@ -10,6 +10,7 @@
     "postinstall": "rndebugger-open"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.17",
     "@reduxjs/toolkit": "^1.9.5",
     "expo": "~48.0.18",
     "expo-status-bar": "~1.4.4",

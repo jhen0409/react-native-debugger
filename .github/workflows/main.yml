@@ -18,12 +18,20 @@ jobs:
       - name: Setup
         run: sudo apt-get install -y libgbm-dev
       - name: Test
+        id: test
         run: |
           yarn
           cd npm-package && yarn && cd ..
           yarn test
           yarn build
           xvfb-run --auto-servernum yarn test-e2e
+      - name: Upload artifacts on failure
+        if: ${{ failure() && steps.test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts
+          retention-days: 1
   build-test-macos:
     runs-on: macOS-latest
     steps:
@@ -33,12 +41,20 @@ jobs:
           node-version: 18.x
           cache: 'yarn'
       - name: Test
+        id: test
         run: |
           yarn
           cd npm-package && yarn && cd ..
           yarn test
           yarn build
           yarn test-e2e
+      - name: Upload artifacts on failure
+        if: ${{ failure() && steps.test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts
+          retention-days: 1
   build-test-windows:
     runs-on: windows-2022
     steps:
@@ -48,6 +64,7 @@ jobs:
           node-version: 18.x
           cache: 'yarn'
       - name: Test
+        id: test
         shell: bash
         run: |
           yarn config set network-timeout 500000 -g
@@ -56,3 +73,10 @@ jobs:
           yarn build
           yarn test
           yarn test-e2e
+      - name: Upload artifacts on failure
+        if: ${{ failure() && steps.test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts
+          retention-days: 1
