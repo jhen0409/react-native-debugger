@@ -14,6 +14,7 @@ import { invokeDevMethod } from './utils/devMenu'
 import { client, tryADBReverse } from './utils/adb'
 import config from './utils/config'
 import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools'
+import { GlobalStyle } from './globalStyles'
 
 const currentWindow = getCurrentWindow()
 
@@ -38,21 +39,25 @@ const handleReady = () => {
     window.reactDevToolsPort = port
     const root = createRoot(document.getElementById('root'))
     root.render(
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>,
+      <>
+        <GlobalStyle />
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </>,
     )
   })
-};
+}
 
-({ store, persistor } = configureStore(handleReady))
+;({ store, persistor } = configureStore(handleReady))
 
 // Provide for user
 window.adb = client
 window.adb.reverseAll = tryADBReverse
-window.adb.reversePackager = () => tryADBReverse(store.getState().debugger.location.port)
+window.adb.reversePackager = () =>
+  tryADBReverse(store.getState().debugger.location.port)
 
 window.checkWindowInfo = () => {
   const debuggerState = store.getState().debugger
@@ -63,13 +68,14 @@ window.checkWindowInfo = () => {
   }
 }
 
-window.beforeWindowClose = () => new Promise((resolve) => {
-  if (store.dispatch(beforeWindowClose())) {
-    setTimeout(resolve, 200)
-  } else {
-    resolve()
-  }
-})
+window.beforeWindowClose = () =>
+  new Promise((resolve) => {
+    if (store.dispatch(beforeWindowClose())) {
+      setTimeout(resolve, 200)
+    } else {
+      resolve()
+    }
+  })
 
 // For security, we should disable nodeIntegration when user use this open a website
 const originWindowOpen = window.open
@@ -92,9 +98,9 @@ window.invokeDevMethod = (name) => invokeDevMethod(name)()
 // we need fix it for ensure child process work
 // (like launchEditor of react-devtools)
 if (
-  process.env.NODE_ENV === 'production'
-  && process.platform === 'darwin'
-  && process.env.PATH.indexOf('/usr/local/bin') === -1
+  process.env.NODE_ENV === 'production' &&
+  process.platform === 'darwin' &&
+  process.env.PATH.indexOf('/usr/local/bin') === -1
 ) {
   process.env.PATH = `${process.env.PATH}:/usr/local/bin`
 }
