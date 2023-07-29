@@ -1,10 +1,13 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import styled from 'styled-components'
 import { Container, Notification } from '@redux-devtools/ui'
 import { clearNotification } from '@redux-devtools/app/lib/esm/actions'
 import Actions from '@redux-devtools/app/lib/esm/containers/Actions'
 import Settings from './Settings'
 import Header from './Header'
+
+const StyledContainer = styled(Container)`overflow: hidden;`
 
 function App() {
   const section = useSelector((state) => state.section)
@@ -23,7 +26,7 @@ function App() {
   }
 
   return (
-    <Container themeData={theme}>
+    <StyledContainer themeData={theme}>
       <Header section={section} />
       {body}
       {notification && (
@@ -34,7 +37,7 @@ function App() {
           {notification.message}
         </Notification>
       )}
-    </Container>
+    </StyledContainer>
   )
 }
 
