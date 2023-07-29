@@ -29,6 +29,18 @@ body {
   align-items: center;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #555;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #333;
+}
+::-webkit-scrollbar-corner {
+  background-color: #333;
+}
+
 @media print {
   @page {
     size: auto;
