@@ -1,0 +1,254 @@
+diff --git a/node_modules/apollo-client-devtools/build/background.js b/node_modules/apollo-client-devtools/build/background.js
+index 1b46d15..5767881 100644
+--- a/node_modules/apollo-client-devtools/build/background.js
++++ b/node_modules/apollo-client-devtools/build/background.js
+@@ -171,21 +171,21 @@ chrome.runtime.onConnect.addListener(port => {
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.RELOAD_TAB_COMPLETE = exports.RELOADING_TAB = exports.EXPLORER_RESPONSE = exports.EXPLORER_REQUEST = exports.PANEL_CLOSED = exports.PANEL_OPEN = exports.UPDATE = exports.REQUEST_DATA = exports.ACTION_HOOK_FIRED = exports.CREATE_DEVTOOLS_PANEL = exports.APOLLO_CLIENT_FOUND = exports.FIND_APOLLO_CLIENT = exports.DEVTOOLS_INITIALIZED = exports.REQUEST_TAB_ID = exports.CLIENT_FOUND = void 0;
+-exports.CLIENT_FOUND = "client-found";
+-exports.REQUEST_TAB_ID = "request-tab-id";
+-exports.DEVTOOLS_INITIALIZED = "devtools-initialized";
+-exports.FIND_APOLLO_CLIENT = "find-apollo-client";
+-exports.APOLLO_CLIENT_FOUND = "apollo-client-found";
+-exports.CREATE_DEVTOOLS_PANEL = "create-devtools-panel";
+-exports.ACTION_HOOK_FIRED = "action-hook-fired";
+-exports.REQUEST_DATA = "request-data";
+-exports.UPDATE = "update";
+-exports.PANEL_OPEN = "panel-open";
+-exports.PANEL_CLOSED = "panel-closed";
+-exports.EXPLORER_REQUEST = "explorer-request";
+-exports.EXPLORER_RESPONSE = "explorer-response";
+-exports.RELOADING_TAB = "reloading-tab";
+-exports.RELOAD_TAB_COMPLETE = "reload-tab-complete";
++exports.CLIENT_FOUND = "ac-devtools:client-found";
++exports.REQUEST_TAB_ID = "ac-devtools:request-tab-id";
++exports.DEVTOOLS_INITIALIZED = "ac-devtools:devtools-initialized";
++exports.FIND_APOLLO_CLIENT = "ac-devtools:find-apollo-client";
++exports.APOLLO_CLIENT_FOUND = "ac-devtools:apollo-client-found";
++exports.CREATE_DEVTOOLS_PANEL = "ac-devtools:create-devtools-panel";
++exports.ACTION_HOOK_FIRED = "ac-devtools:action-hook-fired";
++exports.REQUEST_DATA = "ac-devtools:request-data";
++exports.UPDATE = "ac-devtools:update";
++exports.PANEL_OPEN = "ac-devtools:panel-open";
++exports.PANEL_CLOSED = "ac-devtools:panel-closed";
++exports.EXPLORER_REQUEST = "ac-devtools:explorer-request";
++exports.EXPLORER_RESPONSE = "ac-devtools:explorer-response";
++exports.RELOADING_TAB = "ac-devtools:reloading-tab";
++exports.RELOAD_TAB_COMPLETE = "ac-devtools:reload-tab-complete";
+ 
+ 
+ /***/ })
+diff --git a/node_modules/apollo-client-devtools/build/devtools.js b/node_modules/apollo-client-devtools/build/devtools.js
+index 165495f..8290715 100644
+--- a/node_modules/apollo-client-devtools/build/devtools.js
++++ b/node_modules/apollo-client-devtools/build/devtools.js
+@@ -165,22 +165,21 @@ exports["default"] = EventTarget;
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.RELOAD_TAB_COMPLETE = exports.RELOADING_TAB = exports.EXPLORER_RESPONSE = exports.EXPLORER_REQUEST = exports.PANEL_CLOSED = exports.PANEL_OPEN = exports.UPDATE = exports.REQUEST_DATA = exports.ACTION_HOOK_FIRED = exports.CREATE_DEVTOOLS_PANEL = exports.APOLLO_CLIENT_FOUND = exports.FIND_APOLLO_CLIENT = exports.DEVTOOLS_INITIALIZED = exports.REQUEST_TAB_ID = exports.CLIENT_FOUND = void 0;
+-exports.CLIENT_FOUND = "client-found";
+-exports.REQUEST_TAB_ID = "request-tab-id";
+-exports.DEVTOOLS_INITIALIZED = "devtools-initialized";
+-exports.FIND_APOLLO_CLIENT = "find-apollo-client";
+-exports.APOLLO_CLIENT_FOUND = "apollo-client-found";
+-exports.CREATE_DEVTOOLS_PANEL = "create-devtools-panel";
+-exports.ACTION_HOOK_FIRED = "action-hook-fired";
+-exports.REQUEST_DATA = "request-data";
+-exports.UPDATE = "update";
+-exports.PANEL_OPEN = "panel-open";
+-exports.PANEL_CLOSED = "panel-closed";
+-exports.EXPLORER_REQUEST = "explorer-request";
+-exports.EXPLORER_RESPONSE = "explorer-response";
+-exports.RELOADING_TAB = "reloading-tab";
+-exports.RELOAD_TAB_COMPLETE = "reload-tab-complete";
+-
++exports.CLIENT_FOUND = "ac-devtools:client-found";
++exports.REQUEST_TAB_ID = "ac-devtools:request-tab-id";
++exports.DEVTOOLS_INITIALIZED = "ac-devtools:devtools-initialized";
++exports.FIND_APOLLO_CLIENT = "ac-devtools:find-apollo-client";
++exports.APOLLO_CLIENT_FOUND = "ac-devtools:apollo-client-found";
++exports.CREATE_DEVTOOLS_PANEL = "ac-devtools:create-devtools-panel";
++exports.ACTION_HOOK_FIRED = "ac-devtools:action-hook-fired";
++exports.REQUEST_DATA = "ac-devtools:request-data";
++exports.UPDATE = "ac-devtools:update";
++exports.PANEL_OPEN = "ac-devtools:panel-open";
++exports.PANEL_CLOSED = "ac-devtools:panel-closed";
++exports.EXPLORER_REQUEST = "ac-devtools:explorer-request";
++exports.EXPLORER_RESPONSE = "ac-devtools:explorer-response";
++exports.RELOADING_TAB = "ac-devtools:reloading-tab";
++exports.RELOAD_TAB_COMPLETE = "ac-devtools:reload-tab-complete";
+ 
+ /***/ }),
+ 
+diff --git a/node_modules/apollo-client-devtools/build/hook.js b/node_modules/apollo-client-devtools/build/hook.js
+index 63aa181..d6539a7 100644
+--- a/node_modules/apollo-client-devtools/build/hook.js
++++ b/node_modules/apollo-client-devtools/build/hook.js
+@@ -4712,21 +4712,21 @@ exports["default"] = EventTarget;
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.RELOAD_TAB_COMPLETE = exports.RELOADING_TAB = exports.EXPLORER_RESPONSE = exports.EXPLORER_REQUEST = exports.PANEL_CLOSED = exports.PANEL_OPEN = exports.UPDATE = exports.REQUEST_DATA = exports.ACTION_HOOK_FIRED = exports.CREATE_DEVTOOLS_PANEL = exports.APOLLO_CLIENT_FOUND = exports.FIND_APOLLO_CLIENT = exports.DEVTOOLS_INITIALIZED = exports.REQUEST_TAB_ID = exports.CLIENT_FOUND = void 0;
+-exports.CLIENT_FOUND = "client-found";
+-exports.REQUEST_TAB_ID = "request-tab-id";
+-exports.DEVTOOLS_INITIALIZED = "devtools-initialized";
+-exports.FIND_APOLLO_CLIENT = "find-apollo-client";
+-exports.APOLLO_CLIENT_FOUND = "apollo-client-found";
+-exports.CREATE_DEVTOOLS_PANEL = "create-devtools-panel";
+-exports.ACTION_HOOK_FIRED = "action-hook-fired";
+-exports.REQUEST_DATA = "request-data";
+-exports.UPDATE = "update";
+-exports.PANEL_OPEN = "panel-open";
+-exports.PANEL_CLOSED = "panel-closed";
+-exports.EXPLORER_REQUEST = "explorer-request";
+-exports.EXPLORER_RESPONSE = "explorer-response";
+-exports.RELOADING_TAB = "reloading-tab";
+-exports.RELOAD_TAB_COMPLETE = "reload-tab-complete";
++exports.CLIENT_FOUND = "ac-devtools:client-found";
++exports.REQUEST_TAB_ID = "ac-devtools:request-tab-id";
++exports.DEVTOOLS_INITIALIZED = "ac-devtools:devtools-initialized";
++exports.FIND_APOLLO_CLIENT = "ac-devtools:find-apollo-client";
++exports.APOLLO_CLIENT_FOUND = "ac-devtools:apollo-client-found";
++exports.CREATE_DEVTOOLS_PANEL = "ac-devtools:create-devtools-panel";
++exports.ACTION_HOOK_FIRED = "ac-devtools:action-hook-fired";
++exports.REQUEST_DATA = "ac-devtools:request-data";
++exports.UPDATE = "ac-devtools:update";
++exports.PANEL_OPEN = "ac-devtools:panel-open";
++exports.PANEL_CLOSED = "ac-devtools:panel-closed";
++exports.EXPLORER_REQUEST = "ac-devtools:explorer-request";
++exports.EXPLORER_RESPONSE = "ac-devtools:explorer-response";
++exports.RELOADING_TAB = "ac-devtools:reloading-tab";
++exports.RELOAD_TAB_COMPLETE = "ac-devtools:reload-tab-complete";
+ 
+ 
+ /***/ }),
+@@ -4859,7 +4859,7 @@ function initializeHook() {
+     });
+     const clientRelay = new Relay_1.default();
+     clientRelay.addConnection("tab", (message) => {
+-        window.postMessage(message, "*");
++        window.postMessage(message);
+     });
+     window.addEventListener("message", ({ data }) => {
+         clientRelay.broadcast(data);
+diff --git a/node_modules/apollo-client-devtools/build/panel.js b/node_modules/apollo-client-devtools/build/panel.js
+index 4b3ad6e..f7e021e 100644
+--- a/node_modules/apollo-client-devtools/build/panel.js
++++ b/node_modules/apollo-client-devtools/build/panel.js
+@@ -54713,21 +54713,21 @@ exports["default"] = EventTarget;
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.RELOAD_TAB_COMPLETE = exports.RELOADING_TAB = exports.EXPLORER_RESPONSE = exports.EXPLORER_REQUEST = exports.PANEL_CLOSED = exports.PANEL_OPEN = exports.UPDATE = exports.REQUEST_DATA = exports.ACTION_HOOK_FIRED = exports.CREATE_DEVTOOLS_PANEL = exports.APOLLO_CLIENT_FOUND = exports.FIND_APOLLO_CLIENT = exports.DEVTOOLS_INITIALIZED = exports.REQUEST_TAB_ID = exports.CLIENT_FOUND = void 0;
+-exports.CLIENT_FOUND = "client-found";
+-exports.REQUEST_TAB_ID = "request-tab-id";
+-exports.DEVTOOLS_INITIALIZED = "devtools-initialized";
+-exports.FIND_APOLLO_CLIENT = "find-apollo-client";
+-exports.APOLLO_CLIENT_FOUND = "apollo-client-found";
+-exports.CREATE_DEVTOOLS_PANEL = "create-devtools-panel";
+-exports.ACTION_HOOK_FIRED = "action-hook-fired";
+-exports.REQUEST_DATA = "request-data";
+-exports.UPDATE = "update";
+-exports.PANEL_OPEN = "panel-open";
+-exports.PANEL_CLOSED = "panel-closed";
+-exports.EXPLORER_REQUEST = "explorer-request";
+-exports.EXPLORER_RESPONSE = "explorer-response";
+-exports.RELOADING_TAB = "reloading-tab";
+-exports.RELOAD_TAB_COMPLETE = "reload-tab-complete";
++exports.CLIENT_FOUND = "ac-devtools:client-found";
++exports.REQUEST_TAB_ID = "ac-devtools:request-tab-id";
++exports.DEVTOOLS_INITIALIZED = "ac-devtools:devtools-initialized";
++exports.FIND_APOLLO_CLIENT = "ac-devtools:find-apollo-client";
++exports.APOLLO_CLIENT_FOUND = "ac-devtools:apollo-client-found";
++exports.CREATE_DEVTOOLS_PANEL = "ac-devtools:create-devtools-panel";
++exports.ACTION_HOOK_FIRED = "ac-devtools:action-hook-fired";
++exports.REQUEST_DATA = "ac-devtools:request-data";
++exports.UPDATE = "ac-devtools:update";
++exports.PANEL_OPEN = "ac-devtools:panel-open";
++exports.PANEL_CLOSED = "ac-devtools:panel-closed";
++exports.EXPLORER_REQUEST = "ac-devtools:explorer-request";
++exports.EXPLORER_RESPONSE = "ac-devtools:explorer-response";
++exports.RELOADING_TAB = "ac-devtools:reloading-tab";
++exports.RELOAD_TAB_COMPLETE = "ac-devtools:reload-tab-complete";
+ 
+ 
+ /***/ }),
+diff --git a/node_modules/apollo-client-devtools/build/tab.js b/node_modules/apollo-client-devtools/build/tab.js
+index 9ed84be..702f76c 100644
+--- a/node_modules/apollo-client-devtools/build/tab.js
++++ b/node_modules/apollo-client-devtools/build/tab.js
+@@ -135,21 +135,21 @@ exports["default"] = EventTarget;
+ 
+ Object.defineProperty(exports, "__esModule", ({ value: true }));
+ exports.RELOAD_TAB_COMPLETE = exports.RELOADING_TAB = exports.EXPLORER_RESPONSE = exports.EXPLORER_REQUEST = exports.PANEL_CLOSED = exports.PANEL_OPEN = exports.UPDATE = exports.REQUEST_DATA = exports.ACTION_HOOK_FIRED = exports.CREATE_DEVTOOLS_PANEL = exports.APOLLO_CLIENT_FOUND = exports.FIND_APOLLO_CLIENT = exports.DEVTOOLS_INITIALIZED = exports.REQUEST_TAB_ID = exports.CLIENT_FOUND = void 0;
+-exports.CLIENT_FOUND = "client-found";
+-exports.REQUEST_TAB_ID = "request-tab-id";
+-exports.DEVTOOLS_INITIALIZED = "devtools-initialized";
+-exports.FIND_APOLLO_CLIENT = "find-apollo-client";
+-exports.APOLLO_CLIENT_FOUND = "apollo-client-found";
+-exports.CREATE_DEVTOOLS_PANEL = "create-devtools-panel";
+-exports.ACTION_HOOK_FIRED = "action-hook-fired";
+-exports.REQUEST_DATA = "request-data";
+-exports.UPDATE = "update";
+-exports.PANEL_OPEN = "panel-open";
+-exports.PANEL_CLOSED = "panel-closed";
+-exports.EXPLORER_REQUEST = "explorer-request";
+-exports.EXPLORER_RESPONSE = "explorer-response";
+-exports.RELOADING_TAB = "reloading-tab";
+-exports.RELOAD_TAB_COMPLETE = "reload-tab-complete";
++exports.CLIENT_FOUND = "ac-devtools:client-found";
++exports.REQUEST_TAB_ID = "ac-devtools:request-tab-id";
++exports.DEVTOOLS_INITIALIZED = "ac-devtools:devtools-initialized";
++exports.FIND_APOLLO_CLIENT = "ac-devtools:find-apollo-client";
++exports.APOLLO_CLIENT_FOUND = "ac-devtools:apollo-client-found";
++exports.CREATE_DEVTOOLS_PANEL = "ac-devtools:create-devtools-panel";
++exports.ACTION_HOOK_FIRED = "ac-devtools:action-hook-fired";
++exports.REQUEST_DATA = "ac-devtools:request-data";
++exports.UPDATE = "ac-devtools:update";
++exports.PANEL_OPEN = "ac-devtools:panel-open";
++exports.PANEL_CLOSED = "ac-devtools:panel-closed";
++exports.EXPLORER_REQUEST = "ac-devtools:explorer-request";
++exports.EXPLORER_RESPONSE = "ac-devtools:explorer-response";
++exports.RELOADING_TAB = "ac-devtools:reloading-tab";
++exports.RELOAD_TAB_COMPLETE = "ac-devtools:reload-tab-complete";
+ 
+ 
+ /***/ }),
+@@ -260,22 +260,22 @@ __webpack_require__(/*! ./tabRelay */ "./src/extension/tab/tabRelay.ts");
+   A common workaround for this issue is to inject an inlined function
+   into the inspected tab.
+ */
+-if (typeof document === "object" && document instanceof HTMLDocument) {
+-    const script = document.createElement("script");
+-    script.setAttribute("type", "module");
+-    script.setAttribute("src", chrome.extension.getURL("hook.js"));
+-    document.addEventListener("DOMContentLoaded", () => {
+-        var _a;
+-        const importMap = document.querySelector("script[type=\"importmap\"]");
+-        if (importMap != null) {
+-            (_a = importMap.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(script, importMap.nextSibling);
+-        }
+-        else {
+-            const head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+-            head.insertBefore(script, head.lastChild);
+-        }
+-    });
+-}
++// if (typeof document === "object" && document instanceof HTMLDocument) {
++//     const script = document.createElement("script");
++//     script.setAttribute("type", "module");
++//     script.setAttribute("src", chrome.extension.getURL("hook.js"));
++//     document.addEventListener("DOMContentLoaded", () => {
++//         var _a;
++//         const importMap = document.querySelector("script[type=\"importmap\"]");
++//         if (importMap != null) {
++//             (_a = importMap.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(script, importMap.nextSibling);
++//         }
++//         else {
++//             const head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
++//             head.insertBefore(script, head.lastChild);
++//         }
++//     });
++// }
+ 
+ })();
+ 
