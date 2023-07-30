@@ -45,7 +45,7 @@ You need to closes all React Native packager (make sure `8081` or `8088` port no
 ### Packaging app
 
 ```bash
-$ yarn run pack-macos
+$ yarn run pack-macos # Use --notarize to notarize app
 # On macOS: brew install fakeroot dpkg rpm
 $ yarn run pack-linux
 # On macOS: brew install wine mono
@@ -53,7 +53,9 @@ $ yarn run pack-windows
 $ yarn run pack # all
 ```
 
-If you want to build binaries yourself, please remove [../electron/update.js](electron/update.js) (and [electon/main.js usage](electon/main.js)), `osx-sign` in [../scripts/package-macos.sh](scripts/package-macos.sh).
+If you want to build binaries yourself, please remove [../electron/update.js](electron/update.js) (and [electon/main.js usage](electon/main.js)).
+
+For macOS, note that if your app binary is not code signed, you will often get a firewall prompt from React DevTools server.
 
 ### [Optional] Prerequisites for packaging Linux / Windows app on macOS
 
