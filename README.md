@@ -69,6 +69,10 @@ makepkg -si
 paru -S react-native-debugger-bin
 ```
 
+## Build from source
+
+Please read [Development section](docs/contributing.md#development) in docs/contributing.md for how to build the app from source.
+
 ## Documentation
 
 - [Getting Started](docs/getting-started.md)
