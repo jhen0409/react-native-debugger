@@ -9,7 +9,8 @@ const detail = multiline`
   | This software includes the following projects:
 
   | https://github.com/facebook/react-devtools
-  | https://github.com/zalmoxisus/remotedev-app
+  | https://github.com/reduxjs/redux-devtools
+  | https://github.com/apollographql/apollo-client-devtools
 `
 
 export const showAboutDialog = (iconPath) => dialog.showMessageBoxSync({
