@@ -15,7 +15,7 @@ electron-packager dist/ \
   --asar \
   --extra-resource=dist/devtools-helper \
   --extra-resource=dist/node_modules/apollo-client-devtools/ac-devtools-ext-build \
-  --no-prune \
+  --prune \
   --out release \
   --electron-version $(node -e "console.log(require('electron/package').version)") \
   --app-version $PACKAGE_VERSION

@@ -32,7 +32,7 @@ function build_with_arch() {
     --asar \
     --extra-resource=dist/devtools-helper \
     --extra-resource=dist/node_modules/apollo-client-devtools/ac-devtools-ext-build \
-    --no-prune \
+    --prune \
     --out release \
     --protocol-name "React Native Debugger" \
     --protocol "rndebugger" \
