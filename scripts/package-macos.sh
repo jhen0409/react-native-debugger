@@ -54,11 +54,11 @@ fi
 node scripts/mac/createDMG.js
 
 cd release
-zip -ryq9 rn-debugger-macos-universal.zip React\ Native\ Debugger.app
+ditto -c -k --keepParent React\ Native\ Debugger.app rn-debugger-macos-universal.zip
 cd React\ Native\ Debugger-darwin-arm64
-zip -ryq9 ../rn-debugger-macos-arm64.zip React\ Native\ Debugger.app
+ditto -c -k --keepParent React\ Native\ Debugger.app ../rn-debugger-macos-arm64.zip 
 cd ../React\ Native\ Debugger-darwin-x64
-zip -ryq9 ../rn-debugger-macos-x64.zip React\ Native\ Debugger.app
+ditto -c -k --keepParent React\ Native\ Debugger.app ../rn-debugger-macos-x64.zip
 cd ..
 
 # Print codesign information
