@@ -1,6 +1,6 @@
 import adb from 'adbkit'
 
-export const client = adb.createClient()
+export const client = adb.createClient({ host: '127.0.0.1' })
 
 const reverse = (device, port) => client.reverse(device, `tcp:${port}`, `tcp:${port}`)
 
