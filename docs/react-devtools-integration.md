@@ -23,7 +23,7 @@ In your app project, make sure the `react-devtools-core` dependency to match the
 ```json
 {
   "resolutions": {
-    "react-devtools-core": "~4.25.0"
+    "react-devtools-core": "~4.28.0"
   }
 }
 ```
@@ -33,7 +33,7 @@ or NPM:
 ```json
 {
   "overrides": {
-    "react-devtools-core": "~4.25.0"
+    "react-devtools-core": "~4.28.0"
   }
 }
 ```
