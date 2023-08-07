@@ -9,7 +9,7 @@ import { showNotification, liftedDispatch } from '@redux-devtools/app/lib/esm/ac
 import { getActiveInstance } from '@redux-devtools/app/lib/esm/reducers/instances'
 
 import { SET_DEBUGGER_WORKER, SYNC_STATE } from '../actions/debugger'
-import { setReduxDevToolsMethods, updateSliderContent } from '../utils/devMenu'
+import { setReduxDevToolsMethods, updateSliderContent } from '../../utils/devMenu'
 
 const unboundActions = {
   showNotification,

@@ -3,7 +3,7 @@ import {
   SET_DEBUGGER_WORKER,
   SET_DEBUGGER_LOCATION,
 } from '../actions/debugger'
-import config from '../utils/config'
+import config from '../../utils/config'
 
 function getStatusMessage(status, port) {
   let message

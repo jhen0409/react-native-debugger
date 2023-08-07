@@ -1,20 +1,10 @@
-import { findAPortNotInUse } from 'portscanner'
 import { webFrame } from 'electron'
 import { getCurrentWindow } from '@electron/remote'
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { Provider } from 'react-redux'
 import launchEditor from 'react-dev-utils/launchEditor'
-import { PersistGate } from 'redux-persist/integration/react'
 import './setup'
-import App from './containers/App'
-import configureStore from './store/configureStore'
-import { beforeWindowClose } from './actions/debugger'
 import { invokeDevMethod } from './utils/devMenu'
-import { client, tryADBReverse } from './utils/adb'
-import config from './utils/config'
-import { toggleOpenInEditor, isOpenInEditorEnabled } from './utils/devtools'
-import { GlobalStyle } from './globalStyles'
+import { isOpenInEditorEnabled } from './utils/devtools'
+import { startLegacyDebugger } from './legacy'
 
 const currentWindow = getCurrentWindow()
 
@@ -31,51 +21,7 @@ document.addEventListener('dragover', (e) => {
   e.stopPropagation()
 })
 
-let store
-let persistor
-const handleReady = () => {
-  const { defaultReactDevToolsPort = 19567 } = config
-  findAPortNotInUse(Number(defaultReactDevToolsPort)).then((port) => {
-    window.reactDevToolsPort = port
-    const root = createRoot(document.getElementById('root'))
-    root.render(
-      <>
-        <GlobalStyle />
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <App />
-          </PersistGate>
-        </Provider>
-      </>,
-    )
-  })
-}
-
-;({ store, persistor } = configureStore(handleReady))
-
-// Provide for user
-window.adb = client
-window.adb.reverseAll = tryADBReverse
-window.adb.reversePackager = () =>
-  tryADBReverse(store.getState().debugger.location.port)
-
-window.checkWindowInfo = () => {
-  const debuggerState = store.getState().debugger
-  return {
-    isWorkerRunning: !!debuggerState.worker,
-    location: debuggerState.location,
-    isPortSettingRequired: debuggerState.isPortSettingRequired,
-  }
-}
-
-window.beforeWindowClose = () =>
-  new Promise((resolve) => {
-    if (store.dispatch(beforeWindowClose())) {
-      setTimeout(resolve, 200)
-    } else {
-      resolve()
-    }
-  })
+startLegacyDebugger()
 
 // For security, we should disable nodeIntegration when user use this open a website
 const originWindowOpen = window.open
@@ -86,10 +32,6 @@ window.open = (url, frameName, features = '') => {
 }
 
 window.openInEditor = (file, lineNumber) => launchEditor(file, lineNumber)
-window.toggleOpenInEditor = () => {
-  const { port } = store.getState().debugger.location
-  return toggleOpenInEditor(currentWindow, port)
-}
 window.isOpenInEditorEnabled = () => isOpenInEditorEnabled(currentWindow)
 
 window.invokeDevMethod = (name) => invokeDevMethod(name)()

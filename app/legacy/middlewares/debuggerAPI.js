@@ -13,10 +13,10 @@ import { getCurrentWindow } from '@electron/remote'
 import { bindActionCreators } from 'redux'
 import { checkPortStatus } from 'portscanner'
 import * as debuggerActions from '../actions/debugger'
-import { setDevMenuMethods, networkInspect } from '../utils/devMenu'
-import { tryADBReverse } from '../utils/adb'
-import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../utils/devtools'
-import config from '../utils/config'
+import { setDevMenuMethods, networkInspect } from '../../utils/devMenu'
+import { tryADBReverse } from '../../utils/adb'
+import { clearNetworkLogs, selectRNDebuggerWorkerContext } from '../../utils/devtools'
+import config from '../../utils/config'
 
 const currentWindow = getCurrentWindow()
 const { SET_DEBUGGER_LOCATION, BEFORE_WINDOW_CLOSE } = debuggerActions

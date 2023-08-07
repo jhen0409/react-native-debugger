@@ -8,9 +8,9 @@ import * as debuggerActionCreators from '../actions/debugger'
 import * as settingActionCreators from '../actions/setting'
 import ReduxDevTools from './redux/DevTools'
 import ReactInspector from './ReactInspector'
-import FormInput from '../components/FormInput'
-import Draggable from '../components/Draggable'
-import { catchConsoleLogLink } from '../../electron/devtools'
+import FormInput from '../../components/FormInput'
+import Draggable from '../../components/Draggable'
+import { catchConsoleLogLink } from '../../../electron/devtools'
 
 const currentWindow = getCurrentWindow()
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { tryADBReverse } from '../utils/adb'
+import { tryADBReverse } from '../../utils/adb'
 
 let ReactServer
 const getReactInspector = () => {
