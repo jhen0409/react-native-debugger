@@ -1,4 +1,3 @@
-import { findAPortNotInUse } from 'portscanner'
 import { getCurrentWindow } from '@electron/remote'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -8,7 +7,6 @@ import App from './containers/App'
 import configureStore from './store/configureStore'
 import { beforeWindowClose } from './actions/debugger'
 import { client, tryADBReverse } from '../utils/adb'
-import config from '../utils/config'
 import { toggleOpenInEditor } from '../utils/devtools'
 import { GlobalStyle } from '../globalStyles'
 
@@ -18,21 +16,17 @@ export const startLegacyDebugger = () => {
   let store
   let persistor
   const handleReady = () => {
-    const { defaultReactDevToolsPort = 19567 } = config
-    findAPortNotInUse(Number(defaultReactDevToolsPort)).then((port) => {
-      window.reactDevToolsPort = port
-      const root = createRoot(document.getElementById('root'))
-      root.render(
-        <>
-          <GlobalStyle />
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <App />
-            </PersistGate>
-          </Provider>
-        </>,
-      )
-    })
+    const root = createRoot(document.getElementById('root'))
+    root.render(
+      <>
+        <GlobalStyle />
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </>,
+    )
   }
 
   ;({ store, persistor } = configureStore(handleReady))

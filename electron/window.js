@@ -103,7 +103,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
       nodeIntegration: true,
       // experimentalFeatures: true,
       // webSecurity: false,
-      // webviewTag: true, // Use this for new inspector in the future
+      webviewTag: true, // Use this for new inspector in the future
     },
     ...config.windowBounds,
   })
@@ -122,7 +122,7 @@ export const createWindow = ({ iconPath, isPortSettingRequired, port }) => {
     isPortSettingRequired: isPortSettingRequired && 1,
     timesJSLoadToRefreshDevTools,
   }
-  win.loadURL(`file://${path.resolve(__dirname)}/app.html`)
+  win.loadURL(`file://${path.resolve(__dirname)}/app.html?type=debugger`)
   let unregisterContextMenu
   win.webContents.on('did-finish-load', () => {
     win.webContents.zoomLevel = config.zoomLevel || store.get('zoomLevel', 0)

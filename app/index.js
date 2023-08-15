@@ -1,10 +1,13 @@
+import { findAPortNotInUse } from 'portscanner'
 import { webFrame } from 'electron'
 import { getCurrentWindow } from '@electron/remote'
 import launchEditor from 'react-dev-utils/launchEditor'
 import './setup'
 import { invokeDevMethod } from './utils/devMenu'
 import { isOpenInEditorEnabled } from './utils/devtools'
+import config from './utils/config'
 import { startLegacyDebugger } from './legacy'
+import { startDebugger } from './root'
 
 const currentWindow = getCurrentWindow()
 
@@ -21,7 +24,20 @@ document.addEventListener('dragover', (e) => {
   e.stopPropagation()
 })
 
-startLegacyDebugger()
+// Parse location.search
+const searchParams = new URLSearchParams(window.location.search)
+
+const { defaultReactDevToolsPort = 19567 } = config
+findAPortNotInUse(Number(defaultReactDevToolsPort)).then((port) => {
+  window.reactDevToolsPort = port
+
+  if (searchParams.get('type') === 'legacy-debugger') {
+    startLegacyDebugger()
+  } else {
+    startDebugger()
+  }
+})
+
 
 // For security, we should disable nodeIntegration when user use this open a website
 const originWindowOpen = window.open
