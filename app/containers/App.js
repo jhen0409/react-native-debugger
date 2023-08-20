@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import qs from 'querystring'
 import styled from 'styled-components'
+import {
+  catchConsoleLogLink,
+  removeUnecessaryTabs,
+} from '../utils/devtools'
 
 const devtoolsHash = 'd9568d04d7dd79269c5a655d7ada69650c5a8336' // Chrome 100
 
@@ -42,24 +46,65 @@ export default function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchInspectorInfo().then((info) => {
-        if (
-          !info ||
-          info.webSocketDebuggerUrl !== inspectorInfo.current?.webSocketDebuggerUrl
-        ) {
-          inspectorInfo.current = info
-          setUpdate((prev) => prev + 1)
-        }
-      }).catch(noop)
+      fetchInspectorInfo()
+        .then((info) => {
+          if (
+            !info ||
+            info.webSocketDebuggerUrl !==
+              inspectorInfo.current?.webSocketDebuggerUrl
+          ) {
+            inspectorInfo.current = info
+            setUpdate((prev) => prev + 1)
+          }
+        })
+        .catch(noop)
     }, 5e3)
     return () => clearInterval(interval)
   }, [])
 
   console.log(inspectorInfo)
 
+  const webview = useRef(null)
+
   if (!inspectorInfo.current) return null
 
   return (
-    <webview width="100%" height="100%" src={inspectorInfo.current?.devtoolsURL} />
+    <webview
+      ref={(ref) => {
+        webview.current = ref
+        if (ref) {
+          ref.addEventListener('dom-ready', () => {
+            const view = webview.current
+            const devtools = { devToolsWebContents: view }
+
+            let interval
+            const waitReady = () => {
+              const requestId = view.findInPage('Console')
+
+              const listener = (e) => {
+                if (e.result.matches > 0 && e.result.requestId === requestId) {
+                  view.stopFindInPage('keepSelection')
+
+                  catchConsoleLogLink(devtools, 'localhost', 8081) // TODO
+                  // TODO: if (config.showAllDevToolsTab !== true)
+                  removeUnecessaryTabs(devtools)
+
+                  clearInterval(interval)
+                  view.removeEventListener('found-in-page', listener)
+                }
+              }
+
+              view.addEventListener('found-in-page', listener)
+            }
+
+            interval = setInterval(waitReady, 500)
+            waitReady()
+          })
+        }
+      }}
+      style={{ minHeight: 500, width: '100%' }}
+      autosize="on"
+      src={inspectorInfo.current?.devtoolsURL}
+    />
   )
 }

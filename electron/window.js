@@ -5,8 +5,7 @@ import {
 import Store from 'electron-store'
 import { enable } from '@electron/remote/main'
 import autoUpdate from './update'
-import { catchConsoleLogLink, removeUnecessaryTabs, activeTabs } from './devtools'
-import { selectRNDebuggerWorkerContext } from '../app/utils/devtools'
+import { selectRNDebuggerWorkerContext, catchConsoleLogLink, removeUnecessaryTabs, activeTabs } from '../app/utils/devtools'
 import { readConfig, filePath as configFile } from './config'
 import { registerContextMenu } from './context-menu'
 

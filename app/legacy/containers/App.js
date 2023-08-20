@@ -10,7 +10,7 @@ import ReduxDevTools from './redux/DevTools'
 import ReactInspector from './ReactInspector'
 import FormInput from '../../components/FormInput'
 import Draggable from '../../components/Draggable'
-import { catchConsoleLogLink } from '../../../electron/devtools'
+import { catchConsoleLogLink } from '../../utils/devtools'
 
 const currentWindow = getCurrentWindow()
 
