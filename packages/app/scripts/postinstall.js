@@ -1,9 +1,6 @@
 const shell = require('shelljs')
 
 async function run() {
-  shell.cd('npm-package')
-  shell.exec('yarn')
-  shell.cd('-')
   shell.cd('dist')
   shell.exec('yarn')
   shell.rm(

@@ -17,6 +17,7 @@ jobs:
         run: |
           yarn
           yarn build
+          cd packages/app
           yarn pack-linux
       - name: Upload assets to release
         uses: jhen0409/release-asset-action@master
@@ -38,6 +39,7 @@ jobs:
           yarn config set network-timeout 500000 -g
           yarn
           yarn build
+          cd packages/app
           yarn pack-windows
       - name: Upload assets to release
         uses: jhen0409/release-asset-action@master

@@ -1,0 +1,4 @@
+dist/js
+dist/main.js*
+release/
+tmp/

@@ -1,18 +1,24 @@
 {
-  "name": "react-native-debugger-monorepo",
+  "name": "react-native-debugger-app",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
   "version": "0.14.0",
+  "productName": "React Native Debugger In Dev",
   "description": "The standalone app for React Native Debugger, with React DevTools / Redux DevTools",
+  "main": "electron/main.js",
   "scripts": {
-    "lint": "eslint .",
-    "build": "yarn workspaces run build",
-    "test": "yarn workspaces run test",
-    "postinstall": "yarnw-sync-deps --install-after-changed && patch-package && yarn workspaces run postinstall"
+    "pack-macos": "./scripts/package-macos.sh",
+    "pack-linux": "./scripts/package-linux.sh",
+    "pack-windows": "sh ./scripts/package-windows.sh",
+    "pack": "yarn build && ./scripts/package-linux.sh && ./scripts/package-windows.sh && ./scripts/package-macos.sh",
+    "start": "cd dist && cross-env NODE_ENV=production PACKAGE=no electron ./",
+    "build:main": "cross-env NODE_ENV=production webpack --config webpack/main.prod.js --progress --profile",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config webpack/renderer.prod.js --progress --profile",
+    "build": "yarn build:main && yarn build:renderer",
+    "dev:webpack": "webpack-dev-server --config webpack/renderer.dev.js --port 3000 --allowed-hosts all",
+    "dev:electron": "cross-env NODE_ENV=development electron -r @babel/register -r ./electron/debug .",
+    "test": "jest __tests__",
+    "test-e2e": "jest __e2e__ --runInBand  --forceExit",
+    "postinstall": "node ./scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -77,17 +83,14 @@
     "@redux-devtools/utils": "^2.0.1",
     "adbkit": "^2.11.0",
     "apollo-client-devtools": "^4.1.4",
-    "chalk": "^1.1.3",
     "electron-context-menu": "^3.6.1",
     "electron-fetch": "^1.2.1",
     "electron-gh-releases": "^2.0.4",
     "electron-store": "^1.2.0",
-    "es6-template": "^1.0.4",
     "header-case-normalizer": "^1.0.3",
     "jsan": "^3.1.9",
     "json5": "^0.5.1",
     "localforage": "^1.10.0",
-    "minimist": "^1.2.0",
     "multiline-template": "^0.1.2",
     "portscanner": "^2.1.1",
     "prop-types": "^15.8.1",
@@ -99,16 +102,9 @@
     "react-redux": "^8.1.1",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
-    "semver": "^5.4.1",
     "styled-components": "^6.0.5"
   },
-  "optionalDependencies": {
-    "electron-installer-debian": "^2.0.1",
-    "electron-installer-redhat": "^2.0.0"
-  },
-  "resolutions": {
-    "ws": "^7.5.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+  "jest": {
+    "testEnvironment": "node"
   }
 }

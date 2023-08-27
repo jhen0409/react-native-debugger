@@ -2,11 +2,7 @@ node_modules
 npm-debug.log
 yarn-error.log
 .DS_Store
-dist/js
-dist/main.js*
-release/
-*.bundle.js
-tmp/
+**/*.bundle.js
 config_test
 .idea/
 artifacts/

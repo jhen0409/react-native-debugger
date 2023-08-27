@@ -21,9 +21,9 @@ jobs:
         id: test
         run: |
           yarn
-          cd npm-package && yarn && cd ..
-          yarn test
           yarn build
+          yarn test
+          cd packages/app
           xvfb-run --auto-servernum yarn test-e2e
       - name: Upload artifacts on failure
         if: ${{ failure() && steps.test.conclusion == 'failure' }}
@@ -44,9 +44,9 @@ jobs:
         id: test
         run: |
           yarn
-          cd npm-package && yarn && cd ..
-          yarn test
           yarn build
+          yarn test
+          cd packages/app
           yarn test-e2e
       - name: Upload artifacts on failure
         if: ${{ failure() && steps.test.conclusion == 'failure' }}
@@ -69,9 +69,9 @@ jobs:
         run: |
           yarn config set network-timeout 500000 -g
           yarn
-          cd npm-package && yarn && cd ..
           yarn build
           yarn test
+          cd packages/app
           yarn test-e2e
       - name: Upload artifacts on failure
         if: ${{ failure() && steps.test.conclusion == 'failure' }}
